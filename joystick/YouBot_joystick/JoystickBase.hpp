@@ -13,7 +13,8 @@
 #include <rtt/Time.hpp>
 
 #include <YouBotTypes.hpp>
-#include <joy/typekit/Types.h>
+#include <sensor_msgs/typekit/Types.hpp>
+//#include <joy/typekit/Types.h>
 #include <nav_msgs/typekit/Types.h>
 #include <geometry_msgs/typekit/Types.h>
 
@@ -35,7 +36,7 @@ namespace YouBot
 			virtual void cleanupHook();
 
 		private:
-			InputPort<joy::Joy> joystick;
+			InputPort<sensor_msgs::Joy> joystick;
 			InputPort< nav_msgs::Odometry > odometry_state;
 
 			OutputPort< geometry_msgs::Twist > cmd_twist;
@@ -43,7 +44,7 @@ namespace YouBot
 			nav_msgs::Odometry m_odometry_state;
 
 			geometry_msgs::Twist m_cmd_twist;
-			joy::Joy m_joystick;
+			sensor_msgs::Joy m_joystick;
 
 			OperationCaller<void(vector<ctrl_modes>) > op_setControlModes;
 

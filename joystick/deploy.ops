@@ -1,5 +1,4 @@
 import("rtt_rosnode");
-import("rtt_joy_msgs");
 import("YouBot_joystick");
 
 require("ros_integration")
