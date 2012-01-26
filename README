@@ -34,6 +34,7 @@ git clone git://github.com/b-it-bots/youbot-stack.git
 cd youbot-stack
 git submodule init
 git submodule update
+touch external/youbot_applications/diagnostics_tool/ROS_NOBUILD
 Adjust the ROS_PACKAGE_PATH to find the stack.
 rosmake
 
