@@ -39,7 +39,8 @@ namespace YouBot
 			void stop();
 
 			watchdog::watchdogMsg m_watchdog_msg;
-			ros::Duration m_timeout;
+			ros::Time m_last;
+         ros::Duration m_timeout;
   };
 
 }

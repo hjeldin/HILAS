@@ -46,14 +46,18 @@ namespace YouBot
       return false;
     }
 
-    m_watchdog_msg.kick = ros::Time::now();
+    m_last = ros::Time::now();
     return true;
 	}
 
 	void WatchdogService::update()
 	{
-    watchdog_msg.read(m_watchdog_msg);
-    if((ros::Time::now() - m_watchdog_msg.kick) > m_timeout)
+    if(watchdog_msg.read(m_watchdog_msg) == RTT::NewData)
+    {
+      m_last = ros::Time::now();
+      return;
+    }
+    if((ros::Time::now() - m_last) > m_timeout)
     {
       log(Error) << "Watchdog timed out! Stopping TaskContext!" << endlog();
       // shutdown
