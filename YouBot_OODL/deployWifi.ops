@@ -11,7 +11,7 @@ loadComponent("youbot","YouBot::YouBotOODL");
 loadComponent("EventLogger", "YouBot::EventLogger");
 
 setActivity("youbot", 0.001, HighestPriority, ORO_SCHED_RT);
-youbot.noWatchdog;
+//youbot.noWatchdog();
 youbot.configure;
 
 var ConnPolicy cp_rt;
@@ -33,6 +33,10 @@ connect("youbot.Base.events", "EventLogger.events", cp_events);
 
 var ConnPolicy cp_ros;
 cp_ros.transport = 3;
+
+cp_ros.name_id = "/watchdog/keepalive";
+stream("youbot.WatchdogService.watchdog_msg", cp_ros);
+
 cp_ros.name_id = "/debug/arm/joint_states";
 stream("youbot.Arm1.joint_states", cp_ros);
 

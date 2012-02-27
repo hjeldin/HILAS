@@ -36,6 +36,8 @@ namespace YouBot
 			virtual void stopHook();
 			virtual void cleanupHook();
 
+			bool noWatchdog();
+
 		private:
 	        vector<OperationCaller<bool(void)> > calibrate_ops;
 	        vector<OperationCaller<bool(void)> > start_ops;
@@ -47,6 +49,7 @@ namespace YouBot
 
 	        unsigned int m_communication_errors;
 	        unsigned int m_max_communication_errors;
+	        bool m_use_watchdog;
 	};
 
 }

@@ -1,13 +1,13 @@
 <package>
-  <description brief="YouBot_joystick">
+  <description brief="joystick">
 
-     YouBot_joystick - test package
+     joystick - test package driving the youBot.
 
   </description>
   <author>Robert Wilterdink</author>
   <license>LGPLv2.1 / BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>ce203</url>
+  <url>https://git.ce.utwente.nl/youbot-stack</url>
   <depend package="rtt_rosnode"/>
   <depend package="rtt_std_msgs"/>
   <depend package="rtt_sensor_msgs"/>

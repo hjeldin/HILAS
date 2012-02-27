@@ -19,7 +19,7 @@ namespace YouBot
     class YouBotService : public Service {
 
 		public:
-    		YouBotService(const string& name, TaskContext* parent);
+    	YouBotService(const string& name, TaskContext* parent);
 			virtual ~YouBotService();
 
 			virtual void setupComponentInterface();

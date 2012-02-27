@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.6.3)
 # This creates a standard cmake project. You may extend this file with
 # any cmake macro you see fit.
 #
-project(YouBot_JoystickBase)
+project(YouBot_joystick)
 
 #
 # Do setup in case of ros package, If ROS_ROOT is set, it is
@@ -18,8 +18,8 @@ if (ROS_ROOT)
   rosbuild_find_ros_package( rtt_joy_msgs )
   set( RTT_HINTS HINTS ${rtt_PACKAGE_PATH}/install )
   rosbuild_genmsg()
-  rosbuild_include(rtt_rosnode GenerateRTTtypekit)
-  ros_generate_rtt_typekit(YouBot_joystick)
+#  rosbuild_include(rtt_rosnode GenerateRTTtypekit)
+#  ros_generate_rtt_typekit(YouBot_joystick)
 
 # Set the CMAKE_PREFIX_PATH in case you're not using Orocos through ROS
 # for helping these find commands find RTT.
@@ -54,9 +54,9 @@ SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 INCLUDE_DIRECTORIES(${COMMON_INCLUDE_DIR})
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
 
-orocos_component(YouBot_JoystickBase JoystickBase.hpp JoystickBase.cpp ${COMMON_INCLUDE_DIR})
+orocos_component(YouBot_joystick Joystick.hpp Joystick.cpp ${COMMON_INCLUDE_DIR})
 
-#TARGET_LINK_LIBRARIES(YouBot_JoystickBase YouBot_OODL)
+#TARGET_LINK_LIBRARIES(YouBot_Joystick YouBot_OODL)
 
 orocos_generate_package()
 

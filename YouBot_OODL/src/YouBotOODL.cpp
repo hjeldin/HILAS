@@ -3,6 +3,7 @@
 #include "YouBotArmService.hpp"
 #include "YouBotHelpers.hpp"
 #include "YouBotGripperService.hpp"
+#include "WatchdogService.hpp"
 
 #include <youbot/ProtocolDefinitions.hpp>
 
@@ -24,13 +25,16 @@ namespace YouBot
 
 	unsigned int non_errors = ::MOTOR_HALTED | ::PWM_MODE_ACTIVE | ::VELOCITY_MODE | ::POSITION_MODE | ::TORQUE_MODE | ::POSITION_REACHED | ::INITIALIZED;
 
-	YouBotOODL::YouBotOODL(const string& name) : TaskContext(name, PreOperational), m_communication_errors(0)
+	YouBotOODL::YouBotOODL(const string& name) :
+	    TaskContext(name, PreOperational), m_communication_errors(0), m_use_watchdog(true)
 	{
 		youbot::Logger::logginLevel = youbot::fatal;
 		RTT::Logger* ins = RTT::Logger::Instance();
 		ins->setLogLevel(RTT::Logger::Info);
 
 		m_max_communication_errors = 100;
+
+		this->addOperation("noWatchdog",&YouBotOODL::noWatchdog,this);
 	}
 
 	YouBotOODL::~YouBotOODL() {}
@@ -100,6 +104,18 @@ namespace YouBot
 			log(Info) << "Detected youbot arm, loading Arm2 service" << endlog();
 		}
 
+    // Watchdog
+		if(m_use_watchdog)
+		{
+      this->provides()->addService(Service::shared_ptr( new WatchdogService("WatchdogService",this) ) );
+      update_ops.push_back(this->provides("WatchdogService")->getOperation("update"));
+      calibrate_ops.push_back(this->provides("WatchdogService")->getOperation("calibrate"));
+      start_ops.push_back(this->provides("WatchdogService")->getOperation("start"));
+      stop_ops.push_back(this->provides("WatchdogService")->getOperation("stop"));
+      cleanup_ops.push_back(this->provides("WatchdogService")->getOperation("cleanup"));
+      log(Info) << "Added WatchdogService service" << endlog();
+		}
+
 		Seconds period = this->getPeriod();
 		if(period < 0.001)
 		{
@@ -118,6 +134,7 @@ namespace YouBot
 				if(!calibrate_ops[i]())
 				{
 					proper_calibration = false;
+					log(Warning) << "Calibration failed on one Service." << endlog();
 					break;
 				}
 			}
@@ -140,24 +157,35 @@ namespace YouBot
 		}
 	}
 
+	bool YouBotOODL::noWatchdog()
+	{
+	  if(!TaskContext::isConfigured())
+	  {
+	    m_use_watchdog = false;
+	    return true;
+	  }
+	  return false;
+	}
+
 	bool YouBotOODL::startHook()
 	{
 		// invoke all starts
 		bool fully_started(true);
 
-        for(unsigned int i=0;i<start_ops.size();++i)
+    for(unsigned int i=0;i<start_ops.size();++i)
+    {
+        if(start_ops[i].ready())
         {
-            if(start_ops[i].ready())
-            {
-            	if(!start_ops[i]())
-            	{
-            		fully_started = false;
-            		break;
-            	}
-            }
+          if(!start_ops[i]())
+          {
+            fully_started = false;
+            log(Warning) << "Start failed on one Service." << endlog();
+            break;
+          }
         }
+    }
 
-        return fully_started ? TaskContext::startHook() : false;
+    return fully_started ? TaskContext::startHook() : false;
 	}
 
 	void YouBotOODL::updateHook()

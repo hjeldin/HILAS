@@ -1,0 +1,23 @@
+import("joystick_msgs");
+loadComponent("joystick","JoystickControl");
+
+var std.vector<ctrl_modes>  base_ctrl_modes=std.vector<ctrl_modes>(4,TWIST)
+youbot.Base.setControlModes(base_ctrl_modes);
+
+joystick.configure;
+joystick.setPeriod(0.01);
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  // Use ''BUFFER'' or ''DATA''
+cp_rt.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
+
+connectPeers("youbot", "joystick")
+connect("youbot.Base.odometry_state","joystick.odometry_state", cp_rt)
+connect("joystick.cmd_twist","youbot.Base.cmd_twist", cp_rt)
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/joy";
+stream("joystick.joystick", cp_ros);
+
+joystick.start;

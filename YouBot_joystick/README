@@ -4,6 +4,7 @@ To install: svn co https://code.ros.org/svn/ros-pkg/stacks/joystick_drivers/tags
 * A joystick
 
 Note: 
+* If you plan to control the YouBot wireless -> use the watchdog package!
 * This package has only been tested with a Logitech Extreme 3D Pro.
 * To build remove the ROS_NOBUILDs first.
 
