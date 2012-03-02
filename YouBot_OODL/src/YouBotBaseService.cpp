@@ -291,7 +291,7 @@ namespace YouBot
 		readJointStates();
 		joint_states.write(m_joint_states);
 
-		if(!odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot
+		if(odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot
 		{
 		  calculateOdometry();
 		  odometry_state.write(m_odometry_state);
