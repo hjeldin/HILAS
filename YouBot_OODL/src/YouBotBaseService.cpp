@@ -289,10 +289,13 @@ namespace YouBot
 		m_odometry_state.header.stamp = stamp;
 
 		readJointStates();
-		calculateOdometry();
-
 		joint_states.write(m_joint_states);
-		odometry_state.write(m_odometry_state);
+
+		if(!odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot
+		{
+		  calculateOdometry();
+		  odometry_state.write(m_odometry_state);
+		}
 
 		// Actuators
 		if(m_joint_ctrl_modes[0] == TWIST) // All joints will be in TWIST ctrl_mode (see setControlModes)
