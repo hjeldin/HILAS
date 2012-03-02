@@ -24,27 +24,19 @@ cp_events.lock_policy = LOCK_FREE;
 cp_events.size = 20;
 
 connectPeers("youbot", "EventLogger");
-connect("youbot.Arm1.events", "EventLogger.events", cp_events);
-connect("youbot.Base.events", "EventLogger.events", cp_events);
+connect("youbot.events", "EventLogger.events", cp_events);
 
 #
 # ROS output
 #
 
-var ConnPolicy cp_ros;
-cp_ros.transport = 3;
-cp_ros.name_id = "/debug/arm/joint_states";
-stream("youbot.Arm1.joint_states", cp_ros);
+#var ConnPolicy cp_ros;
+#cp_ros.transport = 3;
+#cp_ros.name_id = "/debug/arm/joint_states";
+#stream("youbot.Arm1.joint_states", cp_ros);
 
-cp_ros.name_id = "/debug/arm/motor_statuses";
-stream("youbot.Arm1.motor_statuses", cp_ros);
-
-cp_ros.name_id = "/debug/base/joint_states";
-stream("youbot.Base.joint_states", cp_ros);
-
-cp_ros.name_id = "/debug/base/motor_statuses";
-stream("youbot.Base.motor_statuses", cp_ros);
-
+#cp_ros.name_id = "/debug/base/joint_states";
+#stream("youbot.Base.joint_states", cp_ros);
 
 # 
 # Start running
