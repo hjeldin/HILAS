@@ -238,7 +238,7 @@ namespace YouBot
 		std::vector<quantity<angular_velocity> > wheelVelocities(NR_OF_BASE_SLAVES, 0);
 		for(unsigned int i = 0; i < NR_OF_BASE_SLAVES; ++i)
 		{
-			wheelVelocities[i] = m_tmp_joint_velocities[i].angularVelocity;
+			wheelVelocities[i] = quantity<angular_velocity>::from_value(m_joint_states.velocity[i]);
 		}
 
 		quantity<si::velocity> longitudinalVelocity;
