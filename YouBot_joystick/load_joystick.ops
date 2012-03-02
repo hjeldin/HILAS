@@ -1,4 +1,8 @@
-import("joystick_msgs");
+import("rtt_rosnode");
+import("YouBot_joystick");
+    
+require("ros_integration")
+
 loadComponent("joystick","JoystickControl");
 
 var std.vector<ctrl_modes>  base_ctrl_modes=std.vector<ctrl_modes>(4,TWIST)
