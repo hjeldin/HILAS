@@ -15,7 +15,7 @@ namespace YouBot
 	using namespace std;
 
 	YouBotGripperService::YouBotGripperService(const string& name, TaskContext* parent) :
-		YouBotService(name, parent),
+		Service(name, parent),
 		// Set the commands to zero depending on the number of joints
 		m_calibrated(false)
 	{
@@ -31,11 +31,11 @@ namespace YouBot
 
 		this->addPort("gripper_cmd_position", gripper_cmd_position).doc("Command the gripper position");
 
-        this->addOperation("start",&YouBotGripperService::start,this);
-        this->addOperation("update",&YouBotGripperService::update,this);
-        this->addOperation("calibrate",&YouBotGripperService::calibrate,this);
-        this->addOperation("stop",&YouBotGripperService::stop,this);
-        this->addOperation("cleanup",&YouBotGripperService::cleanup,this);
+    this->addOperation("start",&YouBotGripperService::start,this);
+    this->addOperation("update",&YouBotGripperService::update,this);
+    this->addOperation("calibrate",&YouBotGripperService::calibrate,this);
+    this->addOperation("stop",&YouBotGripperService::stop,this);
+    this->addOperation("cleanup",&YouBotGripperService::cleanup,this);
 
 //        this->addOperation("displayGripperStatus",&YouBotGripperService::displayGripperStatus,this, OwnThread);
 

@@ -17,17 +17,18 @@ namespace YouBot
 	extern unsigned int non_errors;
 
 	YouBotBaseService::YouBotBaseService(const string& name, TaskContext* parent, unsigned int min_slave_nr) :
-		YouBotService(name,parent),
+    Service(name, parent),
 		m_tmp_joint_angles(NR_OF_BASE_SLAVES, JointSensedAngle(0*radian)),
 		m_tmp_joint_velocities(NR_OF_BASE_SLAVES, JointSensedVelocity(0*radian_per_second)),
 		m_tmp_joint_torques(NR_OF_BASE_SLAVES, JointSensedTorque(0*newton_meter)),
 
 		m_joint_ctrl_modes(NR_OF_BASE_SLAVES, MOTOR_STOP),
 		// Set the commands to zero depending on the number of joints
-		m_torque_offset(0.0),
 		m_calibrated(false),
 		m_min_slave_nr(min_slave_nr)
 	{
+	  m_OODL = (YouBotOODL*)parent;
+
 		m_joint_states.position.assign(NR_OF_BASE_SLAVES,0);
 		m_joint_states.velocity.assign(NR_OF_BASE_SLAVES,0);
 		m_joint_states.effort.assign(NR_OF_BASE_SLAVES,0);
@@ -36,35 +37,33 @@ namespace YouBot
 		m_joint_cmd_velocities.velocities.assign(NR_OF_BASE_SLAVES,0);
 		m_joint_cmd_torques.efforts.assign(NR_OF_BASE_SLAVES,0);
 
-		m_motor_statuses.flags.resize(NR_OF_BASE_SLAVES, 0);
-
 		// Pre-allocate port memory for outputs
-        joint_states.setDataSample( m_joint_states );
-        motor_statuses.setDataSample(m_motor_statuses);
-        odometry_state.setDataSample(m_odometry_state);
+    joint_states.setDataSample( m_joint_states );
+    odometry_state.setDataSample(m_odometry_state);
 
-        // odometry pose estimates frame
-        m_odometry_state.header.frame_id = "odometry";
-        m_odometry_state.header.seq = 0;
-        // odometry twist estimates frame
-        m_odometry_state.child_frame_id = "base_link";
+    // odometry pose estimates frame
+    m_odometry_state.header.frame_id = "odometry";
+    m_odometry_state.header.seq = 0;
+    // odometry twist estimates frame
+    m_odometry_state.child_frame_id = "base_link";
 
-        // odometry estimates - set to zero
-        m_odometry_state.pose.pose.position.x = 0;
-        m_odometry_state.pose.pose.position.y = 0;
-        m_odometry_state.pose.pose.position.z = 0;
-        m_odometry_state.pose.pose.orientation.x = 0;
-        m_odometry_state.pose.pose.orientation.y = 0;
-        m_odometry_state.pose.pose.orientation.z = 0;
-        m_odometry_state.pose.pose.orientation.w = 0;
-        m_odometry_state.twist.twist.linear.x = 0;
-        m_odometry_state.twist.twist.linear.y = 0;
-        m_odometry_state.twist.twist.linear.z = 0;
-        m_odometry_state.twist.twist.angular.x = 0;
-        m_odometry_state.twist.twist.angular.y = 0;
-        m_odometry_state.twist.twist.angular.z = 0;
+    // odometry estimates - set to zero
+    m_odometry_state.pose.pose.position.x = 0;
+    m_odometry_state.pose.pose.position.y = 0;
+    m_odometry_state.pose.pose.position.z = 0;
+    m_odometry_state.pose.pose.orientation.x = 0;
+    m_odometry_state.pose.pose.orientation.y = 0;
+    m_odometry_state.pose.pose.orientation.z = 0;
+    m_odometry_state.pose.pose.orientation.w = 0;
+    m_odometry_state.twist.twist.linear.x = 0;
+    m_odometry_state.twist.twist.linear.y = 0;
+    m_odometry_state.twist.twist.linear.z = 0;
+    m_odometry_state.twist.twist.angular.x = 0;
+    m_odometry_state.twist.twist.angular.y = 0;
+    m_odometry_state.twist.twist.angular.z = 0;
 
-		memset(m_overcurrent, 0, NR_OF_BASE_SLAVES); // set to false
+    // set to false
+		memset(m_overcurrent, 0, NR_OF_BASE_SLAVES);
 		memset(m_undervoltage, 0, NR_OF_BASE_SLAVES);
 		memset(m_overvoltage, 0, NR_OF_BASE_SLAVES);
 		memset(m_overtemperature, 0, NR_OF_BASE_SLAVES);
@@ -72,10 +71,7 @@ namespace YouBot
 		memset(m_i2texceeded, 0, NR_OF_BASE_SLAVES);
 		memset(m_timeout, 0, NR_OF_BASE_SLAVES);
 
-		m_torque_offset.resize(NR_OF_BASE_SLAVES, 0.0);
-
-        setupComponentInterface();
-        setupEventChecks();
+    setupComponentInterface();
 	}
 
 	YouBotBaseService::~YouBotBaseService()
@@ -85,20 +81,14 @@ namespace YouBot
 
 	void YouBotBaseService::setupComponentInterface()
 	{
-		YouBotService::setupComponentInterface();
-
 		this->addPort("joint_states",joint_states).doc("Joint states");
 		this->addPort("odometry_state",odometry_state).doc("Base odometry");
-
-		this->addPort("motor_statuses",motor_statuses).doc("Motor statuses");
 
 		this->addPort("joint_cmd_angles",joint_cmd_angles).doc("Command joint angles");
 		this->addPort("joint_cmd_velocities",joint_cmd_velocities).doc("Command joint velocities");
 		this->addPort("joint_cmd_torques",joint_cmd_torques).doc("Command joint torques");
 
 		this->addPort("cmd_twist",cmd_twist).doc("Command base twist");
-
-		this->addProperty("torque_offset", m_torque_offset).doc("Currently used torque offset");
 
 		this->addOperation("start",&YouBotBaseService::start,this);
 		this->addOperation("update",&YouBotBaseService::update,this);
@@ -111,48 +101,6 @@ namespace YouBot
 
 		this->addOperation("displayMotorStatuses",&YouBotBaseService::displayMotorStatuses,this, OwnThread);
 		this->addOperation("clearControllerTimeouts",&YouBotBaseService::clearControllerTimeouts,this, OwnThread);
-		this->addOperation("calibrateTorqueOffset",&YouBotBaseService::calibrateTorqueOffset,this, OwnThread);
-	}
-
-	void YouBotBaseService::setupEventChecks()
-	{
-		// edge events
-		check_fp cond(NULL);
-		cond = boost::bind(&check_event_edge, this, ::OVER_CURRENT, E_OVERCURRENT, m_overcurrent, _1, _2);
-		m_event_checks.push_back(cond);
-
-		cond = boost::bind(&check_event_edge, this, ::UNDER_VOLTAGE, E_UNDERVOLTAGE, m_undervoltage, _1, _2);
-		m_event_checks.push_back(cond);
-
-		cond = boost::bind(&check_event_edge, this, ::OVER_VOLTAGE, E_OVERVOLTAGE, m_overvoltage, _1, _2);
-		m_event_checks.push_back(cond);
-
-		cond = boost::bind(&check_event_edge, this, ::OVER_TEMPERATURE, E_OVERTEMP, m_overtemperature, _1, _2);
-		m_event_checks.push_back(cond);
-
-	//		cond = boost::bind(&check_event_edge, this, , E_EC_CON_LOST, m_connectionlost, _1, _2);
-	//		m_event_checks.push_back(cond);
-
-		cond = boost::bind(&check_event_edge, this, ::I2T_EXCEEDED, E_I2T_EXCEEDED, m_i2texceeded, _1, _2);
-		m_event_checks.push_back(cond);
-
-
-		// level events
-		cond = boost::bind(&check_event_level, this, ::HALL_SENSOR_ERROR, E_HALL_ERR, _1, _2);
-		m_event_checks.push_back(cond);
-
-	//		cond = boost::bind(&check_event_level, this, ::ENCODER_ERROR, E_ENCODER_ERR, _1, _2);
-	//		m_event_checks.push_back(cond);
-
-	//		cond = boost::bind(&check_event_level, this, , E_SINE_COMM_INIT_ERR, _1, _2);
-	//		m_event_checks.push_back(cond);
-
-	//		cond = boost::bind(&check_event_level, this, ::EMERGENCY_STOP, E_EMERGENCY_STOP, _1, _2);
-	//		m_event_checks.push_back(cond);
-
-		//TODO: FIX ME: Second startup creates lots of timeout's.
-			cond = boost::bind(&check_event_edge, this, ::TIMEOUT, E_EC_TIMEOUT, m_timeout, _1, _2); //TODO: Set back to level
-			m_event_checks.push_back(cond);
 	}
 
 	void YouBotBaseService::getControlModes(vector<ctrl_modes>& all)
@@ -285,7 +233,7 @@ namespace YouBot
 
 			m_joint_states.velocity[i] = m_tmp_joint_velocities[i].angularVelocity.value();
 
-			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * (m_tmp_joint_torques[i].torque.value() - m_torque_offset[i]);
+			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * m_tmp_joint_torques[i].torque.value();
 		}
 	}
 
@@ -362,17 +310,35 @@ namespace YouBot
 
 	void YouBotBaseService::checkMotorStatuses()
 	{
-		for(unsigned int i = 0; i < NR_OF_BASE_SLAVES; ++i)
+	  unsigned int tmp = 0;
+		for(unsigned int joint = 0; joint < NR_OF_BASE_SLAVES; ++joint)
 		{
-			m_joints[i]->getStatus(m_motor_statuses.flags[i]);
+			m_joints[joint]->getStatus(tmp);
 
-			for(unsigned int j = 0; j < m_event_checks.size(); ++j)
-			{
-				m_event_checks[j](i, m_motor_statuses.flags[i]);
-			}
+      CHECK_EVENT_EDGE(::OVER_CURRENT, m_overcurrent, E_OVERCURRENT)
+
+      CHECK_EVENT_EDGE(::UNDER_VOLTAGE, m_undervoltage, E_UNDERVOLTAGE)
+
+      CHECK_EVENT_EDGE(::OVER_VOLTAGE, m_overvoltage, E_OVERVOLTAGE)
+
+      CHECK_EVENT_EDGE(::OVER_TEMPERATURE, m_overtemperature, E_OVERTEMP)
+
+//      CHECK_EVENT_EDGE(::E_EC_CON_LOST, m_connectionlost, E_OVERTEMP)
+
+      CHECK_EVENT_EDGE(::I2T_EXCEEDED, m_i2texceeded, E_I2T_EXCEEDED)
+
+      CHECK_EVENT_EDGE(::TIMEOUT, m_timeout, E_EC_TIMEOUT)
+
+
+      // level events
+      CHECK_EVENT_LEVEL(::HALL_SENSOR_ERROR, E_HALL_ERR)
+
+//      CHECK_EVENT_LEVEL(::ENCODER_ERROR, E_ENCODER_ERR)
+
+//      CHECK_EVENT_LEVEL(::, E_SINE_COMM_INIT_ERR)
+
+//      CHECK_EVENT_LEVEL(::EMERGENCY_STOP, E_EMERGENCY_STOP)
 		}
-
-		motor_statuses.write(m_motor_statuses);
 	}
 
 	bool YouBotBaseService::calibrate()
@@ -413,31 +379,6 @@ namespace YouBot
 		return (m_calibrated = true);
 	}
 
-	void YouBotBaseService::calibrateTorqueOffset()
-	{
-		// Workaround for missing current sign + non-linearity.
-		JointTorqueSetpoint setp;
-		setp.torque = 0.0 * si::newton_meter;
-		JointSensedTorque jst;
-
-		for(unsigned int i = 0; i < NR_OF_BASE_SLAVES; ++i)
-		{
-			m_joints[i]->setData(setp);
-
-			m_joints[i]->getData(jst);
-			if(m_torque_offset[i] == 0.0)
-			{
-				m_torque_offset[i] = jst.torque.value();
-			}
-			else
-			{
-				m_torque_offset[i] = (m_torque_offset[i] + jst.torque.value()) / 2;
-			}
-			log(Info) << "Torque offset is: " << m_torque_offset[i] << endlog();
-		}
-		// end workaround;
-	}
-
 	void YouBotBaseService::stop()
 	{
 		for(unsigned int i = 0; i < NR_OF_BASE_SLAVES; ++i)
@@ -459,18 +400,21 @@ namespace YouBot
 
 	void YouBotBaseService::displayMotorStatuses()
 	{
-		for(unsigned int i = 0; i < m_motor_statuses.flags.size(); ++i)
-		{
-			log(Info) << "Joint[" << i+1 << "] is " << motor_status_tostring(m_motor_statuses.flags[i]) << endlog();
-		}
+    unsigned int tmp = 0;;
+    for(unsigned int joint = 0; joint < NR_OF_BASE_SLAVES; ++joint)
+    {
+      m_joints[joint]->getStatus(tmp);
+      log(Info) << "Joint[" << joint+1 << "] is " << motor_status_tostring(tmp) << endlog();
+    }
 	}
 
 	void YouBotBaseService::clearControllerTimeouts()
 	{
+	  unsigned int tmp = 0;
 		for(unsigned int i = 0; i < NR_OF_BASE_SLAVES; ++i)
 		{
-			m_joints[i]->getStatus(m_motor_statuses.flags[i]);
-			if( m_motor_statuses.flags[i] & ::TIMEOUT )
+			m_joints[i]->getStatus(tmp);
+			if( tmp & ::TIMEOUT )
 			{
 				ClearMotorControllerTimeoutFlag clearTimeoutFlag;
 				m_joints[i]->setConfigurationParameter(clearTimeoutFlag);

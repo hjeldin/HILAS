@@ -1,11 +1,12 @@
 #pragma once
 
-#include "YouBotTypes.hpp"
 #include <vector>
 #include <iostream>
 
 #include <rtt/types/TemplateTypeInfo.hpp>
 #include <rtt/RTT.hpp>
+
+#include "YouBotTypes.hpp"
 
 namespace RTT
 {
@@ -47,7 +48,7 @@ namespace YouBot
 
 	std::string ctrl_modes_tostring(const ctrl_modes& cd);
 
-	std::string motor_status_tostring(const motor_status& cd);
+	std::string motor_status_tostring(const unsigned int& cd);
 
 	struct CtrlModesTypeInfo : public RTT::types::TemplateTypeInfo<ctrl_modes, true>
 	{
@@ -59,3 +60,25 @@ namespace YouBot
 		virtual bool composeTypeImpl(const RTT::PropertyBag& bag, ctrl_modes& out ) const;
 	};
 }
+
+//----------------
+// Helper macro's for YouBotArmService and YouBotBaseService
+//----------------
+
+#define CHECK_EVENT_EDGE(OODL_EVENT, COND_STORAGE, OUTPUT_MSG) \
+    if((tmp & OODL_EVENT) != 0 && !(COND_STORAGE[joint]) ) \
+    { \
+      COND_STORAGE[joint] = true; \
+      m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG, true); \
+    } \
+    else if(COND_STORAGE[joint] && (tmp & OODL_EVENT) == 0) \
+    { \
+      COND_STORAGE[joint] = false; \
+      m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG, false); \
+    }
+
+#define CHECK_EVENT_LEVEL(OODL_EVENT, OUTPUT_MSG) \
+  if((tmp & OODL_EVENT) != 0) \
+  { \
+    m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG); \
+  }

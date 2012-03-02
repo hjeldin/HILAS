@@ -5,9 +5,7 @@
 
 #include <youbot/YouBotManipulator.hpp>
 
-#include "YouBotTypes.hpp"
 #include "YouBotOODL.hpp"
-#include "YouBotService.hpp"
 
 #include <sensor_msgs/typekit/Types.h>
 #include <motion_control_msgs/typekit/Types.h>
@@ -33,7 +31,7 @@ namespace YouBot
 	};
 	typedef struct _GripperLimits GripperLimits;
 
-    class YouBotGripperService : public YouBotService {
+    class YouBotGripperService : public Service {
 
 		public:
     		YouBotGripperService(const string& name, TaskContext* parent);

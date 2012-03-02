@@ -12,7 +12,7 @@
 #include <rtt/PropertyBag.hpp>
 #include <rtt/Time.hpp>
 
-#include "YouBotTypes.hpp"
+#include "YouBotOODL.hpp"
 #include <sensor_msgs/typekit/Types.h>
 #include <motion_control_msgs/typekit/Types.h>
 
@@ -41,18 +41,13 @@ namespace YouBot
 		private:
 			InputPort< sensor_msgs::JointState > joint_states;
 
-			InputPort< YouBot_OODL::motor_statuses > joint_statuses;
-
 			OutputPort< motion_control_msgs::JointPositions > joint_cmd_angles;
 
 			sensor_msgs::JointState m_joint_states;
 
-			YouBot_OODL::motor_statuses m_joint_statuses;
 			vector<ctrl_modes> m_modes;
 
 			motion_control_msgs::JointPositions m_joint_cmd_angles;
-//			vector<quantity<si::angular_velocity> > m_joint_cmd_velocities;
-//			vector<quantity<si::torque> > m_joint_cmd_torques;
 
 			OperationCaller<void(vector<ctrl_modes>) > op_setControlModes;
 

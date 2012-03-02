@@ -12,11 +12,11 @@
 #include <rtt/PropertyBag.hpp>
 #include <rtt/Time.hpp>
 
-#include "YouBotTypes.hpp"
 #include <youbot/EthercatMasterWithoutThread.hpp>
 
-enum arm_settings {NR_OF_ARM_SLAVES=5};
-enum base_settings {NR_OF_BASE_SLAVES=4};
+#include "YouBotTypes.hpp"
+
+const size_t max_event_length = 255;
 
 namespace YouBot
 {
@@ -36,20 +36,30 @@ namespace YouBot
 			virtual void stopHook();
 			virtual void cleanupHook();
 
+      void emitEvent(std::string id, std::string message);
+      void emitEvent(std::string id, std::string message, bool condition);
+
 			bool noWatchdog();
 
 		private:
-	        vector<OperationCaller<bool(void)> > calibrate_ops;
-	        vector<OperationCaller<bool(void)> > start_ops;
-	        vector<OperationCaller<void(void)> > update_ops;
-	        vector<OperationCaller<void(void)> > stop_ops;
-	        vector<OperationCaller<void(void)> > cleanup_ops;
+      vector<OperationCaller<bool(void)> > calibrate_ops;
+      vector<OperationCaller<bool(void)> > start_ops;
+      vector<OperationCaller<void(void)> > update_ops;
+      vector<OperationCaller<void(void)> > stop_ops;
+      vector<OperationCaller<void(void)> > cleanup_ops;
 
-	        youbot::EthercatMaster* m_ec_master;
+      youbot::EthercatMaster* m_ec_master;
+      unsigned int m_communication_errors;
+      unsigned int m_max_communication_errors;
 
-	        unsigned int m_communication_errors;
-	        unsigned int m_max_communication_errors;
-	        bool m_use_watchdog;
+      OutputPort<std::string> events;
+      std::string m_events;
+
+      bool m_use_watchdog;
+
+      friend class YouBotArmService;
+      friend class YouBotBaseService;
+      friend class YouBotGripperService;
 	};
 
 }

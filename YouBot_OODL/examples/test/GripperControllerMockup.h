@@ -12,7 +12,7 @@
 #include <rtt/PropertyBag.hpp>
 #include <rtt/Time.hpp>
 
-#include "YouBotTypes.hpp"
+#include "YouBotOODL.hpp"
 #include <sensor_msgs/typekit/Types.h>
 #include <motion_control_msgs/typekit/Types.h>
 

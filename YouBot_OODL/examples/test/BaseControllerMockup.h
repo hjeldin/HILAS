@@ -12,7 +12,7 @@
 #include <rtt/PropertyBag.hpp>
 #include <rtt/Time.hpp>
 
-#include "YouBotTypes.hpp"
+#include "YouBotOODL.hpp"
 #include <boost/units/systems/si.hpp>
 #include <sensor_msgs/typekit/Types.h>
 #include <motion_control_msgs/typekit/Types.h>
@@ -47,14 +47,12 @@ namespace YouBot
 		private:
 			// Ports to and from OODL
 			InputPort< sensor_msgs::JointState > joint_states;
-			InputPort< YouBot_OODL::motor_statuses > joint_statuses;
 			OutputPort< motion_control_msgs::JointPositions > joint_cmd_angles;
 
 			// Ports to a setpoint generating device (e.g. joystick)
 			InputPort< vector<double> > setpoint;
 
 			sensor_msgs::JointState m_joint_states;
-			YouBot_OODL::motor_statuses m_joint_statuses;
 			vector<ctrl_modes> m_modes;
 
 			motion_control_msgs::JointPositions m_joint_cmd_angles;

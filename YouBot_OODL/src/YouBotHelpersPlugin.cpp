@@ -1,12 +1,11 @@
 #include <rtt/RTT.hpp>
 #include <rtt/plugin/Plugin.hpp>
 #include <iostream>
-#include <YouBotTypes.hpp>
-#include "YouBotHelpers.hpp"
 #include <rtt/types/SequenceTypeInfo.hpp>
 #include <rtt/types/GlobalsRepository.hpp>
-using namespace RTT;
-using namespace std;
+
+#include <YouBotTypes.hpp>
+#include "YouBotHelpers.hpp"
 
 using namespace RTT;
 using namespace RTT::types;
@@ -24,9 +23,6 @@ bool loadRTTPlugin( RTT::TaskContext* t )
 
 	RTT::types::Types()->addType( new CtrlModesTypeInfo );
 	RTT::types::Types()->addType( new SequenceTypeInfo<std::vector<ctrl_modes> >("std.vector<ctrl_modes>") );
-
-//		RTT::types::Types()->addType( new JointStatusTypeInfo );
-//	RTT::types::Types()->addType( new SequenceTypeInfo<std::vector<joint_status> >("std.vector<joint_status>") );
 
 	GlobalsRepository::shared_ptr globals = GlobalsRepository::Instance();
 	globals->setValue( new Constant<ctrl_modes>("PLANE_ANGLE",YouBot::PLANE_ANGLE) );

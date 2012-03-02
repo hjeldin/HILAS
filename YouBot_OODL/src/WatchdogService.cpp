@@ -9,7 +9,7 @@ namespace YouBot
 	using namespace std;
 
 	WatchdogService::WatchdogService(const string& name, TaskContext* parent) :
-		YouBotService(name,parent), m_timeout((double)0.5)
+		Service(name,parent), m_timeout((double)0.5)
 	{
 		setupComponentInterface();
 	}
@@ -25,8 +25,6 @@ namespace YouBot
 
 	void WatchdogService::setupComponentInterface()
 	{
-		YouBotService::setupComponentInterface();
-
     this->addOperation("start",&WatchdogService::start,this);
     this->addOperation("update",&WatchdogService::update,this);
     this->addOperation("calibrate",&WatchdogService::calibrate,this);

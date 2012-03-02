@@ -3,8 +3,6 @@
 #include <rtt/Service.hpp>
 #include <rtt/Port.hpp>
 
-
-#include "YouBotService.hpp"
 #include "YouBotOODL.hpp"
 
 #include <watchdog/typekit/Types.h>
@@ -19,7 +17,7 @@ namespace YouBot
 	 * @brief youBot watchdog Service, listens to the WatchdogPublisher.
 	 * When the publisher and Service are disconnected, the TaskContext will be stopped.
 	 */
-  class WatchdogService : public YouBotService {
+  class WatchdogService : public Service {
 
 		public:
       WatchdogService(const string& name, TaskContext* parent);
@@ -40,7 +38,7 @@ namespace YouBot
 
 			watchdog::watchdogMsg m_watchdog_msg;
 			ros::Time m_last;
-         ros::Duration m_timeout;
+      ros::Duration m_timeout;
   };
 
 }

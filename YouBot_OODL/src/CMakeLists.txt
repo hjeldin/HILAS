@@ -9,10 +9,9 @@ SET(YOUBOT_OODL_libs
 	${OODL_YOUBOT_LIBRARIES}
 	boost_thread
 	YouBot_OODL_plugin
-	rtt-YouBot_OODL-typekit
 )
 
-SET(YOUBOT_OODL_FILES YouBotGripperService.cpp YouBotService.cpp YouBotArmService.cpp YouBotBaseService.cpp WatchdogService.cpp YouBotOODL.cpp)
+SET(YOUBOT_OODL_FILES YouBotGripperService.cpp YouBotArmService.cpp YouBotBaseService.cpp WatchdogService.cpp YouBotOODL.cpp)
 
 INCLUDE_DIRECTORIES(${YOUBOT_OODL_INCLUDE_DIR})
 

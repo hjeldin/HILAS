@@ -1,7 +1,5 @@
 #include "YouBotHelpers.hpp"
 
-#include "YouBotService.hpp"
-
 #include <rtt/Logger.hpp>
 #include <ostream>
 #include <istream>
@@ -81,7 +79,7 @@ namespace YouBot
 		}
 	}
 
-	std::string motor_status_tostring(const motor_status& cd)
+	std::string motor_status_tostring(const unsigned int& cd)
 	{
 		std::stringstream errors;
 

@@ -41,7 +41,6 @@ namespace YouBot
 
 		this->addPort("joint_states" , joint_states).doc("Input joint states from the driver");
 		this->addPort("joint_cmd_angles", joint_cmd_angles).doc("Output joint angle commands to the driver");
-		this->addPort("joint_statuses", joint_statuses).doc("Input joint statuses from the driver");
 
 		joint_cmd_angles.setDataSample(m_joint_cmd_angles);
 
@@ -133,7 +132,7 @@ namespace YouBot
 
 	bool ArmControllerMockup::startHook()
 	{
-		if(!joint_states.connected() || !joint_cmd_angles.connected() || !joint_statuses.connected())
+		if(!joint_states.connected() || !joint_cmd_angles.connected())
 		{
 			log(Error) << "Ports not connected." << endlog();
 			return false;
@@ -161,12 +160,11 @@ namespace YouBot
 
 	void ArmControllerMockup::updateHook()
 	{
-        TaskContext::updateHook();
+    TaskContext::updateHook();
 
-        joint_states.read(m_joint_states);
-        joint_statuses.read(m_joint_statuses);
+    joint_states.read(m_joint_states);
 
-        joint_cmd_angles.write(m_joint_cmd_angles);
+    joint_cmd_angles.write(m_joint_cmd_angles);
 
 	}
 
@@ -175,12 +173,12 @@ namespace YouBot
 		m_modes = vector<ctrl_modes>(NR_OF_ARM_SLAVES, MOTOR_STOP);
 		op_setControlModes(m_modes);
 
-        TaskContext::stopHook();
+    TaskContext::stopHook();
 	}
 
 	void ArmControllerMockup::cleanupHook()
 	{
-        TaskContext::cleanupHook();
+    TaskContext::cleanupHook();
 	}
 }
 
