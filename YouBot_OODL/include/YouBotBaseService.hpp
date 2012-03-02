@@ -68,10 +68,6 @@ namespace YouBot
       sensor_msgs::JointState m_joint_states;
       nav_msgs::Odometry m_odometry_state;
 
-			vector<JointSensedAngle> m_tmp_joint_angles;
-			vector<JointSensedVelocity> m_tmp_joint_velocities;
-			vector<JointSensedTorque> m_tmp_joint_torques;
-
 			vector<ctrl_modes> m_joint_ctrl_modes;
 
 			JointAngleSetpoint m_tmp_joint_cmd_angle;

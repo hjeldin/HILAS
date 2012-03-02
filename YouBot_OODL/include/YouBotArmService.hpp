@@ -62,10 +62,6 @@ namespace YouBot
 
       sensor_msgs::JointState m_joint_states;
 
-			vector<JointSensedAngle> m_tmp_joint_angles;
-			vector<JointSensedVelocity> m_tmp_joint_velocities;
-			vector<JointSensedTorque> m_tmp_joint_torques;
-
 			vector<JointLimits> m_joint_limits;
 
 			vector<ctrl_modes> m_joint_ctrl_modes;

@@ -18,10 +18,6 @@ namespace YouBot
 
 	YouBotBaseService::YouBotBaseService(const string& name, TaskContext* parent, unsigned int min_slave_nr) :
     Service(name, parent),
-		m_tmp_joint_angles(NR_OF_BASE_SLAVES, JointSensedAngle(0*radian)),
-		m_tmp_joint_velocities(NR_OF_BASE_SLAVES, JointSensedVelocity(0*radian_per_second)),
-		m_tmp_joint_torques(NR_OF_BASE_SLAVES, JointSensedTorque(0*newton_meter)),
-
 		m_joint_ctrl_modes(NR_OF_BASE_SLAVES, MOTOR_STOP),
 		// Set the commands to zero depending on the number of joints
 		m_calibrated(false),
@@ -220,20 +216,20 @@ namespace YouBot
 	void YouBotBaseService::readJointStates()
 	{
 		// YouBot -> OutputPort
-		m_base->getJointData(m_tmp_joint_angles);
-		m_base->getJointData(m_tmp_joint_velocities);
-		m_base->getJointData(m_tmp_joint_torques);
-//
-		assert(m_tmp_joint_angles.size() == m_tmp_joint_velocities.size() && m_tmp_joint_velocities.size() == m_tmp_joint_torques.size());
+    JointSensedAngle joint_angle;
+    JointSensedVelocity joint_velocity;
+    JointSensedTorque joint_torque;
 
-		int size = m_tmp_joint_angles.size();
-		for(int i = 0; i < size; ++i)
+		for(int i = 0; i < NR_OF_BASE_SLAVES; ++i)
 		{
-			m_joint_states.position[i] = m_tmp_joint_angles[i].angle.value();
+		  m_joints[i]->getData(joint_angle);
+			m_joint_states.position[i] = joint_angle.angle.value();
 
-			m_joint_states.velocity[i] = m_tmp_joint_velocities[i].angularVelocity.value();
+			m_joints[i]->getData(joint_velocity);
+			m_joint_states.velocity[i] = joint_velocity.angularVelocity.value();
 
-			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * m_tmp_joint_torques[i].torque.value();
+			m_joints[i]->getData(joint_torque);
+			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * joint_torque.torque.value();
 		}
 	}
 

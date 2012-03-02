@@ -16,11 +16,6 @@ namespace YouBot
 
 	YouBotArmService::YouBotArmService(const string& name, TaskContext* parent, unsigned int min_slave_nr) :
     Service(name, parent),
-
-    m_tmp_joint_angles(NR_OF_ARM_SLAVES, JointSensedAngle(0*radian)),
-    m_tmp_joint_velocities(NR_OF_ARM_SLAVES, JointSensedVelocity(0*radian_per_second)),
-    m_tmp_joint_torques(NR_OF_ARM_SLAVES, JointSensedTorque(0*newton_meter)),
-
     m_joint_limits(NR_OF_ARM_SLAVES),
     m_joint_ctrl_modes(NR_OF_ARM_SLAVES, MOTOR_STOP),
 
@@ -134,24 +129,23 @@ namespace YouBot
 
 	void YouBotArmService::readJointStates()
 	{
-		ros::Time time = ros::Time::now();
-
 		// YouBot -> OutputPort
-		m_manipulator->getJointData(m_tmp_joint_angles);
-		m_manipulator->getJointData(m_tmp_joint_velocities);
-		m_manipulator->getJointData(m_tmp_joint_torques);
+		JointSensedAngle joint_angle;
+		JointSensedVelocity joint_velocity;
+		JointSensedTorque joint_torque;
 
-		assert(m_tmp_joint_angles.size() == m_tmp_joint_velocities.size() && m_tmp_joint_velocities.size() == m_tmp_joint_torques.size());
-
-		m_joint_states.header.stamp = time;
+		m_joint_states.header.stamp = ros::Time::now();
 
 		for(int i = 0; i < NR_OF_ARM_SLAVES; ++i)
 		{
-			m_joint_states.position[i] = m_tmp_joint_angles[i].angle.value();
+		  m_joints[i]->getData(joint_angle);
+			m_joint_states.position[i] = joint_angle.angle.value();
 
-			m_joint_states.velocity[i] = m_tmp_joint_velocities[i].angularVelocity.value();
+			m_joints[i]->getData(joint_velocity);
+			m_joint_states.velocity[i] = joint_velocity.angularVelocity.value();
 
-			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * m_tmp_joint_torques[i].torque.value();
+			m_joints[i]->getData(joint_torque);
+			m_joint_states.effort[i] = sign(m_joint_states.velocity[i]) * joint_torque.torque.value();
 		}
 
 		joint_states.write(m_joint_states);
