@@ -26,11 +26,11 @@ namespace YouBot
 		xyzypr[5] = r;
 	}
 
-	void Multiply(const vector<double>& H, const vector<double>& r, vector<double>& output)
+	void Multiply(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output)
 	{
 		using namespace std;
 
-		if(H.size() != 16 || r.size() != 4 || output.size() != 4)
+		if(lhs.size() != 16 || rhs.size() != 4 || output.size() != 4)
 		{
 			 __throw_out_of_range(__N("Multiply::vector::_M_range_check"));
 		}
@@ -39,7 +39,28 @@ namespace YouBot
 		{
 			for(int j=0;j<4;j++)
 			{
-				output[i]+=H[i*4+j]*r[j];
+				output[i]+=lhs[i*4+j]*rhs[j];
+			}
+		}
+	}
+	void MultiplyH(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output)
+	{
+		using namespace std;
+
+		if(lhs.size() != 16 || rhs.size() != 16 || output.size() != 16)
+		{
+			 __throw_out_of_range(__N("Multiply::vector::_M_range_check"));
+		}
+
+		for(int i=0;i<4;i++)
+		{
+			for(int j=0;j<4;j++)
+			{
+				output[i*4+j]=0;
+				for(int k=0;k<4;k++)
+				{
+				output[i*4+j]+=lhs[i*4+k]*rhs[k*4+j];
+				}
 			}
 		}
 	}

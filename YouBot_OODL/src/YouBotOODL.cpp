@@ -69,14 +69,15 @@ namespace YouBot
 		}
 		catch (std::exception& e)
 		{
-			log(Error) << e.what();
-			this->error();
+			log(Error) << e.what() << endlog();
+			this->exception();
 			return false;
 		}
 
 		if(nr_slaves != (NR_OF_BASE_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + NR_OF_ARM_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + 2*NR_OF_ARM_SLAVES))
 		{
 			log(Error) << "Not a proper amount of Ethercat slaves, got:" << nr_slaves << endlog();
+         this->exception();
 			return false;
 		}
 
@@ -166,6 +167,7 @@ namespace YouBot
 			start_ops.clear();
 			stop_ops.clear();
 			cleanup_ops.clear();
+         this->exception();
 			return false;
 		}
 		else

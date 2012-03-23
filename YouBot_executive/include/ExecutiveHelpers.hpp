@@ -8,6 +8,7 @@ namespace YouBot
 
 	void homogeneous_to_xyzypr(const vector<double>& H, vector<double>& xyzypr);
 
-	void Multiply(const vector<double>& H, const vector<double>& r, vector<double>& output);
+	void Multiply(const vector<double>& lhs, const vector<double>& r, vector<double>& output);
+	void MultiplyH(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output);
 	void Sum(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output);
 }

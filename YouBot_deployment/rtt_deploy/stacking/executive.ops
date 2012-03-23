@@ -1,0 +1,70 @@
+import("YouBot_executive")
+
+loadComponent("executive","YouBot::YouBot_RCC_executive")
+loadComponent("FSM","OCL::LuaComponent");
+
+FSM.exec_file(rospack.find("YouBot_executive")+"/lua/fsm_component.lua");
+
+#
+# Connections policies
+#
+# RT (or unbuffered)
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE; 
+
+# Buffered
+var ConnPolicy cp_nrt;
+cp_nrt.type = BUFFER;
+cp_nrt.lock_policy = LOCK_FREE;
+cp_nrt.size = 20;
+
+#
+# Connections
+# 
+connect("executive.JointSpaceSetpoint","controller.JointSpaceSetpoint",cp_rt)
+
+connect("executive.JointSpaceStiffness","controller.JntSpaceStiffness",cp_rt)   
+
+connect("executive.CartSpaceStiffness","controller.CartSpaceStiffness",cp_rt) 
+ 
+connect("executive.CartSpaceSetpoint","controller.Hvp0",cp_rt)
+
+connect("executive.GripperPose","controller.Htip0",cp_rt)
+
+connect("executive.ArmPose","controller.JointStates",cp_rt)
+
+connect("executive.gripper_cmd","driver.Gripper1.gripper_cmd_position",cp_rt)
+
+connect("executive.CartForceState","controller.Wtip0",cp_rt)
+connect("executive.HtipCC","controller.HtipCC",cp_rt)
+
+connect("FSM.events","executive.events_out",cp_nrt);
+
+connectPeers("executive","FSM")
+connectPeers("monitor","FSM")
+
+connect("monitor.events", "FSM.events", cp_nrt);
+
+#
+# Start running
+#
+FSM.configure;
+executive.setPeriod(0.01)
+executive.configure
+//executive.unfoldArm
+//FSM.start;
+executive.start
+
+#
+# Snake position
+# 
+executive.Joint_position_setpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
+executive.Joint_stiffness_setpoint=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
+
+#
+# Random safe pose
+#
+//executive.Gripper_position_setpoint=array(0.45,0.0,0.39,0.0,1.64,0.0)
+//executive.Gripper_stiffness_setpoint=array(0.0,10.0)
+

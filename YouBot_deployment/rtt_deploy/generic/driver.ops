@@ -1,0 +1,48 @@
+import("YouBot_OODL")
+import("rtt_sensor_msgs");
+import("rtt_std_msgs");
+import("rtt_geometry_msgs");
+import("rtt_nav_msgs")
+import("rtt_motion_control_msgs");
+
+displayComponentTypes;
+
+loadComponent("driver","YouBot::YouBotOODL");
+loadComponent("EventLogger", "YouBot::EventLogger");
+
+setActivity("driver", 0.001, HighestPriority, ORO_SCHED_RT);
+driver.noWatchdog;
+driver.configure;
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE;
+
+var ConnPolicy cp_events;
+cp_events.type = BUFFER;
+cp_events.lock_policy = LOCK_FREE;
+cp_events.size = 20;
+
+connectPeers("driver", "EventLogger");
+connect("driver.events", "EventLogger.events", cp_events);
+
+#
+# ROS output
+#
+
+#var ConnPolicy cp_ros;
+#cp_ros.transport = 3;
+#cp_ros.name_id = "/debug/arm/joint_states";
+#stream("driver.Arm1.joint_states", cp_ros);
+
+#cp_ros.name_id = "/debug/base/joint_states";
+#stream("driver.Base.joint_states", cp_ros);
+
+# 
+# Start running
+# 
+setActivity("EventLogger", 0.1, LowestPriority, ORO_SCHED_OTHER)
+EventLogger.configure;
+EventLogger.start;
+driver.start;
+

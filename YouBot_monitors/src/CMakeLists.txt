@@ -4,6 +4,8 @@ INCLUDE_DIRECTORIES(${YOUBOT_MONITORS_INCLUDE_DIR})
 
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
 
+SET(CMAKE_BUILD_TYPE Debug)
+
 #Executable component and can also be a library usable for orocos deployment
 orocos_component(YouBot_monitors ${YOUBOT_MONITORS_FILES} ${COMMON_INCLUDE_DIR})
 
@@ -18,5 +20,7 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/lib/plugins)
 
 #defines where dynamic libraries (plugins) are stored
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/plugins)
+
+SET(CMAKE_BUILD_TYPE Debug)
 
 orocos_plugin(YouBot_monitors_plugin YouBotMonitorPlugin.cpp ${COMMON_INCLUDE_DIR})
