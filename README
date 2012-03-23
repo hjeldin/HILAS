@@ -6,6 +6,7 @@ Note: The development repository is located at: https://git.ce.utwente.nl/youbot
 ==INSTALLATION==
 
 ===Prerequisites===
+* (Preferably) youBot firmware 1.48
 * ROS (electric) installed and setup (www.ros.org)
  * Use ubuntu packages, ATLEAST: ros-electric-desktop
 * orocos_toolchain_ros (corresponding to electric) installed and setup. 
