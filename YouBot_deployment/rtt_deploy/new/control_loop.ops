@@ -1,0 +1,72 @@
+import("YouBot_haptic_control");
+import("YouBot_adapters");
+
+displayComponentTypes;
+
+#
+# Load components
+#
+//loadComponent("control_to_base", "YouBot::TSimToYouBotMsg");
+loadComponent("control_to_arm", "YouBot::TSimToYouBotMsg");
+
+//loadComponent("base_state_to_control", "YouBot::YouBotOdometryToTSim");
+loadComponent("arm_state_to_control", "YouBot::YouBotMsgToTSim");
+
+loadComponent("youbot_control","youbot_control_hap::YouBot_haptic_control");
+
+#
+# Connection Policies
+#
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+
+#
+# Configure adapters
+#
+var std.vector<ctrl_modes>  arm_ctrl_modes=std.vector<ctrl_modes>(5,TORQUE);
+youbot.Arm1.clearControllerTimeouts();
+youbot.Arm1.setControlModes(arm_ctrl_modes);
+control_to_arm.initialize(TORQUE,5);
+
+arm_state_to_control.initialize(5);
+
+#
+# Activities / threads
+# 
+setActivity("arm_state_to_control",0.001,HighestPriority-1,ORO_SCHED_RT);
+//setMasterSlaveActivity("arm_state_to_control", "base_state_to_control",);
+setMasterSlaveActivity("arm_state_to_control", "youbot_control");
+setMasterSlaveActivity("arm_state_to_control","control_to_arm");
+//setMasterSlaveActivity("arm_state_to_control","control_to_base");
+
+#
+# Connect ports
+#
+# Arm
+connect("youbot_control.Arm1_joint_cmd","control_to_arm.input_cmd_signal",cp_rt);
+connect("control_to_arm.output_cmd_torques","youbot.Arm1.joint_cmd_torques",cp_rt);
+
+connect("youbot.Arm1.joint_states","arm_state_to_control.input_states",cp_rt);
+connect("arm_state_to_control.output_positions","youbot_control.Arm1_joint_states",cp_rt);
+connect("arm_state_to_control.output_velocities","youbot_control.Arm1_joint_velocites",cp_rt); 
+
+# Base
+//connect("youbot_control.Base_twist","control_to_base.input_cmd_signal",cp_rt);
+//connect("control_to_base.output_cmd_twist","youbot.Base.cmd_twist",cp_rt);
+
+//connect("youbot.Base.odometry_state","base_state_to_control.input_odometry",cp_rt);
+//connect("base_state_to_control.output_odometry","youbot_control.Measured_odometry",cp_rt);
+//connect("base_state_to_control.output_velocities","youbot_control.Base_joint_velocities",cp_rt);
+
+#
+# Start
+#
+//base_state_to_control.start
+arm_state_to_control.start
+
+//control_to_base.start
+control_to_arm.start
+
+youbot_control.configure
+youbot_control.start

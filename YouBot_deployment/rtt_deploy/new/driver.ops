@@ -1,0 +1,52 @@
+import("YouBot_OODL")
+import("rtt_sensor_msgs");
+import("rtt_std_msgs");
+import("rtt_geometry_msgs");
+import("rtt_nav_msgs")
+import("rtt_motion_control_msgs");
+
+displayComponentTypes;
+
+#
+# Connection Policies
+# 
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE;
+
+var ConnPolicy cp_events;
+cp_events.type = BUFFER;
+cp_events.lock_policy = LOCK_FREE;
+cp_events.size = 20;
+
+#
+# OODL
+# 
+loadComponent("youbot","YouBot::YouBotOODL");
+setActivity("youbot", 0.001, HighestPriority, ORO_SCHED_RT);
+youbot.noWatchdog;
+youbot.configure;
+
+#
+# EventLogger
+#
+loadComponent("EventLogger", "YouBot::EventLogger");
+connectPeers("youbot", "EventLogger");
+connect("youbot.events", "EventLogger.events", cp_events);
+setActivity("EventLogger", 0.1, LowestPriority, ORO_SCHED_OTHER)
+EventLogger.configure;
+EventLogger.start;
+
+#
+# ROS output
+#
+
+# 
+# Start running
+# 
+youbot.start;
+youbot.Arm1.clearControllerTimeouts;
+youbot.Base.clearControllerTimeouts;
+
+
+
