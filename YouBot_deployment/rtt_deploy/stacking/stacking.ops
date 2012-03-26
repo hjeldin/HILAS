@@ -29,6 +29,6 @@ print.ln("Starting...")
 monitor.setPeriod(1);
 
 print.ln("Clearing controller timeouts.")
-//youbot.Arm1.clearControllerTimeouts;
-//youbot.Base.clearControllerTimeouts;
+driver.Arm1.clearControllerTimeouts;
+driver.Base.clearControllerTimeouts;
 

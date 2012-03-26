@@ -74,3 +74,16 @@ control_to_arm.start
 
 controller.configure
 controller.start
+
+#
+# Configuration
+#
+controller.JointSpaceDamping.r[3] = 1;
+controller.JointSpaceDamping.r[4] = 1;
+controller.JointSpaceDamping.r[5] = 1;
+controller.JointSpaceDamping.r[6] = 1;
+controller.JointSpaceDamping.r[7] = 1;
+
+
+
+

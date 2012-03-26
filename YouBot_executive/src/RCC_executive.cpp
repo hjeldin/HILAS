@@ -31,6 +31,7 @@ void YouBot_RCC_executive::setupComponentInterface()
 {
 	// predefined actions
 	this->addOperation("unfoldArm", &YouBot_RCC_executive::unfoldArm, this).doc("Unfold the arm. Takes no arguments");
+	this->addOperation("foldArm", &YouBot_RCC_executive::foldArm, this).doc("Fold the arm. Takes no arguments");
 	this->addOperation("gravityMode", &YouBot_RCC_executive::gravityMode, this).doc("Set gravity compensation mode. Takes no arguments");
 	this->addOperation("openGripper", &YouBot_RCC_executive::openGripper, this).doc("Set gripper gap  to maximum. Takes no arguments");
 	this->addOperation("closeGripper", &YouBot_RCC_executive::closeGripper, this).doc("Set gripper gap  to minimum. Takes no arguments");
@@ -46,8 +47,8 @@ void YouBot_RCC_executive::setupComponentInterface()
 	this->addOperation("setJointStiffness", &YouBot_RCC_executive::setJointStiffness,this).doc(" ");
 	//measurement actions
 	this->addOperation("getJointsState", &YouBot_RCC_executive::getJointsState, this).doc("Get joint space positions");
-	this->addOperation("getTip_xyzypr", &YouBot_RCC_executive::getTip_xyzypr,this).doc("Get tool tip frame in xyz roll pitch yaw. ");
-	this->addOperation("getTip_xyzypr", &YouBot_RCC_executive::getHtip0,this).doc("Get tool tip frame. Returns vector flatten H matrix");
+	this->addOperation("getTip_xyzypr", &YouBot_RCC_executive::getTip_xyzypr,this).doc("DEPRECATED -- Get tool tip frame in xyz roll pitch yaw. ");
+	this->addOperation("getHtip0", &YouBot_RCC_executive::getHtip0,this).doc("Get tool tip frame. Returns vector flatten H matrix");
 
 
 	this->addOperation("guardMove", &YouBot_RCC_executive::guardMove, this).doc(
@@ -125,6 +126,14 @@ void YouBot_RCC_executive::unfoldArm()
 {
 	RTT::log(Info) << "Call unfoldArm" << endlog();
 	m_JointSpaceSetpoint.data.assign(UNFOLD_JOINT_POSE,UNFOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
+	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS,BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
+	m_HtipCC.data.assign(EYE4,EYE4+SIZE_H);
+	stateTransition(FULL_CONTROL);
+}
+void YouBot_RCC_executive::foldArm()
+{
+	RTT::log(Info) << "Call foldArm" << endlog();
+	m_JointSpaceSetpoint.data.assign(FOLD_JOINT_POSE,FOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS,BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4,EYE4+SIZE_H);
 	stateTransition(FULL_CONTROL);
@@ -232,7 +241,7 @@ void YouBot_RCC_executive::retractGripper()
 	//displace center of compliance back to make movement more robust to disturbances
 	//Test required if it produce good result
 	setHtipCC(_Hvptip);
-	m_CartSpaceStiffness.data.assign(RETRACT_STIFFNESS_C, RETRACT_STIFFNESS_C+SIZE_CART_SPACE);
+	m_CartSpaceStiffness.data.assign(RETRACT_STIFFNESS_C, RETRACT_STIFFNESS_C+SIZE_CART_STIFFNESS);
 	setHvptip(_Hvptip);
 }
 
@@ -367,7 +376,7 @@ if(m_JointSpaceStiffness.data.size() == SIZE_JOINTS_ARRAY)
 	JointSpaceStiffness.write(m_JointSpaceStiffness);
 if(m_Hvp0.data.size() == SIZE_H)
 	CartSpaceSetpoint.write(m_Hvp0);
-if(m_CartSpaceStiffness.data.size() == SIZE_CART_SPACE)
+if(m_CartSpaceStiffness.data.size() == SIZE_CART_STIFFNESS)
 	CartSpaceStiffness.write(m_CartSpaceStiffness);
 if(m_HtipCC.data.size() == SIZE_H)
 	HtipCC.write(m_HtipCC);
@@ -386,14 +395,14 @@ void YouBot_RCC_executive::stateGravityMode()
 	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
 
 	// zero out Cartesian control part
-	m_CartSpaceStiffness.data.assign(SIZE_CART_SPACE,0.0);
+	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
 	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
 }
 
 void YouBot_RCC_executive::stateJointControl()
 {
 	// zero out Cartesian control part
-	m_CartSpaceStiffness.data.assign(SIZE_CART_SPACE,0.0);
+	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
 	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
 }
 
@@ -415,7 +424,7 @@ void YouBot_RCC_executive::stateGuardedMove()
 	newHvptip[X_H]=m_force_cart[0];
 	newHvptip[Y_H]=m_force_cart[1];
 	newHvptip[Z_H]=m_force_cart[2];
-	vector<double> zero_stiffness_crt(SIZE_CART_SPACE,0);
+	vector<double> zero_stiffness_crt(SIZE_CART_STIFFNESS,0);
 	if(  m_CartSpaceStiffness.data==zero_stiffness_crt)
 	{
 		log(Error)<<"Cartesian Stiffness is zero in all direction arm will not move;"<<endlog();
