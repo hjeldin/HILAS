@@ -12,7 +12,7 @@ SET(YOUBOT_CONFIGURATOR_libs
 	boost_thread
 )
 
-SET(YOUBOT_CONFIGURATOR_FILES YouBot_configurator.hpp YouBot_configurator.cpp)
+SET(YOUBOT_CONFIGURATOR_FILES YouBot_configurator.hpp YouBot_configurator.cpp YouBotJointStatusRecorder.cpp YouBotJointStatusRecorder.h)
 
 INCLUDE_DIRECTORIES(${YOUBOT_CONFIGURATOR_INCLUDE_DIR})
 

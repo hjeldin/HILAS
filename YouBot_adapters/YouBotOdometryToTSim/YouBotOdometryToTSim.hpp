@@ -11,7 +11,7 @@
 namespace YouBot
 {
 	using namespace RTT;
-
+	using namespace std;
 	class YouBotOdometryToTSim : public RTT::TaskContext
 	{
 		public:

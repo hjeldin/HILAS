@@ -14,7 +14,7 @@ namespace YouBot
 	class YouBotMsgToTSim : public RTT::TaskContext
 	{
 		public:
-			YouBotMsgToTSim(string const& name);
+			YouBotMsgToTSim(std::string const& name);
 			~YouBotMsgToTSim();
 
 			void initialize(unsigned int dimension = 6);

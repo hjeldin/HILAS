@@ -15,7 +15,7 @@ namespace YouBot
 	class TSimToYouBotMsg : public RTT::TaskContext
 	{
 		public:
-			TSimToYouBotMsg(string const& name);
+			TSimToYouBotMsg(std::string const& name);
 			~TSimToYouBotMsg();
 
 			void initialize(ctrl_modes ctrl_mode, unsigned int dimension = 6);

@@ -11,12 +11,12 @@ namespace YouBot
 {
 	using namespace RTT;
 
-	TSimToYouBotMsg::TSimToYouBotMsg(string const& name) :
+	TSimToYouBotMsg::TSimToYouBotMsg(std::string const& name) :
 			TaskContext(name),
 			m_ctrl_mode(MOTOR_STOP),
 			m_dimension(0)
 	{
-		m_input_cmd_signal.data = vector<double>(0); //TODO: Fix me properly
+		m_input_cmd_signal.data = std::vector<double>(0); //TODO: Fix me properly
 		this->addPort("output_cmd_angles",output_cmd_angles)
 			.doc("Connect OODL angles. Converts 20Sim vectors to YouBot cmd messages.");
 		this->addPort("output_cmd_velocities",output_cmd_velocities)

@@ -1,0 +1,17 @@
+import("youBot_RTT_test");
+import("YouBot_adapters");
+loadComponent("YouBot_model","youbot_control_with_base_sefltest::youBot_RTT_test");
+loadComponent("rviz_publisher","YouBot::TSimYouBotStatePublisher");
+YouBot_model.configure;
+YouBot_model.setPeriod(0.001);
+//YouBot_model.start;
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+connect("YouBot_model.Arm1_joint_states","rviz_publisher.joints_angles",cp_rt);
+
+connect("YouBot_model.Base_joint_states","rviz_publisher.wheels_angles",cp_rt);
+
+rviz_publisher.configure
+rviz_publisher.setPeriod(0.1)
+rviz_publisher.start

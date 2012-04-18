@@ -9,7 +9,7 @@
 namespace YouBot
 {
 	using namespace RTT;
-
+	using namespace std;
 	YouBotMsgToTSim::YouBotMsgToTSim(string const& name) :
 			TaskContext(name),
 			m_dimension(0)
