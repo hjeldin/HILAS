@@ -17,7 +17,7 @@
 #include <geometry_msgs/typekit/Types.h>
 
 	using namespace RTT;
-
+	using namespace std;
 class JoystickControl: public TaskContext
 {
   public:

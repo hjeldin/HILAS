@@ -15,7 +15,7 @@
 #include <fstream>
 
 using namespace RTT;
-
+using namespace std;
 namespace DataTracer
 {
   class Sink : public RTT::TaskContext

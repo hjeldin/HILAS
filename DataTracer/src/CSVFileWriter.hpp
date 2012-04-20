@@ -9,7 +9,7 @@
 #include <fstream>
 
 using namespace RTT;
-
+using namespace std;
 namespace DataTracer
 {
   /**

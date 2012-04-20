@@ -17,7 +17,7 @@
 namespace YouBot
 {
 	using namespace RTT;
-
+	using namespace std;
 	class EventLogger: public TaskContext
 	{
 		public:

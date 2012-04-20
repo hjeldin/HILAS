@@ -15,6 +15,7 @@
 namespace YouBot
 {
 	using namespace RTT;
+	using namespace std;
 	typedef std_msgs::Float64MultiArray flat_matrix_t;
 	enum state_t {FULL_CONTROL, JOINT_CONTROL, CARTESIAN_CONTROL, GRAVITY_MODE, GUARDED_MOVE, RETRACT_GRIPPER};
 
