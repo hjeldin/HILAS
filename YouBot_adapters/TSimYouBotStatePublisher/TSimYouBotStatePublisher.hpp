@@ -17,9 +17,11 @@ using namespace RTT;
 using namespace std;
 typedef std_msgs::Float64MultiArray flat_matrix_t;
 static const string JOINT_NAME_ARRAY[] =
-{"j0","j1","j2","j3","j4","w1","w2","w3","w4","f1","f2"};
-//{ "arm_joint_0", "arm_joint_1", "arm_joint_2", "arm_joint_3", "arm_joint_4", "wheel_joint_fl", "wheel_joint_fr", "wheel_joint_bl", "wheel_joint_br", "f1", "f2" };
-static const unsigned int SIZE_JOINT_NAME_ARRAY=11;
+//{"j0","j1","j2","j3","j4","w1","w2","w3","w4","f1","f2"};
+{ "arm_joint_1", "arm_joint_2", "arm_joint_3", "arm_joint_4", "arm_joint_5",
+		"wheel_joint_fl", "wheel_joint_fr", "wheel_joint_bl", "wheel_joint_br",
+		"caster_joint_fl","caster_joint_fr", "caster_joint_bl", "caster_joint_br","f1", "f2" };
+static const unsigned int SIZE_JOINT_NAME_ARRAY=15;
 
 
 void toTransformMatrix(const std::vector<double> & tf, tf::Transform& trans);

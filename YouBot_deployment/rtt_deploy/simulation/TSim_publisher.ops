@@ -1,0 +1,111 @@
+import("youBot_RTT_test");
+import("YouBot_adapters");
+loadComponent("YouBot_model","youbot_control_with_base_sefltest1::youBot_RTT_test");
+loadComponent("rviz_publisher","YouBot::TSimYouBotStatePublisher");
+YouBot_model.configure;
+YouBot_model.setPeriod(0.001);
+YouBot_model.start;
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+connect("YouBot_model.Arm1_joint_states","rviz_publisher.joints_angles",cp_rt);
+
+connect("YouBot_model.Base_joint_states","rviz_publisher.wheels_angles",cp_rt);
+
+rviz_publisher.configure
+rviz_publisher.setPeriod(0.1)
+rviz_publisher.start
+
+import("YouBot_control_with_base");
+
+loadComponent("controller","youbot_control_with_base_sefltest1::YouBot_control_with_base");
+
+ 
+setActivity("controller",0.001,HighestPriority,ORO_SCHED_RT);
+// The rest are event-based (for now).
+
+// Connect ports
+connect("controller.Arm1_joint_cmd","YouBot_model.Arm1_joint_cmd",cp_rt);
+connect("YouBot_model.Arm1_joint_states","controller.Arm1_joint_states",cp_rt);
+connect("controller.Base_torque_cmd","YouBot_model.Base_joint_cmd",cp_rt);
+connect("YouBot_model.Base_joint_states","controller.Base_joint_states",cp_rt);
+
+#
+# Start
+#
+
+controller.configure
+controller.start
+
+#
+# Configuration
+#
+controller.JointSpaceDamping.r[3] = 1;
+controller.JointSpaceDamping.r[4] = 1;
+controller.JointSpaceDamping.r[5] = 1;
+controller.JointSpaceDamping.r[6] = 1;
+controller.JointSpaceDamping.r[7] = 1;
+//executive file
+import("YouBot_executive")
+
+loadComponent("executive","YouBot::YouBot_RCC_executive")
+//loadComponent("FSM","OCL::LuaComponent");
+
+//FSM.exec_file(rospack.find("YouBot_executive")+"/lua/fsm_component.lua");
+ 
+
+// Buffered
+var ConnPolicy cp_nrt;
+cp_nrt.type = BUFFER;
+cp_nrt.lock_policy = LOCK_FREE;
+cp_nrt.size = 20;
+
+#
+# Connections
+# 
+connect("executive.JointSpaceSetpoint","controller.JointSpaceSetpoint",cp_rt)
+
+connect("executive.JointSpaceStiffness","controller.JntSpaceStiffness",cp_rt)   
+
+connect("executive.CartSpaceStiffness","controller.CartSpaceStiffness",cp_rt) 
+ 
+connect("executive.CartSpaceSetpoint","controller.Hvp0",cp_rt)
+
+connect("executive.GripperPose","controller.Htip0",cp_rt)
+
+connect("executive.ArmPose","controller.JointStates",cp_rt)
+
+//connect("executive.gripper_cmd","driver.Gripper1.gripper_cmd_position",cp_rt)
+
+connect("executive.CartForceState","controller.Wtip0",cp_rt)
+connect("executive.HtipCC","controller.HtipCC",cp_rt)
+
+//connect("FSM.events","executive.events_out",cp_nrt);
+
+//connectPeers("executive","FSM")
+//connectPeers("monitor","FSM")
+
+//connect("monitor.events", "FSM.events", cp_nrt);
+
+#
+# Start running
+#
+//FSM.configure;
+executive.setPeriod(0.01)
+executive.configure
+//executive.unfoldArm
+//FSM.start;
+executive.start
+
+#
+# Snake position
+# 
+executive.Joint_position_setpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
+executive.Joint_stiffness_setpoint=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
+
+#
+# Random safe pose
+#
+//executive.Gripper_position_setpoint=array(0.45,0.0,0.39,0.0,1.64,0.0)
+//executive.Gripper_stiffness_setpoint=array(0.0,10.0)
+
