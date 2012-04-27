@@ -87,9 +87,7 @@ connect("executive.HtipCC","controller.HtipCC",cp_rt)
 
 //connect("monitor.events", "FSM.events", cp_nrt);
 
-#
-# Start running
-#
+// Start running
 //FSM.configure;
 executive.setPeriod(0.01)
 executive.configure
