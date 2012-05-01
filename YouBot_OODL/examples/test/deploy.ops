@@ -21,14 +21,12 @@ cp_rt.type = DATA;  // Use ''BUFFER'' or ''DATA''
 cp_rt.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
 
 connectPeers("youbot", "ArmController")
-connect("youbot.Arm1.joint_states","ArmController.joint_states", cp_rt)
-connect("youbot.Arm1.motor_statuses","ArmController.joint_statuses", cp_rt)
-connect("ArmController.joint_cmd_angles","youbot.Arm1.joint_cmd_angles", cp_rt)
+connect("youbot.Arm1.joint_state","ArmController.joint_states", cp_rt)
+connect("ArmController.joint_cmd_angles","youbot.Arm1.joint_position_command", cp_rt)
 
 connectPeers("youbot", "BaseController")
-connect("youbot.Base.joint_states", "BaseController.joint_states", cp_rt);
-connect("youbot.Base.motor_statuses", "BaseController.joint_statuses", cp_rt);
-connect("BaseController.joint_cmd_angles", "youbot.Base.joint_cmd_angles", cp_rt);
+connect("youbot.Base.joint_state", "BaseController.joint_states", cp_rt);
+connect("BaseController.joint_cmd_angles", "youbot.Base.joint_position_command", cp_rt);
 
 connectPeers("youbot", "GripperController");
 connect("GripperController.gripper_cmd_position", "youbot.Gripper1.gripper_cmd_position", cp_rt);

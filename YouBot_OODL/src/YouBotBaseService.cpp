@@ -14,8 +14,6 @@ namespace YouBot
   using namespace RTT::types;
   using namespace std;
 
-  extern unsigned int non_errors;
-
   YouBotBaseService::YouBotBaseService(const string& name, TaskContext* parent,
       unsigned int min_slave_nr) :
       Service(name, parent), m_joint_ctrl_modes(NR_OF_BASE_SLAVES, MOTOR_STOP),
@@ -24,16 +22,16 @@ namespace YouBot
   {
     m_OODL = (YouBotOODL*) parent;
 
-    m_joint_states.position.assign(NR_OF_BASE_SLAVES, 0);
-    m_joint_states.velocity.assign(NR_OF_BASE_SLAVES, 0);
-    m_joint_states.effort.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_state.position.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_state.velocity.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_state.effort.assign(NR_OF_BASE_SLAVES, 0);
 
-    m_joint_cmd_angles.positions.assign(NR_OF_BASE_SLAVES, 0);
-    m_joint_cmd_velocities.velocities.assign(NR_OF_BASE_SLAVES, 0);
-    m_joint_cmd_torques.efforts.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_position_command.positions.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_velocity_command.velocities.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_effort_command.efforts.assign(NR_OF_BASE_SLAVES, 0);
 
     // Pre-allocate port memory for outputs
-    joint_states.setDataSample(m_joint_states);
+    joint_state.setDataSample(m_joint_state);
     odometry_state.setDataSample(m_odometry_state);
 
     // odometry pose estimates frame
@@ -76,17 +74,22 @@ namespace YouBot
 
   void YouBotBaseService::setupComponentInterface()
   {
-    this->addPort("joint_states", joint_states).doc("Joint states");
+    this->addPort("joint_state", joint_state).doc("Joint states");
     this->addPort("odometry_state", odometry_state).doc("Base odometry");
 
-    this->addPort("joint_cmd_angles", joint_cmd_angles).doc(
+    this->addPort("joint_position_command", joint_position_command).doc(
         "Command joint angles");
-    this->addPort("joint_cmd_velocities", joint_cmd_velocities).doc(
+    this->addPort("joint_velocity_command", joint_velocity_command).doc(
         "Command joint velocities");
-    this->addPort("joint_cmd_torques", joint_cmd_torques).doc(
+    this->addPort("joint_effort_command", joint_effort_command).doc(
         "Command joint torques");
 
     this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
+
+    // Events - Pre-allocate port memory for outputs
+    m_events.reserve(max_event_length);
+    events.setDataSample(m_events);
+    this->addPort("events", events).doc("Joint events");
 
     this->addOperation("start", &YouBotBaseService::start, this);
     this->addOperation("update", &YouBotBaseService::update, this);
@@ -166,23 +169,13 @@ namespace YouBot
 
     m_base->setBaseVelocity(longitudinalVelocity, transversalVelocity,
         angularVelocity);
-
-  //		std::vector<quantity<angular_velocity> > wheelVelocities(NR_OF_BASE_SLAVES, 0);
-  //
-  //		m_kinematics.cartesianVelocityToWheelVelocities(longitudinalVelocity, transversalVelocity, angularVelocity, wheelVelocities);
-  //
-  //		for(unsigned int joint_nr = 0; joint_nr < NR_OF_BASE_SLAVES; ++joint_nr)
-  //		{
-  //			m_tmp_joint_cmd_velocity.angularVelocity = wheelVelocities[joint_nr];
-  //			m_joints[joint_nr]->setData(m_tmp_joint_cmd_velocity);
-  //		}
   }
 
   void YouBotBaseService::setJointSetpoints()
   {
-    joint_cmd_angles.read(m_joint_cmd_angles);
-    joint_cmd_velocities.read(m_joint_cmd_velocities);
-    joint_cmd_torques.read(m_joint_cmd_torques);
+    joint_position_command.read(m_joint_position_command);
+    joint_velocity_command.read(m_joint_velocity_command);
+    joint_effort_command.read(m_joint_effort_command);
 
     for (unsigned int joint_nr = 0; joint_nr < NR_OF_BASE_SLAVES; ++joint_nr)
     {
@@ -190,23 +183,23 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
-        m_tmp_joint_cmd_angle.angle = m_joint_cmd_angles.positions[joint_nr]
+        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
             * si::radian;
-        m_joints[joint_nr]->setData(m_tmp_joint_cmd_angle);
+        m_joints[joint_nr]->setData(m_tmp_joint_position_command);
         break;
       }
       case (ANGULAR_VELOCITY):
       {
-        m_tmp_joint_cmd_velocity.angularVelocity =
-            m_joint_cmd_velocities.velocities[joint_nr] * si::radian_per_second;
-        m_joints[joint_nr]->setData(m_tmp_joint_cmd_velocity);
+        m_tmp_joint_velocity_command.angularVelocity =
+            m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
+        m_joints[joint_nr]->setData(m_tmp_joint_velocity_command);
         break;
       }
       case (TORQUE):
       {
-        m_tmp_joint_cmd_torque.torque = m_joint_cmd_torques.efforts[joint_nr]
+        m_tmp_joint_effort_command.torque = m_joint_effort_command.efforts[joint_nr]
             * si::newton_meter;
-        m_joints[joint_nr]->setData(m_tmp_joint_cmd_torque);
+        m_joints[joint_nr]->setData(m_tmp_joint_effort_command);
         break;
       }
       case (MOTOR_STOP):
@@ -233,7 +226,7 @@ namespace YouBot
 
   void YouBotBaseService::readJointStates()
   {
-    m_joint_states.header.stamp = ros::Time::now();
+    m_joint_state.header.stamp = ros::Time::now();
 
     // YouBot -> OutputPort
     JointSensedAngle joint_angle;
@@ -243,17 +236,16 @@ namespace YouBot
     for (int i = 0; i < NR_OF_BASE_SLAVES; ++i)
     {
       m_joints[i]->getData(joint_angle);
-      m_joint_states.position[i] = joint_angle.angle.value();
+      m_joint_state.position[i] = joint_angle.angle.value();
 
       m_joints[i]->getData(joint_velocity);
-      m_joint_states.velocity[i] = joint_velocity.angularVelocity.value();
+      m_joint_state.velocity[i] = joint_velocity.angularVelocity.value();
 
       m_joints[i]->getData(joint_torque);
-      m_joint_states.effort[i] = sign(m_joint_states.velocity[i])
-          * joint_torque.torque.value();
+      m_joint_state.effort[i] = joint_torque.torque.value();
     }
 
-    joint_states.write(m_joint_states);
+    joint_state.write(m_joint_state);
   }
 
   void YouBotBaseService::readOdometry()
@@ -294,7 +286,7 @@ namespace YouBot
   void YouBotBaseService::update()
   {
     // Sensors
-    if (joint_states.connected()) //Optimization -> converting messages costs a lot of CPU
+    if (joint_state.connected()) //Optimization -> converting messages costs a lot of CPU
       readJointStates();
 
     if (odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot

@@ -16,8 +16,6 @@
 
 #include "YouBotTypes.hpp"
 
-const size_t max_event_length = 255;
-
 namespace YouBot
 {
 	using namespace RTT;
@@ -36,9 +34,6 @@ namespace YouBot
 			virtual void stopHook();
 			virtual void cleanupHook();
 
-      void emitEvent(std::string id, std::string message);
-      void emitEvent(std::string id, std::string message, bool condition);
-
 			bool noWatchdog();
 
 		private:
@@ -51,9 +46,6 @@ namespace YouBot
       youbot::EthercatMaster* m_ec_master;
       unsigned int m_communication_errors;
       unsigned int m_max_communication_errors;
-
-      OutputPort<std::string> events;
-      std::string m_events;
 
       bool m_use_watchdog;
 

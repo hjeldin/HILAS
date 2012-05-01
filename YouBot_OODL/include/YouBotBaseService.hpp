@@ -17,81 +17,86 @@
 
 namespace YouBot
 {
-  using namespace RTT;
-  using namespace std;
-  using namespace youbot;
+using namespace RTT;
+using namespace std;
+using namespace youbot;
 
-  class YouBotBaseService: public Service
-  {
+class YouBotBaseService: public Service
+{
 
-    public:
-      YouBotBaseService(const string& name, TaskContext* parent,
-          unsigned int min_slave_nr);
-      virtual ~YouBotBaseService();
+  public:
+    YouBotBaseService(const string& name, TaskContext* parent,
+        unsigned int min_slave_nr);
+    virtual ~YouBotBaseService();
 
-      void setControlModes(vector<ctrl_modes>& all);
-      void getControlModes(vector<ctrl_modes>& all);
+    void setControlModes(vector<ctrl_modes>& all);
+    void getControlModes(vector<ctrl_modes>& all);
 
-      void displayMotorStatuses();
+    void displayMotorStatuses();
 
-      void clearControllerTimeouts();
+    void clearControllerTimeouts();
 
-    private:
-      OutputPort<sensor_msgs::JointState> joint_states;
-      OutputPort<nav_msgs::Odometry> odometry_state;
+  protected:
+    OutputPort<sensor_msgs::JointState> joint_state;
+    OutputPort<nav_msgs::Odometry> odometry_state;
 
-      InputPort<motion_control_msgs::JointVelocities> joint_cmd_velocities;
-      InputPort<motion_control_msgs::JointPositions> joint_cmd_angles;
-      InputPort<motion_control_msgs::JointEfforts> joint_cmd_torques;
+    InputPort<motion_control_msgs::JointVelocities> joint_velocity_command;
+    InputPort<motion_control_msgs::JointPositions> joint_position_command;
+    InputPort<motion_control_msgs::JointEfforts> joint_effort_command;
 
-      InputPort<geometry_msgs::Twist> cmd_twist;
+    InputPort<geometry_msgs::Twist> cmd_twist;
 
-      void setupComponentInterface();
+    OutputPort<std::string> events;
 
-      bool calibrate();
-      bool start();
-      void update();
-      void cleanup();
-      void stop();
+  private:
+    void setupComponentInterface();
 
-      void readJointStates();
-      void readOdometry();
+    bool calibrate();
+    bool start();
+    void update();
+    void cleanup();
+    void stop();
 
-      void setJointSetpoints();
-      void setTwistSetpoints();
+    void readJointStates();
+    void readOdometry();
 
-      void checkMotorStatuses();
+    void setJointSetpoints();
+    void setTwistSetpoints();
 
-      motion_control_msgs::JointVelocities m_joint_cmd_velocities;
-      motion_control_msgs::JointPositions m_joint_cmd_angles;
-      motion_control_msgs::JointEfforts m_joint_cmd_torques;
-      geometry_msgs::Twist m_cmd_twist;
+    void checkMotorStatuses();
 
-      sensor_msgs::JointState m_joint_states;
-      nav_msgs::Odometry m_odometry_state;
+    motion_control_msgs::JointVelocities m_joint_velocity_command;
+    motion_control_msgs::JointPositions m_joint_position_command;
+    motion_control_msgs::JointEfforts m_joint_effort_command;
+    geometry_msgs::Twist m_cmd_twist;
 
-      vector<ctrl_modes> m_joint_ctrl_modes;
+    sensor_msgs::JointState m_joint_state;
+    nav_msgs::Odometry m_odometry_state;
 
-      JointAngleSetpoint m_tmp_joint_cmd_angle;
-      JointVelocitySetpoint m_tmp_joint_cmd_velocity;
-      JointTorqueSetpoint m_tmp_joint_cmd_torque;
+    std::string m_events;
 
-      YouBotBase* m_base;
-      YouBotJoint* m_joints[NR_OF_BASE_SLAVES];
+    vector<ctrl_modes> m_joint_ctrl_modes;
 
-      bool m_overcurrent[NR_OF_BASE_SLAVES];
-      bool m_undervoltage[NR_OF_BASE_SLAVES];
-      bool m_overvoltage[NR_OF_BASE_SLAVES];
-      bool m_overtemperature[NR_OF_BASE_SLAVES];
-      bool m_connectionlost[NR_OF_BASE_SLAVES];
-      bool m_i2texceeded[NR_OF_BASE_SLAVES];
-      bool m_timeout[NR_OF_BASE_SLAVES];
+    JointAngleSetpoint m_tmp_joint_position_command;
+    JointVelocitySetpoint m_tmp_joint_velocity_command;
+    JointTorqueSetpoint m_tmp_joint_effort_command;
 
-      bool m_calibrated;
+    YouBotBase* m_base;
+    YouBotJoint* m_joints[NR_OF_BASE_SLAVES];
 
-      const unsigned int m_min_slave_nr;
+    bool m_overcurrent[NR_OF_BASE_SLAVES];
+    bool m_undervoltage[NR_OF_BASE_SLAVES];
+    bool m_overvoltage[NR_OF_BASE_SLAVES];
+    bool m_overtemperature[NR_OF_BASE_SLAVES];
+    bool m_connectionlost[NR_OF_BASE_SLAVES];
+    bool m_i2texceeded[NR_OF_BASE_SLAVES];
+    bool m_timeout[NR_OF_BASE_SLAVES];
 
-      YouBotOODL* m_OODL;
-  };
+    bool m_calibrated;
+
+    const unsigned int m_min_slave_nr;
+
+    YouBotOODL* m_OODL;
+};
 
 }

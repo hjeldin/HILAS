@@ -11,7 +11,8 @@ loadComponent("driver","YouBot::YouBotOODL");
 loadComponent("EventLogger", "YouBot::EventLogger");
 
 setActivity("driver", 0.001, HighestPriority, ORO_SCHED_RT);
-driver.noWatchdog;
+// Adjust comments to enable/disable Wifi-watchdog.
+//driver.noWatchdog;
 driver.configure;
 
 var ConnPolicy cp_rt;
@@ -30,13 +31,21 @@ connect("driver.events", "EventLogger.events", cp_events);
 # ROS output
 #
 
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.type = BUFFER;
+cp_ros.size=1;
+cp_ros.lock_policy = LOCK_FREE;
+cp_ros.name_id = "/watchdog/keepalive";
+stream("youbot.WatchdogService.watchdog_msg", cp_ros);
+
 #var ConnPolicy cp_ros;
 #cp_ros.transport = 3;
-#cp_ros.name_id = "/debug/arm/joint_states";
-#stream("driver.Arm1.joint_states", cp_ros);
+#cp_ros.name_id = "/debug/arm/joint_state";
+#stream("driver.Arm1.joint_state", cp_ros);
 
-#cp_ros.name_id = "/debug/base/joint_states";
-#stream("driver.Base.joint_states", cp_ros);
+#cp_ros.name_id = "/debug/base/joint_state";
+#stream("driver.Base.joint_state", cp_ros);
 
 # 
 # Start running

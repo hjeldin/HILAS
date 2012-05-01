@@ -21,30 +21,25 @@ namespace RTT
 		std::istream& operator>>(std::istream& is, std::vector<ctrl_modes>& cd);
 
 		std::istream& operator>>(std::istream& is, ctrl_modes& cd);
-
-//		std::ostream& operator<<(std::ostream& os, const joint_status& cd);
-//		std::istream& operator>>(std::istream& is, joint_status& cd);
 	}
 }
 
 namespace YouBot
 {
-	const std::string E_OVERCURRENT = "e_OVERCURRENT";
-	const std::string E_UNDERVOLTAGE = "e_UNDERVOLTAGE";
-	const std::string E_OVERVOLTAGE = "e_OVERVOLTAGE";
-	const std::string E_OVERTEMP = "e_OVERTEMP";
-	const std::string E_EC_CONN_LOST = "e_EC_CONN_LOST";
-	const std::string E_I2T_EXCEEDED = "e_I2T_EXCEEDED";
-	const std::string E_HALL_ERR = "e_HALL_ERR";
-	const std::string E_ENCODER_ERR = "e_ENCODER_ERR";
-	const std::string E_SINE_COMM_INIT_ERR = "e_SINE_COMM_INIT_ERR";
-	const std::string E_EMERGENCY_STOP = "e_EMERGENCY_STOP";
-	const std::string E_EC_TIMEOUT = "e_EC_TIMEOUT";
+	static const std::string E_OVERCURRENT = "e_OVERCURRENT";
+	static const std::string E_UNDERVOLTAGE = "e_UNDERVOLTAGE";
+	static const std::string E_OVERVOLTAGE = "e_OVERVOLTAGE";
+	static const std::string E_OVERTEMP = "e_OVERTEMP";
+	static const std::string E_EC_CONN_LOST = "e_EC_CONN_LOST";
+	static const std::string E_I2T_EXCEEDED = "e_I2T_EXCEEDED";
+	static const std::string E_HALL_ERR = "e_HALL_ERR";
+	static const std::string E_ENCODER_ERR = "e_ENCODER_ERR";
+	static const std::string E_SINE_COMM_INIT_ERR = "e_SINE_COMM_INIT_ERR";
+	static const std::string E_EMERGENCY_STOP = "e_EMERGENCY_STOP";
+	static const std::string E_EC_TIMEOUT = "e_EC_TIMEOUT";
 
-	inline int sign(double x)
-	{
-		return (x >= 0) - (x < 0);
-	}
+	std::string& make_event(std::string& s, const std::string& event, int num);
+	std::string& make_edge_event(std::string& s, const std::string& event, int num, bool status);
 
 	std::string ctrl_modes_tostring(const ctrl_modes& cd);
 
@@ -69,16 +64,16 @@ namespace YouBot
     if((tmp & OODL_EVENT) != 0 && !(COND_STORAGE[joint]) ) \
     { \
       COND_STORAGE[joint] = true; \
-      m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG, true); \
+      events.write(make_edge_event(m_events, OUTPUT_MSG, joint+1, true)); \
     } \
     else if(COND_STORAGE[joint] && (tmp & OODL_EVENT) == 0) \
     { \
       COND_STORAGE[joint] = false; \
-      m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG, false); \
+      events.write(make_edge_event(m_events, OUTPUT_MSG, joint+1, false)); \
     }
 
 #define CHECK_EVENT_LEVEL(OODL_EVENT, OUTPUT_MSG) \
   if((tmp & OODL_EVENT) != 0) \
   { \
-    m_OODL->emitEvent("jnt" + boost::lexical_cast<string>(joint+1), OUTPUT_MSG); \
+    events.write(make_event(m_events, OUTPUT_MSG, joint+1)); \
   }

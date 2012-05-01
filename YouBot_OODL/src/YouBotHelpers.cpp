@@ -14,12 +14,10 @@ namespace RTT
 		using namespace RTT;
 
 		std::ostream& operator<<(std::ostream& os, const ctrl_modes& cd) {
-//			log(Info) << "O operator<< ctrl_modes" << endlog();
 			return os << ctrl_modes_tostring(cd);
 		}
 
 		std::ostream& operator<<(std::ostream& os, const std::vector<ctrl_modes>& cd) {
-//			log(Info) << "O operator<< vector<ctrl_modes>" << endlog();
 			for(unsigned int i = 0; i < cd.size(); ++i)
 			{
 				os << cd[i];
@@ -28,17 +26,15 @@ namespace RTT
 		}
 
 		std::istream& operator>>(std::istream& is, std::vector<ctrl_modes>& cd) {
-//			log(Info) <<  "I operator>> vector<ctrl_modes>" << endlog();
 			char c;
 			for(unsigned int i = 0; i < cd.size(); ++i)
 			{
-				is >> c >> cd[i]; // '{' number || ',' number
+				is >> c >> cd[i];
 			}
-			return is >> c; // '}'
+			return is >> c;
 		}
 
 		std::istream& operator>>(std::istream& is, ctrl_modes& cd) {
-//			log(Info) <<  "I operator>> ctrl_modes" << endlog();
 			return is >> cd;
 		}
 	}
@@ -49,10 +45,33 @@ namespace YouBot
 
 	using namespace RTT;
 
-//	int sign(double x)
-//	{
-//		return (x >= 0) - (x < 0);
-//	}
+  // real-time safe provided s has been resized to max_event_strlen
+	//@source: KU Leuven, youbot_helpers.cpp in youbot_master_rtt.
+  std::string& make_event(std::string& s, const std::string& event, int num)
+  {
+      char tmpstr[max_event_length];
+      if(s.capacity() < max_event_length)
+          log(Error) << "make_event: event string capacity < max_event_length." << endlog();
+
+      snprintf(tmpstr, max_event_length, "%s,jointid:%d", event.c_str(), num);
+      s.insert(0, tmpstr, max_event_length);
+      return s;
+  }
+
+  std::string& make_edge_event(std::string& s, const std::string& event, int num, bool status)
+  {
+      char tmpstr[max_event_length];
+      if(s.capacity() < max_event_length)
+          log(Error) << "make_event: event string capacity < max_event_length." << endlog();
+
+      if(status == true)
+        snprintf(tmpstr, max_event_length, "%s,jointid:%d,true", event.c_str(), num);
+      else
+        snprintf(tmpstr, max_event_length, "%s,jointid:%d,false", event.c_str(), num);
+
+      s.insert(0, tmpstr, max_event_length);
+      return s;
+  }
 
 	std::string ctrl_modes_tostring(const ctrl_modes& cd)
 	{

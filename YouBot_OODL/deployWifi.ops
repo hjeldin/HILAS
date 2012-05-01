@@ -38,11 +38,11 @@ cp_ros.lock_policy = LOCK_FREE;
 cp_ros.name_id = "/watchdog/keepalive";
 stream("youbot.WatchdogService.watchdog_msg", cp_ros);
 
-cp_ros.name_id = "/debug/arm/joint_states";
-stream("youbot.Arm1.joint_states", cp_ros);
+cp_ros.name_id = "/debug/arm/joint_state";
+stream("youbot.Arm1.joint_state", cp_ros);
 
-cp_ros.name_id = "/debug/base/joint_states";
-stream("youbot.Base.joint_states", cp_ros);
+cp_ros.name_id = "/debug/base/joint_state";
+stream("youbot.Base.joint_state", cp_ros);
 
 
 # 

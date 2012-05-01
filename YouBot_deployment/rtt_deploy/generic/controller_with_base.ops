@@ -49,17 +49,17 @@ setActivity("controller",0.001,HighestPriority,ORO_SCHED_RT);
 #
 # Arm
 connect("controller.Arm1_joint_cmd","control_to_arm.input_cmd_signal",cp_rt);
-connect("control_to_arm.output_cmd_torques","driver.Arm1.joint_cmd_torques",cp_rt);
+connect("control_to_arm.output_cmd_torques","driver.Arm1.joint_effort_command",cp_rt);
 
-connect("driver.Arm1.joint_states","arm_state_to_control.input_states",cp_rt);
+connect("driver.Arm1.joint_state","arm_state_to_control.input_states",cp_rt);
 connect("arm_state_to_control.output_positions","controller.Arm1_joint_states",cp_rt);
 connect("arm_state_to_control.output_velocities","controller.Arm1_joint_velocites",cp_rt); 
 
 # Base
 connect("controller.Base_torque_cmd","control_to_base.input_cmd_signal",cp_rt);
-connect("control_to_base.output_cmd_torques","driver.Base.joint_cmd_torques",cp_rt);
+connect("control_to_base.output_cmd_torques","driver.Base.joint_effort_command",cp_rt);
 
-connect("driver.Base.joint_states","base_state_to_control.input_states",cp_rt);
+connect("driver.Base.joint_state","base_state_to_control.input_states",cp_rt);
 connect("base_state_to_control.output_positions","controller.Base_joint_states",cp_rt);
 connect("base_state_to_control.output_velocities","controller.Base_joint_velocities",cp_rt);
 

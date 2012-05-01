@@ -23,7 +23,7 @@ namespace YouBot
 	using namespace RTT::types;
 	using namespace std;
 
-	unsigned int non_errors = ::MOTOR_HALTED | ::PWM_MODE_ACTIVE | ::VELOCITY_MODE | ::POSITION_MODE | ::TORQUE_MODE | ::POSITION_REACHED | ::INITIALIZED;
+//	unsigned int non_errors = ::MOTOR_HALTED | ::PWM_MODE_ACTIVE | ::VELOCITY_MODE | ::POSITION_MODE | ::TORQUE_MODE | ::POSITION_REACHED | ::INITIALIZED;
 
 	YouBotOODL::YouBotOODL(const string& name) :
 	    TaskContext(name, PreOperational), m_communication_errors(0), m_use_watchdog(true)
@@ -34,27 +34,10 @@ namespace YouBot
 
 		m_max_communication_errors = 100;
 
-		// Events - Pre-allocate port memory for outputs
-    m_events.reserve(max_event_length);
-    events.setDataSample(m_events);
-    this->addPort("events", events).doc("Joint events");
-
 		this->addOperation("noWatchdog",&YouBotOODL::noWatchdog,this);
 	}
 
 	YouBotOODL::~YouBotOODL() {}
-
-  void YouBotOODL::emitEvent(std::string id, std::string message)
-  {
-    m_events = id + "." + message; //"jnt" + boost::lexical_cast<string>(joint)
-    events.write(m_events);
-  }
-
-  void YouBotOODL::emitEvent(std::string id, std::string message, bool condition)
-  {
-    m_events = id + "." + message + "_" + (condition ? "true" : "false");
-    events.write(m_events);
-  }
 
 	bool YouBotOODL::configureHook()
 	{

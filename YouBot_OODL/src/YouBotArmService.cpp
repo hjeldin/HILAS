@@ -24,23 +24,23 @@ namespace YouBot
   {
     m_OODL = (YouBotOODL*) parent;
 
-    m_joint_states.name.assign(NR_OF_ARM_SLAVES, "");
-    m_joint_states.name[0] = "arm_joint_1";
-    m_joint_states.name[1] = "arm_joint_2";
-    m_joint_states.name[2] = "arm_joint_3";
-    m_joint_states.name[3] = "arm_joint_4";
-    m_joint_states.name[4] = "arm_joint_5";
+    m_joint_state.name.assign(NR_OF_ARM_SLAVES, "");
+    m_joint_state.name[0] = "arm_joint_1";
+    m_joint_state.name[1] = "arm_joint_2";
+    m_joint_state.name[2] = "arm_joint_3";
+    m_joint_state.name[3] = "arm_joint_4";
+    m_joint_state.name[4] = "arm_joint_5";
 
-    m_joint_states.position.assign(NR_OF_ARM_SLAVES, 0);
-    m_joint_states.velocity.assign(NR_OF_ARM_SLAVES, 0);
-    m_joint_states.effort.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_state.position.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_state.velocity.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_state.effort.assign(NR_OF_ARM_SLAVES, 0);
 
-    m_joint_cmd_angles.positions.assign(NR_OF_ARM_SLAVES, 0);
-    m_joint_cmd_velocities.velocities.assign(NR_OF_ARM_SLAVES, 0);
-    m_joint_cmd_torques.efforts.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_position_command.positions.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_velocity_command.velocities.assign(NR_OF_ARM_SLAVES, 0);
+    m_joint_effort_command.efforts.assign(NR_OF_ARM_SLAVES, 0);
 
     // Pre-allocate port memory for outputs
-    joint_states.setDataSample(m_joint_states);
+    joint_state.setDataSample(m_joint_state);
 
     // set to false
     memset(m_overcurrent, 0, NR_OF_ARM_SLAVES);
@@ -61,14 +61,19 @@ namespace YouBot
 
   void YouBotArmService::setupComponentInterface()
   {
-    this->addPort("joint_states", joint_states).doc("Joint states");
+    this->addPort("joint_state", joint_state).doc("Joint states");
 
-    this->addPort("joint_cmd_angles", joint_cmd_angles).doc(
+    this->addPort("joint_position_command", joint_position_command).doc(
         "Command joint angles");
-    this->addPort("joint_cmd_velocities", joint_cmd_velocities).doc(
+    this->addPort("joint_velocity_command", joint_velocity_command).doc(
         "Command joint velocities");
-    this->addPort("joint_cmd_torques", joint_cmd_torques).doc(
+    this->addPort("joint_effort_command", joint_effort_command).doc(
         "Command joint torques");
+
+    // Events - Pre-allocate port memory for outputs
+    m_events.reserve(max_event_length);
+    events.setDataSample(m_events);
+    this->addPort("events", events).doc("Joint events");
 
     this->addOperation("start", &YouBotArmService::start, this);
     this->addOperation("update", &YouBotArmService::update, this);
@@ -77,9 +82,9 @@ namespace YouBot
     this->addOperation("cleanup", &YouBotArmService::cleanup, this);
 
     this->addOperation("setControlModes", &YouBotArmService::setControlModes,
-        this, OwnThread);
+        this, OwnThread).doc("Control modes can be set individually.");
     this->addOperation("getControlModes", &YouBotArmService::getControlModes,
-        this, OwnThread);
+        this, OwnThread).doc("Control modes are individual.");
     this->addOperation("displayMotorStatuses",
         &YouBotArmService::displayMotorStatuses, this, OwnThread);
     this->addOperation("clearControllerTimeouts",
@@ -142,30 +147,29 @@ namespace YouBot
     JointSensedVelocity joint_velocity;
     JointSensedTorque joint_torque;
 
-    m_joint_states.header.stamp = ros::Time::now();
+    m_joint_state.header.stamp = ros::Time::now();
 
     for (int i = 0; i < NR_OF_ARM_SLAVES; ++i)
     {
       m_joints[i]->getData(joint_angle);
-      m_joint_states.position[i] = joint_angle.angle.value();
+      m_joint_state.position[i] = joint_angle.angle.value();
 
       m_joints[i]->getData(joint_velocity);
-      m_joint_states.velocity[i] = joint_velocity.angularVelocity.value();
+      m_joint_state.velocity[i] = joint_velocity.angularVelocity.value();
 
       m_joints[i]->getData(joint_torque);
-      m_joint_states.effort[i] = sign(m_joint_states.velocity[i])
-          * joint_torque.torque.value();
+      m_joint_state.effort[i] = joint_torque.torque.value();
     }
 
-    joint_states.write(m_joint_states);
+    joint_state.write(m_joint_state);
   }
 
   void YouBotArmService::updateJointSetpoints()
   {
     // InputPort -> YouBot
-    joint_cmd_angles.read(m_joint_cmd_angles);
-    joint_cmd_velocities.read(m_joint_cmd_velocities);
-    joint_cmd_torques.read(m_joint_cmd_torques);
+    joint_position_command.read(m_joint_position_command);
+    joint_velocity_command.read(m_joint_velocity_command);
+    joint_effort_command.read(m_joint_effort_command);
 
     // Update joint setpoints
     for (unsigned int joint_nr = 0; joint_nr < NR_OF_ARM_SLAVES; ++joint_nr)
@@ -176,31 +180,31 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
-        m_tmp_joint_cmd_angle.angle = m_joint_cmd_angles.positions[joint_nr]
+        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
             * si::radian;
         // below limits
-        if (m_tmp_joint_cmd_angle.angle < m_joint_limits[joint_nr].min_angle)
+        if (m_tmp_joint_position_command.angle < m_joint_limits[joint_nr].min_angle)
         {
-          m_tmp_joint_cmd_angle.angle = m_joint_limits[joint_nr].min_angle;
+          m_tmp_joint_position_command.angle = m_joint_limits[joint_nr].min_angle;
         }
         // above limits
-        else if (m_tmp_joint_cmd_angle.angle > m_joint_limits[joint_nr].max_angle)
+        else if (m_tmp_joint_position_command.angle > m_joint_limits[joint_nr].max_angle)
         {
-          m_tmp_joint_cmd_angle.angle = m_joint_limits[joint_nr].max_angle;
+          m_tmp_joint_position_command.angle = m_joint_limits[joint_nr].max_angle;
         }
-        m_joints[joint_nr]->setData(m_tmp_joint_cmd_angle);
+        m_joints[joint_nr]->setData(m_tmp_joint_position_command);
         break;
       }
       case (ANGULAR_VELOCITY):
       {
         m_tmp_joint_cmd_velocity.angularVelocity =
-            m_joint_cmd_velocities.velocities[joint_nr] * si::radian_per_second;
+            m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
         m_joints[joint_nr]->setData(m_tmp_joint_cmd_velocity);
         break;
       }
       case (TORQUE):
       {
-        m_tmp_joint_cmd_torque.torque = m_joint_cmd_torques.efforts[joint_nr]
+        m_tmp_joint_cmd_torque.torque = m_joint_effort_command.efforts[joint_nr]
             * si::newton_meter;
         m_joints[joint_nr]->setData(m_tmp_joint_cmd_torque);
         break;

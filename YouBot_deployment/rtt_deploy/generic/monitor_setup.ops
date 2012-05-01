@@ -6,8 +6,8 @@ cp_rt.type = DATA;
 cp_rt.lock_policy = LOCK_FREE; 
 
 connectPeers("driver", "monitor");
-connect("driver.Arm1.joint_states","monitor.arm_joint_state",cp_rt)
-connect("driver.Base.joint_states","monitor.base_joint_state",cp_rt)
+connect("driver.Arm1.joint_state","monitor.arm_joint_state",cp_rt)
+connect("driver.Base.joint_state","monitor.base_joint_state",cp_rt)
 
 var ConnPolicy cp_nrt;
 cp_nrt.type = BUFFER;

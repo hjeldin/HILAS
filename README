@@ -6,7 +6,7 @@ Note: The development repository is located at: https://git.ce.utwente.nl/youbot
 ==INSTALLATION==
 
 ===Prerequisites===
-* (Preferably) youBot firmware 1.48
+* Atleast youBot firmware 1.48
 * ROS (electric) installed and setup (www.ros.org)
  * Use ubuntu packages, ATLEAST: ros-electric-desktop
 * orocos_toolchain_ros (corresponding to electric) installed and setup. 
@@ -52,3 +52,4 @@ http://www.best-of-robotics.org/3rd_researchcamp/CodeGenerationForRTT
 
 == MAJOR UPDATE LOG ==
 12/12/2011 Cleaned stack, i.e. moved foreign includes/directories into external folder. To update: git submodule init; git submodule update; rm -rf ./rFSM ./soem; rosmake --pre-clean; Note: You might have to update the external/youbot_applications and youbot_driver yourself (cd external/youbot_applications; git checkout master; git pull; cd joint_configurator; make clean)
+01/05/2012 Updated YouBot_OODL port naming to match KUL youbot_master_rtt ports. To update: git pull; rosmake --pre-clean YouBot_OODL; Afterwards: update your scripts.
