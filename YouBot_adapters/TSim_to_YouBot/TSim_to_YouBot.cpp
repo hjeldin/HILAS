@@ -1,8 +1,7 @@
-#include "TSimToYouBotMsg.hpp"
+#include "TSim_to_YouBot.hpp"
 
 #include <iostream>
 #include <ocl/Component.hpp>
-//#include <rtt/types/SequenceTypeInfo.hpp>
 
 /*
  * @brief Adapter to connect 20Sim to the YouBot OODL.
@@ -11,7 +10,7 @@ namespace YouBot
 {
 	using namespace RTT;
 
-	TSimToYouBotMsg::TSimToYouBotMsg(std::string const& name) :
+	TSim_to_YouBot::TSim_to_YouBot(std::string const& name) :
 			TaskContext(name),
 			m_ctrl_mode(MOTOR_STOP),
 			m_dimension(0)
@@ -29,13 +28,13 @@ namespace YouBot
 		this->addEventPort("input_cmd_signal",input_cmd_signal)
 			.doc("Connect 20Sim controller signal. This is an event port.");
 
-		this->addOperation("initialize",&TSimToYouBotMsg::initialize,this, OwnThread);
+		this->addOperation("initialize",&TSim_to_YouBot::initialize,this, OwnThread);
 
 	}
 
-	TSimToYouBotMsg::~TSimToYouBotMsg() {}
+	TSim_to_YouBot::~TSim_to_YouBot() {}
 
-	void TSimToYouBotMsg::initialize(ctrl_modes ctrl_mode, unsigned int dimension)
+	void TSim_to_YouBot::initialize(ctrl_modes ctrl_mode, unsigned int dimension)
 	{
 		log(Info) << "Setting up with ctrl_mode: " << ctrl_mode << " and dimension: " << dimension << endlog();
 		if(ctrl_mode == MOTOR_STOP)
@@ -63,7 +62,7 @@ namespace YouBot
 		output_cmd_twist.setDataSample(m_output_cmd_twist);
 	}
 
-	bool TSimToYouBotMsg::startHook()
+	bool TSim_to_YouBot::startHook()
 	{
 		if(m_ctrl_mode == PLANE_ANGLE && ! output_cmd_angles.connected())
 		{
@@ -107,7 +106,7 @@ namespace YouBot
 		return TaskContext::startHook();
 	}
 
-	void TSimToYouBotMsg::updateHook()
+	void TSim_to_YouBot::updateHook()
 	{
 		TaskContext::updateHook();
 		if(input_cmd_signal.read(m_input_cmd_signal) == NewData)
@@ -170,4 +169,4 @@ namespace YouBot
 	}
 }
 
-ORO_CREATE_COMPONENT( YouBot::TSimToYouBotMsg )
+ORO_CREATE_COMPONENT( YouBot::TSim_to_YouBot )
