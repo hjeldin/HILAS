@@ -1,5 +1,7 @@
 import("youBot_RTT_test");
 import("YouBot_adapters");
+import("TSimAdapters");
+
 loadComponent("YouBot_model","youbot_control_with_base_sefltest1::youBot_RTT_test");
 loadComponent("rviz_publisher","YouBot::TSimYouBotStatePublisher");
 YouBot_model.configure;

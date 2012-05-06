@@ -1,16 +1,17 @@
 import("YouBot_control_with_base");
 import("YouBot_adapters");
+import("TSimAdapters");
 
 displayComponentTypes;
 
 #
 # Load components
 #
-loadComponent("control_to_base", "YouBot::TSimToYouBotMsg");
-loadComponent("control_to_arm", "YouBot::TSimToYouBotMsg");
+loadComponent("control_to_base", "YouBot::TSim_to_YouBot");
+loadComponent("control_to_arm", "YouBot::TSim_to_YouBot");
 
-loadComponent("base_state_to_control", "YouBot::YouBotMsgToTSim");
-loadComponent("arm_state_to_control", "YouBot::YouBotMsgToTSim");
+loadComponent("base_state_to_control", "geometry_JointState_to_TSim");
+loadComponent("arm_state_to_control", "geometry_JointState_to_TSim");
 
 loadComponent("controller","youbot_control_with_base_v1::YouBot_control_with_base");
 

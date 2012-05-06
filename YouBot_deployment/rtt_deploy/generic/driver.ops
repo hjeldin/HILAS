@@ -1,4 +1,5 @@
-import("YouBot_OODL")
+import("YouBot_OODL");
+import("EventLogger");
 import("rtt_sensor_msgs");
 import("rtt_std_msgs");
 import("rtt_geometry_msgs");
@@ -8,7 +9,7 @@ import("rtt_motion_control_msgs");
 displayComponentTypes;
 
 loadComponent("driver","YouBot::YouBotOODL");
-loadComponent("EventLogger", "YouBot::EventLogger");
+loadComponent("EventLogger", "EventLogger");
 
 setActivity("driver", 0.001, HighestPriority, ORO_SCHED_RT);
 // Adjust comments to enable/disable Wifi-watchdog.

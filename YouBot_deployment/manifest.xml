@@ -7,7 +7,7 @@
   <license>LGPLv2.1 / BSD</license>
   <review status="unreviewed" notes=""/>
   <url>ce203</url>
-  
+  <depend package="TSimAdapters"/>  
 </package>
 
 
