@@ -26,7 +26,8 @@ cp_events.lock_policy = LOCK_FREE;
 cp_events.size = 20;
 
 connectPeers("driver", "EventLogger");
-connect("driver.events", "EventLogger.events", cp_events);
+connect("driver.Arm1.events", "EventLogger.events", cp_events);
+connect("driver.Base.events", "EventLogger.events", cp_events);
 
 #
 # ROS output
@@ -38,7 +39,7 @@ cp_ros.type = BUFFER;
 cp_ros.size=1;
 cp_ros.lock_policy = LOCK_FREE;
 cp_ros.name_id = "/watchdog/keepalive";
-stream("youbot.WatchdogService.watchdog_msg", cp_ros);
+stream("driver.WatchdogService.watchdog_msg", cp_ros);
 
 #var ConnPolicy cp_ros;
 #cp_ros.transport = 3;
