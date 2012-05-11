@@ -1,6 +1,0 @@
-[submodule "external/rFSM"]
-	path = external/rFSM
-	url = https://github.com/kmarkus/rFSM.git
-[submodule "external/fbsched"]
-	path = external/fbsched
-	url = https://github.com/kmarkus/fbsched.git
