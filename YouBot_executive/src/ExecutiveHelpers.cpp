@@ -1,12 +1,11 @@
 #include "ExecutiveHelpers.hpp"
 
-//#include <rtt/TaskContext.hpp>
 #include <tf/tf.h>
 #include <cassert>
+#include <rtt/TaskContext.hpp>
 
 namespace YouBot
 {
-//	using namespace RTT;
 	using namespace std;
 
 	void homogeneous_to_xyzypr(const vector<double>& H, vector<double>& xyzypr)
@@ -32,7 +31,7 @@ namespace YouBot
 
 		if(lhs.size() != 16 || rhs.size() != 4 || output.size() != 4)
 		{
-			 __throw_out_of_range(__N("Multiply::vector::_M_range_check"));
+			 throw std::out_of_range("Multiply::vector::_M_range_check");
 		}
 
 		for(int i=0;i<4;i++)
@@ -49,15 +48,15 @@ namespace YouBot
 
 		if(lhs.size() != 16 || rhs.size() != 16 || output.size() != 16)
 		{
-			 __throw_out_of_range(__N("Multiply::vector::_M_range_check"));
+			 throw std::out_of_range("Multiply::vector::_M_range_check");
 		}
 
-		for(int i=0;i<4;i++)
+		for(int i = 0; i < 4; i++)
 		{
-			for(int j=0;j<4;j++)
+			for(int j = 0; j<4; j++)
 			{
 				output[i*4+j]=0;
-				for(int k=0;k<4;k++)
+				for(int k=0; k<4; k++)
 				{
 				output[i*4+j]+=lhs[i*4+k]*rhs[k*4+j];
 				}
@@ -71,14 +70,25 @@ namespace YouBot
 
 		if(lhs.size() != rhs.size() || output.size() != rhs.size())
 		{
-			 __throw_out_of_range(__N("Sum::vector::_M_range_check"));
+			 throw std::out_of_range("Sum::vector::_M_range_check");
 		}
 
-		for(int i=0;i<rhs.size();i++)
+		for(unsigned int i = 0; i < rhs.size();i++)
 		{
 			output[i]=rhs[i]*lhs[i];
 		}
 	}
 
+	std::string& make_event(std::string& s, const std::string& event)
+	{
+		using namespace RTT;
+		char tmpstr[max_event_length];
+		if(s.capacity() < max_event_length)
+		  log(Error) << "make_event: event string capacity < max_event_length." << endlog();
+
+		snprintf(tmpstr, max_event_length, "%s", event.c_str());
+		s.insert(0, tmpstr, max_event_length);
+		return s;
+	}
 
 }

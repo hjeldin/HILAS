@@ -1,4 +1,11 @@
+/*
+ * RCC_executive.cpp
+ *
+ *  Created on: Dec 15, 2011
+ *      Author: Yury Brodskiy
+ */
 #include "YouBot_executive.h"
+
 #include <tf/transform_broadcaster.h>
 #include "ExecutiveHelpers.hpp"
 
@@ -22,79 +29,80 @@ YouBot_executive::~YouBot_executive()
 
 void YouBot_executive::setupComponentInterface()
 {
-	this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this).doc("Unfold the arm");
+	// Predefined actions
+	this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this).doc("Unfold the arm. Takes no arguments");
+	this->addOperation("foldArm", &YouBot_executive::foldArm, this).doc("Fold the arm. Takes no arguments");
+	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this).doc("Set gravity compensation mode. Takes no arguments");
+	this->addOperation("openGripper", &YouBot_executive::openGripper, this).doc("Set gripper gap  to maximum. Takes no arguments");
+	this->addOperation("closeGripper", &YouBot_executive::closeGripper, this).doc("Set gripper gap  to minimum. Takes no arguments");
+//	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this).doc("Move tip for gripper length backwards. Takes no arguments");
 
-	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this).doc("Set gravity compensation mode");
+	// Configurable actions
+	this->addOperation("setJointsState", &YouBot_executive::setJointsState, this).doc("Joint space control");
 
-	this->addOperation("positionArm", &YouBot_executive::positionArm, this).doc("Joint space control");
-
-	this->addOperation("positionGripper", &YouBot_executive::positionGripper, this).doc("Cartesian space control");
-
-	this->addOperation("getArmPose", &YouBot_executive::getArmPose, this).doc("Get joint space positions");
-
-	this->addOperation("getGripperPose", &YouBot_executive::getGripperPose,this).doc("Get cartesian space positions");
+	this->addOperation("setHvp0", &YouBot_executive::setHvp0, this).doc("Define attraction point with respect to inertial frame. Takes vector flatten H matrix");
+//	this->addOperation("setHvptip", &YouBot_executive::setHvptip, this).doc("Define attraction point with respect to current tool tip frame.Takes vector flatten H matrix");
+	this->addOperation("setHtipCC", &YouBot_executive::setHtipCC, this).doc("Define center of stiffness and principal axes with respect to tool tip frame.Takes vector flatten H matrix");
 
 	this->addOperation("setCartesianStiffness", &YouBot_executive::setCartesianStiffness,this).doc(" ");
 	this->addOperation("setJointStiffness", &YouBot_executive::setJointStiffness,this).doc(" ");
+	
+	this->addOperation("guardMove", &YouBot_executive::guardMove, this).doc("Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force limit is higher then max force allowed in controller e_done event will be never sent.");
 
-	this->addOperation("openGripper", &YouBot_executive::openGripper, this).doc(" ");
-	this->addOperation("closeGripper", &YouBot_executive::closeGripper, this).doc(" ");
-	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this).doc("");
+	// Sampling state
+	this->addOperation("getJointStates", &YouBot_executive::getJointStates, this).doc("Get joint space positions");
+	this->addOperation("getTip_xyzypr", &YouBot_executive::getTip_xyzypr,this).doc("DEPRECATED -- Get tool tip frame in xyz roll pitch yaw. ");
+	this->addOperation("getHtip0", &YouBot_executive::getHtip0,this).doc("Get tool tip frame. Returns vector flatten H matrix");
 
-	this->addOperation("guardMove", &YouBot_executive::guardMove, this).doc(
-			"Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force 	limit is higher then max force allowed in controller e_done event will be never sent.");
-
+	// Ports
 	this->addPort("JointSpaceSetpoint", JointSpaceSetpoint).doc("");
 	this->addPort("JointSpaceStiffness", JointSpaceStiffness).doc("");
 	this->addPort("CartSpaceSetpoint", CartSpaceSetpoint).doc("");
-	this->addPort("CartSpaceStiffness_rot", CartSpaceStiffness_rot).doc("");
-	this->addPort("CartSpaceStiffness_trans", CartSpaceStiffness_trans).doc("");
+	this->addPort("CartSpaceStiffness", CartSpaceStiffness).doc("");
+	this->addPort("HtipCC", HtipCC).doc("");
 
-	this->addPort("GripperPose", CartGripperPose).doc("");
-	this->addPort("ArmPose", JointGripperPose).doc("");
+	this->addPort("Htip0", Htip0).doc("Gripper pose");
+	this->addPort("JointStates", JointStates).doc("Joint space joint states");
+	this->addPort("Wtip0", Wtip0).doc("Wrench input from control");
+
 	this->addPort("gripper_cmd", gripper_cmd).doc("");
 	this->addPort("events_out", events).doc("");
-	this->addPort("CartForceState", CartForceState).doc("Input from the control");
 
 	// Debugging/introspection properties
-	this->addProperty("Joint_position_setpoint", m_position_jnt);
-	this->addProperty("Joint_stiffness_setpoint", m_stiffness_jnt);
-	this->addProperty("Gripper_position_setpoint", m_position_cart);
-	this->addProperty("Gripper_stiffness_setpoint", m_stiffness_cart);
-	this->addProperty("Force_guard",m_force_cart);
+	this->addProperty("JointSpaceSetpoint", m_JointSpaceSetpoint.data);
+	this->addProperty("JointSpaceStiffness", m_JointSpaceStiffness.data);
+	this->addProperty("Hvp0", m_Hvp0.data);
+	this->addProperty("CartSpaceStiffness", m_CartSpaceStiffness.data);
+	this->addProperty("Wtip0",m_Wtip0.data);
+	this->addProperty("HtipCC",m_HtipCC.data);
 }
 
 void YouBot_executive::init()
 {
-	m_position_jnt.resize(SIZE_JOINTS_ARRAY, 0.0);
-	m_stiffness_jnt.resize(SIZE_JOINTS_ARRAY, 0.0);
-	m_position_cart.resize(SIZE_CART_SPACE, 0.0);
-	m_stiffness_cart.resize(SIZE_CART_STIFFNESS, 0.0);
-	m_force_cart.resize(SIZE_CART_SPACE, 0.0);
-
 	// Variables for ports
+	m_JointState.data.resize(SIZE_JOINTS_ARRAY, 0.0);
 	m_JointSpaceSetpoint.data.resize(SIZE_JOINTS_ARRAY, 0.0);
 	m_JointSpaceStiffness.data.resize(SIZE_JOINTS_ARRAY, 0.0);
-	m_CartSpaceSetpoint.data.resize(SIZE_CART_SPACE, 0.0);
-	m_CartSpaceStiffness_rot.data.resize(1, 0.0);
-	m_CartSpaceStiffness_trans.data.resize(1, 0.0);
 
-	m_CartGripperPose.data.resize(16, 0.0);
-	m_JointGripperPose.data.resize(SIZE_JOINTS_ARRAY, 0.0);
-	m_CartForceState.data.resize(SIZE_CART_SPACE, 0.0);
-
+	m_Htip0.data.resize(SIZE_H, 0.0);
+	m_Hvp0.data.resize(SIZE_H, 0.0);	
+	m_CartSpaceStiffness.data.resize(SIZE_CART_STIFFNESS, 0.0);
+	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
+	
+	m_Wtip0.data.resize(SIZE_CART_SPACE, 0.0);
+	
 	m_gripper_cmd.positions.resize(1, 0.0);
 
-	m_state = GRAVITY_MODE;
-
-	m_events.reserve(50);
+	m_events.reserve(max_event_length);
 
 	JointSpaceSetpoint.setDataSample(m_JointSpaceSetpoint);
 	JointSpaceStiffness.setDataSample(m_JointSpaceStiffness);
-	CartSpaceSetpoint.setDataSample(m_CartSpaceSetpoint);
-	CartSpaceStiffness_rot.setDataSample(m_CartSpaceStiffness_rot);
-	CartSpaceStiffness_trans.setDataSample(m_CartSpaceStiffness_trans);
+	CartSpaceSetpoint.setDataSample(m_Hvp0);
+	CartSpaceStiffness.setDataSample(m_CartSpaceStiffness);
+	HtipCC.setDataSample(m_HtipCC);
 	gripper_cmd.setDataSample(m_gripper_cmd);
+
+	m_state = GRAVITY_MODE; //default state
 }
 
 void YouBot_executive::openGripper()
@@ -111,12 +119,19 @@ void YouBot_executive::closeGripper()
 
 void YouBot_executive::unfoldArm()
 {
-	//RTT::log(Info) << "Call unfoldArm" << endlog();
-	m_position_cart.assign(UNFOLD_CART_POSE,UNFOLD_CART_POSE+6);
-	m_position_jnt.assign(UNFOLD_JOINT_POSE,UNFOLD_JOINT_POSE+8);
-	m_stiffness_cart.assign(BASIC_CART_STIFFNESS,BASIC_CART_STIFFNESS+2);
-	m_stiffness_jnt.assign(BASIC_JOINT_STIFFNESS,BASIC_JOINT_STIFFNESS+8);
+	RTT::log(Info) << "Call unfoldArm" << endlog();
+	m_JointSpaceSetpoint.data.assign(UNFOLD_JOINT_POSE, UNFOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
+	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
+	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
+	stateTransition(FULL_CONTROL);
+}
 
+void YouBot_executive::foldArm()
+{
+	RTT::log(Info) << "Call foldArm" << endlog();
+	m_JointSpaceSetpoint.data.assign(FOLD_JOINT_POSE, FOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
+	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
+	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
 	stateTransition(FULL_CONTROL);
 }
 
@@ -132,7 +147,7 @@ void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 		log(Error) << "setCartesianStiffness - expects a " << SIZE_CART_STIFFNESS << " dimensional vector" << endlog();
 		return;
 	}
-	m_stiffness_cart.assign(stiffness_c.begin(),stiffness_c.end());
+	m_CartSpaceStiffness.data.assign(stiffness_c.begin(),stiffness_c.end());
 }
 
 void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
@@ -142,69 +157,96 @@ void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 		log(Error) << "setJointStiffness - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
 		return;
 	}
-	m_stiffness_jnt.assign(stiffness_j.begin(),stiffness_j.end()); //Swap is valid since
+	m_JointSpaceStiffness.data.assign(stiffness_j.begin(),stiffness_j.end()); //Swap is valid since
 }
 
-void YouBot_executive::positionArm(vector<double> position_j)
+void YouBot_executive::setJointsState(vector<double> position_j)
 {
 	if(position_j.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "positionArm - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
 		return;
 	}
-
-	m_position_jnt.assign(position_j.begin(),position_j.end());
+	m_JointSpaceSetpoint.data.assign(position_j.begin(),position_j.end());
 	stateTransition(JOINT_CONTROL);
 }
 
-void YouBot_executive::positionGripper(vector<double> position_c)
+void YouBot_executive::setHvp0(vector<double> position_c)
 {
-	if(position_c.size() != SIZE_CART_SPACE)
+	if(position_c.size() != SIZE_H)
 	{
-		log(Error) << "positionGripper - expects a " << SIZE_CART_SPACE << " dimensional vector" << endlog();
+		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
 		return;
 	}
-
-	m_position_cart.assign(position_c.begin(),position_c.end());
+	m_Hvp0.data.assign(position_c.begin(),position_c.end());
 	stateTransition(CARTESIAN_CONTROL);
 }
 
-void YouBot_executive::getArmPose(vector<double> & position_j)
+//void YouBot_executive::setHvptip(vector<double> position_c)
+//{
+//	if(position_c.size() != SIZE_H)
+//	{
+//		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
+//		return;
+//	}
+//	log(Error) << "not implemented" << endlog();
+//	return;
+//	vector<double> t_Hvp0(16,0.0);
+//	MultiplyH(m_Htip0.data,position_c,t_Hvp0);
+//	m_Hvp0.data.assign(t_Hvp0.begin(),t_Hvp0.end());
+//	stateTransition(CARTESIAN_CONTROL);
+//}
+
+void YouBot_executive::setHtipCC(vector<double> position_c)
 {
-	if(position_j.size() != SIZE_JOINTS_ARRAY)
+	if(position_c.size() != SIZE_H)
+	{
+		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
+		return;
+	}
+	m_HtipCC.data.assign(position_c.begin(),position_c.end());
+}
+
+void YouBot_executive::getJointStates(vector<double> & sample)
+{
+	if(sample.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "getArmPose - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
 		return;
 	}
-
-	position_j.assign(m_JointGripperPose.data.begin(), m_JointGripperPose.data.end());
+	sample.assign(m_JointState.data.begin(), m_JointState.data.end());
 }
 
-void YouBot_executive::getGripperPose(vector<double> & position_c)
+void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 {
-	if(position_c.size() != SIZE_CART_SPACE)
+	if(sample.size() != SIZE_CART_SPACE)
 	{
 		log(Error) << "getGripperPose - expects a " << SIZE_CART_SPACE << " dimensional vector" << endlog();
 		return;
 	}
-
-	homogeneous_to_xyzypr(m_CartGripperPose.data, position_c);
+	homogeneous_to_xyzypr(m_Htip0.data, sample);
 }
 
-void YouBot_executive::retractGripper()
-{
-	stateTransition(RETRACT_GRIPPER);
-}
+//void YouBot_executive::retractGripper()
+//{
+//	vector<double> _Hvptip(SIZE_H, 0.0);
+//	_Hvptip.assign(EYE4, EYE4+SIZE_H);
+//	_Hvptip[Z_H]=GRIPPER_SIZE;
+//	//displace center of compliance back to make movement more robust to disturbances
+//	//Test required if it produce good result
+//	setHtipCC(_Hvptip);
+//	m_CartSpaceStiffness.data.assign(RETRACT_STIFFNESS_C, RETRACT_STIFFNESS_C+SIZE_CART_STIFFNESS);
+//	setHvptip(_Hvptip);
+//}
 
-void YouBot_executive::getGripperH(vector<double>& H)
+void YouBot_executive::getHtip0(vector<double>& sample_H)
 {
-	if(H.size() != 16)
+	if(sample_H.size() != SIZE_H)
 	{
-		log(Error) << "getGripperH - expects a 16 dimensional vector" << endlog();
+		log(Error) << "getGripperH - expects a "<<SIZE_H<<" dimensional vector" << endlog();
 		return;
 	}
-
-	H.assign(m_CartGripperPose.data.begin(), m_CartGripperPose.data.end());
+	sample_H.assign(m_Htip0.data.begin(), m_Htip0.data.end());
 }
 
 void YouBot_executive::guardMove(vector<double> force_c)
@@ -214,59 +256,72 @@ void YouBot_executive::guardMove(vector<double> force_c)
 		log(Error) << "guardMove - expects a 3 dimensional vector" << endlog();
 		return;
 	}
-
 	m_force_cart = force_c;
 	stateTransition(GUARDED_MOVE);
 }
 
 void YouBot_executive::doneEvent(){
-	m_events = "executive.e_done";
-	events.write(m_events);
+	events.write(make_event(m_events, "executive.e_done"));
 }
 
-const double RETRACT_STIFFNESS_C[2]={50,500};
-const double GRIPPER_SIZE[4]={0,0,-0.2,1};
+bool YouBot_executive::isForceOverLimit_Norm()
+{
+	double sum_force;
+	double sum_force_limit;
+	sum_force=m_force_cart[0]*m_force_cart[0]+m_force_cart[1]*m_force_cart[1]+m_force_cart[2]*m_force_cart[2];
+	sum_force_limit=m_Wtip0.data[3]*m_Wtip0.data[3]+m_Wtip0.data[4]*m_Wtip0.data[4]+m_Wtip0.data[5]*m_Wtip0.data[5];
+	//squared values are always positive
+	return sum_force<sum_force_limit;
+}
+
+bool YouBot_executive::isForceOverLimit_X()
+{
+	return abs(m_force_cart[0])<abs(m_Wtip0.data[3]);
+}
+
+bool YouBot_executive::isForceOverLimit_Y()
+{
+	return abs(m_force_cart[1])<abs(m_Wtip0.data[4]);
+}
+
+bool YouBot_executive::isForceOverLimit_Z()
+{
+	return abs(m_force_cart[2])<abs(m_Wtip0.data[5]);
+}
+
+void YouBot_executive::checkForceEvents(){
+	if(!checkForce)
+		return;
+	if(isForceOverLimit_X())
+	{
+			events.write(make_event(m_events, "executive.e_CartForce_X_LIMIT_REACHED_true"));
+	}
+	if(isForceOverLimit_Y())
+	{
+			events.write(make_event(m_events, "executive.e_CartForce_Y_LIMIT_REACHED_true"));
+	}
+	if(isForceOverLimit_Z())
+	{
+			events.write(make_event(m_events, "executive.e_CartForce_Z_LIMIT_REACHED_true"));
+	}
+	if(isForceOverLimit_Norm())
+	{
+			events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
+	}
+
+}
 
 void YouBot_executive::stateTransition(state_t new_state)
 {
-	// Includes init functions
-	if(new_state == RETRACT_GRIPPER)
-	{
-		vector<double> vecGripperSize(4, 0.0);
-		vecGripperSize.assign(GRIPPER_SIZE, GRIPPER_SIZE+4);
-		vector<double> error(4, 0.0); //only translation
-		vector<double> setPoint(SIZE_CART_SPACE, 0.0);
-		vector<double> states_c(SIZE_CART_SPACE , 0.0);
-
-		homogeneous_to_xyzypr(m_CartGripperPose.data, states_c);
-
-		// Calculate new virtual cartesian setpoint and stiffness once
-		Multiply(m_CartGripperPose.data, vecGripperSize, error); //H, 3, output
-		setPoint[0]=error[0];
-		setPoint[1]=error[1];
-		setPoint[2]=error[2];
-		setPoint[3]=states_c[3];
-		setPoint[4]=states_c[4];
-		setPoint[5]=states_c[5];
-
-		m_position_cart.assign(setPoint.begin(), setPoint.end());
-		m_stiffness_cart.assign(RETRACT_STIFFNESS_C, RETRACT_STIFFNESS_C+2);
-
-		// Afterwards, just use cartesian control
-		m_state = CARTESIAN_CONTROL;
-	}
-	else
-	{
-		m_state = new_state;
-	}
+	m_state = new_state;
 }
 
 void YouBot_executive::updateHook()
 {
 	// read all input ports
-	CartGripperPose.read(m_CartGripperPose);
-	JointGripperPose.read(m_JointGripperPose);
-	CartForceState.read(m_CartForceState);
+	Htip0.read(m_Htip0);
+	JointStates.read(m_JointState);
+	Wtip0.read(m_Wtip0);
 
 	// perform the state specific actions
 	switch(m_state)
@@ -291,12 +346,6 @@ void YouBot_executive::updateHook()
 			stateCartesianControl();
 			break;
 		}
-		case(RETRACT_GRIPPER):
-		{
-			log(Error) << "RETRACT_GRIPPER is NOT a real state, but implemented by CARTESIAN_CONTROL" << endlog();
-			this->error();
-			break;
-		}
 		case(GUARDED_MOVE):
 		{
 			stateGuardedMove();
@@ -312,116 +361,93 @@ void YouBot_executive::updateHook()
 	}
 
 	// write setpoints
+	assert(m_JointSpaceSetpoint.data.size() == SIZE_JOINTS_ARRAY);
 	JointSpaceSetpoint.write(m_JointSpaceSetpoint);
+
+	assert(m_JointSpaceStiffness.data.size() == SIZE_JOINTS_ARRAY);
 	JointSpaceStiffness.write(m_JointSpaceStiffness);
-	CartSpaceSetpoint.write(m_CartSpaceSetpoint);
-	CartSpaceStiffness_rot.write(m_CartSpaceStiffness_rot);
-	CartSpaceStiffness_trans.write(m_CartSpaceStiffness_trans);
+
+	assert(m_Hvp0.data.size() == SIZE_H);
+	CartSpaceSetpoint.write(m_Hvp0);
+
+	assert(m_CartSpaceStiffness.data.size() == SIZE_CART_STIFFNESS);
+	CartSpaceStiffness.write(m_CartSpaceStiffness);
+
+	assert(m_HtipCC.data.size() == SIZE_H);
+	HtipCC.write(m_HtipCC);
 }
 
 void YouBot_executive::stateFullControl()
 {
-	// Copies the given setpoints plain to the outputs.
-
-	// Assign the setpoints
-	m_JointSpaceSetpoint.data.assign(m_position_jnt.begin(), m_position_jnt.end());
-	m_CartSpaceSetpoint.data.assign(m_position_cart.begin(), m_position_cart.end());
-
-	m_JointSpaceStiffness.data.assign(m_stiffness_jnt.begin(), m_stiffness_jnt.end());
-	m_CartSpaceStiffness_rot.data.at(0)=m_stiffness_cart.at(0);
-	m_CartSpaceStiffness_trans.data.at(0)=m_stiffness_cart.at(1);
+	// No additional actions required
 }
 
 void YouBot_executive::stateGravityMode()
 {
-	// Assigns the current states as setpoints and sets the stiffness zero.
+	// Assigns the current states as setpoints and sets the stiffness zero
+	// zero out Joint control part
+	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
+	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
 
-	homogeneous_to_xyzypr(m_CartGripperPose.data, m_CartSpaceSetpoint.data);
-	m_JointSpaceSetpoint.data.assign(m_JointGripperPose.data.begin(), m_JointGripperPose.data.end());
-
-	double stiffness_jnt[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	m_JointSpaceStiffness.data.assign(stiffness_jnt, stiffness_jnt + 8);
-	m_CartSpaceStiffness_rot.data.at(0)= 0;
-	m_CartSpaceStiffness_trans.data.at(0)= 0;
+	// zero out Cartesian control part
+	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
+	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
 }
 
 void YouBot_executive::stateJointControl()
 {
-	// Copy the joint space setpoints and cartesian states plain to the outputs.
-
-	// From inputs
-	m_JointSpaceSetpoint.data.assign(m_position_jnt.begin(), m_position_jnt.end());
-
-	// From states
-	homogeneous_to_xyzypr(m_CartGripperPose.data, m_CartSpaceSetpoint.data);
-
-	// From input
-	m_JointSpaceStiffness.data.assign(m_stiffness_jnt.begin(), m_stiffness_jnt.end());
-
-	// Cartesian stiffness zero
-	m_CartSpaceStiffness_rot.data.at(0)=0;
-	m_CartSpaceStiffness_trans.data.at(0)=0;
+	// zero out Cartesian control part
+	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
+	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
 }
 
 void YouBot_executive::stateCartesianControl()
 {
-	// Copy the joint states and cartesian setpoints plain to the outputs.
-
-	// From states
-	m_JointSpaceSetpoint.data.assign(m_JointGripperPose.data.begin(), m_JointGripperPose.data.end());
-
-	// From inputs
-	m_CartSpaceSetpoint.data.assign(m_position_cart.begin(), m_position_cart.end());
-
-	// Joint space zero stiffness
-	double stiffness_jnt[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	m_JointSpaceStiffness.data.assign(stiffness_jnt, stiffness_jnt + 8);
-
-	// From input
-	m_CartSpaceStiffness_rot.data.at(0)=m_stiffness_cart.at(0);
-	m_CartSpaceStiffness_trans.data.at(0)=m_stiffness_cart.at(1);
+	// zero out Joint control part
+	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
+	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
 }
 
-const double GUARD_STIFFNESS_C[]={2,70};
 
 void YouBot_executive::stateGuardedMove()
 {
-	double alpha = 0.1;
-
 	// Move with a predefined force in cartesian space
-	vector<double> error(4, 0.0);
-	bool done = true;
-
-	vector<double> temp(4, 0.0);
-	temp[0]=m_force_cart[0];
-	temp[1]=m_force_cart[1];
-	temp[2]=m_force_cart[2];
-	temp[3]=1;
-
-	// Calculate forces
-	Multiply(m_CartGripperPose.data,temp,error);
-
-	for(unsigned int i=0; i<3;i++)
+	vector<double> newHvp0(SIZE_H, 0.0);
+	vector<double> newHvptip(SIZE_H, 0.0);
+	newHvptip.assign(EYE4,EYE4+SIZE_H);
+	newHvptip[X_H]=m_force_cart[0];
+	newHvptip[Y_H]=m_force_cart[1];
+	newHvptip[Z_H]=m_force_cart[2];
+	vector<double> zero_stiffness_crt(SIZE_CART_STIFFNESS,0);
+	if(  m_CartSpaceStiffness.data==zero_stiffness_crt)
 	{
-		done = done && ( abs(temp[i] + m_CartForceState.data[i+3]) < alpha ); // m_CartForceState is in w,x order
-		m_position_cart[i] = error[i];
+		log(Error)<<"Cartesian Stiffness is zero in all direction arm will not move;"<<endlog();
+		log(Info)<<"Switching to gravity mode"<<endlog();
+		gravityMode();
+		return;
 	}
-
-	// From states
-	m_JointSpaceSetpoint.data.assign(m_JointGripperPose.data.begin(), m_JointGripperPose.data.end());
-
-	// Calculated inputs
-	m_CartSpaceSetpoint.data.assign(m_position_cart.begin(), m_position_cart.end());
-
+	// Calculate forces
+	if (isForceOverLimit_Norm())
+	{
+		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
+		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
+		return;
+	}
+	else
+	{
+		MultiplyH(m_Htip0.data,newHvptip,newHvp0);
+		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
+	}
 	// Joint space zero stiffness
-	double stiffness_jnt[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	m_JointSpaceStiffness.data.assign(stiffness_jnt, stiffness_jnt + 8);
-
-	// Use pre set stiffnesses (for now) // From input
-	m_CartSpaceStiffness_rot.data[0] = GUARD_STIFFNESS_C[0];//m_stiffness_cart[0];
-	m_CartSpaceStiffness_trans.data[0] = GUARD_STIFFNESS_C[1];//m_stiffness_cart[1];
+	double zero_stiffness_jnt[SIZE_JOINTS_ARRAY] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	m_JointSpaceStiffness.data.assign(zero_stiffness_jnt, zero_stiffness_jnt + SIZE_JOINTS_ARRAY);
+	//set joint set points to current state
+	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
 }
 
 }
 
 ORO_CREATE_COMPONENT( YouBot::YouBot_executive)
+
+
+

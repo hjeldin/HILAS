@@ -25,18 +25,15 @@ find_package(OROCOS-RTT REQUIRED ${RTT_HINTS})
 # Defines the orocos_* cmake macros. See that file for additional
 # documentation.
 include(${OROCOS-RTT_USE_FILE_PATH}/UseOROCOS-RTT.cmake)
-#include(/opt/eclipse/local.cmake)
+
 # Determine target
 set(OROCOS_TARGET $ENV{OROCOS_TARGET})
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake_modules)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../eclipse.cmake)
 
 #
 # Compile stuff
 #
-
-
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/lib)
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/bin)
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
@@ -49,8 +46,6 @@ SET(CMAKE_BUILD_TYPE Debug)
 #include all CMakeList.txt files within this package
 #each generates one library or application	
 ADD_SUBDIRECTORY(src)
-
-#ADD_SUBDIRECTORY(examples) 
 
 orocos_generate_package()
 
