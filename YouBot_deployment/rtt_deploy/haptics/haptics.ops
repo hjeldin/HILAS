@@ -1,0 +1,33 @@
+#
+# YouBot haptics example
+#
+
+import("rtt_rosnode");
+import("fbsched");
+require("ros_integration")
+require("print")
+
+print.ln("Starting the FBScheduler");
+loadComponent("controlloop_scheduler", "FBSched");
+setActivity("controlloop_scheduler", 0.001, HighestPriority, ORO_SCHED_RT);
+
+print.ln("Starting generic/driver.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
+
+print.ln("Starting haptics/controller.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptics/controller.ops")
+
+print.ln("Starting haptics/executive.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptics/executive.ops")
+
+print.ln("Starting control loop");
+controlloop_scheduler.configure;
+controlloop_scheduler.start;
+
+print.ln("Clearing controller timeouts.")
+driver.Arm1.clearControllerTimeouts;
+driver.Base.clearControllerTimeouts;
+
+print.ln("Started...");
+
+

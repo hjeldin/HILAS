@@ -14,8 +14,8 @@ cp_nrt.type = BUFFER;
 cp_nrt.lock_policy = LOCK_FREE;
 cp_nrt.size = 20;
 
-connectPeers("monitor", "EventLogger");
-connect("monitor.events", "EventLogger.events", cp_nrt);
+connectPeers("monitor", "event_logger");
+connect("monitor.events", "event_logger.events", cp_nrt);
 
 monitor.configure();
 monitor.setPeriod(0.01);

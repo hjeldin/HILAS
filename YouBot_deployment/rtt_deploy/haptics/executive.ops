@@ -1,0 +1,46 @@
+import("YouBot_executive")
+
+loadComponent("executive","YouBot::YouBot_executive")
+
+#
+# Connections policies
+#
+# RT (or unbuffered)
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE; 
+
+#
+# Connections
+# 
+connect("executive.JointSpaceSetpoint","controller.JointSpaceSetpoint",cp_rt)
+connect("executive.JointSpaceStiffness","controller.JntSpaceStiffness",cp_rt)   
+connect("executive.CartSpaceSetpoint","controller.Hvp0",cp_rt)
+connect("executive.CartSpaceStiffness","controller.CartSpaceStiffness",cp_rt) 
+connect("executive.HtipCC","controller.HtipCC",cp_rt)
+
+connect("controller.Htip0", "executive.Htip0", cp_rt)
+connect("controller.JointStates", "executive.JointStates", cp_rt)
+connect("controller.Wtip0", "executive.Wtip0", cp_rt)
+
+connect("executive.gripper_cmd","driver.Gripper1.gripper_cmd_position",cp_rt)
+
+#
+# Start running
+#
+executive.setPeriod(0.01)
+executive.configure
+executive.start
+
+#
+# Snake position
+# 
+executive.Joint_position_setpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
+executive.Joint_stiffness_setpoint=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
+
+#
+# Random safe pose
+#
+//executive.Gripper_position_setpoint=array(0.45,0.0,0.39,0.0,1.64,0.0)
+//executive.Gripper_stiffness_setpoint=array(0.0,10.0)
+

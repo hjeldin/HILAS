@@ -9,13 +9,27 @@ import("rtt_motion_control_msgs");
 displayComponentTypes;
 
 loadComponent("driver","YouBot::YouBotOODL");
-loadComponent("EventLogger", "EventLogger");
+loadComponent("event_logger", "EventLogger");
 
-setActivity("driver", 0.001, HighestPriority, ORO_SCHED_RT);
-// Adjust comments to enable/disable Wifi-watchdog.
+#
+# Activities / threads
+# 
+setMasterSlaveActivity("controlloop_scheduler", "driver");
+setActivity("event_logger", 0.1, LowestPriority, ORO_SCHED_OTHER);
+
+#
+# Configure
+#
+# Watchdog 
+# Adjust comments to enable/disable Wifi-watchdog.
+#
 //driver.noWatchdog;
 driver.configure;
+event_logger.configure.
 
+#
+# Connection policies
+# 
 var ConnPolicy cp_rt;
 cp_rt.type = DATA;  
 cp_rt.lock_policy = LOCK_FREE;
@@ -25,35 +39,27 @@ cp_events.type = BUFFER;
 cp_events.lock_policy = LOCK_FREE;
 cp_events.size = 20;
 
-connectPeers("driver", "EventLogger");
-connect("driver.Arm1.events", "EventLogger.events", cp_events);
-connect("driver.Base.events", "EventLogger.events", cp_events);
+var ConnPolicy cp_wd;
+cp_wd.transport = 3;
+cp_wd.type = BUFFER;
+cp_wd.size=1;
+cp_wd.lock_policy = LOCK_FREE;
+cp_wd.name_id = "/watchdog/keepalive";
 
 #
-# ROS output
+# Connect peers
 #
 
-var ConnPolicy cp_ros;
-cp_ros.transport = 3;
-cp_ros.type = BUFFER;
-cp_ros.size=1;
-cp_ros.lock_policy = LOCK_FREE;
-cp_ros.name_id = "/watchdog/keepalive";
-stream("driver.WatchdogService.watchdog_msg", cp_ros);
+connectPeers("driver", "event_logger");
+connect("driver.Arm1.events", "event_logger.events", cp_events);
+connect("driver.Base.events", "event_logger.events", cp_events);
 
-#var ConnPolicy cp_ros;
-#cp_ros.transport = 3;
-#cp_ros.name_id = "/debug/arm/joint_state";
-#stream("driver.Arm1.joint_state", cp_ros);
-
-#cp_ros.name_id = "/debug/base/joint_state";
-#stream("driver.Base.joint_state", cp_ros);
+# ROS
+stream("driver.WatchdogService.watchdog_msg", cp_wd);
 
 # 
 # Start running
 # 
-setActivity("EventLogger", 0.1, LowestPriority, ORO_SCHED_OTHER)
-EventLogger.configure;
-EventLogger.start;
+event_logger.start;
 driver.start;
 

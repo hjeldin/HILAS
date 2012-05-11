@@ -1,4 +1,4 @@
-import("YouBot_control_with_base");
+import("YouBot_control");
 import("YouBot_adapters");
 import("TSimAdapters");
 
@@ -16,6 +16,15 @@ loadComponent("arm_state_to_control", "geometry_JointState_to_TSim");
 loadComponent("controller","youbot_control::YouBot_control");
 
 #
+# Activities / threads
+# 
+setMasterSlaveActivity("controlloop_scheduler", "base_state_to_control");
+setMasterSlaveActivity("controlloop_scheduler", "arm_state_to_control");
+setMasterSlaveActivity("controlloop_scheduler", "controller");
+setMasterSlaveActivity("controlloop_scheduler", "control_to_base");
+setMasterSlaveActivity("controlloop_scheduler", "control_to_arm");
+
+#
 # Connection Policies
 #
 var ConnPolicy cp_rt;
@@ -27,23 +36,15 @@ cp_rt.lock_policy = LOCK_FREE;
 #
 # Arm
 var std.vector<ctrl_modes>  arm_ctrl_modes=std.vector<ctrl_modes>(5,TORQUE);
-//driver.Arm1.clearControllerTimeouts();
 driver.Arm1.setControlModes(arm_ctrl_modes);
 control_to_arm.initialize(TORQUE,5);
 arm_state_to_control.initialize(5);
 
 # Base
 var std.vector<ctrl_modes>  base_ctrl_modes=std.vector<ctrl_modes>(4,TORQUE);
-//driver.Base.clearControllerTimeouts();
 driver.Base.setControlModes(base_ctrl_modes);
 control_to_base.initialize(TORQUE,4);
 base_state_to_control.initialize(4);
-
-#
-# Activities / threads
-# 
-setActivity("controller",0.001,HighestPriority,ORO_SCHED_RT);
-// The rest are event-based (for now).
 
 #
 # Connect ports
@@ -84,7 +85,4 @@ controller.JointSpaceDamping.r[4] = 1;
 controller.JointSpaceDamping.r[5] = 1;
 controller.JointSpaceDamping.r[6] = 1;
 controller.JointSpaceDamping.r[7] = 1;
-
-
-
 
