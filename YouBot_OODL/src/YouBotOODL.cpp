@@ -49,7 +49,7 @@ namespace YouBot
 		{
 			m_ec_master = &EthercatMaster::getInstance("/youbot-ethercat.cfg", OODL_YOUBOT_CONFIG_DIR, false);
 
-      if(m_ec_master == NULL || (m_ec_master != NULL && m_ec_master->isEtherCATConnectionEstablished()))
+      if(m_ec_master == NULL || (m_ec_master != NULL && !m_ec_master->isEtherCATConnectionEstablished()))
       {
         log(Error) << "No EtherCat connection." << endlog();
         this->error();
