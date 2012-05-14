@@ -100,6 +100,8 @@ namespace YouBot
 
 	std::string motor_status_tostring(const unsigned int& cd)
 	{
+    using namespace youbot;
+
 		std::stringstream errors;
 
 		if (cd & OVER_CURRENT) {

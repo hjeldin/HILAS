@@ -1,0 +1,21 @@
+- git:
+    local-name: rFSM
+    uri: https://github.com/kmarkus/rFSM.git
+    version: master
+
+- git:
+    local-name: fbsched
+    uri: https://github.com/kmarkus/fbsched.git
+    version: master
+
+- git:
+    local-name: youbot_driver
+    uri: https://github.com/youbot/youbot_driver.git
+    version: develop
+
+- git:
+    local-name: motion_control
+    uri: http://git.mech.kuleuven.be/robotics/motion_control.git
+    version: devel
+
+

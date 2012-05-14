@@ -6,40 +6,32 @@ Note: The development repository is located at: https://git.ce.utwente.nl/youbot
 ==INSTALLATION==
 
 ===Prerequisites===
-* Atleast youBot firmware 1.48
+* youBot firmware 1.48
+* Ubuntu, preferably 10.10 or 10.04
 * ROS (electric) installed and setup (www.ros.org)
- * Use ubuntu packages, ATLEAST: ros-electric-desktop
+ - Use Ubuntu packages, ATLEAST: 
+   sudo apt-get install ros-electric-desktop
 * orocos_toolchain_ros (corresponding to electric) installed and setup. 
- * Use ubuntu packages: sudo apt-get install ros-electric-orocos-toolchain ros-electric-rtt-ros-integration ros-electric-rtt-ros-comm ros-electric-rtt-common-msgs ros-electric-rtt-geometry
-For the UTwente YouBot-stack the following must also be installed:
-* KUL motion_control stack (see below).
-* youbot_driver without internal thread (see below).
+ - Use Ubuntu packages: 
+   sudo apt-get install ros-electric-orocos-toolchain ros-electric-rtt-ros-integration ros-electric-rtt-ros-comm ros-electric-rtt-common-msgs ros-electric-rtt-geometry
 
-===youbot_driver===
-git clone https://github.com/youbot/youbot_driver.git
-Open CMakeLists.txt and change SET(USE_ETHERCAT_MASTER_WITH_THREAD ON) to OFF.
-Make sure the pkgmanager youbot-oodl is NOT installed.
-
-===KUL motion_control stack install===
-* Note you only need the motion_control_msgs and rtt_motion_control_msgs directories. 
-Proposed steps:
-git clone http://git.mech.kuleuven.be/robotics/motion_control.git
-cd motion_control
-git checkout devel
-OPTIONAL: rm -rf ./cartesian_motion_control ./naxes_motion_control
-Adjust the ROS_PACKAGE_PATH to find the stack.
-rosmake
-
-===UTwente YouBot-stack install===
+=== Install procedure ===
+1) Clone the UTwente youbot-stack:
 git clone git://github.com/b-it-bots/youbot-stack.git
-cd youbot-stack
-git submodule init
-git submodule update
-touch external/youbot_applications/diagnostics_tool/ROS_NOBUILD
-Adjust the ROS_PACKAGE_PATH to find the stack.
-rosmake
 
-Note: If you did not install the pre-compiled packages, adjust the run.sh files accordingly.
+2) Install the external stack/package dependencies:
+2a) Replace DEV by your install folder
+rosinstall ~/DEV youbot-stack.rosinstall /opt/ros/electric
+rosdep install motion_control
+rosdep install fbsched
+rosdep install rFSM
+rosdep install youbot_driver
+rosmake motion_control fbsched rFSM youbot_driver
+
+3) Adjust the ROS_PACKAGE_PATH to find all packages and stacks.
+
+4) Build the UTwente youbot-stack
+rosmake youbot-stack
 
 == USAGE (example) ==
 1) roscd YouBot_deployment/rtt_deploy
@@ -50,6 +42,14 @@ Note: Almost every package contains a separate deploy.ops (Orocos deployment scr
 == DOCUMENTATION == 
 http://www.best-of-robotics.org/3rd_researchcamp/CodeGenerationForRTT
 
+The following external packages/stacks are used:
+ - youbot_driver - BRICS youBot OODL (Bohn-Rhine-Sieg)
+ - motion_control stack - message types (KU Leuven)
+ - fbsched - function block scheduler (KU Leuven)
+ - rFSM - Orocos Lua FSM (KU Leuven)
+ - youbot_applications - YouBot_configurator component (Locomotec)
+
 == MAJOR UPDATE LOG ==
-12/12/2011 Cleaned stack, i.e. moved foreign includes/directories into external folder. To update: git submodule init; git submodule update; rm -rf ./rFSM ./soem; rosmake --pre-clean; Note: You might have to update the external/youbot_applications and youbot_driver yourself (cd external/youbot_applications; git checkout master; git pull; cd joint_configurator; make clean)
+14/05/2012 Changed the install procedure and the required youbot_driver version. Please redo the installation as described above.
 01/05/2012 Updated YouBot_OODL port naming to match KUL youbot_master_rtt ports. To update: git pull; rosmake --pre-clean YouBot_OODL; Afterwards: update your scripts.
+12/12/2011 Cleaned stack, i.e. moved foreign includes/directories into external folder. To update: git submodule init; git submodule update; rm -rf ./rFSM ./soem; rosmake --pre-clean; Note: You might have to update the external/youbot_applications and youbot_driver yourself (cd external/youbot_applications; git checkout master; git pull; cd joint_configurator; make clean)

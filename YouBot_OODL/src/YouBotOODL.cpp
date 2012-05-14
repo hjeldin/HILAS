@@ -6,6 +6,7 @@
 #include "WatchdogService.hpp"
 
 #include <youbot/ProtocolDefinitions.hpp>
+#include <youbot/EthercatMaster.hpp>
 
 #include <ocl/Component.hpp>
 
@@ -46,21 +47,35 @@ namespace YouBot
 
 		try
 		{
-			m_ec_master = &(EthercatMaster::getInstance("/youbot-ethercat.cfg", OODL_YOUBOT_CONFIG_DIR));
+			m_ec_master = &EthercatMaster::getInstance("/youbot-ethercat.cfg", OODL_YOUBOT_CONFIG_DIR, false);
+
+      if(m_ec_master == NULL || (m_ec_master != NULL && m_ec_master->isEtherCATConnectionEstablished()))
+      {
+        log(Error) << "No EtherCat connection." << endlog();
+        this->error();
+        return false;
+      }
+
+      if(m_ec_master->isThreadActive())
+      {
+        log(Error) << "EtherCat thread detected, programming error." << endlog();
+        this->error();
+        return false;
+      }
 
 			nr_slaves = m_ec_master->getNumberOfSlaves();
+
+			if(nr_slaves != (NR_OF_BASE_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + NR_OF_ARM_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + 2*NR_OF_ARM_SLAVES))
+			{
+				log(Error) << "Not a proper amount of Ethercat slaves, got:" << nr_slaves << endlog();
+		    this->error();
+				return false;
+			}
 		}
 		catch (std::exception& e)
 		{
 			log(Error) << e.what() << endlog();
 			this->exception();
-			return false;
-		}
-
-		if(nr_slaves != (NR_OF_BASE_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + NR_OF_ARM_SLAVES) && nr_slaves != (NR_OF_BASE_SLAVES + 2*NR_OF_ARM_SLAVES))
-		{
-			log(Error) << "Not a proper amount of Ethercat slaves, got:" << nr_slaves << endlog();
-         this->exception();
 			return false;
 		}
 
@@ -150,7 +165,7 @@ namespace YouBot
 			start_ops.clear();
 			stop_ops.clear();
 			cleanup_ops.clear();
-         this->exception();
+      this->error();
 			return false;
 		}
 		else
@@ -236,7 +251,7 @@ namespace YouBot
 			m_communication_errors = 0;
 		}
 
-        TaskContext::updateHook();
+    TaskContext::updateHook();
 	}
 
 	void YouBotOODL::stopHook()

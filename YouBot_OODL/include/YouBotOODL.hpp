@@ -43,7 +43,7 @@ namespace YouBot
       vector<OperationCaller<void(void)> > stop_ops;
       vector<OperationCaller<void(void)> > cleanup_ops;
 
-      youbot::EthercatMaster* m_ec_master;
+      youbot::EthercatMasterInterface* m_ec_master;
       unsigned int m_communication_errors;
       unsigned int m_max_communication_errors;
 

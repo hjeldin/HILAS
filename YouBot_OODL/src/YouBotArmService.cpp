@@ -132,7 +132,7 @@ namespace YouBot
     for (unsigned int i = 0; i < NR_OF_ARM_SLAVES; ++i)
     {
       m_joints[i]->getStatus(tmp);
-      if (tmp & ::TIMEOUT)
+      if (tmp & youbot::TIMEOUT)
       {
         ClearMotorControllerTimeoutFlag clearTimeoutFlag;
         m_joints[i]->setConfigurationParameter(clearTimeoutFlag);
@@ -231,28 +231,28 @@ namespace YouBot
     {
       m_joints[joint]->getStatus(tmp);
 
-      CHECK_EVENT_EDGE(::OVER_CURRENT, m_overcurrent, E_OVERCURRENT)
+      CHECK_EVENT_EDGE(youbot::OVER_CURRENT, m_overcurrent, E_OVERCURRENT)
 
-      CHECK_EVENT_EDGE(::UNDER_VOLTAGE, m_undervoltage, E_UNDERVOLTAGE)
+      CHECK_EVENT_EDGE(youbot::UNDER_VOLTAGE, m_undervoltage, E_UNDERVOLTAGE)
 
-      CHECK_EVENT_EDGE(::OVER_VOLTAGE, m_overvoltage, E_OVERVOLTAGE)
+      CHECK_EVENT_EDGE(youbot::OVER_VOLTAGE, m_overvoltage, E_OVERVOLTAGE)
 
-      CHECK_EVENT_EDGE(::OVER_TEMPERATURE, m_overtemperature, E_OVERTEMP)
+      CHECK_EVENT_EDGE(youbot::OVER_TEMPERATURE, m_overtemperature, E_OVERTEMP)
 
-  //      CHECK_EVENT_EDGE(::E_EC_CON_LOST, m_connectionlost, E_OVERTEMP)
+  //      CHECK_EVENT_EDGE(youbot::E_EC_CON_LOST, m_connectionlost, E_OVERTEMP)
 
-      CHECK_EVENT_EDGE(::I2T_EXCEEDED, m_i2texceeded, E_I2T_EXCEEDED)
+      CHECK_EVENT_EDGE(youbot::I2T_EXCEEDED, m_i2texceeded, E_I2T_EXCEEDED)
 
-      CHECK_EVENT_EDGE(::TIMEOUT, m_timeout, E_EC_TIMEOUT)
+      CHECK_EVENT_EDGE(youbot::TIMEOUT, m_timeout, E_EC_TIMEOUT)
 
       // level events
-      CHECK_EVENT_LEVEL(::HALL_SENSOR_ERROR, E_HALL_ERR)
+      CHECK_EVENT_LEVEL(youbot::HALL_SENSOR_ERROR, E_HALL_ERR)
 
-  //			CHECK_EVENT_LEVEL(::ENCODER_ERROR, E_ENCODER_ERR)
+  //			CHECK_EVENT_LEVEL(youbot::ENCODER_ERROR, E_ENCODER_ERR)
 
-  //			CHECK_EVENT_LEVEL(::, E_SINE_COMM_INIT_ERR)
+  //			CHECK_EVENT_LEVEL(youbot::, E_SINE_COMM_INIT_ERR)
 
-  //			CHECK_EVENT_LEVEL(::EMERGENCY_STOP, E_EMERGENCY_STOP)
+  //			CHECK_EVENT_LEVEL(youbot::EMERGENCY_STOP, E_EMERGENCY_STOP)
     }
   }
 
