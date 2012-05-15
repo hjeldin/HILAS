@@ -1,23 +1,23 @@
 #
 # Connections policies
 #
-# Outputs towards Haptic_master
-var ConnPolicy cp_ros_outH;
-cp_ros_outH.transport = 3;
-cp_ros_outH.name_id = "/haptic_master/outH";
-
+# Towards Haptic_master
 var ConnPolicy cp_ros_Hytip0;
 cp_ros_Hytip0.transport = 3;
 cp_ros_Hytip0.name_id = "/haptic_master/Hytip0";
 
-# Inputs from Haptic_master
-var ConnPolicy cp_ros_Hout0;
-cp_ros_Hout0.transport = 3;
-cp_ros_Hout0.name_id = "/haptic_master/Hout0";
-
 var ConnPolicy cp_ros_inH;
 cp_ros_inH.transport = 3;
 cp_ros_inH.name_id = "/haptic_master/inH";
+
+# From Haptic_master
+var ConnPolicy cp_ros_outH;
+cp_ros_outH.transport = 3;
+cp_ros_outH.name_id = "/haptic_master/outH";
+
+var ConnPolicy cp_ros_Hout0;
+cp_ros_Hout0.transport = 3;
+cp_ros_Hout0.name_id = "/haptic_master/Hout0";
       
 #
 # Load components
@@ -26,11 +26,12 @@ cp_ros_inH.name_id = "/haptic_master/inH";
 #
 # Connections
 # 
-stream("controller.inH", cp_ros_outH);
-stream("controller.Htip0", cp_ros_Hytip0);
 
-stream("controller.Hvp0", cp_ros_Hout0);
+stream("controller.Htip0", cp_ros_Hytip0);
 stream("controller.outH", cp_ros_inH);
+
+stream("controller.inH", cp_ros_outH);
+stream("controller.Hvp0", cp_ros_Hout0);
 
 #
 # Start running

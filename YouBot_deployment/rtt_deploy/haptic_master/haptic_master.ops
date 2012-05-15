@@ -1,0 +1,128 @@
+#
+# YouBot haptic master example
+#
+
+import("rtt_rosnode");
+import("fbsched");
+require("ros_integration")
+require("print")
+
+import("ut_phantom_omni");
+import("YouBot_adapters");
+import("TSimAdapters");
+import("Master_haptic");
+import("Interactive_marker1");
+import("joystick_to_geometry_Twist");
+
+displayComponentTypes;
+
+#
+# Load components and configure
+#
+loadComponent("scheduler", "FBSched");
+scheduler.setPeriod(0.001);
+
+loadComponent("phantom","PhantomOmni");
+phantom.configure;
+
+loadComponent("joystick", "joystick_to_geometry_Twist");
+joystick.configure;
+joystick.scale_output[0] = 0.01;
+joystick.scale_output[1] = 0.01;
+joystick.scale_output[2] = 0.01;
+
+loadComponent("joystick_to_tsim", "geometry_Twist_to_TSim");
+
+loadComponent("transform_to_tsim", "geometry_TransformStamped_to_TSim");
+loadComponent("tsim_to_wrench", "TSim_to_geometry_Wrench");
+
+loadComponent("Haptic_master", "youbot_control_d_sefltest_POPC::Master_haptic");
+loadComponent("IMarkers", "youbot_control_d_sefltest_POPC::Interactive_marker1");
+
+setMasterSlaveActivity("scheduler", "IMarkers");
+setMasterSlaveActivity("scheduler", "phantom");
+setMasterSlaveActivity("scheduler", "joystick");
+setMasterSlaveActivity("scheduler", "joystick_to_tsim");
+setMasterSlaveActivity("scheduler", "transform_to_tsim");
+setMasterSlaveActivity("scheduler", "Haptic_master");
+setMasterSlaveActivity("scheduler", "tsim_to_wrench");
+
+
+#
+# Connection policies
+# 
+# RT (or unbuffered)
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE; 
+
+# Joystick on Master pc.
+var ConnPolicy cp_ros_joystick;
+cp_ros_joystick.transport = 3;
+cp_ros_joystick.name_id = "/joy";
+
+# Towards Haptic_master
+var ConnPolicy cp_ros_Hytip0;
+cp_ros_Hytip0.transport = 3;
+cp_ros_Hytip0.name_id = "/haptic_master/Hytip0";
+
+var ConnPolicy cp_ros_inH;
+cp_ros_inH.transport = 3;
+cp_ros_inH.name_id = "/haptic_master/inH";
+
+# From Haptic_master
+var ConnPolicy cp_ros_outH;
+cp_ros_outH.transport = 3;
+cp_ros_outH.name_id = "/haptic_master/outH";
+
+var ConnPolicy cp_ros_Hout0;
+cp_ros_Hout0.transport = 3;
+cp_ros_Hout0.name_id = "/haptic_master/Hout0";
+
+#
+# Connections
+#
+# Joystick
+stream("joystick.joystick", cp_ros_joystick); 
+
+# Internal
+connect("joystick.twist_command", "joystick_to_tsim.input_twist", cp_rt);
+connect("joystick_to_tsim.output_twist", "Haptic_master.JoyTwist", cp_rt);
+
+connect("Haptic_master.effort", "tsim_to_wrench.input_wrench", cp_rt);
+connect("tsim_to_wrench.output_wrench", "phantom.wrench", cp_rt);
+
+connect("phantom.transform","transform_to_tsim.input_transform",cp_rt)
+connect("transform_to_tsim.output_transform", "Haptic_master.Htip0", cp_rt);
+
+connect("IMarkers.port1", "Haptic_master.Hmint", cp_rt);
+
+# Master <-> Slave
+stream("Haptic_master.inH", cp_ros_inH);
+stream("Haptic_master.Hytip0", cp_ros_Hytip0);
+
+stream("Haptic_master.outH", cp_ros_outH);
+stream("Haptic_master.Hout0", cp_ros_Hout0); 
+
+#
+# Start running
+#
+joystick.start;
+joystick_to_tsim.start;
+transform_to_tsim.start;
+tsim_to_wrench.start;
+IMarkers.configure;
+IMarkers.start;
+Haptic_master.configure;
+Haptic_master.start;
+phantom.start
+
+scheduler.configure;
+scheduler.start;
+
+#
+# Started
+#
+print.ln("Started...");
+
+
