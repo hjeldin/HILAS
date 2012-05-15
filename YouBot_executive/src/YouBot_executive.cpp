@@ -8,6 +8,7 @@
 
 #include <tf/transform_broadcaster.h>
 #include "ExecutiveHelpers.hpp"
+#include <boost/thread/thread.hpp>
 
 using namespace Orocos;
 using namespace RTT;
@@ -38,7 +39,7 @@ void YouBot_executive::setupComponentInterface()
 //	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this).doc("Move tip for gripper length backwards. Takes no arguments");
 
 	// Configurable actions
-	this->addOperation("setJointsState", &YouBot_executive::setJointsState, this).doc("Joint space control");
+	this->addOperation("setJointAngles", &YouBot_executive::setJointAngles, this).doc("Joint space control");
 
 	this->addOperation("setHvp0", &YouBot_executive::setHvp0, this).doc("Define attraction point with respect to inertial frame. Takes vector flatten H matrix");
 //	this->addOperation("setHvptip", &YouBot_executive::setHvptip, this).doc("Define attraction point with respect to current tool tip frame.Takes vector flatten H matrix");
@@ -75,6 +76,9 @@ void YouBot_executive::setupComponentInterface()
 	this->addProperty("CartSpaceStiffness", m_CartSpaceStiffness.data);
 	this->addProperty("Wtip0",m_Wtip0.data);
 	this->addProperty("HtipCC",m_HtipCC.data);
+	this->addProperty("state", m_state);
+
+	this->addOperation("sleep", &YouBot_executive::sleep,this, OwnThread).doc("Hack: Sleeping management.");
 }
 
 void YouBot_executive::init()
@@ -160,7 +164,7 @@ void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 	m_JointSpaceStiffness.data.assign(stiffness_j.begin(),stiffness_j.end()); //Swap is valid since
 }
 
-void YouBot_executive::setJointsState(vector<double> position_j)
+void YouBot_executive::setJointAngles(vector<double> position_j)
 {
 	if(position_j.size() != SIZE_JOINTS_ARRAY)
 	{
@@ -443,6 +447,11 @@ void YouBot_executive::stateGuardedMove()
 	m_JointSpaceStiffness.data.assign(zero_stiffness_jnt, zero_stiffness_jnt + SIZE_JOINTS_ARRAY);
 	//set joint set points to current state
 	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
+}
+
+void YouBot_executive::sleep(double seconds)
+{
+	boost::this_thread::sleep( boost::posix_time::seconds(seconds) );
 }
 
 }

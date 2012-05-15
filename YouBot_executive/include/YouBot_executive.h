@@ -55,13 +55,16 @@ class YouBot_executive: public TaskContext
 		void guardMove(vector<double> force_c);
 		void setCartesianStiffness(vector<double> stiffness_c);
 		//Joint Space actions
-		void setJointsState(vector<double> position_j);	
+		void setJointAngles(vector<double> position_j);	
 		void setJointStiffness(vector<double> stiffness_j);
 
 		//readouts
 		void getJointStates(vector<double>& sample);
 		void getTip_xyzypr(vector<double>& sample);
 		void getHtip0(vector<double>& sample_H);
+
+		// hacks
+		void sleep(double seconds);
 
 		// Ports and their variables
 		RTT::OutputPort<flat_matrix_t> JointSpaceSetpoint;

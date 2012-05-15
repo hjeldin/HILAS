@@ -25,7 +25,7 @@ controlloop_scheduler.configure;
 controlloop_scheduler.start;
 
 executive.setJointStiffness(executive.JointSpaceStiffness);
-executive.setJointsState(executive.JointSpaceSetpoint);
+executive.setJointAngles(executive.JointSpaceSetpoint);
 
 print.ln("Coupling haptic slave connections");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/haptic_slave_connections.ops")
@@ -34,6 +34,24 @@ print.ln("Clearing controller timeouts.")
 driver.Arm1.clearControllerTimeouts;
 driver.Base.clearControllerTimeouts;
 
-print.ln("Started...");
+executive.sleep(2);
 
+print.ln("Started (1)...");
+
+var float64[] cart_stiffness = float64[](9, 0.0);
+cart_stiffness[0] = 50;
+cart_stiffness[1] = 50;
+cart_stiffness[2] = 50;
+
+var float64[] cart_pos = float64[](16, 0.0);
+
+executive.setCartesianStiffness(cart_stiffness);
+executive.getHtip0(cart_pos);
+executive.setHvp0(cart_pos);
+
+executive.sleep(1);
+
+executive.stop;
+
+print.ln("Started (2)...");
 
