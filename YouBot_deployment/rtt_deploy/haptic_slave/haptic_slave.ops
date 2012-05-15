@@ -24,6 +24,12 @@ print.ln("Starting control loop");
 controlloop_scheduler.configure;
 controlloop_scheduler.start;
 
+executive.setJointStiffness(executive.JointSpaceStiffness);
+executive.setJointsState(executive.JointSpaceSetpoint);
+
+print.ln("Coupling haptic slave connections");
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptics/haptic_slave_connections.ops")
+
 print.ln("Clearing controller timeouts.")
 driver.Arm1.clearControllerTimeouts;
 driver.Base.clearControllerTimeouts;

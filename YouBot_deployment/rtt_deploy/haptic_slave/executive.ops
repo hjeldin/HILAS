@@ -35,8 +35,8 @@ executive.start
 #
 # Snake position
 # 
-executive.Joint_position_setpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
-executive.Joint_stiffness_setpoint=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
+executive.JointSpaceSetpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
+executive.JointSpaceStiffness=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
 
 #
 # Random safe pose
