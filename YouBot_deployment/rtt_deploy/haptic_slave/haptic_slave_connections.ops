@@ -4,20 +4,20 @@
 # Towards Haptic_master
 var ConnPolicy cp_ros_Hytip0;
 cp_ros_Hytip0.transport = 3;
-cp_ros_Hytip0.name_id = "/haptic_master/Hytip0";
+cp_ros_Hytip0.name_id = "/HapticMaster/Hytip0";
 
 var ConnPolicy cp_ros_inH;
 cp_ros_inH.transport = 3;
-cp_ros_inH.name_id = "/haptic_master/inH";
+cp_ros_inH.name_id = "/HapticMaster/inH";
 
 # From Haptic_master
 var ConnPolicy cp_ros_outH;
 cp_ros_outH.transport = 3;
-cp_ros_outH.name_id = "/haptic_master/outH";
+cp_ros_outH.name_id = "/HapticMaster/outH";
 
 var ConnPolicy cp_ros_Hout0;
 cp_ros_Hout0.transport = 3;
-cp_ros_Hout0.name_id = "/haptic_master/Hout0";
+cp_ros_Hout0.name_id = "/HapticMaster/Hout0";
       
 #
 # Load components

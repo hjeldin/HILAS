@@ -1,4 +1,4 @@
-import("YouBot_control");
+import("YouBot_Control");
 import("YouBot_adapters");
 import("TSimAdapters");
 
@@ -13,7 +13,7 @@ loadComponent("control_to_arm", "YouBot::TSim_to_YouBot");
 loadComponent("base_state_to_control", "sensor_JointState_to_TSim");
 loadComponent("arm_state_to_control", "sensor_JointState_to_TSim");
 
-loadComponent("controller","youbot_control_d_sefltest_POPC::YouBot_control");
+loadComponent("controller","youbot_control_d_sefltest_POPC::YouBot_Control");
 
 #
 # Activities / threads

@@ -34,14 +34,17 @@ print.ln("Clearing controller timeouts.")
 driver.Arm1.clearControllerTimeouts;
 driver.Base.clearControllerTimeouts;
 
-executive.sleep(2);
+executive.sleep(3);
 
 print.ln("Started (1)...");
 
 var float64[] cart_stiffness = float64[](9, 0.0);
-cart_stiffness[0] = 50;
-cart_stiffness[1] = 50;
-cart_stiffness[2] = 50;
+cart_stiffness[0] = 1000;
+cart_stiffness[1] = 1000;
+cart_stiffness[2] = 1000;
+cart_stiffness[3] = 5;
+cart_stiffness[4] = 5;
+cart_stiffness[5] = 5;
 
 var float64[] cart_pos = float64[](16, 0.0);
 
