@@ -34,10 +34,10 @@ class YouBot_executive: public TaskContext
 		void stateGravityMode();
 		void stateJointControl();
 		void stateCartesianControl();
-		void stateGuardedMove();
+//		void stateGuardedMove();
 
 		void doneEvent();
-		void checkForceEvents();
+//		void checkForceEvents();
 
 		// predefined actions
 		void unfoldArm();
@@ -52,7 +52,7 @@ class YouBot_executive: public TaskContext
 		void setHvp0(vector<double> position_c);
 //		void setHvptip(vector<double> position_c);
 		void setHtipCC(vector<double> position_c);
-		void guardMove(vector<double> force_c);
+//		void guardMove(vector<double> force_c);
 		void setCartesianStiffness(vector<double> stiffness_c);
 		//Joint Space actions
 		void setJointAngles(vector<double> position_j);	
@@ -110,11 +110,11 @@ class YouBot_executive: public TaskContext
 		state_t m_state;
 
 		std::string m_events;
-	private:
-		bool isForceOverLimit_Norm();
-		bool isForceOverLimit_X();
-		bool isForceOverLimit_Y();
-		bool isForceOverLimit_Z();
+//	private:
+//		bool isForceOverLimit_Norm();
+//		bool isForceOverLimit_X();
+//		bool isForceOverLimit_Y();
+//		bool isForceOverLimit_Z();
 
 };
 

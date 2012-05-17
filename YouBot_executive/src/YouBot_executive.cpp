@@ -20,6 +20,8 @@ namespace YouBot
 YouBot_executive::YouBot_executive(const string& name) :
 	TaskContext(name)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+
 	this->init();
 
 	this->setupComponentInterface();
@@ -48,7 +50,7 @@ void YouBot_executive::setupComponentInterface()
 	this->addOperation("setCartesianStiffness", &YouBot_executive::setCartesianStiffness,this, OwnThread).doc(" ");
 	this->addOperation("setJointStiffness", &YouBot_executive::setJointStiffness,this, OwnThread).doc(" ");
 	
-	this->addOperation("guardMove", &YouBot_executive::guardMove, this, OwnThread).doc("Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force limit is higher then max force allowed in controller e_done event will be never sent.");
+//	this->addOperation("guardMove", &YouBot_executive::guardMove, this, OwnThread).doc("Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force limit is higher then max force allowed in controller e_done event will be never sent.");
 
 	// Sampling state
 	this->addOperation("getJointStates", &YouBot_executive::getJointStates, this, OwnThread).doc("Get joint space positions");
@@ -112,19 +114,21 @@ void YouBot_executive::init()
 
 void YouBot_executive::openGripper()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_gripper_cmd.positions[0] = GRIPPER_OPENING;
 	gripper_cmd.write(m_gripper_cmd);
 }
 
 void YouBot_executive::closeGripper()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_gripper_cmd.positions[0] = 0.0001;
 	gripper_cmd.write(m_gripper_cmd);
 }
 
 void YouBot_executive::unfoldArm()
 {
-	RTT::log(Info) << "Call unfoldArm" << endlog();
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_JointSpaceSetpoint.data.assign(UNFOLD_JOINT_POSE, UNFOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
@@ -134,7 +138,7 @@ void YouBot_executive::unfoldArm()
 
 void YouBot_executive::foldArm()
 {
-	RTT::log(Info) << "Call foldArm" << endlog();
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_JointSpaceSetpoint.data.assign(FOLD_JOINT_POSE, FOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
@@ -144,12 +148,14 @@ void YouBot_executive::foldArm()
 
 void YouBot_executive::gravityMode()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	stateTransition(GRAVITY_MODE);
 	stateGravityMode();
 }
 
 void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(stiffness_c.size() != SIZE_CART_STIFFNESS)
 	{
 		log(Error) << "setCartesianStiffness - expects a " << SIZE_CART_STIFFNESS << " dimensional vector" << endlog();
@@ -160,6 +166,7 @@ void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 
 void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(stiffness_j.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "setJointStiffness - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -170,6 +177,7 @@ void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 
 void YouBot_executive::setJointAngles(vector<double> position_j)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_j.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "positionArm - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -182,6 +190,7 @@ void YouBot_executive::setJointAngles(vector<double> position_j)
 
 void YouBot_executive::setHvp0(vector<double> position_c)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_c.size() != SIZE_H)
 	{
 		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
@@ -210,6 +219,7 @@ void YouBot_executive::setHvp0(vector<double> position_c)
 
 void YouBot_executive::setHtipCC(vector<double> position_c)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_c.size() != SIZE_H)
 	{
 		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
@@ -220,6 +230,7 @@ void YouBot_executive::setHtipCC(vector<double> position_c)
 
 void YouBot_executive::getJointStates(vector<double> & sample)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "getArmPose - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -231,6 +242,7 @@ void YouBot_executive::getJointStates(vector<double> & sample)
 
 void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample.size() != SIZE_CART_SPACE)
 	{
 		log(Error) << "getGripperPose - expects a " << SIZE_CART_SPACE << " dimensional vector" << endlog();
@@ -254,6 +266,7 @@ void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 
 void YouBot_executive::getHtip0(vector<double>& sample_H)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample_H.size() != SIZE_H)
 	{
 		log(Error) << "getGripperH - expects a "<<SIZE_H<<" dimensional vector" << endlog();
@@ -263,72 +276,72 @@ void YouBot_executive::getHtip0(vector<double>& sample_H)
 	sample_H.assign(m_Htip0.data.begin(), m_Htip0.data.end());
 }
 
-void YouBot_executive::guardMove(vector<double> force_c)
-{
-	log(Error) << "Not implemented!" << endlog();
-	this->error();
-	return;
-
-	if(force_c.size() != 3)
-	{
-		log(Error) << "guardMove - expects a 3 dimensional vector" << endlog();
-		return;
-	}
-	m_force_cart = force_c;
-	stateTransition(GUARDED_MOVE);
-	stateGuardedMove();
-}
+//void YouBot_executive::guardMove(vector<double> force_c)
+//{
+//	log(Error) << "Not implemented!" << endlog();
+//	this->error();
+//	return;
+//
+//	if(force_c.size() != 3)
+//	{
+//		log(Error) << "guardMove - expects a 3 dimensional vector" << endlog();
+//		return;
+//	}
+//	m_force_cart = force_c;
+//	stateTransition(GUARDED_MOVE);
+//	stateGuardedMove();
+//}
 
 void YouBot_executive::doneEvent(){
 	events.write(make_event(m_events, "executive.e_done"));
 }
 
-bool YouBot_executive::isForceOverLimit_Norm()
-{
-	double sum_force;
-	double sum_force_limit;
-	sum_force=m_force_cart[0]*m_force_cart[0]+m_force_cart[1]*m_force_cart[1]+m_force_cart[2]*m_force_cart[2];
-	sum_force_limit=m_Wtip0.data[3]*m_Wtip0.data[3]+m_Wtip0.data[4]*m_Wtip0.data[4]+m_Wtip0.data[5]*m_Wtip0.data[5];
-	//squared values are always positive
-	return sum_force<sum_force_limit;
-}
-
-bool YouBot_executive::isForceOverLimit_X()
-{
-	return abs(m_force_cart[0])<abs(m_Wtip0.data[3]);
-}
-
-bool YouBot_executive::isForceOverLimit_Y()
-{
-	return abs(m_force_cart[1])<abs(m_Wtip0.data[4]);
-}
-
-bool YouBot_executive::isForceOverLimit_Z()
-{
-	return abs(m_force_cart[2])<abs(m_Wtip0.data[5]);
-}
-
-void YouBot_executive::checkForceEvents(){
-	if(!checkForce)
-		return;
-	if(isForceOverLimit_X())
-	{
-		events.write(make_event(m_events, "executive.e_CartForce_X_LIMIT_REACHED_true"));
-	}
-	if(isForceOverLimit_Y())
-	{
-		events.write(make_event(m_events, "executive.e_CartForce_Y_LIMIT_REACHED_true"));
-	}
-	if(isForceOverLimit_Z())
-	{
-		events.write(make_event(m_events, "executive.e_CartForce_Z_LIMIT_REACHED_true"));
-	}
-	if(isForceOverLimit_Norm())
-	{
-		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
-	}
-
-}
+//bool YouBot_executive::isForceOverLimit_Norm()
+//{
+//	double sum_force;
+//	double sum_force_limit;
+//	sum_force=m_force_cart[0]*m_force_cart[0]+m_force_cart[1]*m_force_cart[1]+m_force_cart[2]*m_force_cart[2];
+//	sum_force_limit=m_Wtip0.data[3]*m_Wtip0.data[3]+m_Wtip0.data[4]*m_Wtip0.data[4]+m_Wtip0.data[5]*m_Wtip0.data[5];
+//	//squared values are always positive
+//	return sum_force<sum_force_limit;
+//}
+//
+//bool YouBot_executive::isForceOverLimit_X()
+//{
+//	return abs(m_force_cart[0])<abs(m_Wtip0.data[3]);
+//}
+//
+//bool YouBot_executive::isForceOverLimit_Y()
+//{
+//	return abs(m_force_cart[1])<abs(m_Wtip0.data[4]);
+//}
+//
+//bool YouBot_executive::isForceOverLimit_Z()
+//{
+//	return abs(m_force_cart[2])<abs(m_Wtip0.data[5]);
+//}
+//
+//void YouBot_executive::checkForceEvents(){
+//	if(!checkForce)
+//		return;
+//	if(isForceOverLimit_X())
+//	{
+//		events.write(make_event(m_events, "executive.e_CartForce_X_LIMIT_REACHED_true"));
+//	}
+//	if(isForceOverLimit_Y())
+//	{
+//		events.write(make_event(m_events, "executive.e_CartForce_Y_LIMIT_REACHED_true"));
+//	}
+//	if(isForceOverLimit_Z())
+//	{
+//		events.write(make_event(m_events, "executive.e_CartForce_Z_LIMIT_REACHED_true"));
+//	}
+//	if(isForceOverLimit_Norm())
+//	{
+//		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
+//	}
+//
+//}
 
 void YouBot_executive::stateTransition(state_t new_state)
 {
@@ -337,49 +350,12 @@ void YouBot_executive::stateTransition(state_t new_state)
 
 void YouBot_executive::updateHook()
 {
-
-	// perform the state specific actions
-	/*switch(m_state)
-	{
-		case(FULL_CONTROL):
-		{
-			//stateFullControl();
-			break;
-		}
-		case(GRAVITY_MODE):
-		{
-			//stateGravityMode();
-			break;
-		}
-		case(JOINT_CONTROL):
-		{
-			//stateJointControl();
-			break;
-		}
-		case(CARTESIAN_CONTROL):
-		{
-			//stateCartesianControl();
-			break;
-		}
-		case(GUARDED_MOVE):
-		{
-			//stateGuardedMove();
-			break;
-		}
-		default:
-		{
-			log(Error) << "control_state not recognized." << endlog();
-			this->error();
-			return;
-			break;
-		}
-	}*/
-
-
+  TaskContext::updateHook();
 }
 
 void YouBot_executive::readAll()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	// read all input ports
 	Htip0.read(m_Htip0);
 	JointStates.read(m_JointState);
@@ -388,6 +364,7 @@ void YouBot_executive::readAll()
 
 void YouBot_executive::writeAll()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	// write setpoints
 	assert(m_JointSpaceSetpoint.data.size() == SIZE_JOINTS_ARRAY);
 	JointSpaceSetpoint.write(m_JointSpaceSetpoint);
@@ -407,6 +384,7 @@ void YouBot_executive::writeAll()
 
 void YouBot_executive::stateFullControl()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// No additional actions required
 	writeAll();
@@ -414,6 +392,7 @@ void YouBot_executive::stateFullControl()
 
 void YouBot_executive::stateGravityMode()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// Assigns the current states as setpoints and sets the stiffness zero
 	// zero out Joint control part
@@ -428,6 +407,7 @@ void YouBot_executive::stateGravityMode()
 
 void YouBot_executive::stateJointControl()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// zero out Cartesian control part
 	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
@@ -437,6 +417,7 @@ void YouBot_executive::stateJointControl()
 
 void YouBot_executive::stateCartesianControl()
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// zero out Joint control part
 	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
@@ -444,47 +425,47 @@ void YouBot_executive::stateCartesianControl()
 	writeAll();
 }
 
-
-void YouBot_executive::stateGuardedMove()
-{
-	// NOT IMPLEMENTED
-
-	// Move with a predefined force in cartesian space
-	vector<double> newHvp0(SIZE_H, 0.0);
-	vector<double> newHvptip(SIZE_H, 0.0);
-	newHvptip.assign(EYE4,EYE4+SIZE_H);
-	newHvptip[X_H]=m_force_cart[0];
-	newHvptip[Y_H]=m_force_cart[1];
-	newHvptip[Z_H]=m_force_cart[2];
-	vector<double> zero_stiffness_crt(SIZE_CART_STIFFNESS,0);
-	if(  m_CartSpaceStiffness.data==zero_stiffness_crt)
-	{
-		log(Error)<<"Cartesian Stiffness is zero in all direction arm will not move;"<<endlog();
-		log(Info)<<"Switching to gravity mode"<<endlog();
-		gravityMode();
-		return;
-	}
-	// Calculate forces
-	if (isForceOverLimit_Norm())
-	{
-		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
-		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
-		return;
-	}
-	else
-	{
-		MultiplyH(m_Htip0.data,newHvptip,newHvp0);
-		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
-	}
-	// Joint space zero stiffness
-	double zero_stiffness_jnt[SIZE_JOINTS_ARRAY] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	m_JointSpaceStiffness.data.assign(zero_stiffness_jnt, zero_stiffness_jnt + SIZE_JOINTS_ARRAY);
-	//set joint set points to current state
-	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
-}
+//void YouBot_executive::stateGuardedMove()
+//{
+//	// NOT IMPLEMENTED
+//
+//	// Move with a predefined force in cartesian space
+//	vector<double> newHvp0(SIZE_H, 0.0);
+//	vector<double> newHvptip(SIZE_H, 0.0);
+//	newHvptip.assign(EYE4,EYE4+SIZE_H);
+//	newHvptip[X_H]=m_force_cart[0];
+//	newHvptip[Y_H]=m_force_cart[1];
+//	newHvptip[Z_H]=m_force_cart[2];
+//	vector<double> zero_stiffness_crt(SIZE_CART_STIFFNESS,0);
+//	if(  m_CartSpaceStiffness.data==zero_stiffness_crt)
+//	{
+//		log(Error)<<"Cartesian Stiffness is zero in all direction arm will not move;"<<endlog();
+//		log(Info)<<"Switching to gravity mode"<<endlog();
+//		gravityMode();
+//		return;
+//	}
+//	// Calculate forces
+//	if (isForceOverLimit_Norm())
+//	{
+//		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
+//		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
+//		return;
+//	}
+//	else
+//	{
+//		MultiplyH(m_Htip0.data,newHvptip,newHvp0);
+//		m_Hvp0.data.assign(newHvp0.begin(),newHvp0.end());
+//	}
+//	// Joint space zero stiffness
+//	double zero_stiffness_jnt[SIZE_JOINTS_ARRAY] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+//	m_JointSpaceStiffness.data.assign(zero_stiffness_jnt, zero_stiffness_jnt + SIZE_JOINTS_ARRAY);
+//	//set joint set points to current state
+//	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
+//}
 
 void YouBot_executive::sleep(double seconds)
 {
+  log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	boost::this_thread::sleep( boost::posix_time::seconds(seconds) );
 }
 
