@@ -20,7 +20,7 @@ namespace YouBot
 YouBot_executive::YouBot_executive(const string& name) :
 	TaskContext(name)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 
 	this->init();
 
@@ -114,21 +114,21 @@ void YouBot_executive::init()
 
 void YouBot_executive::openGripper()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_gripper_cmd.positions[0] = GRIPPER_OPENING;
 	gripper_cmd.write(m_gripper_cmd);
 }
 
 void YouBot_executive::closeGripper()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_gripper_cmd.positions[0] = 0.0001;
 	gripper_cmd.write(m_gripper_cmd);
 }
 
 void YouBot_executive::unfoldArm()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_JointSpaceSetpoint.data.assign(UNFOLD_JOINT_POSE, UNFOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
@@ -138,7 +138,7 @@ void YouBot_executive::unfoldArm()
 
 void YouBot_executive::foldArm()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	m_JointSpaceSetpoint.data.assign(FOLD_JOINT_POSE, FOLD_JOINT_POSE+SIZE_JOINTS_ARRAY);
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
@@ -148,14 +148,14 @@ void YouBot_executive::foldArm()
 
 void YouBot_executive::gravityMode()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	stateTransition(GRAVITY_MODE);
 	stateGravityMode();
 }
 
 void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(stiffness_c.size() != SIZE_CART_STIFFNESS)
 	{
 		log(Error) << "setCartesianStiffness - expects a " << SIZE_CART_STIFFNESS << " dimensional vector" << endlog();
@@ -166,7 +166,7 @@ void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 
 void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(stiffness_j.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "setJointStiffness - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -177,7 +177,7 @@ void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
 
 void YouBot_executive::setJointAngles(vector<double> position_j)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_j.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "positionArm - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -190,7 +190,7 @@ void YouBot_executive::setJointAngles(vector<double> position_j)
 
 void YouBot_executive::setHvp0(vector<double> position_c)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_c.size() != SIZE_H)
 	{
 		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
@@ -219,7 +219,7 @@ void YouBot_executive::setHvp0(vector<double> position_c)
 
 void YouBot_executive::setHtipCC(vector<double> position_c)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(position_c.size() != SIZE_H)
 	{
 		log(Error) << "positionGripper - expects a " << SIZE_H << " dimensional vector" << endlog();
@@ -230,7 +230,7 @@ void YouBot_executive::setHtipCC(vector<double> position_c)
 
 void YouBot_executive::getJointStates(vector<double> & sample)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample.size() != SIZE_JOINTS_ARRAY)
 	{
 		log(Error) << "getArmPose - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
@@ -242,7 +242,7 @@ void YouBot_executive::getJointStates(vector<double> & sample)
 
 void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample.size() != SIZE_CART_SPACE)
 	{
 		log(Error) << "getGripperPose - expects a " << SIZE_CART_SPACE << " dimensional vector" << endlog();
@@ -266,7 +266,7 @@ void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 
 void YouBot_executive::getHtip0(vector<double>& sample_H)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	if(sample_H.size() != SIZE_H)
 	{
 		log(Error) << "getGripperH - expects a "<<SIZE_H<<" dimensional vector" << endlog();
@@ -355,7 +355,7 @@ void YouBot_executive::updateHook()
 
 void YouBot_executive::readAll()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	// read all input ports
 	Htip0.read(m_Htip0);
 	JointStates.read(m_JointState);
@@ -364,7 +364,7 @@ void YouBot_executive::readAll()
 
 void YouBot_executive::writeAll()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	// write setpoints
 	assert(m_JointSpaceSetpoint.data.size() == SIZE_JOINTS_ARRAY);
 	JointSpaceSetpoint.write(m_JointSpaceSetpoint);
@@ -384,7 +384,7 @@ void YouBot_executive::writeAll()
 
 void YouBot_executive::stateFullControl()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// No additional actions required
 	writeAll();
@@ -392,7 +392,7 @@ void YouBot_executive::stateFullControl()
 
 void YouBot_executive::stateGravityMode()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// Assigns the current states as setpoints and sets the stiffness zero
 	// zero out Joint control part
@@ -407,7 +407,7 @@ void YouBot_executive::stateGravityMode()
 
 void YouBot_executive::stateJointControl()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// zero out Cartesian control part
 	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
@@ -417,7 +417,7 @@ void YouBot_executive::stateJointControl()
 
 void YouBot_executive::stateCartesianControl()
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	readAll();
 	// zero out Joint control part
 	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
@@ -465,7 +465,7 @@ void YouBot_executive::stateCartesianControl()
 
 void YouBot_executive::sleep(double seconds)
 {
-  log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 	boost::this_thread::sleep( boost::posix_time::seconds(seconds) );
 }
 
