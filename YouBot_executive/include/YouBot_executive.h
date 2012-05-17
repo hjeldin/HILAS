@@ -85,6 +85,9 @@ class YouBot_executive: public TaskContext
 		void setupComponentInterface();
 		void init();
 
+		void readAll();
+		void writeAll();
+
 		// The following are set from operations.
 		vector<double> m_force_cart;
 		bool checkForce;

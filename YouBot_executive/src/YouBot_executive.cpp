@@ -31,29 +31,29 @@ YouBot_executive::~YouBot_executive()
 void YouBot_executive::setupComponentInterface()
 {
 	// Predefined actions
-	this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this).doc("Unfold the arm. Takes no arguments");
-	this->addOperation("foldArm", &YouBot_executive::foldArm, this).doc("Fold the arm. Takes no arguments");
-	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this).doc("Set gravity compensation mode. Takes no arguments");
-	this->addOperation("openGripper", &YouBot_executive::openGripper, this).doc("Set gripper gap  to maximum. Takes no arguments");
-	this->addOperation("closeGripper", &YouBot_executive::closeGripper, this).doc("Set gripper gap  to minimum. Takes no arguments");
-//	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this).doc("Move tip for gripper length backwards. Takes no arguments");
+	this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this, OwnThread).doc("Unfold the arm. Takes no arguments");
+	this->addOperation("foldArm", &YouBot_executive::foldArm, this, OwnThread).doc("Fold the arm. Takes no arguments");
+	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this, OwnThread).doc("Set gravity compensation mode. Takes no arguments");
+	this->addOperation("openGripper", &YouBot_executive::openGripper, this, OwnThread).doc("Set gripper gap  to maximum. Takes no arguments");
+	this->addOperation("closeGripper", &YouBot_executive::closeGripper, this, OwnThread).doc("Set gripper gap  to minimum. Takes no arguments");
+//	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this, OwnThread).doc("Move tip for gripper length backwards. Takes no arguments");
 
 	// Configurable actions
-	this->addOperation("setJointAngles", &YouBot_executive::setJointAngles, this).doc("Joint space control");
+	this->addOperation("setJointAngles", &YouBot_executive::setJointAngles, this, OwnThread).doc("Joint space control");
 
-	this->addOperation("setHvp0", &YouBot_executive::setHvp0, this).doc("Define attraction point with respect to inertial frame. Takes vector flatten H matrix");
-//	this->addOperation("setHvptip", &YouBot_executive::setHvptip, this).doc("Define attraction point with respect to current tool tip frame.Takes vector flatten H matrix");
-	this->addOperation("setHtipCC", &YouBot_executive::setHtipCC, this).doc("Define center of stiffness and principal axes with respect to tool tip frame.Takes vector flatten H matrix");
+	this->addOperation("setHvp0", &YouBot_executive::setHvp0, this, OwnThread).doc("Define attraction point with respect to inertial frame. Takes vector flatten H matrix");
+//	this->addOperation("setHvptip", &YouBot_executive::setHvptip, this, OwnThread).doc("Define attraction point with respect to current tool tip frame.Takes vector flatten H matrix");
+	this->addOperation("setHtipCC", &YouBot_executive::setHtipCC, this, OwnThread).doc("Define center of stiffness and principal axes with respect to tool tip frame.Takes vector flatten H matrix");
 
-	this->addOperation("setCartesianStiffness", &YouBot_executive::setCartesianStiffness,this).doc(" ");
-	this->addOperation("setJointStiffness", &YouBot_executive::setJointStiffness,this).doc(" ");
+	this->addOperation("setCartesianStiffness", &YouBot_executive::setCartesianStiffness,this, OwnThread).doc(" ");
+	this->addOperation("setJointStiffness", &YouBot_executive::setJointStiffness,this, OwnThread).doc(" ");
 	
-	this->addOperation("guardMove", &YouBot_executive::guardMove, this).doc("Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force limit is higher then max force allowed in controller e_done event will be never sent.");
+	this->addOperation("guardMove", &YouBot_executive::guardMove, this, OwnThread).doc("Performs guarded move based on the set force, issue event e_done. NOTE: the edge of working envelope considered as obstacle. If the force limit is higher then max force allowed in controller e_done event will be never sent.");
 
 	// Sampling state
-	this->addOperation("getJointStates", &YouBot_executive::getJointStates, this).doc("Get joint space positions");
-	this->addOperation("getTip_xyzypr", &YouBot_executive::getTip_xyzypr,this).doc("DEPRECATED -- Get tool tip frame in xyz roll pitch yaw. ");
-	this->addOperation("getHtip0", &YouBot_executive::getHtip0,this).doc("Get tool tip frame. Returns vector flatten H matrix");
+	this->addOperation("getJointStates", &YouBot_executive::getJointStates, this, OwnThread).doc("Get joint space positions");
+	this->addOperation("getTip_xyzypr", &YouBot_executive::getTip_xyzypr,this, OwnThread).doc("DEPRECATED -- Get tool tip frame in xyz roll pitch yaw. ");
+	this->addOperation("getHtip0", &YouBot_executive::getHtip0,this, OwnThread).doc("Get tool tip frame. Returns vector flatten H matrix");
 
 	// Ports
 	this->addPort("JointSpaceSetpoint", JointSpaceSetpoint).doc("");
@@ -107,6 +107,7 @@ void YouBot_executive::init()
 	gripper_cmd.setDataSample(m_gripper_cmd);
 
 	m_state = GRAVITY_MODE; //default state
+	stateGravityMode();
 }
 
 void YouBot_executive::openGripper()
@@ -128,6 +129,7 @@ void YouBot_executive::unfoldArm()
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
 	stateTransition(FULL_CONTROL);
+	stateFullControl();
 }
 
 void YouBot_executive::foldArm()
@@ -137,11 +139,13 @@ void YouBot_executive::foldArm()
 	m_JointSpaceStiffness.data.assign(BASIC_JOINT_STIFFNESS, BASIC_JOINT_STIFFNESS+SIZE_JOINTS_ARRAY);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
 	stateTransition(FULL_CONTROL);
+	stateFullControl();
 }
 
 void YouBot_executive::gravityMode()
 {
 	stateTransition(GRAVITY_MODE);
+	stateGravityMode();
 }
 
 void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
@@ -173,6 +177,7 @@ void YouBot_executive::setJointAngles(vector<double> position_j)
 	}
 	m_JointSpaceSetpoint.data.assign(position_j.begin(),position_j.end());
 	stateTransition(JOINT_CONTROL);
+	stateJointControl();
 }
 
 void YouBot_executive::setHvp0(vector<double> position_c)
@@ -184,6 +189,7 @@ void YouBot_executive::setHvp0(vector<double> position_c)
 	}
 	m_Hvp0.data.assign(position_c.begin(),position_c.end());
 	stateTransition(CARTESIAN_CONTROL);
+	stateCartesianControl();
 }
 
 //void YouBot_executive::setHvptip(vector<double> position_c)
@@ -199,6 +205,7 @@ void YouBot_executive::setHvp0(vector<double> position_c)
 //	MultiplyH(m_Htip0.data,position_c,t_Hvp0);
 //	m_Hvp0.data.assign(t_Hvp0.begin(),t_Hvp0.end());
 //	stateTransition(CARTESIAN_CONTROL);
+//	stateCartesianControl();
 //}
 
 void YouBot_executive::setHtipCC(vector<double> position_c)
@@ -218,6 +225,7 @@ void YouBot_executive::getJointStates(vector<double> & sample)
 		log(Error) << "getArmPose - expects a " << SIZE_JOINTS_ARRAY << " dimensional vector" << endlog();
 		return;
 	}
+	readAll();
 	sample.assign(m_JointState.data.begin(), m_JointState.data.end());
 }
 
@@ -228,6 +236,7 @@ void YouBot_executive::getTip_xyzypr(vector<double> & sample)
 		log(Error) << "getGripperPose - expects a " << SIZE_CART_SPACE << " dimensional vector" << endlog();
 		return;
 	}
+	readAll();
 	homogeneous_to_xyzypr(m_Htip0.data, sample);
 }
 
@@ -250,11 +259,16 @@ void YouBot_executive::getHtip0(vector<double>& sample_H)
 		log(Error) << "getGripperH - expects a "<<SIZE_H<<" dimensional vector" << endlog();
 		return;
 	}
+	readAll();
 	sample_H.assign(m_Htip0.data.begin(), m_Htip0.data.end());
 }
 
 void YouBot_executive::guardMove(vector<double> force_c)
 {
+	log(Error) << "Not implemented!" << endlog();
+	this->error();
+	return;
+
 	if(force_c.size() != 3)
 	{
 		log(Error) << "guardMove - expects a 3 dimensional vector" << endlog();
@@ -262,6 +276,7 @@ void YouBot_executive::guardMove(vector<double> force_c)
 	}
 	m_force_cart = force_c;
 	stateTransition(GUARDED_MOVE);
+	stateGuardedMove();
 }
 
 void YouBot_executive::doneEvent(){
@@ -298,19 +313,19 @@ void YouBot_executive::checkForceEvents(){
 		return;
 	if(isForceOverLimit_X())
 	{
-			events.write(make_event(m_events, "executive.e_CartForce_X_LIMIT_REACHED_true"));
+		events.write(make_event(m_events, "executive.e_CartForce_X_LIMIT_REACHED_true"));
 	}
 	if(isForceOverLimit_Y())
 	{
-			events.write(make_event(m_events, "executive.e_CartForce_Y_LIMIT_REACHED_true"));
+		events.write(make_event(m_events, "executive.e_CartForce_Y_LIMIT_REACHED_true"));
 	}
 	if(isForceOverLimit_Z())
 	{
-			events.write(make_event(m_events, "executive.e_CartForce_Z_LIMIT_REACHED_true"));
+		events.write(make_event(m_events, "executive.e_CartForce_Z_LIMIT_REACHED_true"));
 	}
 	if(isForceOverLimit_Norm())
 	{
-			events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
+		events.write(make_event(m_events, "executive.e_CartForce_LIMIT_REACHED_true"));
 	}
 
 }
@@ -322,37 +337,33 @@ void YouBot_executive::stateTransition(state_t new_state)
 
 void YouBot_executive::updateHook()
 {
-	// read all input ports
-	Htip0.read(m_Htip0);
-	JointStates.read(m_JointState);
-	Wtip0.read(m_Wtip0);
 
 	// perform the state specific actions
-	switch(m_state)
+	/*switch(m_state)
 	{
 		case(FULL_CONTROL):
 		{
-			stateFullControl();
+			//stateFullControl();
 			break;
 		}
 		case(GRAVITY_MODE):
 		{
-			stateGravityMode();
+			//stateGravityMode();
 			break;
 		}
 		case(JOINT_CONTROL):
 		{
-			stateJointControl();
+			//stateJointControl();
 			break;
 		}
 		case(CARTESIAN_CONTROL):
 		{
-			stateCartesianControl();
+			//stateCartesianControl();
 			break;
 		}
 		case(GUARDED_MOVE):
 		{
-			stateGuardedMove();
+			//stateGuardedMove();
 			break;
 		}
 		default:
@@ -362,8 +373,21 @@ void YouBot_executive::updateHook()
 			return;
 			break;
 		}
-	}
+	}*/
 
+
+}
+
+void YouBot_executive::readAll()
+{
+	// read all input ports
+	Htip0.read(m_Htip0);
+	JointStates.read(m_JointState);
+	Wtip0.read(m_Wtip0);
+}
+
+void YouBot_executive::writeAll()
+{
 	// write setpoints
 	assert(m_JointSpaceSetpoint.data.size() == SIZE_JOINTS_ARRAY);
 	JointSpaceSetpoint.write(m_JointSpaceSetpoint);
@@ -383,11 +407,14 @@ void YouBot_executive::updateHook()
 
 void YouBot_executive::stateFullControl()
 {
+	readAll();
 	// No additional actions required
+	writeAll();
 }
 
 void YouBot_executive::stateGravityMode()
 {
+	readAll();
 	// Assigns the current states as setpoints and sets the stiffness zero
 	// zero out Joint control part
 	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
@@ -396,25 +423,32 @@ void YouBot_executive::stateGravityMode()
 	// zero out Cartesian control part
 	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
 	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
+	writeAll();
 }
 
 void YouBot_executive::stateJointControl()
 {
+	readAll();
 	// zero out Cartesian control part
 	m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS,0.0);
 	m_Hvp0.data.assign(m_Htip0.data.begin(),m_Htip0.data.end());
+	writeAll();
 }
 
 void YouBot_executive::stateCartesianControl()
 {
+	readAll();
 	// zero out Joint control part
 	m_JointSpaceStiffness.data.assign(SIZE_JOINTS_ARRAY,0.0);
 	m_JointSpaceSetpoint.data.assign(m_JointState.data.begin(), m_JointState.data.end());
+	writeAll();
 }
 
 
 void YouBot_executive::stateGuardedMove()
 {
+	// NOT IMPLEMENTED
+
 	// Move with a predefined force in cartesian space
 	vector<double> newHvp0(SIZE_H, 0.0);
 	vector<double> newHvptip(SIZE_H, 0.0);
