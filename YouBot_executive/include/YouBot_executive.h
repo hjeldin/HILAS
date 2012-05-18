@@ -43,6 +43,9 @@ class YouBot_executive: public TaskContext
 		void unfoldArm();
 		void foldArm(); 	
 		void gravityMode();	
+        void fullControlMode();
+        void cartesianControlMode();
+        void jointspaceControlMode();
 //		void retractGripper(); 
 		void openGripper();
 		void closeGripper();

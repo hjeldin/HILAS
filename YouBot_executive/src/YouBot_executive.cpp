@@ -35,7 +35,10 @@ void YouBot_executive::setupComponentInterface()
 	// Predefined actions
 	this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this, OwnThread).doc("Unfold the arm. Takes no arguments");
 	this->addOperation("foldArm", &YouBot_executive::foldArm, this, OwnThread).doc("Fold the arm. Takes no arguments");
-	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this, OwnThread).doc("Set gravity compensation mode. Takes no arguments");
+	this->addOperation("gravityMode", &YouBot_executive::gravityMode, this, OwnThread).doc("Set gravity compensation mode (disables joint/cartesian/full mode setpoints.");
+	this->addOperation("cartesianControlMode", &YouBot_executive::cartesianControlMode, this, OwnThread).doc("Set cartesian space control mode (disables joint/full mode setpoints).");
+	this->addOperation("jointspaceControlMode", &YouBot_executive::jointspaceControlMode, this, OwnThread).doc("Set joint space control mode (disables cartesian/full mode setpoints).");
+	this->addOperation("fullControlMode", &YouBot_executive::fullControlMode, this, OwnThread).doc("Set full control mode. Superposition of joint and cartesian space control.");
 	this->addOperation("openGripper", &YouBot_executive::openGripper, this, OwnThread).doc("Set gripper gap  to maximum. Takes no arguments");
 	this->addOperation("closeGripper", &YouBot_executive::closeGripper, this, OwnThread).doc("Set gripper gap  to minimum. Takes no arguments");
 //	this->addOperation("retractGripper",&YouBot_executive::retractGripper,this, OwnThread).doc("Move tip for gripper length backwards. Takes no arguments");
@@ -81,6 +84,7 @@ void YouBot_executive::setupComponentInterface()
 	this->addProperty("state", m_state);
 
 	this->addOperation("sleep", &YouBot_executive::sleep,this, OwnThread).doc("Hack: Sleeping management.");
+
 }
 
 void YouBot_executive::init()
@@ -153,6 +157,27 @@ void YouBot_executive::gravityMode()
 	stateGravityMode();
 }
 
+void YouBot_executive::fullControlMode()
+{
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  stateTransition(FULL_CONTROL);
+  stateFullControl();
+}
+
+void YouBot_executive::cartesianControlMode()
+{
+  //log(Info) << "Executing: " << __FUNCTION__ << endlog();
+  stateTransition(CARTESIAN_CONTROL);
+  stateCartesianControl();
+}
+
+void YouBot_executive::jointspaceControlMode()
+{
+   //log(Info) << "Executing: " << __FUNCTION__ << endlog();
+   stateTransition(JOINT_CONTROL);
+   stateJointControl();
+}
+
 void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 {
   //log(Info) << "Executing: " << __FUNCTION__ << endlog();
@@ -184,8 +209,6 @@ void YouBot_executive::setJointAngles(vector<double> position_j)
 		return;
 	}
 	m_JointSpaceSetpoint.data.assign(position_j.begin(),position_j.end());
-	stateTransition(JOINT_CONTROL);
-	stateJointControl();
 }
 
 void YouBot_executive::setHvp0(vector<double> position_c)
@@ -197,8 +220,6 @@ void YouBot_executive::setHvp0(vector<double> position_c)
 		return;
 	}
 	m_Hvp0.data.assign(position_c.begin(),position_c.end());
-	stateTransition(CARTESIAN_CONTROL);
-	stateCartesianControl();
 }
 
 //void YouBot_executive::setHvptip(vector<double> position_c)
