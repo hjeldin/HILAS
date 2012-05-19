@@ -47,19 +47,14 @@ executive.sleep(1);
 
 print.ln("Started...");
 
-var float64[] cart_stiffness = float64[](9, 0.0);
-cart_stiffness[0] = 500;
-cart_stiffness[1] = 500;
-cart_stiffness[2] = 500;
-cart_stiffness[3] = 20;
-cart_stiffness[4] = 20;
-cart_stiffness[5] = 20;
-
-var float64[] cart_pos = float64[](16, 0.0);
+var float64[] cart_stiffness = float64[](1000.0, 1000.0, 1000.0, 0.0, 60.0, 0.0, 0.0, 0.0);
+var float64[] joint_stiffness = float64[](350,350,350,5,0,0,0,10)
 
 executive.setCartesianStiffness(cart_stiffness);
+var float64[] cart_pos = float64[](16, 0.0);
 executive.getHtip0(cart_pos);
 executive.setHvp0(cart_pos);
+executive.setJointStiffness(joint_stiffness)
 executive.fullControlMode;
 executive.sleep(1);
 

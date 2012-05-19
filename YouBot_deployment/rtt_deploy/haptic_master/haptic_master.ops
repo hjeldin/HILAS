@@ -146,7 +146,7 @@ connect("executive.EnergyQuanta","haptic_master.inH2",cp_rt2);
 
 connect("joystick.slider_command", "executive.stiffness_slider", cp_rt2);
 connect("executive.CartSpaceStiffness", "haptic_master.CartSpaceStiffness", cp_rt2);
-
+connect("haptic_master.PhantomJointState","phantom.joint_space",cp_rt2);
 # Master <-> Slave
 stream("haptic_master.inH", cp_ros_inH);
 stream("haptic_master.Hytip0", cp_ros_Hytip0);
