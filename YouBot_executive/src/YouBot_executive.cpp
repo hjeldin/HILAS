@@ -71,6 +71,7 @@ void YouBot_executive::setupComponentInterface()
 	this->addPort("JointStates", JointStates).doc("Joint space joint states");
 	this->addPort("Wtip0", Wtip0).doc("Wrench input from control");
 
+	this->addEventPort("open_gripper", open_gripper).doc("Event port to open the gripper.");
 	this->addPort("gripper_cmd", gripper_cmd).doc("");
 	this->addPort("events_out", events).doc("");
 
@@ -372,6 +373,15 @@ void YouBot_executive::stateTransition(state_t new_state)
 void YouBot_executive::updateHook()
 {
   TaskContext::updateHook();
+
+  // EventPort
+  if(open_gripper.read(m_open_gripper) == NewData)
+  {
+    if(m_open_gripper.data)
+      openGripper();
+    else
+      closeGripper();
+  }
 }
 
 void YouBot_executive::readAll()
