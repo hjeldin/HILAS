@@ -48,12 +48,12 @@ executive.sleep(1);
 print.ln("Started...");
 
 var float64[] cart_stiffness = float64[](9, 0.0);
-cart_stiffness[0] = 100;
-cart_stiffness[1] = 100;
-cart_stiffness[2] = 100;
-cart_stiffness[3] = 1;
-cart_stiffness[4] = 1;
-cart_stiffness[5] = 1;
+cart_stiffness[0] = 500;
+cart_stiffness[1] = 500;
+cart_stiffness[2] = 500;
+cart_stiffness[3] = 20;
+cart_stiffness[4] = 20;
+cart_stiffness[5] = 20;
 
 var float64[] cart_pos = float64[](16, 0.0);
 

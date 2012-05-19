@@ -85,11 +85,15 @@ cp_ros_joystick.name_id = "/joy";
 
 var ConnPolicy cp_ros_inH;
 cp_ros_inH.transport = 3;
+cp_ros_inH.size=1000;
+cp_ros_inH.type=BUFFER;
 cp_ros_inH.name_id = "/HapticMaster/inH";
 
 # From HapticMaster
 var ConnPolicy cp_ros_outH;
 cp_ros_outH.transport = 3;
+cp_ros_outH.size=1000;
+cp_ros_outH.type=BUFFER;
 cp_ros_outH.name_id = "/HapticMaster/outH";
 
 var ConnPolicy cp_ros_Hout0;

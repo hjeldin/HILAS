@@ -211,6 +211,7 @@ namespace YouBot
 
 	void YouBotOODL::updateHook()
 	{
+                // Time measurements to confirm period
 		Seconds elapsed = RTT::os::TimeService::Instance()->secondsSince( timestamp );
         	ca = ca + (elapsed - ca) / (++ca_counter);
 	        timestamp = RTT::os::TimeService::Instance()->getTicks(); //used cumulative average, because timestamps can overflow for long operation times.
