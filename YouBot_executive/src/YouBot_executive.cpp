@@ -72,7 +72,8 @@ void YouBot_executive::setupComponentInterface()
 	this->addPort("Wtip0", Wtip0).doc("Wrench input from control");
 
 	this->addEventPort("open_gripper", open_gripper).doc("Event port to open the gripper.");
-	this->addPort("gripper_cmd", gripper_cmd).doc("");
+   this->addEventPort("stiffness_slider", stiffness_slider).doc("Slider to go from pure driving to arm+base control state. Expects input values between -1 and 1.");
+   this->addPort("gripper_cmd", gripper_cmd).doc("");
 	this->addPort("events_out", events).doc("");
 
 	// Debugging/introspection properties
@@ -98,11 +99,16 @@ void YouBot_executive::init()
 	m_Htip0.data.resize(SIZE_H, 0.0);
 	m_Hvp0.data.resize(SIZE_H, 0.0);	
 	m_CartSpaceStiffness.data.resize(SIZE_CART_STIFFNESS, 0.0);
+	m_CartSpaceStiffness_orig.data.resize(SIZE_CART_STIFFNESS, 0.0);
 	m_HtipCC.data.assign(EYE4, EYE4+SIZE_H);
 	
 	m_Wtip0.data.resize(SIZE_CART_SPACE, 0.0);
 	
 	m_gripper_cmd.positions.resize(1, 0.0);
+
+   m_open_gripper.data = false;
+
+   m_stiffness_slider.data.resize(1, 1); // 100%
 
 	m_events.reserve(max_event_length);
 
@@ -187,7 +193,8 @@ void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
 		log(Error) << "setCartesianStiffness - expects a " << SIZE_CART_STIFFNESS << " dimensional vector" << endlog();
 		return;
 	}
-	m_CartSpaceStiffness.data.assign(stiffness_c.begin(),stiffness_c.end());
+	m_CartSpaceStiffness_orig.data.assign(stiffness_c.begin(),stiffness_c.end());
+   calculateCartStiffness(); // adjust for the slider position
 }
 
 void YouBot_executive::setJointStiffness(vector<double> stiffness_j)
@@ -381,6 +388,27 @@ void YouBot_executive::updateHook()
       openGripper();
     else
       closeGripper();
+  }
+
+  if(stiffness_slider.read(m_stiffness_slider) == NewData)
+  { 
+    calculateCartStiffness();
+    if(m_state == FULL_CONTROL || m_state == CARTESIAN_CONTROL) // Apply immediately iff in these modes. Does NOT affect gravity nor jointspace control modes 
+    {
+      CartSpaceStiffness.write(m_CartSpaceStiffness); // no 'commit' necessary)
+    }
+  }
+}
+
+void YouBot_executive::calculateCartStiffness()
+{
+  double percentage = (m_stiffness_slider.data[0] + 1) / 2; // For the Logitech joystick the input will be between -1 and +1
+  if(percentage >= 0.0 && percentage <= 1.0)
+  {
+    for(unsigned int i = 0; i < SIZE_CART_STIFFNESS; ++i)
+    {
+      m_CartSpaceStiffness.data[i] = m_CartSpaceStiffness_orig.data[i] * percentage;
+    }
   }
 }
 

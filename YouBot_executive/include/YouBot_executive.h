@@ -44,9 +44,9 @@ class YouBot_executive: public TaskContext
 		void unfoldArm();
 		void foldArm(); 	
 		void gravityMode();	
-                void fullControlMode();
-                void cartesianControlMode();
-                void jointspaceControlMode();
+      void fullControlMode();
+      void cartesianControlMode();
+      void jointspaceControlMode();
 //		void retractGripper(); 
 		void openGripper();
 		void closeGripper();
@@ -81,7 +81,9 @@ class YouBot_executive: public TaskContext
 		RTT::InputPort<flat_matrix_t> JointStates;
 		RTT::InputPort<flat_matrix_t> Wtip0;
 
-                RTT::InputPort<std_msgs::Bool> open_gripper;
+      RTT::InputPort<std_msgs::Float64MultiArray> stiffness_slider;
+
+      RTT::InputPort<std_msgs::Bool> open_gripper;
 
 		RTT::OutputPort<motion_control_msgs::JointPositions> gripper_cmd;
 
@@ -90,6 +92,8 @@ class YouBot_executive: public TaskContext
 	protected:
 		void setupComponentInterface();
 		void init();
+
+      void calculateCartStiffness();
 
 		void readAll();
 		void writeAll();
@@ -107,12 +111,15 @@ class YouBot_executive: public TaskContext
 
 		flat_matrix_t m_Hvp0;
 		flat_matrix_t m_CartSpaceStiffness;
-		flat_matrix_t m_HtipCC;			
+      flat_matrix_t m_CartSpaceStiffness_orig;
+      flat_matrix_t m_HtipCC;			
 
 		flat_matrix_t m_Wtip0;
 
-                std_msgs::Bool m_open_gripper;
-		motion_control_msgs::JointPositions m_gripper_cmd;
+      std_msgs::Bool m_open_gripper;
+      std_msgs::Float64MultiArray m_stiffness_slider;
+
+      motion_control_msgs::JointPositions m_gripper_cmd;
 
 		state_t m_state;
 
