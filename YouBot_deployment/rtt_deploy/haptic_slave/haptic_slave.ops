@@ -17,14 +17,14 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
 print.ln("Starting haptics/controller.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/controller.ops")
 
-print.ln("Starting generic/diagnostics.ops")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/diagnostics.ops")
+//print.ln("Starting generic/diagnostics.ops")
+//runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/diagnostics.ops")
 
 print.ln("Starting haptics/executive.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/executive.ops")
 
-print.ln("Starting republishing to rviz")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/configuration_publisher.ops")
+//print.ln("Starting republishing to rviz")
+//runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/configuration_publisher.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;
@@ -47,8 +47,8 @@ executive.sleep(1);
 
 print.ln("Started...");
 
-var float64[] cart_stiffness = float64[](1000.0, 1000.0, 1000.0, 0.0, 60.0, 0.0, 0.0, 0.0);
-var float64[] joint_stiffness = float64[](350,350,350,5,0,0,0,10)
+var float64[] cart_stiffness = float64[](1000.0, 1000.0, 1000.0, 40.0, 60.0, 0.0, 0.0, 0.0, 0.0);
+var float64[] joint_stiffness = float64[](250.0, 250.0, 250.0, 1.0, 0.0, 0.0, 0.0, 10.0)
 
 executive.setCartesianStiffness(cart_stiffness);
 var float64[] cart_pos = float64[](16, 0.0);
