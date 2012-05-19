@@ -17,44 +17,50 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
 print.ln("Starting haptics/controller.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/controller.ops")
 
+print.ln("Starting generic/diagnostics.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/diagnostics.ops")
+
 print.ln("Starting haptics/executive.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/executive.ops")
+
+print.ln("Starting republishing to rviz")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/configuration_publisher.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;
 controlloop_scheduler.start;
 
-executive.setJointStiffness(executive.JointSpaceStiffness);
-executive.setJointAngles(executive.JointSpaceSetpoint);
-
-print.ln("Coupling haptic slave connections");
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/haptic_slave_connections.ops")
-
 print.ln("Clearing controller timeouts.")
 driver.Arm1.clearControllerTimeouts;
 driver.Base.clearControllerTimeouts;
 
+executive.setJointStiffness(executive.JointSpaceStiffness);
+executive.setJointAngles(executive.JointSpaceSetpoint);
+executive.jointspaceControlMode;
+
 executive.sleep(3);
 
-print.ln("Started (1)...");
+print.ln("Coupling haptic slave connections");
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/haptic_slave/haptic_slave_connections.ops")
+
+executive.sleep(1);
+
+print.ln("Started...");
 
 var float64[] cart_stiffness = float64[](9, 0.0);
-cart_stiffness[0] = 1000;
-cart_stiffness[1] = 1000;
-cart_stiffness[2] = 1000;
-cart_stiffness[3] = 5;
-cart_stiffness[4] = 5;
-cart_stiffness[5] = 5;
+cart_stiffness[0] = 100;
+cart_stiffness[1] = 100;
+cart_stiffness[2] = 100;
+cart_stiffness[3] = 1;
+cart_stiffness[4] = 1;
+cart_stiffness[5] = 1;
 
 var float64[] cart_pos = float64[](16, 0.0);
 
 executive.setCartesianStiffness(cart_stiffness);
 executive.getHtip0(cart_pos);
 executive.setHvp0(cart_pos);
-
+executive.fullControlMode;
 executive.sleep(1);
 
-executive.stop;
-
-print.ln("Started (2)...");
 

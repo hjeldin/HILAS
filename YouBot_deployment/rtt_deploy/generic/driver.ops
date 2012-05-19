@@ -23,7 +23,7 @@ setActivity("event_logger", 0.1, LowestPriority, ORO_SCHED_OTHER);
 # Watchdog 
 # Adjust comments to enable/disable Wifi-watchdog.
 #
-#driver.noWatchdog;
+driver.noWatchdog;
 driver.configure;
 event_logger.configure
 

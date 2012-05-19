@@ -6,4 +6,9 @@
 	<node name="H50" pkg="YouBot_adapters" type="HomogeneousToTF" args="/H50" />
 	<node name="Htip0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/Htip0" />
 	<node name="Hvp0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/Hvp0" />
+
+	<node name="HJoy0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/HapticMaster/HJoy0" />
+	<node name="Hout0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/HapticMaster/Hout0" />
+	<node name="HBase0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/youBot/HBase0" />
+	<node name="Hytip0" pkg="YouBot_adapters" type="HomogeneousToTF" args="/HapticMaster/Hytip0" />
 </launch>

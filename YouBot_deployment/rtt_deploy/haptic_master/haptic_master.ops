@@ -14,7 +14,7 @@ import("HapticMaster");
 import("InteractiveMarker");
 import("joystick_to_geometry_Twist");
 import("HReader");
-
+import("EnergySupper")
 displayComponentTypes;
 
 #
@@ -36,12 +36,13 @@ scheduler.setPeriod(0.001);
 
 loadComponent("phantom","PhantomOmni");
 phantom.configure;
-
+//correction for Raffi's phantom 
+phantom.zero_position_angles=array(0.1, 1.4, 3.69, 3.02, 4.71239, 3.14159);
 loadComponent("joystick", "joystick_to_geometry_Twist");
 joystick.configure;
-joystick.scale_output[0] = 0.01;
-joystick.scale_output[1] = 0.01;
-joystick.scale_output[2] = 0.01;
+joystick.scale_output[0] = 0.1;
+joystick.scale_output[1] = 0.1;
+joystick.scale_output[2] = 0.1;
 
 loadComponent("joystick_to_tsim", "geometry_Twist_to_TSim");
 
@@ -50,6 +51,7 @@ loadComponent("tsim_to_wrench", "TSim_to_geometry_Wrench");
 
 loadComponent("haptic_master", "youbot_control_d_sefltest_POPC::HapticMaster");
 loadComponent("interactive_marker", "youbot_control_d_sefltest_POPC::InteractiveMarker");
+loadComponent("EnergySupper","youbot::EnergySupper")
 
 setMasterSlaveActivity("scheduler", "interactive_marker");
 setMasterSlaveActivity("scheduler", "phantom");
@@ -65,7 +67,11 @@ setMasterSlaveActivity("scheduler", "tsim_to_wrench");
 # RT (or unbuffered)
 var ConnPolicy cp_rt;
 cp_rt.type = DATA;  
-cp_rt.lock_policy = LOCK_FREE; 
+cp_rt.lock_policy = UNSYNC; 
+
+var ConnPolicy cp_rt2;
+cp_rt2.type = DATA;
+cp_rt2.lock_policy = LOCK_FREE;
 
 # Joystick on Master pc.
 var ConnPolicy cp_ros_joystick;
@@ -94,13 +100,31 @@ var ConnPolicy cp_ros_InteractiveMarker;
 cp_ros_InteractiveMarker.transport = 3;
 cp_ros_InteractiveMarker.name_id = "/HapticMaster/InteractiveMarker";
 
+var ConnPolicy cp_ros_JointSetpoint;
+cp_ros_JointSetpoint.transport = 3;
+cp_ros_JointSetpoint.name_id = "/HapticMaster/JointSetpoint";
+
+var ConnPolicy cp_ros_button2;
+cp_ros_button2.transport = 3;
+cp_ros_button2.name_id = "/HapticMaster/button2";
+
+var ConnPolicy cp_ros_slider;
+cp_ros_slider.transport = 3;
+cp_ros_slider.name_id = "/HapticMaster/slider";
+
+//For debuging
+var ConnPolicy cp_ros_HJoy0;
+cp_ros_HJoy0.transport = 3;
+cp_ros_HJoy0.name_id = "/HapticMaster/HJoy0";
+
+
 #
 # Connections
 #
 # Joystick
 stream("joystick.joystick", cp_ros_joystick); 
 
-# Internal
+# Internal fbscheduler
 connect("joystick.twist_command", "joystick_to_tsim.input_twist", cp_rt);
 connect("joystick_to_tsim.output_twist", "haptic_master.JoyTwist", cp_rt);
 
@@ -111,6 +135,10 @@ connect("phantom.transform","transform_to_tsim.input_transform",cp_rt)
 connect("transform_to_tsim.output_transform", "haptic_master.Htip0", cp_rt);
 
 connect("interactive_marker.HJoym", "haptic_master.HJoym", cp_rt);
+connect("haptic_master.EnergyTank","EnergySupper.EnergyState1",cp_rt);
+
+# Master
+connect("EnergySupper.EnergyQuanta","haptic_master.inH2",cp_rt2);
 
 # Master <-> Slave
 stream("haptic_master.inH", cp_ros_inH);
@@ -121,6 +149,14 @@ stream("haptic_master.Hout0", cp_ros_Hout0);
 
 stream("interactive_marker.HJoym", cp_ros_InteractiveMarker);
 
+stream("haptic_master.JointSetpoint", cp_ros_JointSetpoint);
+
+stream("phantom.button_2", cp_ros_button2);
+
+stream("joystick.slider_command", cp_ros_slider);
+
+// For debuging
+stream("haptic_master.HJoy0", cp_ros_HJoy0);
 #
 # Start running
 #
@@ -130,25 +166,31 @@ transform_to_tsim.start;
 tsim_to_wrench.start;
 interactive_marker.configure;
 interactive_marker.start;
-
 var std_msgs.Float64MultiArray sample;
 sample = IM_configure.output.last;
 IM_configure.stop;
 IM_configure.input.disconnect;
 
+EnergySupper.configure;
+EnergySupper.start;
+
+
+//Htip0[3] = 0.355647            
+//Htip0[7] = 0.00988996          
+//Htip0[11]  = 0.293758       
 var cfloat64[] setp(16);
 setp[0] = 1; //sample.data[0];
 //setp[1] = sample.data[1];
 //setp[2] = sample.data[2];
-setp[3] = sample.data[3];
+setp[3] =0.35;// sample.data[3];
 //setp[4] = sample.data[4];
 setp[5] = 1; //sample.data[5];
 //setp[6] = sample.data[6];
-setp[7] = sample.data[7];
+setp[7] =0.0;// sample.data[7];
 //setp[8] = sample.data[8];
 //setp[9] = sample.data[9];
 setp[10] = 1; //sample.data[10];
-setp[11] = sample.data[11];
+setp[11] =0.15;// sample.data[11];
 //setp[12] = sample.data[12];
 //setp[13] = sample.data[13];
 //setp[14] = sample.data[14];
@@ -158,8 +200,8 @@ interactive_marker.HJoym_setp = setp;
 haptic_master.configure;
 haptic_master.start;
 
-#var cfloat64[] cart_stiff(9);
-#haptic_master.CartesianSpaceStiffness1.cart_stiffness = cart_stiff;
+var cfloat64[] cart_stiff(9);
+//haptic_master.CartesianSpaceStiffness1.cart_stiffness = cart_stiff;
 
 phantom.start
 

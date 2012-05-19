@@ -19,6 +19,18 @@ var ConnPolicy cp_ros_Hout0;
 cp_ros_Hout0.transport = 3;
 cp_ros_Hout0.name_id = "/HapticMaster/Hout0";
       
+var ConnPolicy cp_ros_JointSetpoint;
+cp_ros_JointSetpoint.transport = 3;
+cp_ros_JointSetpoint.name_id = "/HapticMaster/JointSetpoint";
+
+var ConnPolicy cp_ros_button2;
+cp_ros_button2.transport = 3;
+cp_ros_button2.name_id = "/HapticMaster/button2";
+
+var ConnPolicy cp_ros_slider;
+cp_ros_slider.transport = 3;
+cp_ros_slider.name_id = "/HapticMaster/slider";
+
 #
 # Load components
 #
@@ -32,6 +44,12 @@ stream("controller.outH", cp_ros_inH);
 
 stream("controller.inH", cp_ros_outH);
 stream("controller.Hvp0", cp_ros_Hout0);
+
+stream("controller.JointSpaceSetpoint", cp_ros_JointSetpoint);
+
+stream("executive.open_gripper", cp_ros_button2);
+
+stream("executive.stiffness_slider", cp_ros_slider);
 
 #
 # Start running

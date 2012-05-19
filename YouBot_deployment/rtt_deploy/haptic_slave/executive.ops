@@ -28,19 +28,21 @@ connect("executive.gripper_cmd","driver.Gripper1.gripper_cmd_position",cp_rt)
 #
 # Start running
 #
-executive.setPeriod(0.01)
+#executive.setPeriod(0.01)
 executive.configure
 executive.start
 
 #
 # Snake position
 # 
-executive.JointSpaceSetpoint=array(0.0,0.0,0.0,0.0,-0.3,0.5,0.5,0.0)
-executive.JointSpaceStiffness=array(0.0,0.0,0.0,25.0,25.0,20.0,25.0,25.0)
+executive.JointSpaceStiffness=array(250.0, 250.0, 250.0, 10.0, 10.0, 10.0, 10.0, 10.0)
+executive.JointSpaceSetpoint=array(0.0, 0.0, 0.0, 0.0, -0.3, 0.5, 0.5, 0.0)
+
 
 #
 # Random safe pose
 #
-//executive.Gripper_position_setpoint=array(0.45,0.0,0.39,0.0,1.64,0.0)
 //executive.Gripper_stiffness_setpoint=array(0.0,10.0)
+//executive.Gripper_position_setpoint=array(0.45,0.0,0.39,0.0,1.64,0.0)
+
 
