@@ -14,7 +14,7 @@ import("HapticMaster");
 import("InteractiveMarker");
 import("joystick_to_geometry_Twist");
 import("HReader");
-import("EnergySupper")
+import("Master_executive")
 displayComponentTypes;
 
 #
@@ -51,7 +51,6 @@ loadComponent("tsim_to_wrench", "TSim_to_geometry_Wrench");
 
 loadComponent("haptic_master", "youbot_control_d_sefltest_POPC::HapticMaster");
 loadComponent("interactive_marker", "youbot_control_d_sefltest_POPC::InteractiveMarker");
-loadComponent("EnergySupper","youbot::EnergySupper")
 
 setMasterSlaveActivity("scheduler", "interactive_marker");
 setMasterSlaveActivity("scheduler", "phantom");
@@ -61,6 +60,7 @@ setMasterSlaveActivity("scheduler", "transform_to_tsim");
 setMasterSlaveActivity("scheduler", "haptic_master");
 setMasterSlaveActivity("scheduler", "tsim_to_wrench");
 
+loadComponent("executive","YouBot::Master_executive")
 #
 # Connection policies
 # 
@@ -135,10 +135,13 @@ connect("phantom.transform","transform_to_tsim.input_transform",cp_rt)
 connect("transform_to_tsim.output_transform", "haptic_master.Htip0", cp_rt);
 
 connect("interactive_marker.HJoym", "haptic_master.HJoym", cp_rt);
-connect("haptic_master.EnergyTank","EnergySupper.EnergyState1",cp_rt);
 
 # Master
-connect("EnergySupper.EnergyQuanta","haptic_master.inH2",cp_rt2);
+connect("haptic_master.EnergyTank","executive.EnergyState1",cp_rt2);
+connect("executive.EnergyQuanta","haptic_master.inH2",cp_rt2);
+
+connect("joystick.slider_command", "executive.stiffness_slider", cp_rt2);
+connect("executive.CartSpaceStiffness", "haptic_master.CartSpaceStiffness", cp_rt2);
 
 # Master <-> Slave
 stream("haptic_master.inH", cp_ros_inH);
@@ -171,8 +174,8 @@ sample = IM_configure.output.last;
 IM_configure.stop;
 IM_configure.input.disconnect;
 
-EnergySupper.configure;
-EnergySupper.start;
+executive.configure;
+executive.start;
 
 
 //Htip0[3] = 0.355647            
