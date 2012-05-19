@@ -108,7 +108,7 @@ void YouBot_executive::init()
 
    m_open_gripper.data = false;
 
-   m_stiffness_slider.data.resize(1, 1); // 100%
+   m_stiffness_slider.data.resize(1, -1); // 0%
 
 	m_events.reserve(max_event_length);
 

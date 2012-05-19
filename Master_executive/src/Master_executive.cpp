@@ -26,6 +26,9 @@ Master_executive::Master_executive(const string& name) : TaskContext(name)
 
 	this->addOperation("setCartesianStiffness", &Master_executive::setCartesianStiffness, this, OwnThread);
 
+	// Debugging/introspection properties
+	this->addProperty("CartSpaceStiffness", m_CartSpaceStiffness.data);
+
 	m_EnergyQuanta.data.resize(2, 0.0);
 	m_EnergyState1.data.resize(1, 0.0);
 	EnergyQuanta.setDataSample(m_EnergyQuanta);
@@ -36,7 +39,7 @@ Master_executive::Master_executive(const string& name) : TaskContext(name)
 
 	CartSpaceStiffness.setDataSample(m_CartSpaceStiffness);
 
-	m_stiffness_slider.data.resize(1, 1); // 100 percent
+	m_stiffness_slider.data.resize(1, -1); // 0 percent
 }
 
 Master_executive::~Master_executive()
