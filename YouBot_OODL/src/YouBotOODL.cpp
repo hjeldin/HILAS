@@ -202,11 +202,19 @@ namespace YouBot
         }
     }
 
+    ca = 0;
+    ca_counter = 0;
+    timestamp = RTT::os::TimeService::Instance()->getTicks();
+
     return fully_started ? TaskContext::startHook() : false;
 	}
 
 	void YouBotOODL::updateHook()
 	{
+		Seconds elapsed = RTT::os::TimeService::Instance()->secondsSince( timestamp );
+        	ca = ca + (elapsed - ca) / (++ca_counter);
+	        timestamp = RTT::os::TimeService::Instance()->getTicks(); //used cumulative average, because timestamps can overflow for long operation times.
+
 		if(!m_ec_master->receiveProcessData())
 		{
 			++m_communication_errors;
@@ -263,6 +271,8 @@ namespace YouBot
             	stop_ops[i]();
             }
         }
+
+	log(Info) << "YouBot_OODL cumulative average updateHook period: " << ca << endlog();
 
         TaskContext::stopHook();
 	}

@@ -10,6 +10,8 @@
 #include <vector>
 #include <rtt/Property.hpp>
 #include <rtt/PropertyBag.hpp>
+
+#include <rtt/os/TimeService.hpp>
 #include <rtt/Time.hpp>
 
 #include <youbot/EthercatMasterWithoutThread.hpp>
@@ -48,6 +50,10 @@ namespace YouBot
       unsigned int m_max_communication_errors;
 
       bool m_use_watchdog;
+
+      RTT::os::TimeService::ticks timestamp;
+      RTT::Seconds ca;
+      unsigned int ca_counter;
 
       friend class YouBotArmService;
       friend class YouBotBaseService;
