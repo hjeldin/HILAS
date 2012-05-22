@@ -21,6 +21,8 @@ Master_executive::Master_executive(const string& name) : TaskContext(name)
 	this->addEventPort("stiffness_slider", stiffness_slider).doc("Slider to go from pure driving to arm+base control state. Expects input values between -1 and 1.");
 	this->addPort("CartSpaceStiffness", CartSpaceStiffness).doc("");
 
+	this->addPort("submit_quota", submit_quota).doc("");
+
 	this->addOperation("submitEnergyQuanta", &Master_executive::submitEnergyQuanta, this, OwnThread);
 	this->addOperation("getEnergyState1", &Master_executive::getEnergyState1, this, OwnThread);
 
@@ -28,10 +30,15 @@ Master_executive::Master_executive(const string& name) : TaskContext(name)
 
 	// Debugging/introspection properties
 	this->addProperty("CartSpaceStiffness", m_CartSpaceStiffness.data);
+	this->addProperty("quanta", m_quota);
 
 	m_EnergyQuanta.data.resize(2, 0.0);
 	m_EnergyState1.data.resize(1, 0.0);
 	EnergyQuanta.setDataSample(m_EnergyQuanta);
+
+	m_quota = 1000;
+	m_submit_quota.data = false;
+	m_submit_quota_prev.data = false;
 
 	m_CartSpaceStiffness.data.resize(SIZE_CART_STIFFNESS, 0.0);
 	m_CartSpaceStiffness_orig.data.resize(SIZE_CART_STIFFNESS, 0.0);
@@ -57,6 +64,16 @@ void Master_executive::updateHook()
   if(stiffness_slider.read(m_stiffness_slider) == NewData)
   { 
     setCartSpaceStiffness();
+  }
+
+  if(submit_quota.read(m_submit_quota) == NewData)
+  {
+    if(m_submit_quota.data != m_submit_quota_prev.data && m_submit_quota.data == true)
+    {
+      submitEnergyQuanta(m_quota);
+    }
+
+    m_submit_quota_prev.data = m_submit_quota.data;
   }
 }
 
