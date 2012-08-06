@@ -1,7 +1,5 @@
 #include "YouBotGripperService.hpp"
 
-#include <youbot/YouBotManipulator.hpp>
-
 #include <stdio.h>
 #include <cassert>
 #include <youbot/ProtocolDefinitions.hpp>

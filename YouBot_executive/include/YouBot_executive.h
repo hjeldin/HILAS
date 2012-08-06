@@ -19,117 +19,115 @@
 namespace YouBot
 {
 
-using namespace RTT;
-using namespace std;
+  using namespace RTT;
+  using namespace std;
 
-class YouBot_executive: public TaskContext
-{
-	public:
-		YouBot_executive(const string& name);
-		virtual ~YouBot_executive();
+  class YouBot_executive: public TaskContext
+  {
+  public:
+    YouBot_executive(const string& name);
+    virtual ~YouBot_executive();
 
-		virtual void updateHook();
+    virtual void updateHook();
 
-		void stateTransition(state_t new_state);
-		void stateFullControl();
-		void stateGravityMode();
-		void stateJointControl();
-		void stateCartesianControl();
-//		void stateGuardedMove();
+    void stateTransition(state_t new_state);
+    void stateFullControl();
+    void stateGravityMode();
+    void stateJointControl();
+    void stateCartesianControl();
 
-		void doneEvent();
-//		void checkForceEvents();
+    void doneEvent();
 
-		// predefined actions
-		void unfoldArm();
-		void foldArm(); 	
-		void gravityMode();	
-      void fullControlMode();
-      void cartesianControlMode();
-      void jointspaceControlMode();
-//		void retractGripper(); 
-		void openGripper();
-		void closeGripper();
+// predefined actions
+    void unfoldArm();
+    void foldArm();
+    void gravityMode();
+    void fullControlMode();
+    void cartesianControlMode();
+    void jointspaceControlMode();
+    void openGripper();
+    void closeGripper();
 
-		// configurable actions
-		// Cartesian space actions
-		void setHvp0(vector<double> position_c);
-//		void setHvptip(vector<double> position_c);
-		void setHtipCC(vector<double> position_c);
-//		void guardMove(vector<double> force_c);
-		void setCartesianStiffness(vector<double> stiffness_c);
-		//Joint Space actions
-		void setJointAngles(vector<double> position_j);	
-		void setJointStiffness(vector<double> stiffness_j);
+    // configurable actions
+    void setBaseJointActive(vector<double> inp);
+    void setArmJointActive(vector<double> inp);
 
-		//readouts
-		void getJointStates(vector<double>& sample);
-		void getTip_xyzypr(vector<double>& sample);
-		void getHtip0(vector<double>& sample_H);
+    // Cartesian space actions
+    void setHvp0(vector<double> position_c);
+    void setHtipCC(vector<double> position_c);
+    void setCartesianStiffness(vector<double> stiffness_c);
+    //Joint Space actions
+    void setArmJointAngles(vector<double> position_j);
 
-		// hacks
-		void sleep(double seconds);
+    //readouts
+    void getArmJointStates(vector<double>& sample);
+    void getTip_xyzypr(vector<double>& sample);
+    void getHtip0(vector<double>& sample_H);
 
-		// Ports and their variables
-		RTT::OutputPort<flat_matrix_t> JointSpaceSetpoint;
-		RTT::OutputPort<flat_matrix_t> JointSpaceStiffness;
-		RTT::OutputPort<flat_matrix_t> CartSpaceSetpoint;
-		RTT::OutputPort<flat_matrix_t> CartSpaceStiffness;
-		RTT::OutputPort<flat_matrix_t> HtipCC;
+    // hacks
+    void sleep(double seconds);
 
-		RTT::InputPort<flat_matrix_t> Htip0; 
-		RTT::InputPort<flat_matrix_t> JointStates;
-		RTT::InputPort<flat_matrix_t> Wtip0;
+    // Ports and their variables
+    RTT::OutputPort<flat_matrix_t> ArmJointAnglesSetpoint;
 
-      RTT::InputPort<std_msgs::Float64MultiArray> stiffness_slider;
+    RTT::OutputPort<flat_matrix_t> ArmJointActive;
+    RTT::OutputPort<flat_matrix_t> BaseJointActive;
 
-      RTT::InputPort<std_msgs::Bool> open_gripper;
+    RTT::OutputPort<flat_matrix_t> CartSpaceSetpoint;
+    RTT::OutputPort<flat_matrix_t> CartSpaceStiffness;
+    RTT::OutputPort<flat_matrix_t> HtipCC;
 
-		RTT::OutputPort<motion_control_msgs::JointPositions> gripper_cmd;
+    RTT::InputPort<flat_matrix_t> Htip0;
+    RTT::InputPort<flat_matrix_t> ArmJointStates;
+    RTT::InputPort<flat_matrix_t> Wtip0;
+    RTT::InputPort<flat_matrix_t> H_base_0;
 
-		RTT::OutputPort<std::string> events;
+    RTT::InputPort<std_msgs::Float64MultiArray> stiffness_slider;
 
-	protected:
-		void setupComponentInterface();
-		void init();
+    RTT::InputPort<std_msgs::Bool> open_gripper;
 
-      void calculateCartStiffness();
+    RTT::OutputPort<motion_control_msgs::JointPositions> gripper_cmd;
 
-		void readAll();
-		void writeAll();
+    RTT::OutputPort<std::string> events;
 
-		// The following are set from operations.
-		vector<double> m_force_cart;
-		bool checkForce;
+  protected:
+    void setupComponentInterface();
+    void init();
 
-		// Variables for ports
-		flat_matrix_t m_JointState;
-		flat_matrix_t m_JointSpaceSetpoint;
-		flat_matrix_t m_JointSpaceStiffness;
+    void calculateCartStiffness();
 
-		flat_matrix_t m_Htip0;
+    void readAll();
+    void writeAll();
 
-		flat_matrix_t m_Hvp0;
-		flat_matrix_t m_CartSpaceStiffness;
-      flat_matrix_t m_CartSpaceStiffness_orig;
-      flat_matrix_t m_HtipCC;			
+    // The following are set from operations.
+    vector<double> m_force_cart;
+    bool checkForce;
 
-		flat_matrix_t m_Wtip0;
+    // Variables for ports
+    flat_matrix_t m_ArmJointState;
+    flat_matrix_t m_ArmJointAnglesSetpoint;
+    flat_matrix_t m_ArmJointActive;
+    flat_matrix_t m_BaseJointActive;
 
-      std_msgs::Bool m_open_gripper;
-      std_msgs::Float64MultiArray m_stiffness_slider;
+    flat_matrix_t m_Htip0;
+    flat_matrix_t m_H_base_0;
 
-      motion_control_msgs::JointPositions m_gripper_cmd;
+    flat_matrix_t m_Hvp0;
+    flat_matrix_t m_CartSpaceStiffness;
+    flat_matrix_t m_CartSpaceStiffness_orig;
+    flat_matrix_t m_HtipCC;
 
-		state_t m_state;
+    flat_matrix_t m_Wtip0;
 
-		std::string m_events;
-//	private:
-//		bool isForceOverLimit_Norm();
-//		bool isForceOverLimit_X();
-//		bool isForceOverLimit_Y();
-//		bool isForceOverLimit_Z();
+    std_msgs::Bool m_open_gripper;
+    std_msgs::Float64MultiArray m_stiffness_slider;
 
-};
+    motion_control_msgs::JointPositions m_gripper_cmd;
+
+    state_t m_state;
+
+    std::string m_events;
+
+  };
 
 }
