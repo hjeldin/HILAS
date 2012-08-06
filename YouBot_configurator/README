@@ -1,5 +1,0 @@
-Our youBot was upgraded to firmware 1.48. The 'old' current control parameters seem to work, but the other parameters were not tested nor validated.
-
-Please do NOT use the YouBot_configurator until you determined new valid parameters.
-
-Furthermore, the youbot_applications external git was removed (not needed without configurator).
