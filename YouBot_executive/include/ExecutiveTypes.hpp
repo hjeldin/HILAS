@@ -5,15 +5,15 @@
 namespace YouBot
 {
 	typedef std_msgs::Float64MultiArray flat_matrix_t;
-	enum state_t {FULL_CONTROL, JOINT_CONTROL, CARTESIAN_CONTROL, GRAVITY_MODE, GUARDED_MOVE, RETRACT_GRIPPER};
-
-	static const unsigned int SIZE_ARM_JOINTS_ARRAY = 5;
-	static const unsigned int SIZE_BASE_JOINTS_ARRAY = 3;
-	static const unsigned int SIZE_CART_SPACE=6;//
+	enum state_t {JOINT_CONTROL, CARTESIAN_CONTROL, GRAVITY_MODE};
 
 	static const unsigned int SIZE_CART_STIFFNESS=9;
 	static const unsigned int SIZE_H=16;
 	static const double GRIPPER_OPENING=0.022;
+
+  static const unsigned int SIZE_ARM_JOINTS_ARRAY = 5;
+  static const unsigned int SIZE_BASE_JOINTS_ARRAY = SIZE_H;
+  static const unsigned int SIZE_CART_SPACE=6;//
 
 	static const double UNFOLD_JOINT_POSE[]={0,0,0,0,0};
 	static const double FOLD_JOINT_POSE[]={-2.8,-1.1,2.5,-1.76,-2.9};
