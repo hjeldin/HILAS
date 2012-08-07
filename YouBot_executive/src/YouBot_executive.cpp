@@ -416,6 +416,7 @@ namespace YouBot
     // zero out Cartesian control part
     m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS, 0.0);
     m_Hvp0.data.assign(m_Htip0.data.begin(), m_Htip0.data.end());
+    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
 
     stateTransition(JOINT_CONTROL);
   }

@@ -12,7 +12,7 @@ namespace YouBot
 	static const double GRIPPER_OPENING=0.022;
 
   static const unsigned int SIZE_ARM_JOINTS_ARRAY = 5;
-  static const unsigned int SIZE_BASE_JOINTS_ARRAY = SIZE_H;
+  static const unsigned int SIZE_BASE_JOINTS_ARRAY = 3;
   static const unsigned int SIZE_CART_SPACE=6;//
 
 	static const double UNFOLD_JOINT_POSE[]={0,0,0,0,0};
