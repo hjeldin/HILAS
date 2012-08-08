@@ -182,6 +182,8 @@ namespace YouBot
 
     gripper_cmd.setDataSample(m_gripper_cmd);
 
+    m_do_bypass_executive = false;
+
     // default state
     m_state = GRAVITY_MODE;
     setupGravityMode();
