@@ -11,6 +11,8 @@
 #include "ExecutiveHelpers.hpp"
 #include <boost/thread/thread.hpp>
 
+#include <math.h>
+
 using namespace Orocos;
 using namespace RTT;
 using namespace std;
@@ -88,6 +90,9 @@ namespace YouBot
         "DEPRECATED -- Get tool tip frame in xyz roll pitch yaw. ");
     this->addOperation("getHtip0", &YouBot_executive::getHtip0, this, OwnThread).doc(
         "Get tool tip frame. Returns vector flatten H matrix");
+
+    this->addOperation("quaternionToH", &YouBot_executive::quaternionToH, this, OwnThread).doc(
+        "Converts a Quaternion(1) to H matrix(2).");
 
     // Ports
     this->addPort("ArmJointActive", ArmJointActive).doc("");
@@ -523,6 +528,50 @@ namespace YouBot
     {
       log(Warning) << "Cannot specify: " << __FUNCTION__ << " in gravity compensation mode." << endlog();
     }
+  }
+
+  void YouBot_executive::quaternionToH(vector<double>& quat, vector<double>& H)
+  {
+    if (H.size() != SIZE_H)
+    {
+      log(Error) << __FUNCTION__ << " - expects a " << SIZE_H
+          << " dimensional output(2) vector/matrix" << endlog();
+      return;
+    }
+
+    if (quat.size() != 7)
+    {
+      log(Error) << __FUNCTION__ << " - expects a " << 7
+          << " dimensional input(1) vector" << endlog();
+      return;
+    }
+
+    double qw, qx, qy, qz;
+    qw = quat[7];
+    qx = quat[4];
+    qy = quat[5];
+    qz = quat[6];
+
+    H[0] = pow(qw,2) + pow(qx,2) - pow(qy,2) - pow(qz,2);
+    H[1] = 2*qx*qy - 2*qz*qw;
+    H[2] = 2*qx*qz + 2*qy*qw;
+
+    H[4] = 2*qx*qy + 2*qz*qw;
+    H[5] = pow(qw,2) - pow(qx,2) + pow(qy,2) - pow(qz,2);
+    H[6] = 2*qy*qz - 2*qx*qw;
+
+    H[8] = 2*qx*qz - 2*qy*qw;
+    H[9] = 2*qy*qz + 2*qx*qw;
+    H[10] = pow(qw,2) - pow(qx,2) - pow(qy,2) + pow(qz,2);
+
+    H[3] = quat[0];
+    H[7] = quat[1];
+    H[11] = quat[2];
+
+    H[12] = 0;
+    H[13] = 0;
+    H[14] = 0;
+    H[15] = 1;
   }
 
   /**

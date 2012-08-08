@@ -74,6 +74,7 @@ namespace YouBot
 
     // hacks
     void sleep(double seconds);
+    void quaternionToH(vector<double>& quat, vector<double>& H);
 
     // Ports and their variables
     RTT::OutputPort<flat_matrix_t> ArmJointAnglesSetpoint;
