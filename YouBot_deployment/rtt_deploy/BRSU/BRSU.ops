@@ -17,8 +17,8 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
 print.ln("Starting BRSU/controller.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/controller.ops")
 
-#print.ln("Starting generic/diagnostics.ops")
-#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/diagnostics.ops")
+print.ln("Starting generic/diagnostics.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/diagnostics.ops")
 
 print.ln("Starting BRSU/executive.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/executive.ops")

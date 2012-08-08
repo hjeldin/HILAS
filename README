@@ -1,13 +1,14 @@
 =YouBot-stack development repository=
 
 The University of Twente (www.utwente.nl) is not liable for any damage arising directly or indirectly from using the code in this repository.
-Note: The development repository is located at: https://git.ce.utwente.nl/youbot-stack
+Note: The development repository is located at: https://git.ce.utwente.nl/youbot-stack AND https://git.ce.utwente.nl/generic_components
 
 ==INSTALLATION==
 
 ===Prerequisites===
 * youBot firmware 1.48
 * Ubuntu, preferably 10.10 or 10.04
+ - libcap2: sudo apt-get install libcap2-bin
 * ROS (electric) installed and setup (www.ros.org)
  - Use Ubuntu packages, ATLEAST: 
    sudo apt-get install ros-electric-desktop
