@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>Odometry</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;LibraryPath&gt;FiniteTwist.emx&lt;/LibraryPath&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;TimeStamp&gt;2012-6-20 16:17:43&lt;/TimeStamp&gt;
+ &lt;AllowLibraryUpdate&gt;False&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-08-06T16:55:55.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\home\youbot\DEV\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>2</revision>
+			<patch>4</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>T</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>H_base_0</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>R</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>22</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>omega</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>31</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>v</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>34</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>omega_norm</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>37</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>omega_temp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>38</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>H</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>41</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>Hbase0</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>57</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>1848</size>
+		<tables>
+			<table>
+				<name>V</name>
+				<size>584</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>73</count>
+			</table>
+			<table>
+				<name>U</name>
+				<size>1264</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>158</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>
+
