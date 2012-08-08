@@ -24,12 +24,11 @@ namespace YouBot
   {
     m_OODL = (YouBotOODL*) parent;
 
-    m_joint_state.name.assign(NR_OF_ARM_SLAVES, "");
-    m_joint_state.name[0] = "arm_joint_1";
-    m_joint_state.name[1] = "arm_joint_2";
-    m_joint_state.name[2] = "arm_joint_3";
-    m_joint_state.name[3] = "arm_joint_4";
-    m_joint_state.name[4] = "arm_joint_5";
+    m_joint_state.name.push_back("arm_joint_1");
+    m_joint_state.name.push_back("arm_joint_2");
+    m_joint_state.name.push_back("arm_joint_3");
+    m_joint_state.name.push_back("arm_joint_4");
+    m_joint_state.name.push_back("arm_joint_5");
 
     m_joint_state.position.assign(NR_OF_ARM_SLAVES, 0);
     m_joint_state.velocity.assign(NR_OF_ARM_SLAVES, 0);

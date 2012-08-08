@@ -23,6 +23,10 @@ namespace YouBot
     m_OODL = (YouBotOODL*) parent;
 
     m_joint_state.position.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_state.name.push_back("wheel_joint_fl");
+    m_joint_state.name.push_back("wheel_joint_fr");
+    m_joint_state.name.push_back("wheel_joint_bl");
+    m_joint_state.name.push_back("wheel_joint_br");
     m_joint_state.velocity.assign(NR_OF_BASE_SLAVES, 0);
     m_joint_state.effort.assign(NR_OF_BASE_SLAVES, 0);
 
@@ -35,10 +39,10 @@ namespace YouBot
     odometry_state.setDataSample(m_odometry_state);
 
     // odometry pose estimates frame
-    m_odometry_state.header.frame_id = "odometry";
+    m_odometry_state.header.frame_id = "odom";
     m_odometry_state.header.seq = 0;
     // odometry twist estimates frame
-    m_odometry_state.child_frame_id = "base_link";
+    m_odometry_state.child_frame_id = "base_footprint";
 
     // odometry estimates - set to zero
     m_odometry_state.pose.pose.position.x = 0;
