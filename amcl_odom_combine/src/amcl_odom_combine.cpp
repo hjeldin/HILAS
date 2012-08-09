@@ -3,6 +3,7 @@
 #include <ocl/Component.hpp>
 
 #include <vector>
+#include "Helpers.hpp"
 
 using namespace RTT;
 using namespace std;
@@ -10,13 +11,23 @@ using namespace std;
 amcl_odom_combine::amcl_odom_combine(const string& name) :
     TaskContext(name, PreOperational)
 {
-  m_H_base_0.data.resize(16, 0.0);
+  // Inputs
+  m_T_base_base_0.data.resize(6, 0.0);
+
+  // Outputs
+  m_H_base_0.data.assign(EYE4, EYE4 + SIZE_H);
+  m_H_base_baseprev.data.assign(EYE4, EYE4 + SIZE_H);
 
   H_base_0.setDataSample(m_H_base_0);
+  H_base_baseprev.setDataSample(m_H_base_baseprev);
  
-  this->addPort("amcl_pose", amcl_pose).doc("");
-  this->addPort("T", T).doc("");
-  this->addPort("H_base_0", H_base_0).doc("combined odom");
+  this->addPort("amcl_pose", amcl_pose).doc("H_base_0 update based on extra sensory information.");
+  this->addPort("T_base_base_0", T_base_base_0).doc("Base Twist from sensors");
+  this->addPort("H_base_0", H_base_0).doc("Combined base pose");
+  this->addPort("H_base_baseprev", H_base_baseprev).doc("");
+
+  m_H_amcl.data.assign(EYE4, EYE4 + SIZE_H);
+  m_H.data.assign(EYE4, EYE4 + SIZE_H);
 }
 
 amcl_odom_combine::~amcl_odom_combine()
@@ -46,7 +57,7 @@ bool amcl_odom_combine::startHook()
     return false;
   }
 
-  if (!T.connected())
+  if (!T_base_base_0.connected())
   {
     log(Error) << "T not connected." << endlog();
     return false;
@@ -58,6 +69,14 @@ bool amcl_odom_combine::startHook()
     return false;
   }
 
+  if (!H_base_baseprev.connected())
+  {
+    log(Error) << "H_base_baseprev not connected." << endlog();
+    return false;
+  }
+
+  m_sampletime = TaskContext::getPeriod();
+
   return TaskContext::startHook();
 }
 
@@ -67,17 +86,28 @@ void amcl_odom_combine::updateHook()
 {
   TaskContext::updateHook();
  
+  //  if update then
   if(amcl_pose.read(m_amcl_pose) == NewData)
   {
-    makeHMatrixFromQuaternion(m_H_base_0.data, m_amcl_pose.pose.pose.orientation, m_amcl_pose.pose.pose.position);
+    // H_base_baseprev=eye(4);
+    m_H_base_baseprev.data.assign(EYE4, EYE4+SIZE_H);
+    // input  from amcl
+    makeHMatrixFromQuaternion(m_H_amcl.data, m_amcl_pose.pose.pose.orientation, m_amcl_pose.pose.pose.position);
   }
-  //m_T
-  //m_transform_map_odom
-  
-  // magic done by JAN! ! ! ! 
+
+  T_base_base_0.read(m_T_base_base_0);
+
+//  H_base_baseprev=aldo*H; // output to amcl at any point in time
+//  aldo=H_base_baseprev;
+  computeFiniteTwist(m_H.data, m_T_base_base_0.data, m_sampletime);
+  mulMatrixMatrixSquare(m_H_base_baseprev.data, m_H_base_baseprev.data, m_H.data, 4);
+
+//  H_base_0=Hamcl*H_base_baseprev; //output to controller
+  mulMatrixMatrixSquare(m_H_base_0.data, m_H_amcl.data, m_H_base_baseprev.data, 4);
 
   //output
   H_base_0.write(m_H_base_0);
+  H_base_baseprev.write(m_H_base_baseprev);
 }
 
 void amcl_odom_combine::stopHook()
