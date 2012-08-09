@@ -1,0 +1,27 @@
+import("rtt_rosnode");
+import("arm_bridge_ros_orocos");
+
+require("ros_integration")
+
+loadComponent("arm_bridge", "arm_bridge_ros_orocos");
+
+arm_bridge.configure;
+arm_bridge.setPeriod(0.01);
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  // Use ''BUFFER'' or ''DATA''
+cp_rt.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
+
+connectPeers("arm_bridge", "ArmPoseController")
+connect("arm_bridge.orocos_joint_positions","ArmPoseController.angles_setpoint", cp_rt)
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/arm_1/arm_controller/position_command";
+stream("arm_bridge.brics_joint_positions", cp_ros);
+
+# 
+# Start running
+# 
+
+arm_bridge.start;
