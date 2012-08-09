@@ -2,7 +2,8 @@ import("CartesianController");
 import("YouBotKinematics");
 import("ArmPoseController");
 import("BasePoseController");
-import("Odometry");
+#import("Odometry");
+import("amcl_odom_combine");
 
 import("YouBot_adapters");
 import("TSimAdapters");
@@ -22,7 +23,7 @@ loadComponent("CartesianController","motion_stack::CartesianController");
 loadComponent("YouBotKinematics","motion_stack::YouBotKinematics");
 loadComponent("ArmPoseController","motion_stack::ArmPoseController");
 loadComponent("BasePoseController","motion_stack::BasePoseController");
-loadComponent("Odometry","motion_stack::Odometry");
+loadComponent("Odometry","amcl_odom_combine");
 
 #
 # Activities / threads
@@ -88,6 +89,11 @@ connect("BasePoseController.H_base_0_output", "YouBotKinematics.H_base_0", cp_rt
 # BasePoseController <-> Odometry
 connect("BasePoseController.T_base_00", "Odometry.T", cp_rt);
 connect("Odometry.H_base_0", "BasePoseController.H_base_0", cp_rt);
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/amcl_pose";
+stream("Odometry.amcl_pose", cp_ros);
 
 
 # ArmPoseController <-> OODL
