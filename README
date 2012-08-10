@@ -1,7 +1,6 @@
 =YouBot-stack development repository=
 
 The University of Twente (www.utwente.nl) is not liable for any damage arising directly or indirectly from using the code in this repository.
-Note: The development repository is located at: https://git.ce.utwente.nl/youbot-stack AND https://git.ce.utwente.nl/generic_components
 
 ==INSTALLATION==
 
@@ -17,8 +16,9 @@ Note: The development repository is located at: https://git.ce.utwente.nl/youbot
    sudo apt-get install ros-electric-orocos-toolchain ros-electric-rtt-ros-integration ros-electric-rtt-ros-comm ros-electric-rtt-common-msgs ros-electric-rtt-geometry
 
 === Install procedure ===
-1) Clone the UTwente youbot-stack:
-git clone git://github.com/b-it-bots/youbot-stack.git
+1) Clone the UTwente youbot-stack & generic Orocos components:
+git clone https://git.ce.utwente.nl/youbot-stack
+git clone https://git.ce.utwente.nl/generic_components 
 
 2) Install the external stack/package dependencies:
 2a) Replace DEV by your install folder
