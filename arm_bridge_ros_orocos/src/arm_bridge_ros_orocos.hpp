@@ -54,15 +54,13 @@ class arm_bridge_ros_orocos: public TaskContext
      void armJointTrajectoryCancelCallback(actionlib::ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle youbotArmGoal);
 
   private:
-	void trajectoryActionCallback(const control_msgs::FollowJointTrajectoryGoalConstPtr &goal);
+    void trajectoryActionCallback(const control_msgs::FollowJointTrajectoryGoalConstPtr &goal);
 
-    InputPort<brics_actuator::JointPositions> brics_joint_positions;
     OutputPort<std_msgs::Float64MultiArray> orocos_joint_positions;
 
-    brics_actuator::JointPositions m_brics_joint_positions;
     std_msgs::Float64MultiArray m_orocos_joint_positions;
 
-	ros::NodeHandle m_nh;
+    ros::NodeHandle m_nh;
     actionlib::ActionServer<control_msgs::FollowJointTrajectoryAction> *m_trajectory_action_srv;
     control_msgs::FollowJointTrajectoryResult m_action_result;
 
