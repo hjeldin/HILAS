@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rtt:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rtt="http://rtt/1.0" name="DefaultDiagram">
+  <taskContext name="YouBotKinematics" namespace="motion_stack" type="YouBotKinematics">
+    <inputPort name="H_base_0" type="std::vector&lt;double>"/>
+    <inputPort name="angles_measured" type="std::vector&lt;double>"/>
+    <inputPort name="W_tooltip_00" type="std::vector&lt;double>"/>
+    <outputPort name="torques_cmd" type="std::vector&lt;double>"/>
+    <outputPort name="W_base_00" type="std::vector&lt;double>"/>
+    <outputPort name="T_tooltip_00" type="std::vector&lt;double>"/>
+    <outputPort name="H_tooltip_0" type="std::vector&lt;double>"/>
+    <property name="CalculateJ__InitialJointPos" type="double"/>
+    <property name="CalculateJ__Linkdim" type="double"/>
+    <property name="CalculateJ__InitialBasePos" type="double"/>
+    <property name="CalculateJ__baseoffset" type="double"/>
+    <property name="DiscreteDifferential__initial" type="double"/>
+  </taskContext>
+</rtt:Package>

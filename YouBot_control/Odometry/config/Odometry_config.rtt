@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rtt:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rtt="http://rtt/1.0" name="DefaultDiagram">
+  <taskContext name="Odometry" namespace="motion_stack" type="Odometry">
+    <inputPort name="T" type="std::vector&lt;double>"/>
+    <outputPort name="H_base_0" type="std::vector&lt;double>"/>
+    <property name="R" type="double"/>
+    <property name="omega" type="double"/>
+    <property name="v" type="double"/>
+    <property name="omega_norm" type="double"/>
+    <property name="omega_temp" type="double"/>
+    <property name="H" type="double"/>
+    <property name="Hbase0" type="double"/>
+  </taskContext>
+</rtt:Package>
