@@ -47,7 +47,6 @@ bool ArmBridgeRosOrocos::startHook()
 
 	m_arm_has_active_joint_trajectory_goal = false;
 
-
 	if (!brics_joint_positions.connected())
 	{
 		log(Error) << "BRICS joint positions not connected." << endlog();
@@ -124,7 +123,6 @@ void ArmBridgeRosOrocos::cleanupHook()
 	TaskContext::cleanupHook();
 }
 
-
 void ArmBridgeRosOrocos::armJointTrajectoryGoalCallback(actionlib::ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle youbot_arm_goal)
 {
 	trajectory_msgs::JointTrajectory trajectory = youbot_arm_goal.getGoal()->trajectory;
@@ -169,12 +167,10 @@ void ArmBridgeRosOrocos::armJointTrajectoryGoalCallback(actionlib::ActionServer<
 
 	for (size_t j = 0; j < m_youbot_arm_dof; j++)
 	{
-      jointTrajectories[j].start_time = boost::posix_time::microsec_clock::local_time(); //TODO is this correct to set the trajectory start time to now
+        jointTrajectories[j].start_time = boost::posix_time::microsec_clock::local_time(); //TODO is this correct to set the trajectory start time to now
 	}
 
-  
-  
-
+ 
 	// cancel the old goal
 	/*
 	if (m_arm_has_active_joint_trajectory_goal)
