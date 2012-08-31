@@ -16,6 +16,9 @@
   <depend package="rtt_brics_actuator"/>
   <depend package="actionlib"/>
   <depend package="control_msgs"/>
+  <depend package="raw_arm_navigation"/>
+  <depend package="tf"/>
+  
 </package>
 
 
