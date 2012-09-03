@@ -10170,7 +10170,7 @@
 			<name>JointSpaceController\PD_Joint1\kp</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>1.0</value>
+			<value>30.0</value>
 			<description>Proportional gain</description>
 			<physical>
 				<unit>
@@ -10237,7 +10237,7 @@
 			<name>JointSpaceController\PD_Joint2\kp</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>1.0</value>
+			<value>30.0</value>
 			<description>Proportional gain</description>
 			<physical>
 				<unit>
@@ -10304,7 +10304,7 @@
 			<name>JointSpaceController\PD_Joint3\kp</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>1.0</value>
+			<value>30.0</value>
 			<description>Proportional gain</description>
 			<physical>
 				<unit>
@@ -10371,7 +10371,7 @@
 			<name>JointSpaceController\PD_Joint4\kp</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>1.0</value>
+			<value>30.0</value>
 			<description>Proportional gain</description>
 			<physical>
 				<unit>
@@ -10438,7 +10438,7 @@
 			<name>JointSpaceController\PD_Joint5\kp</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>1.0</value>
+			<value>30.0</value>
 			<description>Proportional gain</description>
 			<physical>
 				<unit>
