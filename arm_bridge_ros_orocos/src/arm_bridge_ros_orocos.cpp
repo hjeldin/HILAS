@@ -18,15 +18,18 @@ ArmBridgeRosOrocos::ArmBridgeRosOrocos(const string& name) :  TaskContext(name, 
 	m_orocos_joint_positions.data.resize(m_youbot_arm_dof, 0.0);
 	m_orocos_homog_matrix.data.resize(16, 0.0);
 	m_orocos_arm_stiffness.data.resize(9, 0.0);
+	m_orocos_HtipCC.data.resize(16, 0.0);
 
 	orocos_joint_positions.setDataSample(m_orocos_joint_positions);
 	orocos_homog_matrix.setDataSample(m_orocos_homog_matrix);
 	orocos_arm_stiffness.setDataSample(m_orocos_arm_stiffness);
+	orocos_HtipCC.setDataSample(m_orocos_HtipCC);
 
 	this->addPort("brics_joint_positions", brics_joint_positions).doc("Input of joint positions in BRICS data types");
 	this->addPort("orocos_joint_positions", orocos_joint_positions).doc("Output of joint positions in Orocos data type");
 	this->addPort("orocos_homog_matrix", orocos_homog_matrix).doc("Output of a Cartesian Pose as homogeneous coordinates in Orocos data type");
 	this->addPort("orocos_arm_stiffness", orocos_arm_stiffness).doc("Output of a arm stiffness to set");
+	this->addPort("orocos_HtipCC", orocos_HtipCC).doc("Output of HtipCC to set");
 }
 
 ArmBridgeRosOrocos::~ArmBridgeRosOrocos()
@@ -237,9 +240,15 @@ void ArmBridgeRosOrocos::armCartesianPoseWithImpedanceCtrlGoalCallback(actionlib
 
 	geometry_msgs::PoseStamped goal_pose = youbot_arm_goal.getGoal()->goal;
 
+	std::cout << "\nx: " << goal_pose.pose.position.x << " y: " << goal_pose.pose.position.y << " z: " << goal_pose.pose.position.z;
+
 	// create rotation matrix from quaternion
 	tf::quaternionMsgToTF(goal_pose.pose.orientation, bt_quat);
 	btMatrix3x3 rot_mat = btMatrix3x3(bt_quat);
+
+	double r, p, y;
+	rot_mat.getRPY(r, p, y);
+	std::cout << " -- r: " << r << " p: " << p << " y: " << y << std::endl;
 
 	m_orocos_homog_matrix.data[0] = rot_mat[0][0];
 	m_orocos_homog_matrix.data[1] = rot_mat[0][1];
@@ -258,18 +267,22 @@ void ArmBridgeRosOrocos::armCartesianPoseWithImpedanceCtrlGoalCallback(actionlib
 	m_orocos_homog_matrix.data[14] = 0.0;
 	m_orocos_homog_matrix.data[15] = 1.0;
 
-	m_orocos_arm_stiffness.data[0] = 100;
-	m_orocos_arm_stiffness.data[1] = 100;
-	m_orocos_arm_stiffness.data[2] = 100;
-	m_orocos_arm_stiffness.data[3] = 0;
-	m_orocos_arm_stiffness.data[4] = 0;
-	m_orocos_arm_stiffness.data[5] = 0;
+	m_orocos_arm_stiffness.data[0] = 10;
+	m_orocos_arm_stiffness.data[1] = 10;
+	m_orocos_arm_stiffness.data[2] = 10;
+	m_orocos_arm_stiffness.data[3] = 10;
+	m_orocos_arm_stiffness.data[4] = 10;
+	m_orocos_arm_stiffness.data[5] = 10;
 	m_orocos_arm_stiffness.data[6] = 0;
 	m_orocos_arm_stiffness.data[7] = 0;
 	m_orocos_arm_stiffness.data[8] = 0;
 
+	/* identity */
+	m_orocos_arm_stiffness.data[0] = m_orocos_arm_stiffness.data[5] = m_orocos_arm_stiffness.data[10] = m_orocos_arm_stiffness.data[15] = 1.0;
+
 	std::cout << "write homog matrix to output port" << std::endl;
 
+	orocos_HtipCC.write(m_orocos_HtipCC);
 	orocos_arm_stiffness.write(m_orocos_arm_stiffness);
 	orocos_homog_matrix.write(m_orocos_homog_matrix);
 }

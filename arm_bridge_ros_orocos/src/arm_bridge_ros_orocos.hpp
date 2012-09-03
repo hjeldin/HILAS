@@ -69,11 +69,13 @@ class ArmBridgeRosOrocos: public TaskContext
     OutputPort<std_msgs::Float64MultiArray> orocos_joint_positions;
     OutputPort<std_msgs::Float64MultiArray> orocos_homog_matrix;
     OutputPort<std_msgs::Float64MultiArray> orocos_arm_stiffness;
+    OutputPort<std_msgs::Float64MultiArray> orocos_HtipCC;
 
     brics_actuator::JointPositions m_brics_joint_positions;
     std_msgs::Float64MultiArray m_orocos_joint_positions;
     std_msgs::Float64MultiArray m_orocos_homog_matrix;
     std_msgs::Float64MultiArray m_orocos_arm_stiffness;
+    std_msgs::Float64MultiArray m_orocos_HtipCC;
 
 	ros::NodeHandle m_nh;
 

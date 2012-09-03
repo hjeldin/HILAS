@@ -26,6 +26,12 @@ cp_arm_stiff.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNS
 connectPeers("arm_bridge", "CartesianController")
 connect("arm_bridge.orocos_arm_stiffness","CartesianController.StiffnessCC", cp_arm_stiff)
 
+var ConnPolicy cp_arm_h_tip_cc;
+cp_arm_h_tip_cc.type = DATA;  // Use ''BUFFER'' or ''DATA''
+cp_arm_h_tip_cc.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
+connectPeers("arm_bridge", "CartesianController")
+connect("arm_bridge.orocos_HtipCC","CartesianController.HtipCC", cp_arm_h_tip_cc)
+
 
 var ConnPolicy cp_ros;
 cp_ros.transport = 3;
