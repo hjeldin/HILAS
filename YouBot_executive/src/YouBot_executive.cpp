@@ -183,6 +183,7 @@ namespace YouBot
     gripper_cmd.setDataSample(m_gripper_cmd);
 
     m_do_bypass_executive = false;
+    use_stiffness_slider = false;
 
     // default state
     m_state = GRAVITY_MODE;
@@ -235,8 +236,7 @@ namespace YouBot
           << " dimensional vector" << endlog();
       return;
     }
-    m_CartSpaceStiffness_orig.data.assign(stiffness_c.begin(),
-        stiffness_c.end());
+    m_CartSpaceStiffness_orig.data.assign(stiffness_c.begin(), stiffness_c.end());
     calculateCartStiffness(); // adjust for the slider position
   }
 
@@ -360,6 +360,7 @@ namespace YouBot
 
     if (stiffness_slider.read(m_stiffness_slider) == NewData)
     {
+      use_stiffness_slider = true;
       calculateCartStiffness();
       if (m_state == CARTESIAN_CONTROL) // Apply immediately iff in these modes. Does NOT affect gravity nor jointspace control modes
       {
@@ -372,15 +373,15 @@ namespace YouBot
   {
     double percentage = 1.0;
 
-    if(stiffness_slider.connected())
+    if(use_stiffness_slider)
       percentage = (m_stiffness_slider.data[0] + 1) / 2; // For the Logitech joystick the input will be between -1 and +1
 
     if (percentage >= 0.0 && percentage <= 1.0)
     {
       for (unsigned int i = 0; i < SIZE_CART_STIFFNESS; ++i)
       {
-        m_CartSpaceStiffness.data[i] = m_CartSpaceStiffness_orig.data[i]
-            * percentage;
+        m_CartSpaceStiffness.data[i] = m_CartSpaceStiffness_orig.data[i] * percentage;
+//        log(Info) << "CartSpaceStiffness[" << i << "] = " << m_CartSpaceStiffness.data[i] << endlog();
       }
     }
   }
@@ -462,6 +463,7 @@ namespace YouBot
       flat_matrix_t temp2;
       temp2.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
 
+//      log(Info) << __FUNCTION__ << " - bypass active" << endlog();
       // do by-pass
     }
     else if(!m_do_bypass_executive)
@@ -480,7 +482,13 @@ namespace YouBot
 
       assert(m_HBase0Setpoint.data.size() == SIZE_H);
       HBase0Setpoint.write(m_HBase0Setpoint);
+
+//      log(Info) << __FUNCTION__ << " - bypass inactive" << endlog();
     }
+//    else
+//    {
+//      log(Info) << __FUNCTION__ << " - bypassed" << endlog();
+//    }
 
     assert(m_ArmJointActive.data.size() == SIZE_ARM_JOINTS_ARRAY);
     ArmJointActive.write(m_ArmJointActive);

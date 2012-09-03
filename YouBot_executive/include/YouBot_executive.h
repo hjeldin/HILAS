@@ -136,6 +136,8 @@ namespace YouBot
 
     state_t m_state;
 
+    bool use_stiffness_slider;
+
     std::string m_events;
 
     bool m_do_bypass_executive;
