@@ -17,11 +17,6 @@
 //
 // Commands
 //
-var ConnPolicy cp_ros_base_torque_command;
-cp_ros_base_torque_command.transport = 3;
-cp_ros_base_torque_command.name_id = "/youBot/base_torque_command";
-
-stream("control_to_base.output_cmd_torques", cp_ros_base_torque_command);
 
 var ConnPolicy cp_ros_HBase0;
 cp_ros_HBase0.transport = 3;
