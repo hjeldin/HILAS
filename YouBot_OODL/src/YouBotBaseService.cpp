@@ -22,17 +22,13 @@ namespace YouBot
   {
     m_OODL = (YouBotOODL*) parent;
 
-    m_joint_state.position.assign(NR_OF_BASE_SLAVES * 2, 0);
-    m_joint_state.name.push_back("caster_joint_fl");
-    m_joint_state.name.push_back("caster_joint_fr");
-    m_joint_state.name.push_back("caster_joint_bl");
-    m_joint_state.name.push_back("caster_joint_br");
+    m_joint_state.position.assign(NR_OF_BASE_SLAVES, 0);
     m_joint_state.name.push_back("wheel_joint_fl");
     m_joint_state.name.push_back("wheel_joint_fr");
     m_joint_state.name.push_back("wheel_joint_bl");
     m_joint_state.name.push_back("wheel_joint_br");
-    m_joint_state.velocity.assign(NR_OF_BASE_SLAVES * 2, 0);
-    m_joint_state.effort.assign(NR_OF_BASE_SLAVES * 2, 0);
+    m_joint_state.velocity.assign(NR_OF_BASE_SLAVES, 0);
+    m_joint_state.effort.assign(NR_OF_BASE_SLAVES, 0);
 
     m_joint_position_command.positions.assign(NR_OF_BASE_SLAVES, 0);
     m_joint_velocity_command.velocities.assign(NR_OF_BASE_SLAVES, 0);

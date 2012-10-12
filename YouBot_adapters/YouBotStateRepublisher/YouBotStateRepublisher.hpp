@@ -15,7 +15,8 @@ namespace YouBot
   //{"j0","j1","j2","j3","j4","w1","w2","w3","w4","f1","f2"};
   { "arm_joint_1", "arm_joint_2", "arm_joint_3", "arm_joint_4", "arm_joint_5",
       "wheel_joint_fl", "wheel_joint_fr", "wheel_joint_bl", "wheel_joint_br",
-      "caster_joint_fl","caster_joint_fr", "caster_joint_bl", "caster_joint_br","f1", "f2" };
+      "caster_joint_fl","caster_joint_fr", "caster_joint_bl", "caster_joint_br",
+      "gripper_finger_joint_l", "gripper_finger_joint_r"};
 
   static const unsigned int SIZE_JOINT_NAME_ARRAY=15;
 

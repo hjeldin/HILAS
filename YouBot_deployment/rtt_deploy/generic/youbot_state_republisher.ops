@@ -7,8 +7,14 @@ cp_rt.type = DATA;
 cp_rt.lock_policy = LOCK_FREE;
 
 connect("driver.Arm1.joint_state","rviz_publisher.arm_state", cp_rt);
-
 connect("driver.Base.joint_state","rviz_publisher.base_state", cp_rt);
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/youbot_states";
+
+stream("rviz_publisher.youbot_state", cp_ros);
+
 
 rviz_publisher.configure
 rviz_publisher.setPeriod(0.1)
