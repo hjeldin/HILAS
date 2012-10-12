@@ -29,6 +29,7 @@ runScript( rospack.find("arm_bridge_ros_orocos") + "/deploy.ops")
 
 #print.ln("Starting republishing to rviz")
 #runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/configuration_publisher.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/youbot_state_republisher.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;
