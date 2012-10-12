@@ -1,0 +1,24 @@
+<package>
+  <description brief="joystick_to_geometry_Twist">
+
+  joystick_to_geometry_Twist - Adapter to transform Logitech Extreme 3D pro ros messages to geometry::Twist.
+
+  </description>
+  <author>Robert Wilterdink</author>
+  <license>LGPLv2.1 / BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>unknown</url>
+  <depend package="rtt"/>
+  <depend package="rtt_rosnode"/>
+  <depend package="rtt_std_msgs"/>
+  <depend package="rtt_sensor_msgs"/>
+  <depend package="rtt_geometry_msgs"/>
+  <depend package="rtt_brics_actuator"/>
+  <depend package="actionlib"/>
+  <depend package="control_msgs"/>
+  <depend package="raw_arm_navigation"/>
+  <depend package="tf"/>
+  
+</package>
+
+
