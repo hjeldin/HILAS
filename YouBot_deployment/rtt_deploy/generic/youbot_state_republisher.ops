@@ -1,0 +1,16 @@
+import("YouBot_adapters");
+
+loadComponent("rviz_publisher","YouBot::YouBotStateRepublisher");
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+
+connect("driver.Arm1.joint_state","rviz_publisher.arm_state", cp_rt);
+
+connect("driver.Base.joint_state","rviz_publisher.base_state", cp_rt);
+
+rviz_publisher.configure
+rviz_publisher.setPeriod(0.1)
+rviz_publisher.start
+

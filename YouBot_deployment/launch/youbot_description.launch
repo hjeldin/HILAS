@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+<node name="rviz1" pkg="rviz" type="rviz" />
+<!--<node name="StateRepublisher" pkg="YouBot_adapters" type="TSimYouBotStatePublisher" /> -->
+<!-- send youbot urdf to param server -->
+<param name="robot_description" command="$(find xacro)/xacro.py '$(find youbot_description)/robots/youbot.urdf.xacro'"/>
+        <remap from="youbot_robot_state" to="youbot_state"/> <!--joint_states" to="youbot_state"/> -->
+
+<!-- start robot_state_publisher -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="rob_st_pub" />
+
+</launch>
