@@ -37,6 +37,8 @@ namespace YouBot
 		RTT::InputPort<flat_matrix_t > stiffness_slider;
 		RTT::OutputPort<flat_matrix_t> CartSpaceStiffness;
 
+		RTT::InputPort<std_msgs::Bool> submit_quota;
+
 	private:
 		flat_matrix_t m_EnergyQuanta;
 		flat_matrix_t m_EnergyState1;
@@ -45,6 +47,9 @@ namespace YouBot
 		flat_matrix_t m_CartSpaceStiffness;
 		flat_matrix_t m_CartSpaceStiffness_orig;
 
+		std_msgs::Bool m_submit_quota;
+		std_msgs::Bool m_submit_quota_prev;
+		double m_quota;
 	};
 
 }

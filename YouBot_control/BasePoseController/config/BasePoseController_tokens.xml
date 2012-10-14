@@ -1,0 +1,5492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tokens>
+	<token name="MODEL_NAME"><![CDATA[motion_stack]]></token>
+	<token name="20SIM_DIR"><![CDATA[C:\Program Files\20-sim 4.1]]></token>
+	<token name="SUBMODEL_NAME"><![CDATA[BasePoseController]]></token>
+	<token name="ALGLOOP_NAMES"><![CDATA[	NULL]]></token>
+	<token name="ALGLOOP_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="ALGLOOP_NAMES3"><![CDATA[]]></token>
+	<token name="ALGLOOP_UNITS"><![CDATA[]]></token>
+	<token name="ALIAS_EQUATIONS"><![CDATA[	/* BasePositionController\dHToErrors\H_vp_0 = BasePositionController\H_vp_0; */
+	XXMatrixMov (&M[37], &M[6]);
+
+	/* BasePositionController\Submodel3\active = BasePositionController\active_joint; */
+	XXMatrixMov (&M[40], &M[7]);
+
+	/* [Splitter5\output1, Splitter5\output2] = Splitter5\input; */
+	XXMatrixMov (&M[48], &M[25]);
+	XXMatrixMov (&M[49], &M[25]);
+
+	/* FilterBaseJointVelocities1\output = DiscreteDifferential\input; */
+	XXMatrixMov (&M[46], &M[34]);
+
+	/* BaseTF\H_base_0 = Splitter5\input; */
+	XXMatrixMov (&M[44], &M[25]);
+
+	/* Splitter7\input = Splitter5\input; */
+	XXMatrixMov (&M[50], &M[25]);
+
+	/* [Splitter7\output1, Splitter7\output2] = Splitter5\input; */
+	XXMatrixMov (&M[51], &M[25]);
+	XXMatrixMov (&M[52], &M[25]);
+
+	/* BasePositionController\H_base_0 = Splitter5\input; */
+	XXMatrixMov (&M[41], &M[25]);
+
+	/* BaseTF\Base_joint_velocity = DiscreteDifferential\output; */
+	XXMatrixMov (&M[43], &M[14]);
+
+	/* BasePositionController\dHToErrors\H_base_0 = Splitter5\input; */
+	XXMatrixMov (&M[38], &M[25]);
+
+	/* BasePositionController\dHToErrors\angle_error = BasePositionController\PD_BaseAngle\error; */
+	V[299] = R[1];
+
+	/* BasePositionController\dHToErrors\x_error = BasePositionController\PD_BaseX\error; */
+	V[300] = R[3];
+
+	/* BasePositionController\dHToErrors\y_error = BasePositionController\PD_BaseY\error; */
+	V[301] = R[5];
+
+	/* BasePositionController\PD_BaseAngle\output = BasePositionController\PD_BaseAngle\uD; */
+	V[305] = R[0];
+
+	/* BasePositionController\PD_BaseX\output = BasePositionController\PD_BaseX\uD; */
+	V[306] = R[2];
+
+	/* BasePositionController\PD_BaseY\output = BasePositionController\PD_BaseY\uD; */
+	V[307] = R[4];
+
+	/* BasePositionController\ErrorsToW\force_y = BasePositionController\PD_BaseY\uD; */
+	V[304] = R[4];
+
+	/* BasePositionController\ErrorsToW\torque_z = BasePositionController\PD_BaseAngle\uD; */
+	V[302] = R[0];
+
+	/* BasePositionController\ErrorsToW\force_x = BasePositionController\PD_BaseX\uD; */
+	V[303] = R[2];
+
+	/* BasePositionController\Submodel3\input = BasePositionController\ErrorsToW\W_base_base0; */
+	XXMatrixMov (&M[39], &M[3]);
+
+	/* BasePositionController\W_base_base0 = BasePositionController\Submodel3\cmd; */
+	XXMatrixMov (&M[42], &M[4]);
+
+	/* PlusMinus4\plus1 = BasePositionController\Submodel3\cmd; */
+	XXMatrixMov (&M[47], &M[4]);
+
+	/* BaseTF\W_base_base0 = PlusMinus4\output; */
+	XXMatrixMov (&M[45], &M[23]);
+]]></token>
+	<token name="ALIAS_MATRIX_NAMES"><![CDATA[	"BasePositionController\\dHToErrors\\H_vp_0",
+	"BasePositionController\\dHToErrors\\H_base_0",
+	"BasePositionController\\Submodel3\\input",
+	"BasePositionController\\Submodel3\\active",
+	"BasePositionController\\H_base_0",
+	"BasePositionController\\W_base_base0",
+	"BaseTF\\Base_joint_velocity",
+	"BaseTF\\H_base_0",
+	"BaseTF\\W_base_base0",
+	"FilterBaseJointVelocities1\\output",
+	"PlusMinus4\\plus1",
+	"Splitter5\\output1",
+	"Splitter5\\output2",
+	"Splitter7\\input",
+	"Splitter7\\output1",
+	"Splitter7\\output2"
+]]></token>
+	<token name="ALIAS_MATRIX_NAMES2"><![CDATA[	"BasePositionController_dHToErrors_H_vp_0",
+	"BasePositionController_dHToErrors_H_base_0",
+	"BasePositionController_Submodel3_input",
+	"BasePositionController_Submodel3_active",
+	"BasePositionController_H_base_0",
+	"BasePositionController_W_base_base0",
+	"BaseTF_Base_joint_velocity",
+	"BaseTF_H_base_0",
+	"BaseTF_W_base_base0",
+	"FilterBaseJointVelocities1_output",
+	"PlusMinus4_plus1",
+	"Splitter5_output1",
+	"Splitter5_output2",
+	"Splitter7_input",
+	"Splitter7_output1",
+	"Splitter7_output2"
+]]></token>
+	<token name="ALIAS_MATRIX_NAMES3"><![CDATA[BasePositionController\dHToErrors\H_vp_0
+BasePositionController\dHToErrors\H_base_0
+BasePositionController\Submodel3\input
+BasePositionController\Submodel3\active
+BasePositionController\H_base_0
+BasePositionController\W_base_base0
+BaseTF\Base_joint_velocity
+BaseTF\H_base_0
+BaseTF\W_base_base0
+FilterBaseJointVelocities1\output
+PlusMinus4\plus1
+Splitter5\output1
+Splitter5\output2
+Splitter7\input
+Splitter7\output1
+Splitter7\output2
+]]></token>
+	<token name="ALIAS_MATRIX_UNITS"><![CDATA[]]></token>
+	<token name="ALIAS_VARIABLE_INDICES"><![CDATA[	0,	0,	1,	2,	2,	3,	4,	4,	5,	6,	7,
+	8,	9,	24,	25,	26,	27,	28,	29,	33,	34,	35,
+	36,	37,	38,	33,	34,	35,	36,	37,	38,	45,	49,
+	53,	57,	46,	50,	54,	58,	47,	51,	55,	59,	48,
+	52,	56,	60,	61,	62,	63,	104,	105,	106,	107,	168,
+	169,	170,	171,	172,	173,	180,	184,	188,	192,	181,	185,
+	189,	193,	182,	186,	190,	194,	183,	187,	191,	195,	180,
+	184,	188,	192,	181,	185,	189,	193,	182,	186,	190,	194,
+	183,	187,	191,	195,	180,	184,	188,	192,	181,	185,	189,
+	193,	182,	186,	190,	194,	183,	187,	191,	195,	180,	184,
+	188,	192,	181,	185,	189,	193,	182,	186,	190,	194,	183,
+	187,	191,	195,	180,	184,	188,	192,	181,	185,	189,	193,
+	182,	186,	190,	194,	183,	187,	191,	195,	180,	184,	188,
+	192,	181,	185,	189,	193,	182,	186,	190,	194,	183,	187,
+	191,	195,	180,	184,	188,	192,	181,	185,	189,	193,	182,
+	186,	190,	194,	183,	187,	191,	195,	180,	184,	188,	192,
+	181,	185,	189,	193,	182,	186,	190,	194,	183,	187,	191,
+	195
+]]></token>
+	<token name="ALIAS_VARIABLE_NAMES"><![CDATA[	"BasePositionController\\ErrorsToW\\torque_z",
+	"BasePositionController\\PD_BaseAngle\\output",
+	"BasePositionController\\dHToErrors\\angle_error",
+	"BasePositionController\\ErrorsToW\\force_x",
+	"BasePositionController\\PD_BaseX\\output",
+	"BasePositionController\\dHToErrors\\x_error",
+	"BasePositionController\\ErrorsToW\\force_y",
+	"BasePositionController\\PD_BaseY\\output",
+	"BasePositionController\\dHToErrors\\y_error",
+	"FilterBaseJointVelocities1\\output[1]",
+	"FilterBaseJointVelocities1\\output[2]",
+	"FilterBaseJointVelocities1\\output[3]",
+	"FilterBaseJointVelocities1\\output[4]",
+	"BasePositionController\\Submodel3\\input[1]",
+	"BasePositionController\\Submodel3\\input[2]",
+	"BasePositionController\\Submodel3\\input[3]",
+	"BasePositionController\\Submodel3\\input[4]",
+	"BasePositionController\\Submodel3\\input[5]",
+	"BasePositionController\\Submodel3\\input[6]",
+	"PlusMinus4\\plus1[1]",
+	"PlusMinus4\\plus1[2]",
+	"PlusMinus4\\plus1[3]",
+	"PlusMinus4\\plus1[4]",
+	"PlusMinus4\\plus1[5]",
+	"PlusMinus4\\plus1[6]",
+	"BasePositionController\\W_base_base0[1]",
+	"BasePositionController\\W_base_base0[2]",
+	"BasePositionController\\W_base_base0[3]",
+	"BasePositionController\\W_base_base0[4]",
+	"BasePositionController\\W_base_base0[5]",
+	"BasePositionController\\W_base_base0[6]",
+	"BasePositionController\\dHToErrors\\H_vp_0[1,1]",
+	"BasePositionController\\dHToErrors\\H_vp_0[1,2]",
+	"BasePositionController\\dHToErrors\\H_vp_0[1,3]",
+	"BasePositionController\\dHToErrors\\H_vp_0[1,4]",
+	"BasePositionController\\dHToErrors\\H_vp_0[2,1]",
+	"BasePositionController\\dHToErrors\\H_vp_0[2,2]",
+	"BasePositionController\\dHToErrors\\H_vp_0[2,3]",
+	"BasePositionController\\dHToErrors\\H_vp_0[2,4]",
+	"BasePositionController\\dHToErrors\\H_vp_0[3,1]",
+	"BasePositionController\\dHToErrors\\H_vp_0[3,2]",
+	"BasePositionController\\dHToErrors\\H_vp_0[3,3]",
+	"BasePositionController\\dHToErrors\\H_vp_0[3,4]",
+	"BasePositionController\\dHToErrors\\H_vp_0[4,1]",
+	"BasePositionController\\dHToErrors\\H_vp_0[4,2]",
+	"BasePositionController\\dHToErrors\\H_vp_0[4,3]",
+	"BasePositionController\\dHToErrors\\H_vp_0[4,4]",
+	"BasePositionController\\Submodel3\\active[1]",
+	"BasePositionController\\Submodel3\\active[2]",
+	"BasePositionController\\Submodel3\\active[3]",
+	"BaseTF\\Base_joint_velocity[1]",
+	"BaseTF\\Base_joint_velocity[2]",
+	"BaseTF\\Base_joint_velocity[3]",
+	"BaseTF\\Base_joint_velocity[4]",
+	"BaseTF\\W_base_base0[1]",
+	"BaseTF\\W_base_base0[2]",
+	"BaseTF\\W_base_base0[3]",
+	"BaseTF\\W_base_base0[4]",
+	"BaseTF\\W_base_base0[5]",
+	"BaseTF\\W_base_base0[6]",
+	"BaseTF\\H_base_0[1,1]",
+	"BaseTF\\H_base_0[1,2]",
+	"BaseTF\\H_base_0[1,3]",
+	"BaseTF\\H_base_0[1,4]",
+	"BaseTF\\H_base_0[2,1]",
+	"BaseTF\\H_base_0[2,2]",
+	"BaseTF\\H_base_0[2,3]",
+	"BaseTF\\H_base_0[2,4]",
+	"BaseTF\\H_base_0[3,1]",
+	"BaseTF\\H_base_0[3,2]",
+	"BaseTF\\H_base_0[3,3]",
+	"BaseTF\\H_base_0[3,4]",
+	"BaseTF\\H_base_0[4,1]",
+	"BaseTF\\H_base_0[4,2]",
+	"BaseTF\\H_base_0[4,3]",
+	"BaseTF\\H_base_0[4,4]",
+	"BasePositionController\\H_base_0[1,1]",
+	"BasePositionController\\H_base_0[1,2]",
+	"BasePositionController\\H_base_0[1,3]",
+	"BasePositionController\\H_base_0[1,4]",
+	"BasePositionController\\H_base_0[2,1]",
+	"BasePositionController\\H_base_0[2,2]",
+	"BasePositionController\\H_base_0[2,3]",
+	"BasePositionController\\H_base_0[2,4]",
+	"BasePositionController\\H_base_0[3,1]",
+	"BasePositionController\\H_base_0[3,2]",
+	"BasePositionController\\H_base_0[3,3]",
+	"BasePositionController\\H_base_0[3,4]",
+	"BasePositionController\\H_base_0[4,1]",
+	"BasePositionController\\H_base_0[4,2]",
+	"BasePositionController\\H_base_0[4,3]",
+	"BasePositionController\\H_base_0[4,4]",
+	"BasePositionController\\dHToErrors\\H_base_0[1,1]",
+	"BasePositionController\\dHToErrors\\H_base_0[1,2]",
+	"BasePositionController\\dHToErrors\\H_base_0[1,3]",
+	"BasePositionController\\dHToErrors\\H_base_0[1,4]",
+	"BasePositionController\\dHToErrors\\H_base_0[2,1]",
+	"BasePositionController\\dHToErrors\\H_base_0[2,2]",
+	"BasePositionController\\dHToErrors\\H_base_0[2,3]",
+	"BasePositionController\\dHToErrors\\H_base_0[2,4]",
+	"BasePositionController\\dHToErrors\\H_base_0[3,1]",
+	"BasePositionController\\dHToErrors\\H_base_0[3,2]",
+	"BasePositionController\\dHToErrors\\H_base_0[3,3]",
+	"BasePositionController\\dHToErrors\\H_base_0[3,4]",
+	"BasePositionController\\dHToErrors\\H_base_0[4,1]",
+	"BasePositionController\\dHToErrors\\H_base_0[4,2]",
+	"BasePositionController\\dHToErrors\\H_base_0[4,3]",
+	"BasePositionController\\dHToErrors\\H_base_0[4,4]",
+	"Splitter5\\output1[1,1]",
+	"Splitter5\\output1[1,2]",
+	"Splitter5\\output1[1,3]",
+	"Splitter5\\output1[1,4]",
+	"Splitter5\\output1[2,1]",
+	"Splitter5\\output1[2,2]",
+	"Splitter5\\output1[2,3]",
+	"Splitter5\\output1[2,4]",
+	"Splitter5\\output1[3,1]",
+	"Splitter5\\output1[3,2]",
+	"Splitter5\\output1[3,3]",
+	"Splitter5\\output1[3,4]",
+	"Splitter5\\output1[4,1]",
+	"Splitter5\\output1[4,2]",
+	"Splitter5\\output1[4,3]",
+	"Splitter5\\output1[4,4]",
+	"Splitter5\\output2[1,1]",
+	"Splitter5\\output2[1,2]",
+	"Splitter5\\output2[1,3]",
+	"Splitter5\\output2[1,4]",
+	"Splitter5\\output2[2,1]",
+	"Splitter5\\output2[2,2]",
+	"Splitter5\\output2[2,3]",
+	"Splitter5\\output2[2,4]",
+	"Splitter5\\output2[3,1]",
+	"Splitter5\\output2[3,2]",
+	"Splitter5\\output2[3,3]",
+	"Splitter5\\output2[3,4]",
+	"Splitter5\\output2[4,1]",
+	"Splitter5\\output2[4,2]",
+	"Splitter5\\output2[4,3]",
+	"Splitter5\\output2[4,4]",
+	"Splitter7\\input[1,1]",
+	"Splitter7\\input[1,2]",
+	"Splitter7\\input[1,3]",
+	"Splitter7\\input[1,4]",
+	"Splitter7\\input[2,1]",
+	"Splitter7\\input[2,2]",
+	"Splitter7\\input[2,3]",
+	"Splitter7\\input[2,4]",
+	"Splitter7\\input[3,1]",
+	"Splitter7\\input[3,2]",
+	"Splitter7\\input[3,3]",
+	"Splitter7\\input[3,4]",
+	"Splitter7\\input[4,1]",
+	"Splitter7\\input[4,2]",
+	"Splitter7\\input[4,3]",
+	"Splitter7\\input[4,4]",
+	"Splitter7\\output1[1,1]",
+	"Splitter7\\output1[1,2]",
+	"Splitter7\\output1[1,3]",
+	"Splitter7\\output1[1,4]",
+	"Splitter7\\output1[2,1]",
+	"Splitter7\\output1[2,2]",
+	"Splitter7\\output1[2,3]",
+	"Splitter7\\output1[2,4]",
+	"Splitter7\\output1[3,1]",
+	"Splitter7\\output1[3,2]",
+	"Splitter7\\output1[3,3]",
+	"Splitter7\\output1[3,4]",
+	"Splitter7\\output1[4,1]",
+	"Splitter7\\output1[4,2]",
+	"Splitter7\\output1[4,3]",
+	"Splitter7\\output1[4,4]",
+	"Splitter7\\output2[1,1]",
+	"Splitter7\\output2[1,2]",
+	"Splitter7\\output2[1,3]",
+	"Splitter7\\output2[1,4]",
+	"Splitter7\\output2[2,1]",
+	"Splitter7\\output2[2,2]",
+	"Splitter7\\output2[2,3]",
+	"Splitter7\\output2[2,4]",
+	"Splitter7\\output2[3,1]",
+	"Splitter7\\output2[3,2]",
+	"Splitter7\\output2[3,3]",
+	"Splitter7\\output2[3,4]",
+	"Splitter7\\output2[4,1]",
+	"Splitter7\\output2[4,2]",
+	"Splitter7\\output2[4,3]",
+	"Splitter7\\output2[4,4]"
+]]></token>
+	<token name="ALIAS_VARIABLE_NAMES2"><![CDATA[	"BasePositionController_ErrorsToW_torque_z",
+	"BasePositionController_PD_BaseAngle_output",
+	"BasePositionController_dHToErrors_angle_error",
+	"BasePositionController_ErrorsToW_force_x",
+	"BasePositionController_PD_BaseX_output",
+	"BasePositionController_dHToErrors_x_error",
+	"BasePositionController_ErrorsToW_force_y",
+	"BasePositionController_PD_BaseY_output",
+	"BasePositionController_dHToErrors_y_error",
+	"FilterBaseJointVelocities1_output[1]",
+	"FilterBaseJointVelocities1_output[2]",
+	"FilterBaseJointVelocities1_output[3]",
+	"FilterBaseJointVelocities1_output[4]",
+	"BasePositionController_Submodel3_input[1]",
+	"BasePositionController_Submodel3_input[2]",
+	"BasePositionController_Submodel3_input[3]",
+	"BasePositionController_Submodel3_input[4]",
+	"BasePositionController_Submodel3_input[5]",
+	"BasePositionController_Submodel3_input[6]",
+	"PlusMinus4_plus1[1]",
+	"PlusMinus4_plus1[2]",
+	"PlusMinus4_plus1[3]",
+	"PlusMinus4_plus1[4]",
+	"PlusMinus4_plus1[5]",
+	"PlusMinus4_plus1[6]",
+	"BasePositionController_W_base_base0[1]",
+	"BasePositionController_W_base_base0[2]",
+	"BasePositionController_W_base_base0[3]",
+	"BasePositionController_W_base_base0[4]",
+	"BasePositionController_W_base_base0[5]",
+	"BasePositionController_W_base_base0[6]",
+	"BasePositionController_dHToErrors_H_vp_0[1,1]",
+	"BasePositionController_dHToErrors_H_vp_0[1,2]",
+	"BasePositionController_dHToErrors_H_vp_0[1,3]",
+	"BasePositionController_dHToErrors_H_vp_0[1,4]",
+	"BasePositionController_dHToErrors_H_vp_0[2,1]",
+	"BasePositionController_dHToErrors_H_vp_0[2,2]",
+	"BasePositionController_dHToErrors_H_vp_0[2,3]",
+	"BasePositionController_dHToErrors_H_vp_0[2,4]",
+	"BasePositionController_dHToErrors_H_vp_0[3,1]",
+	"BasePositionController_dHToErrors_H_vp_0[3,2]",
+	"BasePositionController_dHToErrors_H_vp_0[3,3]",
+	"BasePositionController_dHToErrors_H_vp_0[3,4]",
+	"BasePositionController_dHToErrors_H_vp_0[4,1]",
+	"BasePositionController_dHToErrors_H_vp_0[4,2]",
+	"BasePositionController_dHToErrors_H_vp_0[4,3]",
+	"BasePositionController_dHToErrors_H_vp_0[4,4]",
+	"BasePositionController_Submodel3_active[1]",
+	"BasePositionController_Submodel3_active[2]",
+	"BasePositionController_Submodel3_active[3]",
+	"BaseTF_Base_joint_velocity[1]",
+	"BaseTF_Base_joint_velocity[2]",
+	"BaseTF_Base_joint_velocity[3]",
+	"BaseTF_Base_joint_velocity[4]",
+	"BaseTF_W_base_base0[1]",
+	"BaseTF_W_base_base0[2]",
+	"BaseTF_W_base_base0[3]",
+	"BaseTF_W_base_base0[4]",
+	"BaseTF_W_base_base0[5]",
+	"BaseTF_W_base_base0[6]",
+	"BaseTF_H_base_0[1,1]",
+	"BaseTF_H_base_0[1,2]",
+	"BaseTF_H_base_0[1,3]",
+	"BaseTF_H_base_0[1,4]",
+	"BaseTF_H_base_0[2,1]",
+	"BaseTF_H_base_0[2,2]",
+	"BaseTF_H_base_0[2,3]",
+	"BaseTF_H_base_0[2,4]",
+	"BaseTF_H_base_0[3,1]",
+	"BaseTF_H_base_0[3,2]",
+	"BaseTF_H_base_0[3,3]",
+	"BaseTF_H_base_0[3,4]",
+	"BaseTF_H_base_0[4,1]",
+	"BaseTF_H_base_0[4,2]",
+	"BaseTF_H_base_0[4,3]",
+	"BaseTF_H_base_0[4,4]",
+	"BasePositionController_H_base_0[1,1]",
+	"BasePositionController_H_base_0[1,2]",
+	"BasePositionController_H_base_0[1,3]",
+	"BasePositionController_H_base_0[1,4]",
+	"BasePositionController_H_base_0[2,1]",
+	"BasePositionController_H_base_0[2,2]",
+	"BasePositionController_H_base_0[2,3]",
+	"BasePositionController_H_base_0[2,4]",
+	"BasePositionController_H_base_0[3,1]",
+	"BasePositionController_H_base_0[3,2]",
+	"BasePositionController_H_base_0[3,3]",
+	"BasePositionController_H_base_0[3,4]",
+	"BasePositionController_H_base_0[4,1]",
+	"BasePositionController_H_base_0[4,2]",
+	"BasePositionController_H_base_0[4,3]",
+	"BasePositionController_H_base_0[4,4]",
+	"BasePositionController_dHToErrors_H_base_0[1,1]",
+	"BasePositionController_dHToErrors_H_base_0[1,2]",
+	"BasePositionController_dHToErrors_H_base_0[1,3]",
+	"BasePositionController_dHToErrors_H_base_0[1,4]",
+	"BasePositionController_dHToErrors_H_base_0[2,1]",
+	"BasePositionController_dHToErrors_H_base_0[2,2]",
+	"BasePositionController_dHToErrors_H_base_0[2,3]",
+	"BasePositionController_dHToErrors_H_base_0[2,4]",
+	"BasePositionController_dHToErrors_H_base_0[3,1]",
+	"BasePositionController_dHToErrors_H_base_0[3,2]",
+	"BasePositionController_dHToErrors_H_base_0[3,3]",
+	"BasePositionController_dHToErrors_H_base_0[3,4]",
+	"BasePositionController_dHToErrors_H_base_0[4,1]",
+	"BasePositionController_dHToErrors_H_base_0[4,2]",
+	"BasePositionController_dHToErrors_H_base_0[4,3]",
+	"BasePositionController_dHToErrors_H_base_0[4,4]",
+	"Splitter5_output1[1,1]",
+	"Splitter5_output1[1,2]",
+	"Splitter5_output1[1,3]",
+	"Splitter5_output1[1,4]",
+	"Splitter5_output1[2,1]",
+	"Splitter5_output1[2,2]",
+	"Splitter5_output1[2,3]",
+	"Splitter5_output1[2,4]",
+	"Splitter5_output1[3,1]",
+	"Splitter5_output1[3,2]",
+	"Splitter5_output1[3,3]",
+	"Splitter5_output1[3,4]",
+	"Splitter5_output1[4,1]",
+	"Splitter5_output1[4,2]",
+	"Splitter5_output1[4,3]",
+	"Splitter5_output1[4,4]",
+	"Splitter5_output2[1,1]",
+	"Splitter5_output2[1,2]",
+	"Splitter5_output2[1,3]",
+	"Splitter5_output2[1,4]",
+	"Splitter5_output2[2,1]",
+	"Splitter5_output2[2,2]",
+	"Splitter5_output2[2,3]",
+	"Splitter5_output2[2,4]",
+	"Splitter5_output2[3,1]",
+	"Splitter5_output2[3,2]",
+	"Splitter5_output2[3,3]",
+	"Splitter5_output2[3,4]",
+	"Splitter5_output2[4,1]",
+	"Splitter5_output2[4,2]",
+	"Splitter5_output2[4,3]",
+	"Splitter5_output2[4,4]",
+	"Splitter7_input[1,1]",
+	"Splitter7_input[1,2]",
+	"Splitter7_input[1,3]",
+	"Splitter7_input[1,4]",
+	"Splitter7_input[2,1]",
+	"Splitter7_input[2,2]",
+	"Splitter7_input[2,3]",
+	"Splitter7_input[2,4]",
+	"Splitter7_input[3,1]",
+	"Splitter7_input[3,2]",
+	"Splitter7_input[3,3]",
+	"Splitter7_input[3,4]",
+	"Splitter7_input[4,1]",
+	"Splitter7_input[4,2]",
+	"Splitter7_input[4,3]",
+	"Splitter7_input[4,4]",
+	"Splitter7_output1[1,1]",
+	"Splitter7_output1[1,2]",
+	"Splitter7_output1[1,3]",
+	"Splitter7_output1[1,4]",
+	"Splitter7_output1[2,1]",
+	"Splitter7_output1[2,2]",
+	"Splitter7_output1[2,3]",
+	"Splitter7_output1[2,4]",
+	"Splitter7_output1[3,1]",
+	"Splitter7_output1[3,2]",
+	"Splitter7_output1[3,3]",
+	"Splitter7_output1[3,4]",
+	"Splitter7_output1[4,1]",
+	"Splitter7_output1[4,2]",
+	"Splitter7_output1[4,3]",
+	"Splitter7_output1[4,4]",
+	"Splitter7_output2[1,1]",
+	"Splitter7_output2[1,2]",
+	"Splitter7_output2[1,3]",
+	"Splitter7_output2[1,4]",
+	"Splitter7_output2[2,1]",
+	"Splitter7_output2[2,2]",
+	"Splitter7_output2[2,3]",
+	"Splitter7_output2[2,4]",
+	"Splitter7_output2[3,1]",
+	"Splitter7_output2[3,2]",
+	"Splitter7_output2[3,3]",
+	"Splitter7_output2[3,4]",
+	"Splitter7_output2[4,1]",
+	"Splitter7_output2[4,2]",
+	"Splitter7_output2[4,3]",
+	"Splitter7_output2[4,4]"
+]]></token>
+	<token name="ALIAS_VARIABLE_NAMES3"><![CDATA[BasePositionController\ErrorsToW\torque_z
+BasePositionController\PD_BaseAngle\output
+BasePositionController\dHToErrors\angle_error
+BasePositionController\ErrorsToW\force_x
+BasePositionController\PD_BaseX\output
+BasePositionController\dHToErrors\x_error
+BasePositionController\ErrorsToW\force_y
+BasePositionController\PD_BaseY\output
+BasePositionController\dHToErrors\y_error
+FilterBaseJointVelocities1\output[1]
+FilterBaseJointVelocities1\output[2]
+FilterBaseJointVelocities1\output[3]
+FilterBaseJointVelocities1\output[4]
+BasePositionController\Submodel3\input[1]
+BasePositionController\Submodel3\input[2]
+BasePositionController\Submodel3\input[3]
+BasePositionController\Submodel3\input[4]
+BasePositionController\Submodel3\input[5]
+BasePositionController\Submodel3\input[6]
+PlusMinus4\plus1[1]
+PlusMinus4\plus1[2]
+PlusMinus4\plus1[3]
+PlusMinus4\plus1[4]
+PlusMinus4\plus1[5]
+PlusMinus4\plus1[6]
+BasePositionController\W_base_base0[1]
+BasePositionController\W_base_base0[2]
+BasePositionController\W_base_base0[3]
+BasePositionController\W_base_base0[4]
+BasePositionController\W_base_base0[5]
+BasePositionController\W_base_base0[6]
+BasePositionController\dHToErrors\H_vp_0[1,1]
+BasePositionController\dHToErrors\H_vp_0[1,2]
+BasePositionController\dHToErrors\H_vp_0[1,3]
+BasePositionController\dHToErrors\H_vp_0[1,4]
+BasePositionController\dHToErrors\H_vp_0[2,1]
+BasePositionController\dHToErrors\H_vp_0[2,2]
+BasePositionController\dHToErrors\H_vp_0[2,3]
+BasePositionController\dHToErrors\H_vp_0[2,4]
+BasePositionController\dHToErrors\H_vp_0[3,1]
+BasePositionController\dHToErrors\H_vp_0[3,2]
+BasePositionController\dHToErrors\H_vp_0[3,3]
+BasePositionController\dHToErrors\H_vp_0[3,4]
+BasePositionController\dHToErrors\H_vp_0[4,1]
+BasePositionController\dHToErrors\H_vp_0[4,2]
+BasePositionController\dHToErrors\H_vp_0[4,3]
+BasePositionController\dHToErrors\H_vp_0[4,4]
+BasePositionController\Submodel3\active[1]
+BasePositionController\Submodel3\active[2]
+BasePositionController\Submodel3\active[3]
+BaseTF\Base_joint_velocity[1]
+BaseTF\Base_joint_velocity[2]
+BaseTF\Base_joint_velocity[3]
+BaseTF\Base_joint_velocity[4]
+BaseTF\W_base_base0[1]
+BaseTF\W_base_base0[2]
+BaseTF\W_base_base0[3]
+BaseTF\W_base_base0[4]
+BaseTF\W_base_base0[5]
+BaseTF\W_base_base0[6]
+BaseTF\H_base_0[1,1]
+BaseTF\H_base_0[1,2]
+BaseTF\H_base_0[1,3]
+BaseTF\H_base_0[1,4]
+BaseTF\H_base_0[2,1]
+BaseTF\H_base_0[2,2]
+BaseTF\H_base_0[2,3]
+BaseTF\H_base_0[2,4]
+BaseTF\H_base_0[3,1]
+BaseTF\H_base_0[3,2]
+BaseTF\H_base_0[3,3]
+BaseTF\H_base_0[3,4]
+BaseTF\H_base_0[4,1]
+BaseTF\H_base_0[4,2]
+BaseTF\H_base_0[4,3]
+BaseTF\H_base_0[4,4]
+BasePositionController\H_base_0[1,1]
+BasePositionController\H_base_0[1,2]
+BasePositionController\H_base_0[1,3]
+BasePositionController\H_base_0[1,4]
+BasePositionController\H_base_0[2,1]
+BasePositionController\H_base_0[2,2]
+BasePositionController\H_base_0[2,3]
+BasePositionController\H_base_0[2,4]
+BasePositionController\H_base_0[3,1]
+BasePositionController\H_base_0[3,2]
+BasePositionController\H_base_0[3,3]
+BasePositionController\H_base_0[3,4]
+BasePositionController\H_base_0[4,1]
+BasePositionController\H_base_0[4,2]
+BasePositionController\H_base_0[4,3]
+BasePositionController\H_base_0[4,4]
+BasePositionController\dHToErrors\H_base_0[1,1]
+BasePositionController\dHToErrors\H_base_0[1,2]
+BasePositionController\dHToErrors\H_base_0[1,3]
+BasePositionController\dHToErrors\H_base_0[1,4]
+BasePositionController\dHToErrors\H_base_0[2,1]
+BasePositionController\dHToErrors\H_base_0[2,2]
+BasePositionController\dHToErrors\H_base_0[2,3]
+BasePositionController\dHToErrors\H_base_0[2,4]
+BasePositionController\dHToErrors\H_base_0[3,1]
+BasePositionController\dHToErrors\H_base_0[3,2]
+BasePositionController\dHToErrors\H_base_0[3,3]
+BasePositionController\dHToErrors\H_base_0[3,4]
+BasePositionController\dHToErrors\H_base_0[4,1]
+BasePositionController\dHToErrors\H_base_0[4,2]
+BasePositionController\dHToErrors\H_base_0[4,3]
+BasePositionController\dHToErrors\H_base_0[4,4]
+Splitter5\output1[1,1]
+Splitter5\output1[1,2]
+Splitter5\output1[1,3]
+Splitter5\output1[1,4]
+Splitter5\output1[2,1]
+Splitter5\output1[2,2]
+Splitter5\output1[2,3]
+Splitter5\output1[2,4]
+Splitter5\output1[3,1]
+Splitter5\output1[3,2]
+Splitter5\output1[3,3]
+Splitter5\output1[3,4]
+Splitter5\output1[4,1]
+Splitter5\output1[4,2]
+Splitter5\output1[4,3]
+Splitter5\output1[4,4]
+Splitter5\output2[1,1]
+Splitter5\output2[1,2]
+Splitter5\output2[1,3]
+Splitter5\output2[1,4]
+Splitter5\output2[2,1]
+Splitter5\output2[2,2]
+Splitter5\output2[2,3]
+Splitter5\output2[2,4]
+Splitter5\output2[3,1]
+Splitter5\output2[3,2]
+Splitter5\output2[3,3]
+Splitter5\output2[3,4]
+Splitter5\output2[4,1]
+Splitter5\output2[4,2]
+Splitter5\output2[4,3]
+Splitter5\output2[4,4]
+Splitter7\input[1,1]
+Splitter7\input[1,2]
+Splitter7\input[1,3]
+Splitter7\input[1,4]
+Splitter7\input[2,1]
+Splitter7\input[2,2]
+Splitter7\input[2,3]
+Splitter7\input[2,4]
+Splitter7\input[3,1]
+Splitter7\input[3,2]
+Splitter7\input[3,3]
+Splitter7\input[3,4]
+Splitter7\input[4,1]
+Splitter7\input[4,2]
+Splitter7\input[4,3]
+Splitter7\input[4,4]
+Splitter7\output1[1,1]
+Splitter7\output1[1,2]
+Splitter7\output1[1,3]
+Splitter7\output1[1,4]
+Splitter7\output1[2,1]
+Splitter7\output1[2,2]
+Splitter7\output1[2,3]
+Splitter7\output1[2,4]
+Splitter7\output1[3,1]
+Splitter7\output1[3,2]
+Splitter7\output1[3,3]
+Splitter7\output1[3,4]
+Splitter7\output1[4,1]
+Splitter7\output1[4,2]
+Splitter7\output1[4,3]
+Splitter7\output1[4,4]
+Splitter7\output2[1,1]
+Splitter7\output2[1,2]
+Splitter7\output2[1,3]
+Splitter7\output2[1,4]
+Splitter7\output2[2,1]
+Splitter7\output2[2,2]
+Splitter7\output2[2,3]
+Splitter7\output2[2,4]
+Splitter7\output2[3,1]
+Splitter7\output2[3,2]
+Splitter7\output2[3,3]
+Splitter7\output2[3,4]
+Splitter7\output2[4,1]
+Splitter7\output2[4,2]
+Splitter7\output2[4,3]
+Splitter7\output2[4,4]
+]]></token>
+	<token name="ALIAS_VARIABLE_UNITS"><![CDATA[]]></token>
+	<token name="COMPANY_NAME"><![CDATA[Universiteit Twente]]></token>
+	<token name="CONSTANT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="CONSTANT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="CONSTANT_NAMES3"><![CDATA[]]></token>
+	<token name="CONSTANT_UNITS"><![CDATA[]]></token>
+	<token name="CONSTANT_VALUES"><![CDATA[]]></token>
+	<token name="CONSTRAINT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="CONSTRAINT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="CONSTRAINT_NAMES3"><![CDATA[]]></token>
+	<token name="CONSTRAINT_UNITS"><![CDATA[]]></token>
+	<token name="DEPRATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="DEPRATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="DEPRATE_NAMES3"><![CDATA[]]></token>
+	<token name="DEPRATE_UNITS"><![CDATA[]]></token>
+	<token name="DEPSTATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="DEPSTATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="DEPSTATE_NAMES3"><![CDATA[]]></token>
+	<token name="DEPSTATE_UNITS"><![CDATA[]]></token>
+	<token name="DIRECT_FEEDTHROUGH"><![CDATA[XXTRUE]]></token>
+	<token name="DYNAMIC_EQUATIONS"><![CDATA[	/* BasePositionController\PD_BaseAngle\factor = 1 / (sampletime + BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\beta); */
+	V[30] = 1.0 / (step_size + P[1] * P[2]);
+
+	/* BasePositionController\PD_BaseX\factor = 1 / (sampletime + BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\beta); */
+	V[31] = 1.0 / (step_size + P[4] * P[5]);
+
+	/* BasePositionController\PD_BaseY\factor = 1 / (sampletime + BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\beta); */
+	V[32] = 1.0 / (step_size + P[7] * P[8]);
+
+	/* T_base_00 = BaseTF\Twist; */
+	XXMatrixMov (&M[27], &M[8]);
+
+	/* Base_torque = BaseTF\Base_torque; */
+	XXMatrixMov (&M[28], &M[10]);
+
+	/* Splitter5\input = H_base_0; */
+	XXMatrixMov (&M[25], &M[30]);
+
+		/* FilterBaseJointVelocities1\InputMemory = FilterBaseJointVelocities1\InputUpdate * FilterBaseJointVelocities1\InputMemory + [1; 0; 0] * transpose (FilterBaseJointVelocities1\input); */
+		XXMatrixMul (&M[40], &M[19], &M[18]);
+		M[42].mat[0] = 1.0;
+		M[42].mat[1] = 0.0;
+		M[42].mat[2] = 0.0;
+		XXMatrixTranspose (&M[43], &M[16]);
+		XXMatrixMul (&M[41], &M[42], &M[43]);
+		XXMatrixAdd (&M[18], &M[40], &M[41]);
+
+		/* FilterBaseJointVelocities1\State = FilterBaseJointVelocities1\A * FilterBaseJointVelocities1\State + FilterBaseJointVelocities1\B * FilterBaseJointVelocities1\InputMemory; */
+		XXMatrixMul (&M[44], &M[21], &M[20]);
+		XXMatrixMul (&M[45], &M[22], &M[18]);
+		XXMatrixAdd (&M[20], &M[44], &M[45]);
+
+		/* DiscreteDifferential\input = transpose ([1, 0, 0] * FilterBaseJointVelocities1\State); */
+		M[47].mat[0] = 1.0;
+		M[47].mat[1] = 0.0;
+		M[47].mat[2] = 0.0;
+		XXMatrixMul (&M[46], &M[47], &M[20]);
+		XXMatrixTranspose (&M[34], &M[46]);
+
+	/* if notDiscreteDifferential\initialized */
+	if (!V[112])
+	{
+		/* DiscreteDifferential\initial_input = DiscreteDifferential\initial - DiscreteDifferential\input / sampletime; */
+		XXMatrixScalarDiv (&M[49], &M[34], step_size);
+		XXScalarMatrixSub (&M[15], P[12], &M[49]);
+
+		/* DiscreteDifferential\initialized = 1.0; */
+		V[112] = XXTRUE;
+	}
+	else
+	{
+		/* DiscreteDifferential\initial_input = 0; */
+		XXMatrixScalarMov (&M[15], 0.0);
+	}
+
+	/* H_base_0_output = Splitter5\input; */
+	XXMatrixMov (&M[26], &M[25]);
+
+		/* BasePositionController\dHToErrors\H_vp_base = inverseH (BasePositionController\H_vp_0) * Splitter5\input; */
+		XXMatrixInverseH (&M[51], &M[6]);
+		XXMatrixMul (&M[0], &M[51], &M[25]);
+
+		/* BasePositionController\dHToErrors\aldo = (trace (BasePositionController\dHToErrors\H_vp_base[1:3,1:3]) - 1) / 2; */
+		M[53].mat[0] = M[0].mat[0];
+		M[53].mat[1] = M[0].mat[1];
+		M[53].mat[2] = M[0].mat[2];
+		M[53].mat[3] = M[0].mat[4];
+		M[53].mat[4] = M[0].mat[5];
+		M[53].mat[5] = M[0].mat[6];
+		M[53].mat[6] = M[0].mat[8];
+		M[53].mat[7] = M[0].mat[9];
+		M[53].mat[8] = M[0].mat[10];
+		M[52].mat[0] = XXMatrixTrace (&M[53]);
+		V[16] = (XXMatrixTrace (&M[53]) - 1.0) / 2.0;
+
+		/* if (BasePositionController\dHToErrors\aldo < -1) */
+		if (V[16] < -1.0)
+		{
+			/* BasePositionController\dHToErrors\aldo = -1; */
+			V[16] = -1.0;
+		}
+
+		/* if (BasePositionController\dHToErrors\aldo > 1) */
+		if (V[16] > 1.0)
+		{
+			/* BasePositionController\dHToErrors\aldo = 1; */
+			V[16] = 1.0;
+		}
+
+		/* BasePositionController\dHToErrors\theta = arccos (BasePositionController\dHToErrors\aldo); */
+		V[17] = acos (V[16]);
+
+		/* if (BasePositionController\dHToErrors\theta == 0) */
+		if (V[17] == 0.0)
+		{
+			/* BasePositionController\dHToErrors\norm_omega = 0; */
+			XXMatrixScalarMov (&M[1], 0.0);
+		}
+		else
+		{
+			/* BasePositionController\dHToErrors\norm_omega = (1 / (2 * sin (BasePositionController\dHToErrors\theta))) * [BasePositionController\dHToErrors\H_vp_base[3,2] - BasePositionController\dHToErrors\H_vp_base[2,3]; BasePositionController\dHToErrors\H_vp_base[1,3] - BasePositionController\dHToErrors\H_vp_base[3,1]; BasePositionController\dHToErrors\H_vp_base[2,1] - BasePositionController\dHToErrors\H_vp_base[1,2]]; */
+			M[56].mat[0] = M[0].mat[9] - M[0].mat[6];
+			M[56].mat[1] = M[0].mat[2] - M[0].mat[8];
+			M[56].mat[2] = M[0].mat[4] - M[0].mat[1];
+			XXScalarMatrixMul (&M[1], (1.0 / (2.0 * sin (V[17]))), &M[56]);
+		}
+
+		/* BasePositionController\dHToErrors\omega = BasePositionController\dHToErrors\theta * BasePositionController\dHToErrors\norm_omega; */
+		XXScalarMatrixMul (&M[2], V[17], &M[1]);
+
+		/* BasePositionController\PD_BaseX\error = -BasePositionController\dHToErrors\H_vp_base[1,4]; */
+		R[3] = -M[0].mat[3];
+
+		/* BasePositionController\PD_BaseY\error = -BasePositionController\dHToErrors\H_vp_base[2,4]; */
+		R[5] = -M[0].mat[7];
+
+		/* BasePositionController\PD_BaseAngle\error = -BasePositionController\dHToErrors\omega[3]; */
+		R[1] = -M[2].mat[2];
+
+	/* BasePositionController\PD_BaseAngle\uD = BasePositionController\PD_BaseAngle\factor * (((BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\uD_previous) * BasePositionController\PD_BaseAngle\beta + (BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\kp) * (BasePositionController\PD_BaseAngle\error - BasePositionController\PD_BaseAngle\error_previous)) + (sampletime * BasePositionController\PD_BaseAngle\kp) * BasePositionController\PD_BaseAngle\error); */
+	R[0] = V[30] * (((P[1] * s[0]) * P[2] + (P[1] * P[0]) * (R[1] - s[1])) + (step_size * P[0]) * R[1]);
+
+	/* BasePositionController\PD_BaseX\uD = BasePositionController\PD_BaseX\factor * (((BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\uD_previous) * BasePositionController\PD_BaseX\beta + (BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\kp) * (BasePositionController\PD_BaseX\error - BasePositionController\PD_BaseX\error_previous)) + (sampletime * BasePositionController\PD_BaseX\kp) * BasePositionController\PD_BaseX\error); */
+	R[2] = V[31] * (((P[4] * s[2]) * P[5] + (P[4] * P[3]) * (R[3] - s[3])) + (step_size * P[3]) * R[3]);
+
+	/* BasePositionController\PD_BaseY\uD = BasePositionController\PD_BaseY\factor * (((BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\uD_previous) * BasePositionController\PD_BaseY\beta + (BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\kp) * (BasePositionController\PD_BaseY\error - BasePositionController\PD_BaseY\error_previous)) + (sampletime * BasePositionController\PD_BaseY\kp) * BasePositionController\PD_BaseY\error); */
+	R[4] = V[32] * (((P[7] * s[4]) * P[8] + (P[7] * P[6]) * (R[5] - s[5])) + (step_size * P[6]) * R[5]);
+
+		/* BaseTF\A = (1 / (BaseTF\r)) * [BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y; -1, 1, -1, 1; 1, 1, -1, -1]; */
+		M[57].mat[0] = P[10] + P[11];
+		M[57].mat[1] = P[10] + P[11];
+		M[57].mat[2] = P[10] + P[11];
+		M[57].mat[3] = P[10] + P[11];
+		M[57].mat[4] = -1.0;
+		M[57].mat[5] = 1.0;
+		M[57].mat[6] = -1.0;
+		M[57].mat[7] = 1.0;
+		M[57].mat[8] = 1.0;
+		M[57].mat[9] = 1.0;
+		M[57].mat[10] = -1.0;
+		M[57].mat[11] = -1.0;
+		XXScalarMatrixMul (&M[11], (1.0 / (P[9])), &M[57]);
+
+		/* BaseTF\PseudoInverseA = transpose (BaseTF\A) * inverse (BaseTF\A * transpose (BaseTF\A)); */
+		XXMatrixTranspose (&M[58], &M[11]);
+		XXMatrixTranspose (&M[61], &M[11]);
+		XXMatrixMul (&M[60], &M[11], &M[61]);
+		XXMatrixInverse (&M[59], &M[60], workarray);
+		XXMatrixMul (&M[12], &M[58], &M[59]);
+
+		/* BaseTF\Base_torque = BaseTF\PseudoInverseA * PlusMinus4\output[3:5]; */
+		M[62].mat[0] = M[23].mat[2];
+		M[62].mat[1] = M[23].mat[3];
+		M[62].mat[2] = M[23].mat[4];
+		XXMatrixMul (&M[10], &M[12], &M[62]);
+
+		/* BaseTF\virtual_velocities = transpose (BaseTF\PseudoInverseA) * DiscreteDifferential\output; */
+		XXMatrixTranspose (&M[63], &M[12]);
+		XXMatrixMul (&M[13], &M[63], &M[14]);
+
+		/* BaseTF\Twist = [0; 0; BaseTF\virtual_velocities[1]; BaseTF\virtual_velocities[2]; BaseTF\virtual_velocities[3]; 0]; */
+		M[8].mat[0] = 0.0;
+		M[8].mat[1] = 0.0;
+		M[8].mat[2] = M[13].mat[0];
+		M[8].mat[3] = M[13].mat[1];
+		M[8].mat[4] = M[13].mat[2];
+		M[8].mat[5] = 0.0;
+
+		/* BaseTF\Virtual_joint_states[1] = atan2 (Splitter5\input[2,1], Splitter5\input[1,1]); */
+		M[9].mat[0] = atan2 (M[25].mat[4], M[25].mat[0]);
+
+		/* BaseTF\Virtual_joint_states[2] = Splitter5\input[1,4]; */
+		M[9].mat[1] = M[25].mat[3];
+
+		/* BaseTF\Virtual_joint_states[3] = Splitter5\input[2,4]; */
+		M[9].mat[2] = M[25].mat[7];
+]]></token>
+	<token name="EXPERIMENT_NAME"><![CDATA[motion_stack]]></token>
+	<token name="EXPORT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="EXPORT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="EXPORT_NAMES3"><![CDATA[]]></token>
+	<token name="EXPORT_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES3"><![CDATA[]]></token>
+	<token name="FAVORITE_PARAMETER_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_PARS_EQUATIONS"><![CDATA[]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES3"><![CDATA[]]></token>
+	<token name="FAVORITE_VARIABLE_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_VARS_EQUATIONS"><![CDATA[]]></token>
+	<token name="FILE_NAME"><![CDATA[]]></token>
+	<token name="FINAL_EQUATIONS"><![CDATA[]]></token>
+	<token name="FINISH_TIME"><![CDATA[40.0]]></token>
+	<token name="GENERATION_BUILD"><![CDATA[4.1.2.4]]></token>
+	<token name="GENERATION_DATE"><![CDATA[August 7, 2012]]></token>
+	<token name="GENERATION_DIR"><![CDATA[c:\temp\BasePoseController]]></token>
+	<token name="GENERATION_TIME"><![CDATA[4:29:14 pm]]></token>
+	<token name="IMPORT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="IMPORT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="IMPORT_NAMES3"><![CDATA[]]></token>
+	<token name="IMPORT_UNITS"><![CDATA[]]></token>
+	<token name="INITIALIZE_ALIAS_MATRICES"><![CDATA[	M[37].mat = &V[45];		/* BasePositionController\dHToErrors\H_vp_0 */
+	M[37].rows = 4;
+	M[37].columns = 4;
+	M[38].mat = &V[180];		/* BasePositionController\dHToErrors\H_base_0 */
+	M[38].rows = 4;
+	M[38].columns = 4;
+	M[39].mat = &V[24];		/* BasePositionController\Submodel3\input */
+	M[39].rows = 6;
+	M[39].columns = 1;
+	M[40].mat = &V[61];		/* BasePositionController\Submodel3\active */
+	M[40].rows = 3;
+	M[40].columns = 1;
+	M[41].mat = &V[180];		/* BasePositionController\H_base_0 */
+	M[41].rows = 4;
+	M[41].columns = 4;
+	M[42].mat = &V[33];		/* BasePositionController\W_base_base0 */
+	M[42].rows = 6;
+	M[42].columns = 1;
+	M[43].mat = &V[104];		/* BaseTF\Base_joint_velocity */
+	M[43].rows = 4;
+	M[43].columns = 1;
+	M[44].mat = &V[180];		/* BaseTF\H_base_0 */
+	M[44].rows = 4;
+	M[44].columns = 4;
+	M[45].mat = &V[168];		/* BaseTF\W_base_base0 */
+	M[45].rows = 6;
+	M[45].columns = 1;
+	M[46].mat = &R[6];		/* FilterBaseJointVelocities1\output */
+	M[46].rows = 4;
+	M[46].columns = 1;
+	M[47].mat = &V[33];		/* PlusMinus4\plus1 */
+	M[47].rows = 6;
+	M[47].columns = 1;
+	M[48].mat = &V[180];		/* Splitter5\output1 */
+	M[48].rows = 4;
+	M[48].columns = 4;
+	M[49].mat = &V[180];		/* Splitter5\output2 */
+	M[49].rows = 4;
+	M[49].columns = 4;
+	M[50].mat = &V[180];		/* Splitter7\input */
+	M[50].rows = 4;
+	M[50].columns = 4;
+	M[51].mat = &V[180];		/* Splitter7\output1 */
+	M[51].rows = 4;
+	M[51].columns = 4;
+	M[52].mat = &V[180];		/* Splitter7\output2 */
+	M[52].rows = 4;
+	M[52].columns = 4;
+]]></token>
+	<token name="INITIALIZE_CONSTANTS"><![CDATA[]]></token>
+	<token name="INITIALIZE_FAVORITE_PARS"><![CDATA[]]></token>
+	<token name="INITIALIZE_FAVORITE_VARS"><![CDATA[]]></token>
+	<token name="INITIALIZE_INITIAL_VALUES"><![CDATA[	I[0] = 0.0;		/* BasePositionController\PD_BaseAngle\uD_previous_initial */
+	I[1] = 0.0;		/* BasePositionController\PD_BaseAngle\error_previous_initial */
+	I[2] = 0.0;		/* BasePositionController\PD_BaseX\uD_previous_initial */
+	I[3] = 0.0;		/* BasePositionController\PD_BaseX\error_previous_initial */
+	I[4] = 0.0;		/* BasePositionController\PD_BaseY\uD_previous_initial */
+	I[5] = 0.0;		/* BasePositionController\PD_BaseY\error_previous_initial */
+	I[6] = 0.0;		/* DiscreteDifferential\input_previous_initial */
+	I[7] = 0.0;		
+	I[8] = 0.0;		
+	I[9] = 0.0;		
+]]></token>
+	<token name="INITIALIZE_INPUTS"><![CDATA[	u[0] = 0.0;		/* active_joint */
+	u[1] = 0.0;
+	u[2] = 0.0;
+	u[3] = 0.0;		/* Base_wheels_angle */
+	u[4] = 0.0;
+	u[5] = 0.0;
+	u[6] = 0.0;
+	u[7] = 0.0;		/* H_base_0 */
+	u[8] = 0.0;
+	u[9] = 0.0;
+	u[10] = 0.0;
+	u[11] = 0.0;
+	u[12] = 0.0;
+	u[13] = 0.0;
+	u[14] = 0.0;
+	u[15] = 0.0;
+	u[16] = 0.0;
+	u[17] = 0.0;
+	u[18] = 0.0;
+	u[19] = 0.0;
+	u[20] = 0.0;
+	u[21] = 0.0;
+	u[22] = 0.0;
+	u[23] = 0.0;		/* H_vp_0 */
+	u[24] = 0.0;
+	u[25] = 0.0;
+	u[26] = 0.0;
+	u[27] = 0.0;
+	u[28] = 0.0;
+	u[29] = 0.0;
+	u[30] = 0.0;
+	u[31] = 0.0;
+	u[32] = 0.0;
+	u[33] = 0.0;
+	u[34] = 0.0;
+	u[35] = 0.0;
+	u[36] = 0.0;
+	u[37] = 0.0;
+	u[38] = 0.0;
+	u[39] = 0.0;		/* W_base_00 */
+	u[40] = 0.0;
+	u[41] = 0.0;
+	u[42] = 0.0;
+	u[43] = 0.0;
+	u[44] = 0.0;
+]]></token>
+	<token name="INITIALIZE_MATRICES"><![CDATA[	M[0].mat = &V[0];		/* BasePositionController\dHToErrors\H_vp_base */
+	M[0].rows = 4;
+	M[0].columns = 4;
+	M[1].mat = &V[18];		/* BasePositionController\dHToErrors\norm_omega */
+	M[1].rows = 3;
+	M[1].columns = 1;
+	M[2].mat = &V[21];		/* BasePositionController\dHToErrors\omega */
+	M[2].rows = 3;
+	M[2].columns = 1;
+	M[3].mat = &V[24];		/* BasePositionController\ErrorsToW\W_base_base0 */
+	M[3].rows = 6;
+	M[3].columns = 1;
+	M[4].mat = &V[33];		/* BasePositionController\Submodel3\cmd */
+	M[4].rows = 6;
+	M[4].columns = 1;
+	M[5].mat = &V[39];		/* BasePositionController\Submodel3\aldo */
+	M[5].rows = 6;
+	M[5].columns = 1;
+	M[6].mat = &V[45];		/* BasePositionController\H_vp_0 */
+	M[6].rows = 4;
+	M[6].columns = 4;
+	M[7].mat = &V[61];		/* BasePositionController\active_joint */
+	M[7].rows = 3;
+	M[7].columns = 1;
+	M[8].mat = &V[64];		/* BaseTF\Twist */
+	M[8].rows = 6;
+	M[8].columns = 1;
+	M[9].mat = &V[70];		/* BaseTF\Virtual_joint_states */
+	M[9].rows = 3;
+	M[9].columns = 1;
+	M[10].mat = &V[73];		/* BaseTF\Base_torque */
+	M[10].rows = 4;
+	M[10].columns = 1;
+	M[11].mat = &V[77];		/* BaseTF\A */
+	M[11].rows = 3;
+	M[11].columns = 4;
+	M[12].mat = &V[89];		/* BaseTF\PseudoInverseA */
+	M[12].rows = 4;
+	M[12].columns = 3;
+	M[13].mat = &V[101];		/* BaseTF\virtual_velocities */
+	M[13].rows = 3;
+	M[13].columns = 1;
+	M[14].mat = &V[104];		/* DiscreteDifferential\output */
+	M[14].rows = 4;
+	M[14].columns = 1;
+	M[15].mat = &V[108];		/* DiscreteDifferential\initial_input */
+	M[15].rows = 4;
+	M[15].columns = 1;
+	M[16].mat = &V[113];		/* FilterBaseJointVelocities1\input */
+	M[16].rows = 4;
+	M[16].columns = 1;
+	M[17].mat = &P[13];		/* FilterBaseJointVelocities1\FilterGain */
+	M[17].rows = 2;
+	M[17].columns = 3;
+	M[18].mat = &V[117];		/* FilterBaseJointVelocities1\InputMemory */
+	M[18].rows = 3;
+	M[18].columns = 4;
+	M[19].mat = &V[129];		/* FilterBaseJointVelocities1\InputUpdate */
+	M[19].rows = 3;
+	M[19].columns = 3;
+	M[20].mat = &V[138];		/* FilterBaseJointVelocities1\State */
+	M[20].rows = 3;
+	M[20].columns = 4;
+	M[21].mat = &V[150];		/* FilterBaseJointVelocities1\A */
+	M[21].rows = 3;
+	M[21].columns = 3;
+	M[22].mat = &V[159];		/* FilterBaseJointVelocities1\B */
+	M[22].rows = 3;
+	M[22].columns = 3;
+	M[23].mat = &V[168];		/* PlusMinus4\output */
+	M[23].rows = 6;
+	M[23].columns = 1;
+	M[24].mat = &V[174];		/* PlusMinus4\plus2 */
+	M[24].rows = 6;
+	M[24].columns = 1;
+	M[25].mat = &V[180];		/* Splitter5\input */
+	M[25].rows = 4;
+	M[25].columns = 4;
+	M[26].mat = &V[196];		/* H_base_0_output */
+	M[26].rows = 4;
+	M[26].columns = 4;
+	M[27].mat = &V[212];		/* T_base_00 */
+	M[27].rows = 6;
+	M[27].columns = 1;
+	M[28].mat = &V[218];		/* Base_torque */
+	M[28].rows = 4;
+	M[28].columns = 1;
+	M[29].mat = &V[222];		/* Base_wheels_angle */
+	M[29].rows = 4;
+	M[29].columns = 1;
+	M[30].mat = &V[226];		/* H_base_0 */
+	M[30].rows = 4;
+	M[30].columns = 4;
+	M[31].mat = &V[242];		/* W_base_00 */
+	M[31].rows = 6;
+	M[31].columns = 1;
+	M[32].mat = &V[248];		/* H_vp_0 */
+	M[32].rows = 4;
+	M[32].columns = 4;
+	M[33].mat = &V[264];		/* active_joint */
+	M[33].rows = 3;
+	M[33].columns = 1;
+	M[34].mat = &R[6];		/* DiscreteDifferential\input */
+	M[34].rows = 4;
+	M[34].columns = 1;
+	M[35].mat = &s[6];		/* DiscreteDifferential\input_previous */
+	M[35].rows = 4;
+	M[35].columns = 1;
+	M[36].mat = &I[6];		/* DiscreteDifferential\input_previous_initial */
+	M[36].rows = 4;
+	M[36].columns = 1;
+	M[37].mat = &U[0];		/* U1 */
+	M[37].rows = 1;
+	M[37].columns = 3;
+	M[38].mat = &U[3];		/* U2 */
+	M[38].rows = 2;
+	M[38].columns = 3;
+	M[39].mat = &U[9];		/* U3 */
+	M[39].rows = 1;
+	M[39].columns = 3;
+	M[40].mat = &U[12];		/* U4 */
+	M[40].rows = 3;
+	M[40].columns = 4;
+	M[41].mat = &U[24];		/* U5 */
+	M[41].rows = 3;
+	M[41].columns = 4;
+	M[42].mat = &U[36];		/* U6 */
+	M[42].rows = 3;
+	M[42].columns = 1;
+	M[43].mat = &U[39];		/* U7 */
+	M[43].rows = 1;
+	M[43].columns = 4;
+	M[44].mat = &U[43];		/* U8 */
+	M[44].rows = 3;
+	M[44].columns = 4;
+	M[45].mat = &U[55];		/* U9 */
+	M[45].rows = 3;
+	M[45].columns = 4;
+	M[46].mat = &U[67];		/* U10 */
+	M[46].rows = 1;
+	M[46].columns = 4;
+	M[47].mat = &U[71];		/* U11 */
+	M[47].rows = 1;
+	M[47].columns = 3;
+	M[48].mat = &U[74];		/* U12 */
+	M[48].rows = 1;
+	M[48].columns = 1;
+	M[49].mat = &U[75];		/* U13 */
+	M[49].rows = 4;
+	M[49].columns = 1;
+	M[50].mat = &U[79];		/* U14 */
+	M[50].rows = 1;
+	M[50].columns = 1;
+	M[51].mat = &U[80];		/* U15 */
+	M[51].rows = 4;
+	M[51].columns = 4;
+	M[52].mat = &U[96];		/* U16 */
+	M[52].rows = 1;
+	M[52].columns = 1;
+	M[53].mat = &U[97];		/* U17 */
+	M[53].rows = 3;
+	M[53].columns = 3;
+	M[54].mat = &U[106];		/* U18 */
+	M[54].rows = 1;
+	M[54].columns = 1;
+	M[55].mat = &U[107];		/* U19 */
+	M[55].rows = 1;
+	M[55].columns = 1;
+	M[56].mat = &U[108];		/* U20 */
+	M[56].rows = 3;
+	M[56].columns = 1;
+	M[57].mat = &U[111];		/* U21 */
+	M[57].rows = 3;
+	M[57].columns = 4;
+	M[58].mat = &U[123];		/* U22 */
+	M[58].rows = 4;
+	M[58].columns = 3;
+	M[59].mat = &U[135];		/* U23 */
+	M[59].rows = 3;
+	M[59].columns = 3;
+	M[60].mat = &U[144];		/* U24 */
+	M[60].rows = 3;
+	M[60].columns = 3;
+	M[61].mat = &U[153];		/* U25 */
+	M[61].rows = 4;
+	M[61].columns = 3;
+	M[62].mat = &U[165];		/* U26 */
+	M[62].rows = 3;
+	M[62].columns = 1;
+	M[63].mat = &U[168];		/* U27 */
+	M[63].rows = 3;
+	M[63].columns = 4;
+	M[64].mat = &U[180];		/* U28 */
+	M[64].rows = 4;
+	M[64].columns = 1;
+	M[65].mat = &U[184];		/* U29 */
+	M[65].rows = 4;
+	M[65].columns = 1;
+	M[66].mat = &U[188];		/* U30 */
+	M[66].rows = 6;
+	M[66].columns = 6;
+	M[67].mat = &U[224];		/* U31 */
+	M[67].rows = 6;
+	M[67].columns = 1;
+	M[68].mat = &U[230];		/* U32 */
+	M[68].rows = 6;
+	M[68].columns = 1;
+]]></token>
+	<token name="INITIALIZE_OUTPUTS"><![CDATA[	y[0] = 0.0;		/* Base_torque */
+	y[1] = 0.0;
+	y[2] = 0.0;
+	y[3] = 0.0;
+	y[4] = 0.0;		/* H_base_0_output */
+	y[5] = 0.0;
+	y[6] = 0.0;
+	y[7] = 0.0;
+	y[8] = 0.0;
+	y[9] = 0.0;
+	y[10] = 0.0;
+	y[11] = 0.0;
+	y[12] = 0.0;
+	y[13] = 0.0;
+	y[14] = 0.0;
+	y[15] = 0.0;
+	y[16] = 0.0;
+	y[17] = 0.0;
+	y[18] = 0.0;
+	y[19] = 0.0;
+	y[20] = 0.0;		/* T_base_00 */
+	y[21] = 0.0;
+	y[22] = 0.0;
+	y[23] = 0.0;
+	y[24] = 0.0;
+	y[25] = 0.0;
+]]></token>
+	<token name="INITIALIZE_PARAMETERS"><![CDATA[	P[0] = 100.0;		/* BasePositionController\PD_BaseAngle\kp {} */
+	P[1] = 1.0;		/* BasePositionController\PD_BaseAngle\tauD {s} */
+	P[2] = 0.1;		/* BasePositionController\PD_BaseAngle\beta {} */
+	P[3] = 100.0;		/* BasePositionController\PD_BaseX\kp {} */
+	P[4] = 1.0;		/* BasePositionController\PD_BaseX\tauD {s} */
+	P[5] = 0.1;		/* BasePositionController\PD_BaseX\beta {} */
+	P[6] = 100.0;		/* BasePositionController\PD_BaseY\kp {} */
+	P[7] = 1.0;		/* BasePositionController\PD_BaseY\tauD {s} */
+	P[8] = 0.1;		/* BasePositionController\PD_BaseY\beta {} */
+	P[9] = 0.0475;		/* BaseTF\r */
+	P[10] = 0.235;		/* BaseTF\x */
+	P[11] = 0.15;		/* BaseTF\y */
+	P[12] = 0.0;		/* DiscreteDifferential\initial */
+	P[13] = 0.0675;		/* FilterBaseJointVelocities1\FilterGain */
+	P[14] = 0.1349;		
+	P[15] = 0.0675;		
+	P[16] = 1.143;		
+	P[17] = -0.4128;		
+	P[18] = 0.0;		
+	P[19] = 4.0;		/* FilterBaseJointVelocities1\num */
+]]></token>
+	<token name="INITIALIZE_STATES"><![CDATA[	s[0] = I[0];		/* BasePositionController\PD_BaseAngle\uD_previous */
+	s[1] = I[1];		/* BasePositionController\PD_BaseAngle\error_previous */
+	s[2] = I[2];		/* BasePositionController\PD_BaseX\uD_previous */
+	s[3] = I[3];		/* BasePositionController\PD_BaseX\error_previous */
+	s[4] = I[4];		/* BasePositionController\PD_BaseY\uD_previous */
+	s[5] = I[5];		/* BasePositionController\PD_BaseY\error_previous */
+	s[6] = I[6];		/* DiscreteDifferential\input_previous */
+	s[7] = I[7];
+	s[8] = I[8];
+	s[9] = I[9];
+]]></token>
+	<token name="INITIAL_EQUATIONS"><![CDATA[		/* BaseTF\Twist = 0; */
+		XXMatrixScalarMov (&M[8], 0.0);
+
+		/* BaseTF\Virtual_joint_states = 0; */
+		XXMatrixScalarMov (&M[9], 0.0);
+
+		/* BaseTF\Base_torque = 0; */
+		XXMatrixScalarMov (&M[10], 0.0);
+
+		/* DiscreteDifferential\initialized = 0.0; */
+		V[112] = XXFALSE;
+
+		/* FilterBaseJointVelocities1\InputUpdate = [0, 0, 0; 1, 0, 0; 0, 1, 0]; */
+		M[19].mat[0] = 0.0;
+		M[19].mat[1] = 0.0;
+		M[19].mat[2] = 0.0;
+		M[19].mat[3] = 1.0;
+		M[19].mat[4] = 0.0;
+		M[19].mat[5] = 0.0;
+		M[19].mat[6] = 0.0;
+		M[19].mat[7] = 1.0;
+		M[19].mat[8] = 0.0;
+
+		/* FilterBaseJointVelocities1\InputMemory = 0; */
+		XXMatrixScalarMov (&M[18], 0.0);
+
+		/* FilterBaseJointVelocities1\State = 0; */
+		XXMatrixScalarMov (&M[20], 0.0);
+
+		/* FilterBaseJointVelocities1\A[1,:] = FilterBaseJointVelocities1\FilterGain[2,:]; */
+		M[37].mat[0] = M[17].mat[3];
+		M[37].mat[1] = M[17].mat[4];
+		M[37].mat[2] = M[17].mat[5];
+		M[21].mat[0] = M[37].mat[0];
+		M[21].mat[1] = M[37].mat[1];
+		M[21].mat[2] = M[37].mat[2];
+
+		/* FilterBaseJointVelocities1\A[2:3,:] = [1, 0, 0; 0, 1, 0]; */
+		M[38].mat[0] = 1.0;
+		M[38].mat[1] = 0.0;
+		M[38].mat[2] = 0.0;
+		M[38].mat[3] = 0.0;
+		M[38].mat[4] = 1.0;
+		M[38].mat[5] = 0.0;
+		M[21].mat[3] = M[38].mat[0];
+		M[21].mat[4] = M[38].mat[1];
+		M[21].mat[5] = M[38].mat[2];
+		M[21].mat[6] = M[38].mat[3];
+		M[21].mat[7] = M[38].mat[4];
+		M[21].mat[8] = M[38].mat[5];
+
+		/* FilterBaseJointVelocities1\B[1,:] = FilterBaseJointVelocities1\FilterGain[1,:]; */
+		M[39].mat[0] = M[17].mat[0];
+		M[39].mat[1] = M[17].mat[1];
+		M[39].mat[2] = M[17].mat[2];
+		M[22].mat[0] = M[39].mat[0];
+		M[22].mat[1] = M[39].mat[1];
+		M[22].mat[2] = M[39].mat[2];
+
+		/* FilterBaseJointVelocities1\B[2:3,:] = 0; */
+		M[22].mat[3] = 0.0;
+		M[22].mat[4] = 0.0;
+		M[22].mat[5] = 0.0;
+		M[22].mat[6] = 0.0;
+		M[22].mat[7] = 0.0;
+		M[22].mat[8] = 0.0;
+]]></token>
+	<token name="INITIAL_VALUE_NAMES"><![CDATA[	"BasePositionController\\PD_BaseAngle\\uD_previous_initial",
+	"BasePositionController\\PD_BaseAngle\\error_previous_initial",
+	"BasePositionController\\PD_BaseX\\uD_previous_initial",
+	"BasePositionController\\PD_BaseX\\error_previous_initial",
+	"BasePositionController\\PD_BaseY\\uD_previous_initial",
+	"BasePositionController\\PD_BaseY\\error_previous_initial",
+	"DiscreteDifferential\\input_previous_initial[1]",
+	"DiscreteDifferential\\input_previous_initial[2]",
+	"DiscreteDifferential\\input_previous_initial[3]",
+	"DiscreteDifferential\\input_previous_initial[4]"
+]]></token>
+	<token name="INITIAL_VALUE_NAMES2"><![CDATA[	"BasePositionController_PD_BaseAngle_uD_previous_initial",
+	"BasePositionController_PD_BaseAngle_error_previous_initial",
+	"BasePositionController_PD_BaseX_uD_previous_initial",
+	"BasePositionController_PD_BaseX_error_previous_initial",
+	"BasePositionController_PD_BaseY_uD_previous_initial",
+	"BasePositionController_PD_BaseY_error_previous_initial",
+	"DiscreteDifferential_input_previous_initial[1]",
+	"DiscreteDifferential_input_previous_initial[2]",
+	"DiscreteDifferential_input_previous_initial[3]",
+	"DiscreteDifferential_input_previous_initial[4]"
+]]></token>
+	<token name="INITIAL_VALUE_NAMES3"><![CDATA[BasePositionController\PD_BaseAngle\uD_previous_initial
+BasePositionController\PD_BaseAngle\error_previous_initial
+BasePositionController\PD_BaseX\uD_previous_initial
+BasePositionController\PD_BaseX\error_previous_initial
+BasePositionController\PD_BaseY\uD_previous_initial
+BasePositionController\PD_BaseY\error_previous_initial
+DiscreteDifferential\input_previous_initial[1]
+DiscreteDifferential\input_previous_initial[2]
+DiscreteDifferential\input_previous_initial[3]
+DiscreteDifferential\input_previous_initial[4]
+]]></token>
+	<token name="INITIAL_VALUE_UNITS"><![CDATA[
+
+
+
+
+
+
+]]></token>
+	<token name="INITIAL_VALUE_VALUES"><![CDATA[0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+0.0
+]]></token>
+	<token name="INPUT_EQUATIONS"><![CDATA[]]></token>
+	<token name="INPUT_NAMES"><![CDATA[	"active_joint[1]",
+	"active_joint[2]",
+	"active_joint[3]",
+	"Base_wheels_angle[1]",
+	"Base_wheels_angle[2]",
+	"Base_wheels_angle[3]",
+	"Base_wheels_angle[4]",
+	"H_base_0[1,1]",
+	"H_base_0[1,2]",
+	"H_base_0[1,3]",
+	"H_base_0[1,4]",
+	"H_base_0[2,1]",
+	"H_base_0[2,2]",
+	"H_base_0[2,3]",
+	"H_base_0[2,4]",
+	"H_base_0[3,1]",
+	"H_base_0[3,2]",
+	"H_base_0[3,3]",
+	"H_base_0[3,4]",
+	"H_base_0[4,1]",
+	"H_base_0[4,2]",
+	"H_base_0[4,3]",
+	"H_base_0[4,4]",
+	"H_vp_0[1,1]",
+	"H_vp_0[1,2]",
+	"H_vp_0[1,3]",
+	"H_vp_0[1,4]",
+	"H_vp_0[2,1]",
+	"H_vp_0[2,2]",
+	"H_vp_0[2,3]",
+	"H_vp_0[2,4]",
+	"H_vp_0[3,1]",
+	"H_vp_0[3,2]",
+	"H_vp_0[3,3]",
+	"H_vp_0[3,4]",
+	"H_vp_0[4,1]",
+	"H_vp_0[4,2]",
+	"H_vp_0[4,3]",
+	"H_vp_0[4,4]",
+	"W_base_00[1]",
+	"W_base_00[2]",
+	"W_base_00[3]",
+	"W_base_00[4]",
+	"W_base_00[5]",
+	"W_base_00[6]"
+]]></token>
+	<token name="INPUT_NAMES2"><![CDATA[	"Base_wheels_angle[1]",
+	"Base_wheels_angle[2]",
+	"Base_wheels_angle[3]",
+	"Base_wheels_angle[4]",
+	"H_base_0[1,1]",
+	"H_base_0[1,2]",
+	"H_base_0[1,3]",
+	"H_base_0[1,4]",
+	"H_base_0[2,1]",
+	"H_base_0[2,2]",
+	"H_base_0[2,3]",
+	"H_base_0[2,4]",
+	"H_base_0[3,1]",
+	"H_base_0[3,2]",
+	"H_base_0[3,3]",
+	"H_base_0[3,4]",
+	"H_base_0[4,1]",
+	"H_base_0[4,2]",
+	"H_base_0[4,3]",
+	"H_base_0[4,4]",
+	"W_base_00[1]",
+	"W_base_00[2]",
+	"W_base_00[3]",
+	"W_base_00[4]",
+	"W_base_00[5]",
+	"W_base_00[6]",
+	"H_vp_0[1,1]",
+	"H_vp_0[1,2]",
+	"H_vp_0[1,3]",
+	"H_vp_0[1,4]",
+	"H_vp_0[2,1]",
+	"H_vp_0[2,2]",
+	"H_vp_0[2,3]",
+	"H_vp_0[2,4]",
+	"H_vp_0[3,1]",
+	"H_vp_0[3,2]",
+	"H_vp_0[3,3]",
+	"H_vp_0[3,4]",
+	"H_vp_0[4,1]",
+	"H_vp_0[4,2]",
+	"H_vp_0[4,3]",
+	"H_vp_0[4,4]",
+	"active_joint[1]",
+	"active_joint[2]",
+	"active_joint[3]"
+]]></token>
+	<token name="INPUT_NAMES3"><![CDATA[active_joint[1]
+active_joint[2]
+active_joint[3]
+Base_wheels_angle[1]
+Base_wheels_angle[2]
+Base_wheels_angle[3]
+Base_wheels_angle[4]
+H_base_0[1,1]
+H_base_0[1,2]
+H_base_0[1,3]
+H_base_0[1,4]
+H_base_0[2,1]
+H_base_0[2,2]
+H_base_0[2,3]
+H_base_0[2,4]
+H_base_0[3,1]
+H_base_0[3,2]
+H_base_0[3,3]
+H_base_0[3,4]
+H_base_0[4,1]
+H_base_0[4,2]
+H_base_0[4,3]
+H_base_0[4,4]
+H_vp_0[1,1]
+H_vp_0[1,2]
+H_vp_0[1,3]
+H_vp_0[1,4]
+H_vp_0[2,1]
+H_vp_0[2,2]
+H_vp_0[2,3]
+H_vp_0[2,4]
+H_vp_0[3,1]
+H_vp_0[3,2]
+H_vp_0[3,3]
+H_vp_0[3,4]
+H_vp_0[4,1]
+H_vp_0[4,2]
+H_vp_0[4,3]
+H_vp_0[4,4]
+W_base_00[1]
+W_base_00[2]
+W_base_00[3]
+W_base_00[4]
+W_base_00[5]
+W_base_00[6]
+]]></token>
+	<token name="INPUT_TO_VARIABLE_EQUATIONS"><![CDATA[	V[264] = u[0];		/* active_joint */
+	V[265] = u[1];
+	V[266] = u[2];
+	V[222] = u[3];		/* Base_wheels_angle */
+	V[223] = u[4];
+	V[224] = u[5];
+	V[225] = u[6];
+	V[226] = u[7];		/* H_base_0 */
+	V[227] = u[8];
+	V[228] = u[9];
+	V[229] = u[10];
+	V[230] = u[11];
+	V[231] = u[12];
+	V[232] = u[13];
+	V[233] = u[14];
+	V[234] = u[15];
+	V[235] = u[16];
+	V[236] = u[17];
+	V[237] = u[18];
+	V[238] = u[19];
+	V[239] = u[20];
+	V[240] = u[21];
+	V[241] = u[22];
+	V[248] = u[23];		/* H_vp_0 */
+	V[249] = u[24];
+	V[250] = u[25];
+	V[251] = u[26];
+	V[252] = u[27];
+	V[253] = u[28];
+	V[254] = u[29];
+	V[255] = u[30];
+	V[256] = u[31];
+	V[257] = u[32];
+	V[258] = u[33];
+	V[259] = u[34];
+	V[260] = u[35];
+	V[261] = u[36];
+	V[262] = u[37];
+	V[263] = u[38];
+	V[242] = u[39];		/* W_base_00 */
+	V[243] = u[40];
+	V[244] = u[41];
+	V[245] = u[42];
+	V[246] = u[43];
+	V[247] = u[44];
+]]></token>
+	<token name="INPUT_UNITS"><![CDATA[
+
+
+
+
+]]></token>
+	<token name="INTEGRATION_METHOD_NAME"><![CDATA[Discrete]]></token>
+	<token name="MATRIX_NAMES"><![CDATA[	"BasePositionController\\dHToErrors\\H_vp_base",
+	"BasePositionController\\dHToErrors\\norm_omega",
+	"BasePositionController\\dHToErrors\\omega",
+	"BasePositionController\\ErrorsToW\\W_base_base0",
+	"BasePositionController\\Submodel3\\cmd",
+	"BasePositionController\\Submodel3\\aldo",
+	"BasePositionController\\H_vp_0",
+	"BasePositionController\\active_joint",
+	"BaseTF\\Twist",
+	"BaseTF\\Virtual_joint_states",
+	"BaseTF\\Base_torque",
+	"BaseTF\\A",
+	"BaseTF\\PseudoInverseA",
+	"BaseTF\\virtual_velocities",
+	"DiscreteDifferential\\output",
+	"DiscreteDifferential\\initial_input",
+	"FilterBaseJointVelocities1\\input",
+	"FilterBaseJointVelocities1\\FilterGain",
+	"FilterBaseJointVelocities1\\InputMemory",
+	"FilterBaseJointVelocities1\\InputUpdate",
+	"FilterBaseJointVelocities1\\State",
+	"FilterBaseJointVelocities1\\A",
+	"FilterBaseJointVelocities1\\B",
+	"PlusMinus4\\output",
+	"PlusMinus4\\plus2",
+	"Splitter5\\input",
+	"H_base_0_output",
+	"T_base_00",
+	"Base_torque",
+	"Base_wheels_angle",
+	"H_base_0",
+	"W_base_00",
+	"H_vp_0",
+	"active_joint",
+	"DiscreteDifferential\\input",
+	"DiscreteDifferential\\input_previous",
+	"DiscreteDifferential\\input_previous_initial",
+	"U1",
+	"U2",
+	"U3",
+	"U4",
+	"U5",
+	"U6",
+	"U7",
+	"U8",
+	"U9",
+	"U10",
+	"U11",
+	"U12",
+	"U13",
+	"U14",
+	"U15",
+	"U16",
+	"U17",
+	"U18",
+	"U19",
+	"U20",
+	"U21",
+	"U22",
+	"U23",
+	"U24",
+	"U25",
+	"U26",
+	"U27",
+	"U28",
+	"U29",
+	"U30",
+	"U31",
+	"U32"
+]]></token>
+	<token name="MATRIX_NAMES2"><![CDATA[	"BasePositionController_dHToErrors_H_vp_base",
+	"BasePositionController_dHToErrors_norm_omega",
+	"BasePositionController_dHToErrors_omega",
+	"BasePositionController_ErrorsToW_W_base_base0",
+	"BasePositionController_Submodel3_cmd",
+	"BasePositionController_Submodel3_aldo",
+	"BasePositionController_H_vp_0",
+	"BasePositionController_active_joint",
+	"BaseTF_Twist",
+	"BaseTF_Virtual_joint_states",
+	"BaseTF_Base_torque",
+	"BaseTF_A",
+	"BaseTF_PseudoInverseA",
+	"BaseTF_virtual_velocities",
+	"DiscreteDifferential_output",
+	"DiscreteDifferential_initial_input",
+	"FilterBaseJointVelocities1_input",
+	"FilterBaseJointVelocities1_FilterGain",
+	"FilterBaseJointVelocities1_InputMemory",
+	"FilterBaseJointVelocities1_InputUpdate",
+	"FilterBaseJointVelocities1_State",
+	"FilterBaseJointVelocities1_A",
+	"FilterBaseJointVelocities1_B",
+	"PlusMinus4_output",
+	"PlusMinus4_plus2",
+	"Splitter5_input",
+	"H_base_0_output",
+	"T_base_00",
+	"Base_torque",
+	"Base_wheels_angle",
+	"H_base_0",
+	"W_base_00",
+	"H_vp_0",
+	"active_joint",
+	"DiscreteDifferential_input",
+	"DiscreteDifferential_input_previous",
+	"DiscreteDifferential_input_previous_initial",
+	"U1",
+	"U2",
+	"U3",
+	"U4",
+	"U5",
+	"U6",
+	"U7",
+	"U8",
+	"U9",
+	"U10",
+	"U11",
+	"U12",
+	"U13",
+	"U14",
+	"U15",
+	"U16",
+	"U17",
+	"U18",
+	"U19",
+	"U20",
+	"U21",
+	"U22",
+	"U23",
+	"U24",
+	"U25",
+	"U26",
+	"U27",
+	"U28",
+	"U29",
+	"U30",
+	"U31",
+	"U32"
+]]></token>
+	<token name="MATRIX_NAMES3"><![CDATA[BasePositionController\dHToErrors\H_vp_base
+BasePositionController\dHToErrors\norm_omega
+BasePositionController\dHToErrors\omega
+BasePositionController\ErrorsToW\W_base_base0
+BasePositionController\Submodel3\cmd
+BasePositionController\Submodel3\aldo
+BasePositionController\H_vp_0
+BasePositionController\active_joint
+BaseTF\Twist
+BaseTF\Virtual_joint_states
+BaseTF\Base_torque
+BaseTF\A
+BaseTF\PseudoInverseA
+BaseTF\virtual_velocities
+DiscreteDifferential\output
+DiscreteDifferential\initial_input
+FilterBaseJointVelocities1\input
+FilterBaseJointVelocities1\FilterGain
+FilterBaseJointVelocities1\InputMemory
+FilterBaseJointVelocities1\InputUpdate
+FilterBaseJointVelocities1\State
+FilterBaseJointVelocities1\A
+FilterBaseJointVelocities1\B
+PlusMinus4\output
+PlusMinus4\plus2
+Splitter5\input
+H_base_0_output
+T_base_00
+Base_torque
+Base_wheels_angle
+H_base_0
+W_base_00
+H_vp_0
+active_joint
+DiscreteDifferential\input
+DiscreteDifferential\input_previous
+DiscreteDifferential\input_previous_initial
+U1
+U2
+U3
+U4
+U5
+U6
+U7
+U8
+U9
+U10
+U11
+U12
+U13
+U14
+U15
+U16
+U17
+U18
+U19
+U20
+U21
+U22
+U23
+U24
+U25
+U26
+U27
+U28
+U29
+U30
+U31
+U32
+]]></token>
+	<token name="MATRIX_UNITS"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></token>
+	<token name="MODEL_CONFIGURATION"><![CDATA[<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>BasePoseController</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-08-07T16:29:29.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\home\youbot\DEV\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>2</revision>
+			<patch>4</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>BasePositionController\dHToErrors\H_vp_0</name>
+			<aliasOf>BasePositionController\H_vp_0</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>45</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>BasePositionController\dHToErrors\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>BasePositionController\dHToErrors\angle_error</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>BasePositionController\dHToErrors\x_error</name>
+			<aliasOf>BasePositionController\PD_BaseX\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>BasePositionController\dHToErrors\y_error</name>
+			<aliasOf>BasePositionController\PD_BaseY\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>BasePositionController\dHToErrors\H_vp_base</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>BasePositionController\dHToErrors\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>temporal variable to resolve numerical round up errors</description>
+			<storage>
+				<name>V</name>
+				<index>16</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>BasePositionController\dHToErrors\theta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>angle of rotation</description>
+			<storage>
+				<name>V</name>
+				<index>17</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>BasePositionController\dHToErrors\norm_omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>normolized vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>18</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>BasePositionController\dHToErrors\omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>21</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>BasePositionController\ErrorsToW\torque_z</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>BasePositionController\ErrorsToW\force_x</name>
+			<aliasOf>BasePositionController\PD_BaseX\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>BasePositionController\ErrorsToW\force_y</name>
+			<aliasOf>BasePositionController\PD_BaseY\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="14">
+			<name>BasePositionController\ErrorsToW\W_base_base0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>24</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="15">
+			<name>BasePositionController\PD_BaseAngle\output</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="16">
+			<name>BasePositionController\PD_BaseAngle\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="17">
+			<name>BasePositionController\PD_BaseAngle\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="18">
+			<name>BasePositionController\PD_BaseAngle\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="19">
+			<name>BasePositionController\PD_BaseX\output</name>
+			<aliasOf>BasePositionController\PD_BaseX\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="20">
+			<name>BasePositionController\PD_BaseX\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="21">
+			<name>BasePositionController\PD_BaseX\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="22">
+			<name>BasePositionController\PD_BaseX\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="23">
+			<name>BasePositionController\PD_BaseY\output</name>
+			<aliasOf>BasePositionController\PD_BaseY\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="24">
+			<name>BasePositionController\PD_BaseY\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="25">
+			<name>BasePositionController\PD_BaseY\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>7</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="26">
+			<name>BasePositionController\PD_BaseY\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="27">
+			<name>BasePositionController\Submodel3\input</name>
+			<aliasOf>BasePositionController\ErrorsToW\W_base_base0</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>24</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="28">
+			<name>BasePositionController\Submodel3\active</name>
+			<aliasOf>BasePositionController\active_joint</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>61</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="29">
+			<name>BasePositionController\Submodel3\cmd</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="30">
+			<name>BasePositionController\Submodel3\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>39</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="31">
+			<name>BasePositionController\H_vp_0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>45</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="32">
+			<name>BasePositionController\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="33">
+			<name>BasePositionController\W_base_base0</name>
+			<aliasOf>BasePositionController\Submodel3\cmd</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="34">
+			<name>BasePositionController\active_joint</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>61</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="35">
+			<name>BaseTF\Base_joint_velocity</name>
+			<aliasOf>DiscreteDifferential\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>104</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="36">
+			<name>BaseTF\Twist</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>64</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="37">
+			<name>BaseTF\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="38">
+			<name>BaseTF\Virtual_joint_states</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>70</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="39">
+			<name>BaseTF\W_base_base0</name>
+			<aliasOf>PlusMinus4\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>168</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="40">
+			<name>BaseTF\Base_torque</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="41">
+			<name>BaseTF\r</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0475</value>
+			<description>radius of the wheels</description>
+			<storage>
+				<name>P</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="42">
+			<name>BaseTF\x</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.235</value>
+			<description>lateral distance from center of mass to wheel contact point</description>
+			<storage>
+				<name>P</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="43">
+			<name>BaseTF\y</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.15</value>
+			<description>longitudinal  distance from center of mass to wheel contact point</description>
+			<storage>
+				<name>P</name>
+				<index>11</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="44">
+			<name>BaseTF\A</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>77</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="45">
+			<name>BaseTF\PseudoInverseA</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="46">
+			<name>BaseTF\virtual_velocities</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>	real W_base_base0[6];</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>101</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="47">
+			<name>DiscreteDifferential\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>104</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="48">
+			<name>DiscreteDifferential\initial</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>initial output value</description>
+			<storage>
+				<name>P</name>
+				<index>12</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="49">
+			<name>FilterBaseJointVelocities1\input</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>113</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="50">
+			<name>FilterBaseJointVelocities1\output</name>
+			<aliasOf>DiscreteDifferential\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="51">
+			<name>FilterBaseJointVelocities1\FilterGain</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0675, 0.1349, 0.0675; 1.143, -0.4128, 0.0</value>
+			<description>Cut-off frequency 100 Hz</description>
+			<size>
+				<rows>2</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>13</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="52">
+			<name>FilterBaseJointVelocities1\num</name>
+			<kind>parameter</kind>
+			<type>integer</type>
+			<value>4</value>
+			<description>number of the inputs</description>
+			<storage>
+				<name>P</name>
+				<index>19</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="53">
+			<name>FilterBaseJointVelocities1\InputMemory</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>117</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="54">
+			<name>FilterBaseJointVelocities1\InputUpdate</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>129</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="55">
+			<name>FilterBaseJointVelocities1\State</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>138</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="56">
+			<name>FilterBaseJointVelocities1\A</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>150</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="57">
+			<name>FilterBaseJointVelocities1\B</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>159</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="58">
+			<name>PlusMinus4\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>168</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="59">
+			<name>PlusMinus4\plus1</name>
+			<aliasOf>BasePositionController\Submodel3\cmd</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="60">
+			<name>PlusMinus4\plus2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="61">
+			<name>Splitter5\input</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="62">
+			<name>Splitter5\output1</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="63">
+			<name>Splitter5\output2</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="64">
+			<name>Splitter7\input</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="65">
+			<name>Splitter7\output1</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="66">
+			<name>Splitter7\output2</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="67">
+			<name>H_base_0_output</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>196</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="68">
+			<name>T_base_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>212</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="69">
+			<name>Base_torque</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>218</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="70">
+			<name>Base_wheels_angle</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>222</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="71">
+			<name>H_base_0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>226</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="72">
+			<name>W_base_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>242</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="73">
+			<name>H_vp_0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>248</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="74">
+			<name>active_joint</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>264</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="75">
+			<name>BasePositionController\PD_BaseAngle\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>0</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="76">
+			<name>BasePositionController\PD_BaseAngle\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="77">
+			<name>BasePositionController\PD_BaseAngle\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseAngle\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="78">
+			<name>BasePositionController\PD_BaseAngle\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\error</pair>
+			<storage>
+				<name>s</name>
+				<index>1</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="79">
+			<name>BasePositionController\PD_BaseAngle\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="80">
+			<name>BasePositionController\PD_BaseX\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>2</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="81">
+			<name>BasePositionController\PD_BaseX\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="82">
+			<name>BasePositionController\PD_BaseX\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseX\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="83">
+			<name>BasePositionController\PD_BaseX\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\error</pair>
+			<storage>
+				<name>s</name>
+				<index>3</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="84">
+			<name>BasePositionController\PD_BaseX\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="85">
+			<name>BasePositionController\PD_BaseY\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>4</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="86">
+			<name>BasePositionController\PD_BaseY\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="87">
+			<name>BasePositionController\PD_BaseY\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseY\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="88">
+			<name>BasePositionController\PD_BaseY\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\error</pair>
+			<storage>
+				<name>s</name>
+				<index>5</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="89">
+			<name>BasePositionController\PD_BaseY\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="90">
+			<name>DiscreteDifferential\input</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="91">
+			<name>DiscreteDifferential\input_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>6</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="92">
+			<name>DiscreteDifferential\input_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>4424</size>
+		<tables>
+			<table>
+				<name>U</name>
+				<size>1888</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>236</count>
+			</table>
+			<table>
+				<name>s</name>
+				<size>80</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>10</count>
+			</table>
+			<table>
+				<name>R</name>
+				<size>80</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>10</count>
+			</table>
+			<table>
+				<name>V</name>
+				<size>2136</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>267</count>
+			</table>
+			<table>
+				<name>I</name>
+				<size>80</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>10</count>
+			</table>
+			<table>
+				<name>P</name>
+				<size>160</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>20</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000024504C5445FFFFFF8F89899DA1A2A3A3A3A4A4A5A7A7A5BABABAC2C3C3C6C6C5C8C8C8CBCCCBD5D5D587274FE60000002B49444154780163604007CC6C288099818D1B05B051518093839D0B458095918589EAB6200960780E1D00006D990853D70313B40000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF7D7B808E878792959595979297938F9AA19A9B9BA19C9D9AA0A0A0A1A4A6A5A4A2A5A6A1A6A7ACA6A7ADAAA7A4AAABADABA9A7ACAAA8ADAEB1AEABAAAFAFAFAFB0B4AFB1BAB1B1B1B6B7B5B8B7B5B8B8B8D5D5D500B6F16700000042494441547801636042030C8405B86551003783941C0A90224A404448468C878B5F908F535A002C202CCACB22CE21C1CECACC2649A41968020C8C2880818174CF0100EA350FD9E8C2FB370000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000063504C5445246614246616246617296D2A2A6E2C2D74502D74512E68343939393B66313C66143C662E4E948252978667A2977373738CBBBA8DBCBA9DA25CC7E1E4C8C187C8E2E5C8E2E6C9E2E6CBDEC5CDC58CD8E4E6D9D1A2D9E4E6E1E1C5E6E1C3E6E2C5E6E6E6760D8DFB0000004A49444154780163E0E047011C0CFC0A28809F4C012106461E592E066601B8009F34BB04B7B0089B0C5C0513AF2CB7981CA7385C8582823CB7A824AB14B20017038B2005EE202080EE7D00253F190290AE42A00000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000063504C5445246614246616246617296D2A2A6E2C2D74502D74512E68343939393B66313C66143C662E4E948252978667A2977373738CBBBA8DBCBA9DA25CC7E1E4C8C187C8E2E5C8E2E6C9E2E6CBDEC5CDC58CD8E4E6D9D1A2D9E4E6E1E1C5E6E1C3E6E2C5E6E6E6760D8DFB0000004A49444154780163E0E047011C0CFC0A28809F4C012106461E592E066601B8009F34BB04B7B0089B0C5C0513AF2CB7981CA7385C8582823CB7A824AB14B20017038B2005EE202080EE7D00253F190290AE42A00000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000063504C5445246614246616246617296D2A2A6E2C2D74502D74512E68343939393B66313C66143C662E4E948252978667A2977373738CBBBA8DBCBA9DA25CC7E1E4C8C187C8E2E5C8E2E6C9E2E6CBDEC5CDC58CD8E4E6D9D1A2D9E4E6E1E1C5E6E1C3E6E2C5E6E6E6760D8DFB0000004A49444154780163E0E047011C0CFC0A28809F4C012106461E592E066601B8009F34BB04B7B0089B0C5C0513AF2CB7981CA7385C8582823CB7A824AB14B20017038B2005EE202080EE7D00253F190290AE42A00000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000D5D5D5FFE54987000000184944415478016360606044020C20C0C80407234100C5FB00B170014D22F7516B0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F53000000BA504C5445888888A1A1A1AAAAAAC6C6C66155F57763F47B79F27D71F3817BF28670F38796EC8884F18888888C8CEE8C97EC8D97EC9490EF9497ED9594EF9598EE9795EF9999999999EE9BAEEA9F99EEA18DF0A1A1A1A2A7ECA3ACEBA4B9E9A6A9EBABB1EAAC99EFADA5EEADB2EAB0B2EAB2B2EBB9A1EEB9B1ECB9B9EABFB2ECBFCFE7C1D8E6C4CAE8C5D8E7C9CCE8CBBAEDCCB7ECCCCCE8CEE1E6D2CAE9D6E2E6D7E3E6D8D7E8DFD6E9E2D7EAE4E0E7E6E2E7E6E3E7E6E4E6E6E5E6E6E6E6C50CC63E0000007649444154780163601045013C0C8CB628400A2260A98C2AA0C8CD8722602568CE8F2260CDABC785AAC5485A175940450C080C506DD150374116B0106061130772AC590D2102AA5A9242864093E415A002FAB29C223A121C9AB61AC65033D4E44C95CC64900DB5B5B56117D6461140B883990905300300AA942ADB0816E2520000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000000F504C5445BFBFBFFFFFFF9F9F9FBFBFBFD5D5D5ED33EF180000001E494441547801636044030CD4106046030C4C2C2880891C010C400BA70300F70801C148316B5C0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>]]></token>
+	<token name="MODEL_DESCRIPTION"><![CDATA[<Description>
+ <Version>4.1</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>]]></token>
+	<token name="MODEL_FILE"><![CDATA[Z:\home\youbot\DEV\20SimModels\Devel\motion_stack.emx]]></token>
+	<token name="MODEL_IS_DISCRETE"><![CDATA[XXTRUE]]></token>
+	<token name="NUMBEROF_ABSFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_ARCCOSFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_ASSIGNMENT"><![CDATA[62]]></token>
+	<token name="NUMBEROF_ATAN2FUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_CODEBLOCK"><![CDATA[9]]></token>
+	<token name="NUMBEROF_CODESTATEMENT"><![CDATA[3]]></token>
+	<token name="NUMBEROF_DIAGFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_DISCRETERATE"><![CDATA[7]]></token>
+	<token name="NUMBEROF_DISCRETESTATE"><![CDATA[7]]></token>
+	<token name="NUMBEROF_DIV"><![CDATA[8]]></token>
+	<token name="NUMBEROF_EQUAL"><![CDATA[1]]></token>
+	<token name="NUMBEROF_EQUATION"><![CDATA[16]]></token>
+	<token name="NUMBEROF_FALSE"><![CDATA[1]]></token>
+	<token name="NUMBEROF_GREATER"><![CDATA[1]]></token>
+	<token name="NUMBEROF_IFSTATEMENT"><![CDATA[4]]></token>
+	<token name="NUMBEROF_INITIALSTATEMENT"><![CDATA[3]]></token>
+	<token name="NUMBEROF_INITIALVALUE"><![CDATA[7]]></token>
+	<token name="NUMBEROF_INVERSEFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_INVERSEHOMOGENEOUSFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_LESS"><![CDATA[1]]></token>
+	<token name="NUMBEROF_LITERAL"><![CDATA[107]]></token>
+	<token name="NUMBEROF_MATRIX"><![CDATA[11]]></token>
+	<token name="NUMBEROF_MATRIXINDEX"><![CDATA[30]]></token>
+	<token name="NUMBEROF_MATRIXRANGE"><![CDATA[11]]></token>
+	<token name="NUMBEROF_MIN"><![CDATA[9]]></token>
+	<token name="NUMBEROF_MUL"><![CDATA[39]]></token>
+	<token name="NUMBEROF_PARAMETER"><![CDATA[15]]></token>
+	<token name="NUMBEROF_PARENTHESIS"><![CDATA[18]]></token>
+	<token name="NUMBEROF_PLUS"><![CDATA[17]]></token>
+	<token name="NUMBEROF_PORT"><![CDATA[47]]></token>
+	<token name="NUMBEROF_PORTVARIABLE"><![CDATA[45]]></token>
+	<token name="NUMBEROF_PREFIXMIN"><![CDATA[3]]></token>
+	<token name="NUMBEROF_PREFIXNOT"><![CDATA[1]]></token>
+	<token name="NUMBEROF_SAMPLETIME"><![CDATA[8]]></token>
+	<token name="NUMBEROF_SIGNFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_SINFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_TRACEFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_TRANSPOSEFUNCTION"><![CDATA[5]]></token>
+	<token name="NUMBEROF_TRUE"><![CDATA[1]]></token>
+	<token name="NUMBEROF_UNNAMED"><![CDATA[35]]></token>
+	<token name="NUMBEROF_VARIABLE"><![CDATA[19]]></token>
+	<token name="NUMBER_ALGLOOPS"><![CDATA[0]]></token>
+	<token name="NUMBER_ALIAS_MATRICES"><![CDATA[16]]></token>
+	<token name="NUMBER_ALIAS_VARIABLES"><![CDATA[188]]></token>
+	<token name="NUMBER_CONSTANTS"><![CDATA[0]]></token>
+	<token name="NUMBER_CONSTRAINTS"><![CDATA[0]]></token>
+	<token name="NUMBER_DEPSTATES"><![CDATA[0]]></token>
+	<token name="NUMBER_EXPORTS"><![CDATA[0]]></token>
+	<token name="NUMBER_FAVORITE_PARAMETERS"><![CDATA[0]]></token>
+	<token name="NUMBER_FAVORITE_VARIABLES"><![CDATA[0]]></token>
+	<token name="NUMBER_IMPORTS"><![CDATA[0]]></token>
+	<token name="NUMBER_INITIAL_VALUES"><![CDATA[10]]></token>
+	<token name="NUMBER_INPUTS"><![CDATA[45]]></token>
+	<token name="NUMBER_MATRICES"><![CDATA[69]]></token>
+	<token name="NUMBER_OUTPUTS"><![CDATA[26]]></token>
+	<token name="NUMBER_PARAMETERS"><![CDATA[20]]></token>
+	<token name="NUMBER_STATES"><![CDATA[10]]></token>
+	<token name="NUMBER_UNNAMED"><![CDATA[236]]></token>
+	<token name="NUMBER_VARIABLES"><![CDATA[267]]></token>
+	<token name="OUTPUT2_EQUATIONS"><![CDATA[
+	/* BasePositionController\PD_BaseAngle\factor = 1 / (sampletime + BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\beta); */
+	V[30] = 1.0 / (step_size + P[1] * P[2]);
+
+	/* BasePositionController\PD_BaseX\factor = 1 / (sampletime + BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\beta); */
+	V[31] = 1.0 / (step_size + P[4] * P[5]);
+
+	/* BasePositionController\PD_BaseY\factor = 1 / (sampletime + BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\beta); */
+	V[32] = 1.0 / (step_size + P[7] * P[8]);
+
+	/* T_base_00 = BaseTF\Twist; */
+	XXMatrixMov (&M[27], &M[8]);
+
+	/* Base_torque = BaseTF\Base_torque; */
+	XXMatrixMov (&M[28], &M[10]);
+
+	/* Splitter5\input = H_base_0; */
+	XXMatrixMov (&M[25], &M[30]);
+
+		/* FilterBaseJointVelocities1\InputMemory = FilterBaseJointVelocities1\InputUpdate * FilterBaseJointVelocities1\InputMemory + [1; 0; 0] * transpose (FilterBaseJointVelocities1\input); */
+		XXMatrixMul (&M[40], &M[19], &M[18]);
+		M[42].mat[0] = 1.0;
+		M[42].mat[1] = 0.0;
+		M[42].mat[2] = 0.0;
+		XXMatrixTranspose (&M[43], &M[16]);
+		XXMatrixMul (&M[41], &M[42], &M[43]);
+		XXMatrixAdd (&M[18], &M[40], &M[41]);
+
+		/* FilterBaseJointVelocities1\State = FilterBaseJointVelocities1\A * FilterBaseJointVelocities1\State + FilterBaseJointVelocities1\B * FilterBaseJointVelocities1\InputMemory; */
+		XXMatrixMul (&M[44], &M[21], &M[20]);
+		XXMatrixMul (&M[45], &M[22], &M[18]);
+		XXMatrixAdd (&M[20], &M[44], &M[45]);
+
+		/* DiscreteDifferential\input = transpose ([1, 0, 0] * FilterBaseJointVelocities1\State); */
+		M[47].mat[0] = 1.0;
+		M[47].mat[1] = 0.0;
+		M[47].mat[2] = 0.0;
+		XXMatrixMul (&M[46], &M[47], &M[20]);
+		XXMatrixTranspose (&M[34], &M[46]);
+
+	/* if notDiscreteDifferential\initialized */
+	if (!V[112])
+	{
+		/* DiscreteDifferential\initial_input = DiscreteDifferential\initial - DiscreteDifferential\input / sampletime; */
+		XXMatrixScalarDiv (&M[49], &M[34], step_size);
+		XXScalarMatrixSub (&M[15], P[12], &M[49]);
+
+		/* DiscreteDifferential\initialized = 1.0; */
+		V[112] = XXTRUE;
+	}
+	else
+	{
+		/* DiscreteDifferential\initial_input = 0; */
+		XXMatrixScalarMov (&M[15], 0.0);
+	}
+
+	/* H_base_0_output = Splitter5\input; */
+	XXMatrixMov (&M[26], &M[25]);
+
+		/* BasePositionController\dHToErrors\H_vp_base = inverseH (BasePositionController\H_vp_0) * Splitter5\input; */
+		XXMatrixInverseH (&M[51], &M[6]);
+		XXMatrixMul (&M[0], &M[51], &M[25]);
+
+		/* BasePositionController\dHToErrors\aldo = (trace (BasePositionController\dHToErrors\H_vp_base[1:3,1:3]) - 1) / 2; */
+		M[53].mat[0] = M[0].mat[0];
+		M[53].mat[1] = M[0].mat[1];
+		M[53].mat[2] = M[0].mat[2];
+		M[53].mat[3] = M[0].mat[4];
+		M[53].mat[4] = M[0].mat[5];
+		M[53].mat[5] = M[0].mat[6];
+		M[53].mat[6] = M[0].mat[8];
+		M[53].mat[7] = M[0].mat[9];
+		M[53].mat[8] = M[0].mat[10];
+		M[52].mat[0] = XXMatrixTrace (&M[53]);
+		V[16] = (XXMatrixTrace (&M[53]) - 1.0) / 2.0;
+
+		/* if (BasePositionController\dHToErrors\aldo < -1) */
+		if (V[16] < -1.0)
+		{
+			/* BasePositionController\dHToErrors\aldo = -1; */
+			V[16] = -1.0;
+		}
+
+		/* if (BasePositionController\dHToErrors\aldo > 1) */
+		if (V[16] > 1.0)
+		{
+			/* BasePositionController\dHToErrors\aldo = 1; */
+			V[16] = 1.0;
+		}
+
+		/* BasePositionController\dHToErrors\theta = arccos (BasePositionController\dHToErrors\aldo); */
+		V[17] = acos (V[16]);
+
+		/* if (BasePositionController\dHToErrors\theta == 0) */
+		if (V[17] == 0.0)
+		{
+			/* BasePositionController\dHToErrors\norm_omega = 0; */
+			XXMatrixScalarMov (&M[1], 0.0);
+		}
+		else
+		{
+			/* BasePositionController\dHToErrors\norm_omega = (1 / (2 * sin (BasePositionController\dHToErrors\theta))) * [BasePositionController\dHToErrors\H_vp_base[3,2] - BasePositionController\dHToErrors\H_vp_base[2,3]; BasePositionController\dHToErrors\H_vp_base[1,3] - BasePositionController\dHToErrors\H_vp_base[3,1]; BasePositionController\dHToErrors\H_vp_base[2,1] - BasePositionController\dHToErrors\H_vp_base[1,2]]; */
+			M[56].mat[0] = M[0].mat[9] - M[0].mat[6];
+			M[56].mat[1] = M[0].mat[2] - M[0].mat[8];
+			M[56].mat[2] = M[0].mat[4] - M[0].mat[1];
+			XXScalarMatrixMul (&M[1], (1.0 / (2.0 * sin (V[17]))), &M[56]);
+		}
+
+		/* BasePositionController\dHToErrors\omega = BasePositionController\dHToErrors\theta * BasePositionController\dHToErrors\norm_omega; */
+		XXScalarMatrixMul (&M[2], V[17], &M[1]);
+
+		/* BasePositionController\PD_BaseX\error = -BasePositionController\dHToErrors\H_vp_base[1,4]; */
+		R[3] = -M[0].mat[3];
+
+		/* BasePositionController\PD_BaseY\error = -BasePositionController\dHToErrors\H_vp_base[2,4]; */
+		R[5] = -M[0].mat[7];
+
+		/* BasePositionController\PD_BaseAngle\error = -BasePositionController\dHToErrors\omega[3]; */
+		R[1] = -M[2].mat[2];
+
+	/* BasePositionController\PD_BaseAngle\uD = BasePositionController\PD_BaseAngle\factor * (((BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\uD_previous) * BasePositionController\PD_BaseAngle\beta + (BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\kp) * (BasePositionController\PD_BaseAngle\error - BasePositionController\PD_BaseAngle\error_previous)) + (sampletime * BasePositionController\PD_BaseAngle\kp) * BasePositionController\PD_BaseAngle\error); */
+	R[0] = V[30] * (((P[1] * s[0]) * P[2] + (P[1] * P[0]) * (R[1] - s[1])) + (step_size * P[0]) * R[1]);
+
+	/* BasePositionController\PD_BaseX\uD = BasePositionController\PD_BaseX\factor * (((BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\uD_previous) * BasePositionController\PD_BaseX\beta + (BasePositionController\PD_BaseX\tauD * BasePositionController\PD_BaseX\kp) * (BasePositionController\PD_BaseX\error - BasePositionController\PD_BaseX\error_previous)) + (sampletime * BasePositionController\PD_BaseX\kp) * BasePositionController\PD_BaseX\error); */
+	R[2] = V[31] * (((P[4] * s[2]) * P[5] + (P[4] * P[3]) * (R[3] - s[3])) + (step_size * P[3]) * R[3]);
+
+	/* BasePositionController\PD_BaseY\uD = BasePositionController\PD_BaseY\factor * (((BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\uD_previous) * BasePositionController\PD_BaseY\beta + (BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\kp) * (BasePositionController\PD_BaseY\error - BasePositionController\PD_BaseY\error_previous)) + (sampletime * BasePositionController\PD_BaseY\kp) * BasePositionController\PD_BaseY\error); */
+	R[4] = V[32] * (((P[7] * s[4]) * P[8] + (P[7] * P[6]) * (R[5] - s[5])) + (step_size * P[6]) * R[5]);
+
+		/* BaseTF\A = (1 / (BaseTF\r)) * [BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y; -1, 1, -1, 1; 1, 1, -1, -1]; */
+		M[57].mat[0] = P[10] + P[11];
+		M[57].mat[1] = P[10] + P[11];
+		M[57].mat[2] = P[10] + P[11];
+		M[57].mat[3] = P[10] + P[11];
+		M[57].mat[4] = -1.0;
+		M[57].mat[5] = 1.0;
+		M[57].mat[6] = -1.0;
+		M[57].mat[7] = 1.0;
+		M[57].mat[8] = 1.0;
+		M[57].mat[9] = 1.0;
+		M[57].mat[10] = -1.0;
+		M[57].mat[11] = -1.0;
+		XXScalarMatrixMul (&M[11], (1.0 / (P[9])), &M[57]);
+
+		/* BaseTF\PseudoInverseA = transpose (BaseTF\A) * inverse (BaseTF\A * transpose (BaseTF\A)); */
+		XXMatrixTranspose (&M[58], &M[11]);
+		XXMatrixTranspose (&M[61], &M[11]);
+		XXMatrixMul (&M[60], &M[11], &M[61]);
+		XXMatrixInverse (&M[59], &M[60], workarray);
+		XXMatrixMul (&M[12], &M[58], &M[59]);
+
+		/* BaseTF\Base_torque = BaseTF\PseudoInverseA * PlusMinus4\output[3:5]; */
+		M[62].mat[0] = M[23].mat[2];
+		M[62].mat[1] = M[23].mat[3];
+		M[62].mat[2] = M[23].mat[4];
+		XXMatrixMul (&M[10], &M[12], &M[62]);
+
+		/* BaseTF\virtual_velocities = transpose (BaseTF\PseudoInverseA) * DiscreteDifferential\output; */
+		XXMatrixTranspose (&M[63], &M[12]);
+		XXMatrixMul (&M[13], &M[63], &M[14]);
+
+		/* BaseTF\Twist = [0; 0; BaseTF\virtual_velocities[1]; BaseTF\virtual_velocities[2]; BaseTF\virtual_velocities[3]; 0]; */
+		M[8].mat[0] = 0.0;
+		M[8].mat[1] = 0.0;
+		M[8].mat[2] = M[13].mat[0];
+		M[8].mat[3] = M[13].mat[1];
+		M[8].mat[4] = M[13].mat[2];
+		M[8].mat[5] = 0.0;
+
+		/* BaseTF\Virtual_joint_states[1] = atan2 (Splitter5\input[2,1], Splitter5\input[1,1]); */
+		M[9].mat[0] = atan2 (M[25].mat[4], M[25].mat[0]);
+
+		/* BaseTF\Virtual_joint_states[2] = Splitter5\input[1,4]; */
+		M[9].mat[1] = M[25].mat[3];
+
+		/* BaseTF\Virtual_joint_states[3] = Splitter5\input[2,4]; */
+		M[9].mat[2] = M[25].mat[7];
+
+	/* FilterBaseJointVelocities1\input = Base_wheels_angle; */
+	XXMatrixMov (&M[16], &M[29]);
+
+	/* PlusMinus4\plus2 = W_base_00; */
+	XXMatrixMov (&M[24], &M[31]);
+
+	/* BasePositionController\H_vp_0 = H_vp_0; */
+	XXMatrixMov (&M[6], &M[32]);
+
+	/* BasePositionController\active_joint = active_joint; */
+	XXMatrixMov (&M[7], &M[33]);
+
+	/* BasePositionController\Submodel3\aldo = [1; 1; BasePositionController\active_joint[1]; BasePositionController\active_joint[2]; BasePositionController\active_joint[3]; 1]; */
+	M[5].mat[0] = 1.0;
+	M[5].mat[1] = 1.0;
+	M[5].mat[2] = M[7].mat[0];
+	M[5].mat[3] = M[7].mat[1];
+	M[5].mat[4] = M[7].mat[2];
+	M[5].mat[5] = 1.0;
+
+	/* DiscreteDifferential\output = (DiscreteDifferential\input - DiscreteDifferential\input_previous) / sampletime + DiscreteDifferential\initial_input; */
+	XXMatrixSub (&M[65], &M[34], &M[35]);
+	XXMatrixScalarDiv (&M[64], &M[65], step_size);
+	XXMatrixAdd (&M[14], &M[64], &M[15]);
+
+	/* BasePositionController\ErrorsToW\W_base_base0 = [0; 0; BasePositionController\PD_BaseAngle\uD; BasePositionController\PD_BaseX\uD; BasePositionController\PD_BaseY\uD; 0]; */
+	M[3].mat[0] = 0.0;
+	M[3].mat[1] = 0.0;
+	M[3].mat[2] = R[0];
+	M[3].mat[3] = R[2];
+	M[3].mat[4] = R[4];
+	M[3].mat[5] = 0.0;
+
+	/* BasePositionController\Submodel3\cmd = diag (abs (sign (BasePositionController\Submodel3\aldo))) * BasePositionController\ErrorsToW\W_base_base0; */
+	M[68].mat[0] = XXSign (M[5].mat[0]);
+	M[68].mat[1] = XXSign (M[5].mat[1]);
+	M[68].mat[2] = XXSign (M[5].mat[2]);
+	M[68].mat[3] = XXSign (M[5].mat[3]);
+	M[68].mat[4] = XXSign (M[5].mat[4]);
+	M[68].mat[5] = XXSign (M[5].mat[5]);
+	M[67].mat[0] = XXAbsolute (M[68].mat[0]);
+	M[67].mat[1] = XXAbsolute (M[68].mat[1]);
+	M[67].mat[2] = XXAbsolute (M[68].mat[2]);
+	M[67].mat[3] = XXAbsolute (M[68].mat[3]);
+	M[67].mat[4] = XXAbsolute (M[68].mat[4]);
+	M[67].mat[5] = XXAbsolute (M[68].mat[5]);
+	XXMatrixDiag (&M[66], &M[67]);
+	XXMatrixMul (&M[4], &M[66], &M[3]);
+
+	/* PlusMinus4\output = BasePositionController\Submodel3\cmd + PlusMinus4\plus2; */
+	XXMatrixAdd (&M[23], &M[4], &M[24]);
+]]></token>
+	<token name="OUTPUT_EQUATIONS"><![CDATA[	/* FilterBaseJointVelocities1\input = Base_wheels_angle; */
+	XXMatrixMov (&M[16], &M[29]);
+
+	/* PlusMinus4\plus2 = W_base_00; */
+	XXMatrixMov (&M[24], &M[31]);
+
+	/* BasePositionController\H_vp_0 = H_vp_0; */
+	XXMatrixMov (&M[6], &M[32]);
+
+	/* BasePositionController\active_joint = active_joint; */
+	XXMatrixMov (&M[7], &M[33]);
+
+	/* BasePositionController\Submodel3\aldo = [1; 1; BasePositionController\active_joint[1]; BasePositionController\active_joint[2]; BasePositionController\active_joint[3]; 1]; */
+	M[5].mat[0] = 1.0;
+	M[5].mat[1] = 1.0;
+	M[5].mat[2] = M[7].mat[0];
+	M[5].mat[3] = M[7].mat[1];
+	M[5].mat[4] = M[7].mat[2];
+	M[5].mat[5] = 1.0;
+
+	/* DiscreteDifferential\output = (DiscreteDifferential\input - DiscreteDifferential\input_previous) / sampletime + DiscreteDifferential\initial_input; */
+	XXMatrixSub (&M[65], &M[34], &M[35]);
+	XXMatrixScalarDiv (&M[64], &M[65], step_size);
+	XXMatrixAdd (&M[14], &M[64], &M[15]);
+
+	/* BasePositionController\ErrorsToW\W_base_base0 = [0; 0; BasePositionController\PD_BaseAngle\uD; BasePositionController\PD_BaseX\uD; BasePositionController\PD_BaseY\uD; 0]; */
+	M[3].mat[0] = 0.0;
+	M[3].mat[1] = 0.0;
+	M[3].mat[2] = R[0];
+	M[3].mat[3] = R[2];
+	M[3].mat[4] = R[4];
+	M[3].mat[5] = 0.0;
+
+	/* BasePositionController\Submodel3\cmd = diag (abs (sign (BasePositionController\Submodel3\aldo))) * BasePositionController\ErrorsToW\W_base_base0; */
+	M[68].mat[0] = XXSign (M[5].mat[0]);
+	M[68].mat[1] = XXSign (M[5].mat[1]);
+	M[68].mat[2] = XXSign (M[5].mat[2]);
+	M[68].mat[3] = XXSign (M[5].mat[3]);
+	M[68].mat[4] = XXSign (M[5].mat[4]);
+	M[68].mat[5] = XXSign (M[5].mat[5]);
+	M[67].mat[0] = XXAbsolute (M[68].mat[0]);
+	M[67].mat[1] = XXAbsolute (M[68].mat[1]);
+	M[67].mat[2] = XXAbsolute (M[68].mat[2]);
+	M[67].mat[3] = XXAbsolute (M[68].mat[3]);
+	M[67].mat[4] = XXAbsolute (M[68].mat[4]);
+	M[67].mat[5] = XXAbsolute (M[68].mat[5]);
+	XXMatrixDiag (&M[66], &M[67]);
+	XXMatrixMul (&M[4], &M[66], &M[3]);
+
+	/* PlusMinus4\output = BasePositionController\Submodel3\cmd + PlusMinus4\plus2; */
+	XXMatrixAdd (&M[23], &M[4], &M[24]);
+]]></token>
+	<token name="OUTPUT_NAMES"><![CDATA[	"Base_torque[1]",
+	"Base_torque[2]",
+	"Base_torque[3]",
+	"Base_torque[4]",
+	"H_base_0_output[1,1]",
+	"H_base_0_output[1,2]",
+	"H_base_0_output[1,3]",
+	"H_base_0_output[1,4]",
+	"H_base_0_output[2,1]",
+	"H_base_0_output[2,2]",
+	"H_base_0_output[2,3]",
+	"H_base_0_output[2,4]",
+	"H_base_0_output[3,1]",
+	"H_base_0_output[3,2]",
+	"H_base_0_output[3,3]",
+	"H_base_0_output[3,4]",
+	"H_base_0_output[4,1]",
+	"H_base_0_output[4,2]",
+	"H_base_0_output[4,3]",
+	"H_base_0_output[4,4]",
+	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]"
+]]></token>
+	<token name="OUTPUT_NAMES2"><![CDATA[	"H_base_0_output[1,1]",
+	"H_base_0_output[1,2]",
+	"H_base_0_output[1,3]",
+	"H_base_0_output[1,4]",
+	"H_base_0_output[2,1]",
+	"H_base_0_output[2,2]",
+	"H_base_0_output[2,3]",
+	"H_base_0_output[2,4]",
+	"H_base_0_output[3,1]",
+	"H_base_0_output[3,2]",
+	"H_base_0_output[3,3]",
+	"H_base_0_output[3,4]",
+	"H_base_0_output[4,1]",
+	"H_base_0_output[4,2]",
+	"H_base_0_output[4,3]",
+	"H_base_0_output[4,4]",
+	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"Base_torque[1]",
+	"Base_torque[2]",
+	"Base_torque[3]",
+	"Base_torque[4]"
+]]></token>
+	<token name="OUTPUT_NAMES3"><![CDATA[Base_torque[1]
+Base_torque[2]
+Base_torque[3]
+Base_torque[4]
+H_base_0_output[1,1]
+H_base_0_output[1,2]
+H_base_0_output[1,3]
+H_base_0_output[1,4]
+H_base_0_output[2,1]
+H_base_0_output[2,2]
+H_base_0_output[2,3]
+H_base_0_output[2,4]
+H_base_0_output[3,1]
+H_base_0_output[3,2]
+H_base_0_output[3,3]
+H_base_0_output[3,4]
+H_base_0_output[4,1]
+H_base_0_output[4,2]
+H_base_0_output[4,3]
+H_base_0_output[4,4]
+T_base_00[1]
+T_base_00[2]
+T_base_00[3]
+T_base_00[4]
+T_base_00[5]
+T_base_00[6]
+]]></token>
+	<token name="OUTPUT_UNITS"><![CDATA[
+
+
+]]></token>
+	<token name="PARAMETER_NAMES"><![CDATA[	"BasePositionController\\PD_BaseAngle\\kp",
+	"BasePositionController\\PD_BaseAngle\\tauD",
+	"BasePositionController\\PD_BaseAngle\\beta",
+	"BasePositionController\\PD_BaseX\\kp",
+	"BasePositionController\\PD_BaseX\\tauD",
+	"BasePositionController\\PD_BaseX\\beta",
+	"BasePositionController\\PD_BaseY\\kp",
+	"BasePositionController\\PD_BaseY\\tauD",
+	"BasePositionController\\PD_BaseY\\beta",
+	"BaseTF\\r",
+	"BaseTF\\x",
+	"BaseTF\\y",
+	"DiscreteDifferential\\initial",
+	"FilterBaseJointVelocities1\\FilterGain[1,1]",
+	"FilterBaseJointVelocities1\\FilterGain[1,2]",
+	"FilterBaseJointVelocities1\\FilterGain[1,3]",
+	"FilterBaseJointVelocities1\\FilterGain[2,1]",
+	"FilterBaseJointVelocities1\\FilterGain[2,2]",
+	"FilterBaseJointVelocities1\\FilterGain[2,3]",
+	"FilterBaseJointVelocities1\\num"
+]]></token>
+	<token name="PARAMETER_NAMES2"><![CDATA[	"BasePositionController_PD_BaseAngle_kp",
+	"BasePositionController_PD_BaseAngle_tauD",
+	"BasePositionController_PD_BaseAngle_beta",
+	"BasePositionController_PD_BaseX_kp",
+	"BasePositionController_PD_BaseX_tauD",
+	"BasePositionController_PD_BaseX_beta",
+	"BasePositionController_PD_BaseY_kp",
+	"BasePositionController_PD_BaseY_tauD",
+	"BasePositionController_PD_BaseY_beta",
+	"BaseTF_r",
+	"BaseTF_x",
+	"BaseTF_y",
+	"DiscreteDifferential_initial",
+	"FilterBaseJointVelocities1_FilterGain[1,1]",
+	"FilterBaseJointVelocities1_FilterGain[1,2]",
+	"FilterBaseJointVelocities1_FilterGain[1,3]",
+	"FilterBaseJointVelocities1_FilterGain[2,1]",
+	"FilterBaseJointVelocities1_FilterGain[2,2]",
+	"FilterBaseJointVelocities1_FilterGain[2,3]",
+	"FilterBaseJointVelocities1_num"
+]]></token>
+	<token name="PARAMETER_NAMES3"><![CDATA[BasePositionController\PD_BaseAngle\kp
+BasePositionController\PD_BaseAngle\tauD
+BasePositionController\PD_BaseAngle\beta
+BasePositionController\PD_BaseX\kp
+BasePositionController\PD_BaseX\tauD
+BasePositionController\PD_BaseX\beta
+BasePositionController\PD_BaseY\kp
+BasePositionController\PD_BaseY\tauD
+BasePositionController\PD_BaseY\beta
+BaseTF\r
+BaseTF\x
+BaseTF\y
+DiscreteDifferential\initial
+FilterBaseJointVelocities1\FilterGain[1,1]
+FilterBaseJointVelocities1\FilterGain[1,2]
+FilterBaseJointVelocities1\FilterGain[1,3]
+FilterBaseJointVelocities1\FilterGain[2,1]
+FilterBaseJointVelocities1\FilterGain[2,2]
+FilterBaseJointVelocities1\FilterGain[2,3]
+FilterBaseJointVelocities1\num
+]]></token>
+	<token name="PARAMETER_UNITS"><![CDATA[
+s
+
+
+s
+
+
+s
+
+
+
+
+
+
+
+]]></token>
+	<token name="PARAMETER_VALUES"><![CDATA[100.0
+1.0
+0.1
+100.0
+1.0
+0.1
+100.0
+1.0
+0.1
+0.0475
+0.235
+0.15
+0.0
+0.0675
+0.1349
+0.0675
+1.143
+-0.4128
+0.0
+4.0
+]]></token>
+	<token name="RATE_NAMES"><![CDATA[	"",
+	"BasePositionController\\PD_BaseAngle\\error",
+	"",
+	"BasePositionController\\PD_BaseX\\error",
+	"",
+	"BasePositionController\\PD_BaseY\\error",
+	"DiscreteDifferential\\input[1]",
+	"DiscreteDifferential\\input[2]",
+	"DiscreteDifferential\\input[3]",
+	"DiscreteDifferential\\input[4]"
+]]></token>
+	<token name="RATE_NAMES2"><![CDATA[	"",
+	"BasePositionController_PD_BaseAngle_error",
+	"",
+	"BasePositionController_PD_BaseX_error",
+	"",
+	"BasePositionController_PD_BaseY_error",
+	"DiscreteDifferential_input[1]",
+	"DiscreteDifferential_input[2]",
+	"DiscreteDifferential_input[3]",
+	"DiscreteDifferential_input[4]"
+]]></token>
+	<token name="RATE_NAMES3"><![CDATA[
+BasePositionController\PD_BaseAngle\error
+
+BasePositionController\PD_BaseX\error
+
+BasePositionController\PD_BaseY\error
+DiscreteDifferential\input[1]
+DiscreteDifferential\input[2]
+DiscreteDifferential\input[3]
+DiscreteDifferential\input[4]
+]]></token>
+	<token name="RATE_UNITS"><![CDATA[
+
+
+
+
+
+
+]]></token>
+	<token name="SIMULINK_MODEL"><![CDATA[Model {
+  Name			  "motion_stack_"
+  System {
+    Name		    "motion_stack_"
+    Open		    on
+    Block {
+      BlockType		      SubSystem
+      Name		      "SubSystem"
+      Ports		      [5, 3]
+      Position		      [100, 100, 300, 190]
+      ShowPortLabels	      on
+	  MaskType		      "20-sim 4.1 S-Function block"
+	  MaskDescription	      "This block is generated by the 20-sim ANSI-C Code Generator. 
+
+* look under the mask to get information on the ports
+* press Help for more detailed information
+* the parameters of this block are:
+
+"
+	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
+The block parameters are:<br><blockquote></blockquote>
+Generated at:<br>
+<blockquote><b>date:  </b>August 7, 2012<br>
+<b>time:  </b>4:29:14 pm<br></blockquote>
+From the following 20-sim model:<br>
+<blockquote><b>submodel:  </b>BasePoseController<br>
+<b>model:  </b>motion_stack<br>
+<b>file:  </b>Z:\\home\\youbot\\DEV\\20SimModels\\Devel\\motion_stack.emx<br>
+<b>experiment:  </b>Z:\\home\\youbot\\DEV\\20SimModels\\Devel\\motion_stack.emx<br></blockquote>
+Using the following 20-sim license:<br>
+<blockquote><b>user:  </b>Campuslicentie<br>
+<b>from:  </b>Universiteit Twente<br>
+<b>build: </b>4.1.2.4<br></blockquote>"
+	  MaskPromptString	      ""
+	  MaskVariables	      ";"
+	  MaskDisplay		  ""
+	  MaskIconFrame		  off
+	  MaskValueString	      ""
+      System {
+        Name			"SubSystem"
+        Location		[478, 83, 978, 384]
+        Block {
+              BlockType		  Inport
+		  Name			  "active_joint"
+		  Position		  [40, 20, 60, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "Base_wheels_angle"
+		  Position		  [40, 60, 60, 80]
+		  Port			  "2"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "H_base_0"
+		  Position		  [40, 100, 60, 120]
+		  Port			  "3"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "H_vp_0"
+		  Position		  [40, 140, 60, 160]
+		  Port			  "4"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "W_base_00"
+		  Position		  [40, 180, 60, 200]
+		  Port			  "5"
+        }
+		Block {
+		  BlockType		  Mux
+		  Name			  "Mux"
+		  Ports			  [5, 1]
+		  Position		  [130, 60, 135, 160]
+		  Inputs		  "[3 4 16 16 6 ]"
+		  DisplayOption		  "bar"
+		}
+		Block {
+		  BlockType		  Demux
+		  Name			  "Demux"
+		  Ports			  [1, 3]
+		  Position		  [290, 80, 295, 140]
+		  Outputs		  "[4 16 6 ]"
+		  DisplayOption		  "bar"
+		  BusSelectionMode    off
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "S-Function"
+		  Ports			  [1, 1]
+		  Position		  [170, 90, 250, 130]
+		  FunctionName		  "motion_stack"
+		  Parameters	      ""
+		}
+        Block {
+              BlockType		  Outport
+		  Name			  "Base_torque"
+		  Position		  [380, 60, 400, 80]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_0_output"
+		  Position		  [380, 100, 400, 120]
+		  Port			  "2"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "T_base_00"
+		  Position		  [380, 140, 400, 160]
+		  Port			  "3"
+        }
+		Line {
+		  SrcBlock		  "active_joint"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Base_wheels_angle"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  2
+		}
+		Line {
+		  SrcBlock		  "H_base_0"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  3
+		}
+		Line {
+		  SrcBlock		  "H_vp_0"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  4
+		}
+		Line {
+		  SrcBlock		  "W_base_00"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  5
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  1
+		  DstBlock		  "Base_torque"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  2
+		  DstBlock		  "H_base_0_output"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  3
+		  DstBlock		  "T_base_00"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Mux"
+		  SrcPort		  1
+		  DstBlock		  "S-Function"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "S-Function"
+		  SrcPort		  1
+		  DstBlock		  "Demux"
+		  DstPort		  1
+		}
+      }
+    }
+  }
+}
+]]></token>
+	<token name="SIMULINK_SUBMODEL"><![CDATA[Model {
+  Name			  "BasePoseController_"
+  System {
+    Name		    "BasePoseController_"
+    Open		    on
+    Block {
+      BlockType		      SubSystem
+      Name		      "BasePoseController"
+      Ports		      [5, 3]
+      Position		      [136, 144, 264, 256]
+
+      ShowPortLabels	      on
+	  MaskType		      "20-sim 4.1 S-Function block"
+	  MaskDescription	      "This block is generated by the 20-sim ANSI-C Code Generator. 
+
+* look under the mask to get information on the ports
+* press Help for more detailed information
+* the parameters of this block are:
+
+"
+	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
+The block parameters are:<br><blockquote></blockquote>
+Generated at:<br>
+<blockquote><b>date:  </b>August 7, 2012<br>
+<b>time:  </b>4:29:14 pm<br></blockquote>
+From the following 20-sim model:<br>
+<blockquote><b>submodel:  </b>BasePoseController<br>
+<b>model:  </b>motion_stack<br>
+<b>file:  </b>Z:\\home\\youbot\\DEV\\20SimModels\\Devel\\motion_stack.emx<br>
+<b>experiment:  </b>Z:\\home\\youbot\\DEV\\20SimModels\\Devel\\motion_stack.emx<br></blockquote>
+Using the following 20-sim license:<br>
+<blockquote><b>user:  </b>Campuslicentie<br>
+<b>from:  </b>Universiteit Twente<br>
+<b>build: </b>4.1.2.4<br></blockquote>"
+	  MaskPromptString	      ""
+	  MaskVariables	      ";"
+	  MaskDisplay		  "patch ([792 920 920 792 792 ], [346 346 458 458 346 ], [0.835307 0.835307 0.835307] )
+color ('black ')
+plot ([792 920 920 792 792 ], [346 346 458 458 346 ])
+color ('black')
+text (856,402,'BasePoseController','hor','center')"
+	  MaskIconFrame		  off
+	  MaskValueString	      ""
+      System {
+        Name			"BasePoseController"
+        Location		[478, 83, 978, 384]
+        Block {
+              BlockType		  Inport
+		  Name			  "active_joint"
+		  Position		  [40, 20, 60, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "Base_wheels_angle"
+		  Position		  [40, 60, 60, 80]
+		  Port			  "2"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "H_base_0"
+		  Position		  [40, 100, 60, 120]
+		  Port			  "3"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "H_vp_0"
+		  Position		  [40, 140, 60, 160]
+		  Port			  "4"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "W_base_00"
+		  Position		  [40, 180, 60, 200]
+		  Port			  "5"
+        }
+		Block {
+		  BlockType		  Mux
+		  Name			  "Mux"
+		  Ports			  [5, 1]
+		  Position		  [130, 60, 135, 160]
+		  Inputs		  "[3 4 16 16 6 ]"
+		  DisplayOption		  "bar"
+		}
+		Block {
+		  BlockType		  Demux
+		  Name			  "Demux"
+		  Ports			  [1, 3]
+		  Position		  [290, 80, 295, 140]
+		  Outputs		  "[4 16 6 ]"
+		  DisplayOption		  "bar"
+		  BusSelectionMode    off
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "S-Function"
+		  Ports			  [1, 1]
+		  Position		  [170, 90, 250, 130]
+		  FunctionName		  "BasePoseController"
+		  Parameters	      ""
+		}
+        Block {
+              BlockType		  Outport
+		  Name			  "Base_torque"
+		  Position		  [380, 60, 400, 80]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_0_output"
+		  Position		  [380, 100, 400, 120]
+		  Port			  "2"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "T_base_00"
+		  Position		  [380, 140, 400, 160]
+		  Port			  "3"
+        }
+		Line {
+		  SrcBlock		  "active_joint"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Base_wheels_angle"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  2
+		}
+		Line {
+		  SrcBlock		  "H_base_0"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  3
+		}
+		Line {
+		  SrcBlock		  "H_vp_0"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  4
+		}
+		Line {
+		  SrcBlock		  "W_base_00"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  5
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  1
+		  DstBlock		  "Base_torque"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  2
+		  DstBlock		  "H_base_0_output"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  3
+		  DstBlock		  "T_base_00"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Mux"
+		  SrcPort		  1
+		  DstBlock		  "S-Function"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "S-Function"
+		  SrcPort		  1
+		  DstBlock		  "Demux"
+		  DstPort		  1
+		}
+      }
+    }
+  }
+}
+]]></token>
+	<token name="START_TIME"><![CDATA[0.0]]></token>
+	<token name="STATE_NAMES"><![CDATA[	"BasePositionController\\PD_BaseAngle\\uD_previous",
+	"BasePositionController\\PD_BaseAngle\\error_previous",
+	"BasePositionController\\PD_BaseX\\uD_previous",
+	"BasePositionController\\PD_BaseX\\error_previous",
+	"BasePositionController\\PD_BaseY\\uD_previous",
+	"BasePositionController\\PD_BaseY\\error_previous",
+	"DiscreteDifferential\\input_previous[1]",
+	"DiscreteDifferential\\input_previous[2]",
+	"DiscreteDifferential\\input_previous[3]",
+	"DiscreteDifferential\\input_previous[4]"
+]]></token>
+	<token name="STATE_NAMES2"><![CDATA[	"BasePositionController_PD_BaseAngle_uD_previous",
+	"BasePositionController_PD_BaseAngle_error_previous",
+	"BasePositionController_PD_BaseX_uD_previous",
+	"BasePositionController_PD_BaseX_error_previous",
+	"BasePositionController_PD_BaseY_uD_previous",
+	"BasePositionController_PD_BaseY_error_previous",
+	"DiscreteDifferential_input_previous[1]",
+	"DiscreteDifferential_input_previous[2]",
+	"DiscreteDifferential_input_previous[3]",
+	"DiscreteDifferential_input_previous[4]"
+]]></token>
+	<token name="STATE_NAMES3"><![CDATA[BasePositionController\PD_BaseAngle\uD_previous
+BasePositionController\PD_BaseAngle\error_previous
+BasePositionController\PD_BaseX\uD_previous
+BasePositionController\PD_BaseX\error_previous
+BasePositionController\PD_BaseY\uD_previous
+BasePositionController\PD_BaseY\error_previous
+DiscreteDifferential\input_previous[1]
+DiscreteDifferential\input_previous[2]
+DiscreteDifferential\input_previous[3]
+DiscreteDifferential\input_previous[4]
+]]></token>
+	<token name="STATE_UNITS"><![CDATA[
+
+
+
+
+
+
+]]></token>
+	<token name="STATIC_EQUATIONS"><![CDATA[]]></token>
+	<token name="TIME_STEP_SIZE"><![CDATA[0.001]]></token>
+	<token name="USER_NAME"><![CDATA[Campuslicentie]]></token>
+	<token name="VARIABLE_NAMES"><![CDATA[	"BasePositionController\\dHToErrors\\H_vp_base[1,1]",
+	"BasePositionController\\dHToErrors\\H_vp_base[1,2]",
+	"BasePositionController\\dHToErrors\\H_vp_base[1,3]",
+	"BasePositionController\\dHToErrors\\H_vp_base[1,4]",
+	"BasePositionController\\dHToErrors\\H_vp_base[2,1]",
+	"BasePositionController\\dHToErrors\\H_vp_base[2,2]",
+	"BasePositionController\\dHToErrors\\H_vp_base[2,3]",
+	"BasePositionController\\dHToErrors\\H_vp_base[2,4]",
+	"BasePositionController\\dHToErrors\\H_vp_base[3,1]",
+	"BasePositionController\\dHToErrors\\H_vp_base[3,2]",
+	"BasePositionController\\dHToErrors\\H_vp_base[3,3]",
+	"BasePositionController\\dHToErrors\\H_vp_base[3,4]",
+	"BasePositionController\\dHToErrors\\H_vp_base[4,1]",
+	"BasePositionController\\dHToErrors\\H_vp_base[4,2]",
+	"BasePositionController\\dHToErrors\\H_vp_base[4,3]",
+	"BasePositionController\\dHToErrors\\H_vp_base[4,4]",
+	"BasePositionController\\dHToErrors\\aldo",
+	"BasePositionController\\dHToErrors\\theta",
+	"BasePositionController\\dHToErrors\\norm_omega[1]",
+	"BasePositionController\\dHToErrors\\norm_omega[2]",
+	"BasePositionController\\dHToErrors\\norm_omega[3]",
+	"BasePositionController\\dHToErrors\\omega[1]",
+	"BasePositionController\\dHToErrors\\omega[2]",
+	"BasePositionController\\dHToErrors\\omega[3]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[1]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[2]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[3]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[4]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[5]",
+	"BasePositionController\\ErrorsToW\\W_base_base0[6]",
+	"",
+	"",
+	"",
+	"BasePositionController\\Submodel3\\cmd[1]",
+	"BasePositionController\\Submodel3\\cmd[2]",
+	"BasePositionController\\Submodel3\\cmd[3]",
+	"BasePositionController\\Submodel3\\cmd[4]",
+	"BasePositionController\\Submodel3\\cmd[5]",
+	"BasePositionController\\Submodel3\\cmd[6]",
+	"BasePositionController\\Submodel3\\aldo[1]",
+	"BasePositionController\\Submodel3\\aldo[2]",
+	"BasePositionController\\Submodel3\\aldo[3]",
+	"BasePositionController\\Submodel3\\aldo[4]",
+	"BasePositionController\\Submodel3\\aldo[5]",
+	"BasePositionController\\Submodel3\\aldo[6]",
+	"BasePositionController\\H_vp_0[1,1]",
+	"BasePositionController\\H_vp_0[1,2]",
+	"BasePositionController\\H_vp_0[1,3]",
+	"BasePositionController\\H_vp_0[1,4]",
+	"BasePositionController\\H_vp_0[2,1]",
+	"BasePositionController\\H_vp_0[2,2]",
+	"BasePositionController\\H_vp_0[2,3]",
+	"BasePositionController\\H_vp_0[2,4]",
+	"BasePositionController\\H_vp_0[3,1]",
+	"BasePositionController\\H_vp_0[3,2]",
+	"BasePositionController\\H_vp_0[3,3]",
+	"BasePositionController\\H_vp_0[3,4]",
+	"BasePositionController\\H_vp_0[4,1]",
+	"BasePositionController\\H_vp_0[4,2]",
+	"BasePositionController\\H_vp_0[4,3]",
+	"BasePositionController\\H_vp_0[4,4]",
+	"BasePositionController\\active_joint[1]",
+	"BasePositionController\\active_joint[2]",
+	"BasePositionController\\active_joint[3]",
+	"BaseTF\\Twist[1]",
+	"BaseTF\\Twist[2]",
+	"BaseTF\\Twist[3]",
+	"BaseTF\\Twist[4]",
+	"BaseTF\\Twist[5]",
+	"BaseTF\\Twist[6]",
+	"BaseTF\\Virtual_joint_states[1]",
+	"BaseTF\\Virtual_joint_states[2]",
+	"BaseTF\\Virtual_joint_states[3]",
+	"BaseTF\\Base_torque[1]",
+	"BaseTF\\Base_torque[2]",
+	"BaseTF\\Base_torque[3]",
+	"BaseTF\\Base_torque[4]",
+	"BaseTF\\A[1,1]",
+	"BaseTF\\A[1,2]",
+	"BaseTF\\A[1,3]",
+	"BaseTF\\A[1,4]",
+	"BaseTF\\A[2,1]",
+	"BaseTF\\A[2,2]",
+	"BaseTF\\A[2,3]",
+	"BaseTF\\A[2,4]",
+	"BaseTF\\A[3,1]",
+	"BaseTF\\A[3,2]",
+	"BaseTF\\A[3,3]",
+	"BaseTF\\A[3,4]",
+	"BaseTF\\PseudoInverseA[1,1]",
+	"BaseTF\\PseudoInverseA[1,2]",
+	"BaseTF\\PseudoInverseA[1,3]",
+	"BaseTF\\PseudoInverseA[2,1]",
+	"BaseTF\\PseudoInverseA[2,2]",
+	"BaseTF\\PseudoInverseA[2,3]",
+	"BaseTF\\PseudoInverseA[3,1]",
+	"BaseTF\\PseudoInverseA[3,2]",
+	"BaseTF\\PseudoInverseA[3,3]",
+	"BaseTF\\PseudoInverseA[4,1]",
+	"BaseTF\\PseudoInverseA[4,2]",
+	"BaseTF\\PseudoInverseA[4,3]",
+	"BaseTF\\virtual_velocities[1]",
+	"BaseTF\\virtual_velocities[2]",
+	"BaseTF\\virtual_velocities[3]",
+	"DiscreteDifferential\\output[1]",
+	"DiscreteDifferential\\output[2]",
+	"DiscreteDifferential\\output[3]",
+	"DiscreteDifferential\\output[4]",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"FilterBaseJointVelocities1\\input[1]",
+	"FilterBaseJointVelocities1\\input[2]",
+	"FilterBaseJointVelocities1\\input[3]",
+	"FilterBaseJointVelocities1\\input[4]",
+	"FilterBaseJointVelocities1\\InputMemory[1,1]",
+	"FilterBaseJointVelocities1\\InputMemory[1,2]",
+	"FilterBaseJointVelocities1\\InputMemory[1,3]",
+	"FilterBaseJointVelocities1\\InputMemory[1,4]",
+	"FilterBaseJointVelocities1\\InputMemory[2,1]",
+	"FilterBaseJointVelocities1\\InputMemory[2,2]",
+	"FilterBaseJointVelocities1\\InputMemory[2,3]",
+	"FilterBaseJointVelocities1\\InputMemory[2,4]",
+	"FilterBaseJointVelocities1\\InputMemory[3,1]",
+	"FilterBaseJointVelocities1\\InputMemory[3,2]",
+	"FilterBaseJointVelocities1\\InputMemory[3,3]",
+	"FilterBaseJointVelocities1\\InputMemory[3,4]",
+	"FilterBaseJointVelocities1\\InputUpdate[1,1]",
+	"FilterBaseJointVelocities1\\InputUpdate[1,2]",
+	"FilterBaseJointVelocities1\\InputUpdate[1,3]",
+	"FilterBaseJointVelocities1\\InputUpdate[2,1]",
+	"FilterBaseJointVelocities1\\InputUpdate[2,2]",
+	"FilterBaseJointVelocities1\\InputUpdate[2,3]",
+	"FilterBaseJointVelocities1\\InputUpdate[3,1]",
+	"FilterBaseJointVelocities1\\InputUpdate[3,2]",
+	"FilterBaseJointVelocities1\\InputUpdate[3,3]",
+	"FilterBaseJointVelocities1\\State[1,1]",
+	"FilterBaseJointVelocities1\\State[1,2]",
+	"FilterBaseJointVelocities1\\State[1,3]",
+	"FilterBaseJointVelocities1\\State[1,4]",
+	"FilterBaseJointVelocities1\\State[2,1]",
+	"FilterBaseJointVelocities1\\State[2,2]",
+	"FilterBaseJointVelocities1\\State[2,3]",
+	"FilterBaseJointVelocities1\\State[2,4]",
+	"FilterBaseJointVelocities1\\State[3,1]",
+	"FilterBaseJointVelocities1\\State[3,2]",
+	"FilterBaseJointVelocities1\\State[3,3]",
+	"FilterBaseJointVelocities1\\State[3,4]",
+	"FilterBaseJointVelocities1\\A[1,1]",
+	"FilterBaseJointVelocities1\\A[1,2]",
+	"FilterBaseJointVelocities1\\A[1,3]",
+	"FilterBaseJointVelocities1\\A[2,1]",
+	"FilterBaseJointVelocities1\\A[2,2]",
+	"FilterBaseJointVelocities1\\A[2,3]",
+	"FilterBaseJointVelocities1\\A[3,1]",
+	"FilterBaseJointVelocities1\\A[3,2]",
+	"FilterBaseJointVelocities1\\A[3,3]",
+	"FilterBaseJointVelocities1\\B[1,1]",
+	"FilterBaseJointVelocities1\\B[1,2]",
+	"FilterBaseJointVelocities1\\B[1,3]",
+	"FilterBaseJointVelocities1\\B[2,1]",
+	"FilterBaseJointVelocities1\\B[2,2]",
+	"FilterBaseJointVelocities1\\B[2,3]",
+	"FilterBaseJointVelocities1\\B[3,1]",
+	"FilterBaseJointVelocities1\\B[3,2]",
+	"FilterBaseJointVelocities1\\B[3,3]",
+	"PlusMinus4\\output[1]",
+	"PlusMinus4\\output[2]",
+	"PlusMinus4\\output[3]",
+	"PlusMinus4\\output[4]",
+	"PlusMinus4\\output[5]",
+	"PlusMinus4\\output[6]",
+	"PlusMinus4\\plus2[1]",
+	"PlusMinus4\\plus2[2]",
+	"PlusMinus4\\plus2[3]",
+	"PlusMinus4\\plus2[4]",
+	"PlusMinus4\\plus2[5]",
+	"PlusMinus4\\plus2[6]",
+	"Splitter5\\input[1,1]",
+	"Splitter5\\input[1,2]",
+	"Splitter5\\input[1,3]",
+	"Splitter5\\input[1,4]",
+	"Splitter5\\input[2,1]",
+	"Splitter5\\input[2,2]",
+	"Splitter5\\input[2,3]",
+	"Splitter5\\input[2,4]",
+	"Splitter5\\input[3,1]",
+	"Splitter5\\input[3,2]",
+	"Splitter5\\input[3,3]",
+	"Splitter5\\input[3,4]",
+	"Splitter5\\input[4,1]",
+	"Splitter5\\input[4,2]",
+	"Splitter5\\input[4,3]",
+	"Splitter5\\input[4,4]",
+	"H_base_0_output[1,1]",
+	"H_base_0_output[1,2]",
+	"H_base_0_output[1,3]",
+	"H_base_0_output[1,4]",
+	"H_base_0_output[2,1]",
+	"H_base_0_output[2,2]",
+	"H_base_0_output[2,3]",
+	"H_base_0_output[2,4]",
+	"H_base_0_output[3,1]",
+	"H_base_0_output[3,2]",
+	"H_base_0_output[3,3]",
+	"H_base_0_output[3,4]",
+	"H_base_0_output[4,1]",
+	"H_base_0_output[4,2]",
+	"H_base_0_output[4,3]",
+	"H_base_0_output[4,4]",
+	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"Base_torque[1]",
+	"Base_torque[2]",
+	"Base_torque[3]",
+	"Base_torque[4]",
+	"Base_wheels_angle[1]",
+	"Base_wheels_angle[2]",
+	"Base_wheels_angle[3]",
+	"Base_wheels_angle[4]",
+	"H_base_0[1,1]",
+	"H_base_0[1,2]",
+	"H_base_0[1,3]",
+	"H_base_0[1,4]",
+	"H_base_0[2,1]",
+	"H_base_0[2,2]",
+	"H_base_0[2,3]",
+	"H_base_0[2,4]",
+	"H_base_0[3,1]",
+	"H_base_0[3,2]",
+	"H_base_0[3,3]",
+	"H_base_0[3,4]",
+	"H_base_0[4,1]",
+	"H_base_0[4,2]",
+	"H_base_0[4,3]",
+	"H_base_0[4,4]",
+	"W_base_00[1]",
+	"W_base_00[2]",
+	"W_base_00[3]",
+	"W_base_00[4]",
+	"W_base_00[5]",
+	"W_base_00[6]",
+	"H_vp_0[1,1]",
+	"H_vp_0[1,2]",
+	"H_vp_0[1,3]",
+	"H_vp_0[1,4]",
+	"H_vp_0[2,1]",
+	"H_vp_0[2,2]",
+	"H_vp_0[2,3]",
+	"H_vp_0[2,4]",
+	"H_vp_0[3,1]",
+	"H_vp_0[3,2]",
+	"H_vp_0[3,3]",
+	"H_vp_0[3,4]",
+	"H_vp_0[4,1]",
+	"H_vp_0[4,2]",
+	"H_vp_0[4,3]",
+	"H_vp_0[4,4]",
+	"active_joint[1]",
+	"active_joint[2]",
+	"active_joint[3]"
+]]></token>
+	<token name="VARIABLE_NAMES2"><![CDATA[	"BasePositionController_dHToErrors_H_vp_base[1,1]",
+	"BasePositionController_dHToErrors_H_vp_base[1,2]",
+	"BasePositionController_dHToErrors_H_vp_base[1,3]",
+	"BasePositionController_dHToErrors_H_vp_base[1,4]",
+	"BasePositionController_dHToErrors_H_vp_base[2,1]",
+	"BasePositionController_dHToErrors_H_vp_base[2,2]",
+	"BasePositionController_dHToErrors_H_vp_base[2,3]",
+	"BasePositionController_dHToErrors_H_vp_base[2,4]",
+	"BasePositionController_dHToErrors_H_vp_base[3,1]",
+	"BasePositionController_dHToErrors_H_vp_base[3,2]",
+	"BasePositionController_dHToErrors_H_vp_base[3,3]",
+	"BasePositionController_dHToErrors_H_vp_base[3,4]",
+	"BasePositionController_dHToErrors_H_vp_base[4,1]",
+	"BasePositionController_dHToErrors_H_vp_base[4,2]",
+	"BasePositionController_dHToErrors_H_vp_base[4,3]",
+	"BasePositionController_dHToErrors_H_vp_base[4,4]",
+	"BasePositionController_dHToErrors_aldo",
+	"BasePositionController_dHToErrors_theta",
+	"BasePositionController_dHToErrors_norm_omega[1]",
+	"BasePositionController_dHToErrors_norm_omega[2]",
+	"BasePositionController_dHToErrors_norm_omega[3]",
+	"BasePositionController_dHToErrors_omega[1]",
+	"BasePositionController_dHToErrors_omega[2]",
+	"BasePositionController_dHToErrors_omega[3]",
+	"BasePositionController_ErrorsToW_W_base_base0[1]",
+	"BasePositionController_ErrorsToW_W_base_base0[2]",
+	"BasePositionController_ErrorsToW_W_base_base0[3]",
+	"BasePositionController_ErrorsToW_W_base_base0[4]",
+	"BasePositionController_ErrorsToW_W_base_base0[5]",
+	"BasePositionController_ErrorsToW_W_base_base0[6]",
+	"",
+	"",
+	"",
+	"BasePositionController_Submodel3_cmd[1]",
+	"BasePositionController_Submodel3_cmd[2]",
+	"BasePositionController_Submodel3_cmd[3]",
+	"BasePositionController_Submodel3_cmd[4]",
+	"BasePositionController_Submodel3_cmd[5]",
+	"BasePositionController_Submodel3_cmd[6]",
+	"BasePositionController_Submodel3_aldo[1]",
+	"BasePositionController_Submodel3_aldo[2]",
+	"BasePositionController_Submodel3_aldo[3]",
+	"BasePositionController_Submodel3_aldo[4]",
+	"BasePositionController_Submodel3_aldo[5]",
+	"BasePositionController_Submodel3_aldo[6]",
+	"BasePositionController_H_vp_0[1,1]",
+	"BasePositionController_H_vp_0[1,2]",
+	"BasePositionController_H_vp_0[1,3]",
+	"BasePositionController_H_vp_0[1,4]",
+	"BasePositionController_H_vp_0[2,1]",
+	"BasePositionController_H_vp_0[2,2]",
+	"BasePositionController_H_vp_0[2,3]",
+	"BasePositionController_H_vp_0[2,4]",
+	"BasePositionController_H_vp_0[3,1]",
+	"BasePositionController_H_vp_0[3,2]",
+	"BasePositionController_H_vp_0[3,3]",
+	"BasePositionController_H_vp_0[3,4]",
+	"BasePositionController_H_vp_0[4,1]",
+	"BasePositionController_H_vp_0[4,2]",
+	"BasePositionController_H_vp_0[4,3]",
+	"BasePositionController_H_vp_0[4,4]",
+	"BasePositionController_active_joint[1]",
+	"BasePositionController_active_joint[2]",
+	"BasePositionController_active_joint[3]",
+	"BaseTF_Twist[1]",
+	"BaseTF_Twist[2]",
+	"BaseTF_Twist[3]",
+	"BaseTF_Twist[4]",
+	"BaseTF_Twist[5]",
+	"BaseTF_Twist[6]",
+	"BaseTF_Virtual_joint_states[1]",
+	"BaseTF_Virtual_joint_states[2]",
+	"BaseTF_Virtual_joint_states[3]",
+	"BaseTF_Base_torque[1]",
+	"BaseTF_Base_torque[2]",
+	"BaseTF_Base_torque[3]",
+	"BaseTF_Base_torque[4]",
+	"BaseTF_A[1,1]",
+	"BaseTF_A[1,2]",
+	"BaseTF_A[1,3]",
+	"BaseTF_A[1,4]",
+	"BaseTF_A[2,1]",
+	"BaseTF_A[2,2]",
+	"BaseTF_A[2,3]",
+	"BaseTF_A[2,4]",
+	"BaseTF_A[3,1]",
+	"BaseTF_A[3,2]",
+	"BaseTF_A[3,3]",
+	"BaseTF_A[3,4]",
+	"BaseTF_PseudoInverseA[1,1]",
+	"BaseTF_PseudoInverseA[1,2]",
+	"BaseTF_PseudoInverseA[1,3]",
+	"BaseTF_PseudoInverseA[2,1]",
+	"BaseTF_PseudoInverseA[2,2]",
+	"BaseTF_PseudoInverseA[2,3]",
+	"BaseTF_PseudoInverseA[3,1]",
+	"BaseTF_PseudoInverseA[3,2]",
+	"BaseTF_PseudoInverseA[3,3]",
+	"BaseTF_PseudoInverseA[4,1]",
+	"BaseTF_PseudoInverseA[4,2]",
+	"BaseTF_PseudoInverseA[4,3]",
+	"BaseTF_virtual_velocities[1]",
+	"BaseTF_virtual_velocities[2]",
+	"BaseTF_virtual_velocities[3]",
+	"DiscreteDifferential_output[1]",
+	"DiscreteDifferential_output[2]",
+	"DiscreteDifferential_output[3]",
+	"DiscreteDifferential_output[4]",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"FilterBaseJointVelocities1_input[1]",
+	"FilterBaseJointVelocities1_input[2]",
+	"FilterBaseJointVelocities1_input[3]",
+	"FilterBaseJointVelocities1_input[4]",
+	"FilterBaseJointVelocities1_InputMemory[1,1]",
+	"FilterBaseJointVelocities1_InputMemory[1,2]",
+	"FilterBaseJointVelocities1_InputMemory[1,3]",
+	"FilterBaseJointVelocities1_InputMemory[1,4]",
+	"FilterBaseJointVelocities1_InputMemory[2,1]",
+	"FilterBaseJointVelocities1_InputMemory[2,2]",
+	"FilterBaseJointVelocities1_InputMemory[2,3]",
+	"FilterBaseJointVelocities1_InputMemory[2,4]",
+	"FilterBaseJointVelocities1_InputMemory[3,1]",
+	"FilterBaseJointVelocities1_InputMemory[3,2]",
+	"FilterBaseJointVelocities1_InputMemory[3,3]",
+	"FilterBaseJointVelocities1_InputMemory[3,4]",
+	"FilterBaseJointVelocities1_InputUpdate[1,1]",
+	"FilterBaseJointVelocities1_InputUpdate[1,2]",
+	"FilterBaseJointVelocities1_InputUpdate[1,3]",
+	"FilterBaseJointVelocities1_InputUpdate[2,1]",
+	"FilterBaseJointVelocities1_InputUpdate[2,2]",
+	"FilterBaseJointVelocities1_InputUpdate[2,3]",
+	"FilterBaseJointVelocities1_InputUpdate[3,1]",
+	"FilterBaseJointVelocities1_InputUpdate[3,2]",
+	"FilterBaseJointVelocities1_InputUpdate[3,3]",
+	"FilterBaseJointVelocities1_State[1,1]",
+	"FilterBaseJointVelocities1_State[1,2]",
+	"FilterBaseJointVelocities1_State[1,3]",
+	"FilterBaseJointVelocities1_State[1,4]",
+	"FilterBaseJointVelocities1_State[2,1]",
+	"FilterBaseJointVelocities1_State[2,2]",
+	"FilterBaseJointVelocities1_State[2,3]",
+	"FilterBaseJointVelocities1_State[2,4]",
+	"FilterBaseJointVelocities1_State[3,1]",
+	"FilterBaseJointVelocities1_State[3,2]",
+	"FilterBaseJointVelocities1_State[3,3]",
+	"FilterBaseJointVelocities1_State[3,4]",
+	"FilterBaseJointVelocities1_A[1,1]",
+	"FilterBaseJointVelocities1_A[1,2]",
+	"FilterBaseJointVelocities1_A[1,3]",
+	"FilterBaseJointVelocities1_A[2,1]",
+	"FilterBaseJointVelocities1_A[2,2]",
+	"FilterBaseJointVelocities1_A[2,3]",
+	"FilterBaseJointVelocities1_A[3,1]",
+	"FilterBaseJointVelocities1_A[3,2]",
+	"FilterBaseJointVelocities1_A[3,3]",
+	"FilterBaseJointVelocities1_B[1,1]",
+	"FilterBaseJointVelocities1_B[1,2]",
+	"FilterBaseJointVelocities1_B[1,3]",
+	"FilterBaseJointVelocities1_B[2,1]",
+	"FilterBaseJointVelocities1_B[2,2]",
+	"FilterBaseJointVelocities1_B[2,3]",
+	"FilterBaseJointVelocities1_B[3,1]",
+	"FilterBaseJointVelocities1_B[3,2]",
+	"FilterBaseJointVelocities1_B[3,3]",
+	"PlusMinus4_output[1]",
+	"PlusMinus4_output[2]",
+	"PlusMinus4_output[3]",
+	"PlusMinus4_output[4]",
+	"PlusMinus4_output[5]",
+	"PlusMinus4_output[6]",
+	"PlusMinus4_plus2[1]",
+	"PlusMinus4_plus2[2]",
+	"PlusMinus4_plus2[3]",
+	"PlusMinus4_plus2[4]",
+	"PlusMinus4_plus2[5]",
+	"PlusMinus4_plus2[6]",
+	"Splitter5_input[1,1]",
+	"Splitter5_input[1,2]",
+	"Splitter5_input[1,3]",
+	"Splitter5_input[1,4]",
+	"Splitter5_input[2,1]",
+	"Splitter5_input[2,2]",
+	"Splitter5_input[2,3]",
+	"Splitter5_input[2,4]",
+	"Splitter5_input[3,1]",
+	"Splitter5_input[3,2]",
+	"Splitter5_input[3,3]",
+	"Splitter5_input[3,4]",
+	"Splitter5_input[4,1]",
+	"Splitter5_input[4,2]",
+	"Splitter5_input[4,3]",
+	"Splitter5_input[4,4]",
+	"H_base_0_output[1,1]",
+	"H_base_0_output[1,2]",
+	"H_base_0_output[1,3]",
+	"H_base_0_output[1,4]",
+	"H_base_0_output[2,1]",
+	"H_base_0_output[2,2]",
+	"H_base_0_output[2,3]",
+	"H_base_0_output[2,4]",
+	"H_base_0_output[3,1]",
+	"H_base_0_output[3,2]",
+	"H_base_0_output[3,3]",
+	"H_base_0_output[3,4]",
+	"H_base_0_output[4,1]",
+	"H_base_0_output[4,2]",
+	"H_base_0_output[4,3]",
+	"H_base_0_output[4,4]",
+	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"Base_torque[1]",
+	"Base_torque[2]",
+	"Base_torque[3]",
+	"Base_torque[4]",
+	"Base_wheels_angle[1]",
+	"Base_wheels_angle[2]",
+	"Base_wheels_angle[3]",
+	"Base_wheels_angle[4]",
+	"H_base_0[1,1]",
+	"H_base_0[1,2]",
+	"H_base_0[1,3]",
+	"H_base_0[1,4]",
+	"H_base_0[2,1]",
+	"H_base_0[2,2]",
+	"H_base_0[2,3]",
+	"H_base_0[2,4]",
+	"H_base_0[3,1]",
+	"H_base_0[3,2]",
+	"H_base_0[3,3]",
+	"H_base_0[3,4]",
+	"H_base_0[4,1]",
+	"H_base_0[4,2]",
+	"H_base_0[4,3]",
+	"H_base_0[4,4]",
+	"W_base_00[1]",
+	"W_base_00[2]",
+	"W_base_00[3]",
+	"W_base_00[4]",
+	"W_base_00[5]",
+	"W_base_00[6]",
+	"H_vp_0[1,1]",
+	"H_vp_0[1,2]",
+	"H_vp_0[1,3]",
+	"H_vp_0[1,4]",
+	"H_vp_0[2,1]",
+	"H_vp_0[2,2]",
+	"H_vp_0[2,3]",
+	"H_vp_0[2,4]",
+	"H_vp_0[3,1]",
+	"H_vp_0[3,2]",
+	"H_vp_0[3,3]",
+	"H_vp_0[3,4]",
+	"H_vp_0[4,1]",
+	"H_vp_0[4,2]",
+	"H_vp_0[4,3]",
+	"H_vp_0[4,4]",
+	"active_joint[1]",
+	"active_joint[2]",
+	"active_joint[3]"
+]]></token>
+	<token name="VARIABLE_NAMES3"><![CDATA[BasePositionController\dHToErrors\H_vp_base[1,1]
+BasePositionController\dHToErrors\H_vp_base[1,2]
+BasePositionController\dHToErrors\H_vp_base[1,3]
+BasePositionController\dHToErrors\H_vp_base[1,4]
+BasePositionController\dHToErrors\H_vp_base[2,1]
+BasePositionController\dHToErrors\H_vp_base[2,2]
+BasePositionController\dHToErrors\H_vp_base[2,3]
+BasePositionController\dHToErrors\H_vp_base[2,4]
+BasePositionController\dHToErrors\H_vp_base[3,1]
+BasePositionController\dHToErrors\H_vp_base[3,2]
+BasePositionController\dHToErrors\H_vp_base[3,3]
+BasePositionController\dHToErrors\H_vp_base[3,4]
+BasePositionController\dHToErrors\H_vp_base[4,1]
+BasePositionController\dHToErrors\H_vp_base[4,2]
+BasePositionController\dHToErrors\H_vp_base[4,3]
+BasePositionController\dHToErrors\H_vp_base[4,4]
+BasePositionController\dHToErrors\aldo
+BasePositionController\dHToErrors\theta
+BasePositionController\dHToErrors\norm_omega[1]
+BasePositionController\dHToErrors\norm_omega[2]
+BasePositionController\dHToErrors\norm_omega[3]
+BasePositionController\dHToErrors\omega[1]
+BasePositionController\dHToErrors\omega[2]
+BasePositionController\dHToErrors\omega[3]
+BasePositionController\ErrorsToW\W_base_base0[1]
+BasePositionController\ErrorsToW\W_base_base0[2]
+BasePositionController\ErrorsToW\W_base_base0[3]
+BasePositionController\ErrorsToW\W_base_base0[4]
+BasePositionController\ErrorsToW\W_base_base0[5]
+BasePositionController\ErrorsToW\W_base_base0[6]
+
+
+
+BasePositionController\Submodel3\cmd[1]
+BasePositionController\Submodel3\cmd[2]
+BasePositionController\Submodel3\cmd[3]
+BasePositionController\Submodel3\cmd[4]
+BasePositionController\Submodel3\cmd[5]
+BasePositionController\Submodel3\cmd[6]
+BasePositionController\Submodel3\aldo[1]
+BasePositionController\Submodel3\aldo[2]
+BasePositionController\Submodel3\aldo[3]
+BasePositionController\Submodel3\aldo[4]
+BasePositionController\Submodel3\aldo[5]
+BasePositionController\Submodel3\aldo[6]
+BasePositionController\H_vp_0[1,1]
+BasePositionController\H_vp_0[1,2]
+BasePositionController\H_vp_0[1,3]
+BasePositionController\H_vp_0[1,4]
+BasePositionController\H_vp_0[2,1]
+BasePositionController\H_vp_0[2,2]
+BasePositionController\H_vp_0[2,3]
+BasePositionController\H_vp_0[2,4]
+BasePositionController\H_vp_0[3,1]
+BasePositionController\H_vp_0[3,2]
+BasePositionController\H_vp_0[3,3]
+BasePositionController\H_vp_0[3,4]
+BasePositionController\H_vp_0[4,1]
+BasePositionController\H_vp_0[4,2]
+BasePositionController\H_vp_0[4,3]
+BasePositionController\H_vp_0[4,4]
+BasePositionController\active_joint[1]
+BasePositionController\active_joint[2]
+BasePositionController\active_joint[3]
+BaseTF\Twist[1]
+BaseTF\Twist[2]
+BaseTF\Twist[3]
+BaseTF\Twist[4]
+BaseTF\Twist[5]
+BaseTF\Twist[6]
+BaseTF\Virtual_joint_states[1]
+BaseTF\Virtual_joint_states[2]
+BaseTF\Virtual_joint_states[3]
+BaseTF\Base_torque[1]
+BaseTF\Base_torque[2]
+BaseTF\Base_torque[3]
+BaseTF\Base_torque[4]
+BaseTF\A[1,1]
+BaseTF\A[1,2]
+BaseTF\A[1,3]
+BaseTF\A[1,4]
+BaseTF\A[2,1]
+BaseTF\A[2,2]
+BaseTF\A[2,3]
+BaseTF\A[2,4]
+BaseTF\A[3,1]
+BaseTF\A[3,2]
+BaseTF\A[3,3]
+BaseTF\A[3,4]
+BaseTF\PseudoInverseA[1,1]
+BaseTF\PseudoInverseA[1,2]
+BaseTF\PseudoInverseA[1,3]
+BaseTF\PseudoInverseA[2,1]
+BaseTF\PseudoInverseA[2,2]
+BaseTF\PseudoInverseA[2,3]
+BaseTF\PseudoInverseA[3,1]
+BaseTF\PseudoInverseA[3,2]
+BaseTF\PseudoInverseA[3,3]
+BaseTF\PseudoInverseA[4,1]
+BaseTF\PseudoInverseA[4,2]
+BaseTF\PseudoInverseA[4,3]
+BaseTF\virtual_velocities[1]
+BaseTF\virtual_velocities[2]
+BaseTF\virtual_velocities[3]
+DiscreteDifferential\output[1]
+DiscreteDifferential\output[2]
+DiscreteDifferential\output[3]
+DiscreteDifferential\output[4]
+
+
+
+
+
+FilterBaseJointVelocities1\input[1]
+FilterBaseJointVelocities1\input[2]
+FilterBaseJointVelocities1\input[3]
+FilterBaseJointVelocities1\input[4]
+FilterBaseJointVelocities1\InputMemory[1,1]
+FilterBaseJointVelocities1\InputMemory[1,2]
+FilterBaseJointVelocities1\InputMemory[1,3]
+FilterBaseJointVelocities1\InputMemory[1,4]
+FilterBaseJointVelocities1\InputMemory[2,1]
+FilterBaseJointVelocities1\InputMemory[2,2]
+FilterBaseJointVelocities1\InputMemory[2,3]
+FilterBaseJointVelocities1\InputMemory[2,4]
+FilterBaseJointVelocities1\InputMemory[3,1]
+FilterBaseJointVelocities1\InputMemory[3,2]
+FilterBaseJointVelocities1\InputMemory[3,3]
+FilterBaseJointVelocities1\InputMemory[3,4]
+FilterBaseJointVelocities1\InputUpdate[1,1]
+FilterBaseJointVelocities1\InputUpdate[1,2]
+FilterBaseJointVelocities1\InputUpdate[1,3]
+FilterBaseJointVelocities1\InputUpdate[2,1]
+FilterBaseJointVelocities1\InputUpdate[2,2]
+FilterBaseJointVelocities1\InputUpdate[2,3]
+FilterBaseJointVelocities1\InputUpdate[3,1]
+FilterBaseJointVelocities1\InputUpdate[3,2]
+FilterBaseJointVelocities1\InputUpdate[3,3]
+FilterBaseJointVelocities1\State[1,1]
+FilterBaseJointVelocities1\State[1,2]
+FilterBaseJointVelocities1\State[1,3]
+FilterBaseJointVelocities1\State[1,4]
+FilterBaseJointVelocities1\State[2,1]
+FilterBaseJointVelocities1\State[2,2]
+FilterBaseJointVelocities1\State[2,3]
+FilterBaseJointVelocities1\State[2,4]
+FilterBaseJointVelocities1\State[3,1]
+FilterBaseJointVelocities1\State[3,2]
+FilterBaseJointVelocities1\State[3,3]
+FilterBaseJointVelocities1\State[3,4]
+FilterBaseJointVelocities1\A[1,1]
+FilterBaseJointVelocities1\A[1,2]
+FilterBaseJointVelocities1\A[1,3]
+FilterBaseJointVelocities1\A[2,1]
+FilterBaseJointVelocities1\A[2,2]
+FilterBaseJointVelocities1\A[2,3]
+FilterBaseJointVelocities1\A[3,1]
+FilterBaseJointVelocities1\A[3,2]
+FilterBaseJointVelocities1\A[3,3]
+FilterBaseJointVelocities1\B[1,1]
+FilterBaseJointVelocities1\B[1,2]
+FilterBaseJointVelocities1\B[1,3]
+FilterBaseJointVelocities1\B[2,1]
+FilterBaseJointVelocities1\B[2,2]
+FilterBaseJointVelocities1\B[2,3]
+FilterBaseJointVelocities1\B[3,1]
+FilterBaseJointVelocities1\B[3,2]
+FilterBaseJointVelocities1\B[3,3]
+PlusMinus4\output[1]
+PlusMinus4\output[2]
+PlusMinus4\output[3]
+PlusMinus4\output[4]
+PlusMinus4\output[5]
+PlusMinus4\output[6]
+PlusMinus4\plus2[1]
+PlusMinus4\plus2[2]
+PlusMinus4\plus2[3]
+PlusMinus4\plus2[4]
+PlusMinus4\plus2[5]
+PlusMinus4\plus2[6]
+Splitter5\input[1,1]
+Splitter5\input[1,2]
+Splitter5\input[1,3]
+Splitter5\input[1,4]
+Splitter5\input[2,1]
+Splitter5\input[2,2]
+Splitter5\input[2,3]
+Splitter5\input[2,4]
+Splitter5\input[3,1]
+Splitter5\input[3,2]
+Splitter5\input[3,3]
+Splitter5\input[3,4]
+Splitter5\input[4,1]
+Splitter5\input[4,2]
+Splitter5\input[4,3]
+Splitter5\input[4,4]
+H_base_0_output[1,1]
+H_base_0_output[1,2]
+H_base_0_output[1,3]
+H_base_0_output[1,4]
+H_base_0_output[2,1]
+H_base_0_output[2,2]
+H_base_0_output[2,3]
+H_base_0_output[2,4]
+H_base_0_output[3,1]
+H_base_0_output[3,2]
+H_base_0_output[3,3]
+H_base_0_output[3,4]
+H_base_0_output[4,1]
+H_base_0_output[4,2]
+H_base_0_output[4,3]
+H_base_0_output[4,4]
+T_base_00[1]
+T_base_00[2]
+T_base_00[3]
+T_base_00[4]
+T_base_00[5]
+T_base_00[6]
+Base_torque[1]
+Base_torque[2]
+Base_torque[3]
+Base_torque[4]
+Base_wheels_angle[1]
+Base_wheels_angle[2]
+Base_wheels_angle[3]
+Base_wheels_angle[4]
+H_base_0[1,1]
+H_base_0[1,2]
+H_base_0[1,3]
+H_base_0[1,4]
+H_base_0[2,1]
+H_base_0[2,2]
+H_base_0[2,3]
+H_base_0[2,4]
+H_base_0[3,1]
+H_base_0[3,2]
+H_base_0[3,3]
+H_base_0[3,4]
+H_base_0[4,1]
+H_base_0[4,2]
+H_base_0[4,3]
+H_base_0[4,4]
+W_base_00[1]
+W_base_00[2]
+W_base_00[3]
+W_base_00[4]
+W_base_00[5]
+W_base_00[6]
+H_vp_0[1,1]
+H_vp_0[1,2]
+H_vp_0[1,3]
+H_vp_0[1,4]
+H_vp_0[2,1]
+H_vp_0[2,2]
+H_vp_0[2,3]
+H_vp_0[2,4]
+H_vp_0[3,1]
+H_vp_0[3,2]
+H_vp_0[3,3]
+H_vp_0[3,4]
+H_vp_0[4,1]
+H_vp_0[4,2]
+H_vp_0[4,3]
+H_vp_0[4,4]
+active_joint[1]
+active_joint[2]
+active_joint[3]
+]]></token>
+	<token name="VARIABLE_TO_OUTPUT_EQUATIONS"><![CDATA[	y[0] = 	V[218];		/* Base_torque */
+	y[1] = 	V[219];
+	y[2] = 	V[220];
+	y[3] = 	V[221];
+	y[4] = 	V[196];		/* H_base_0_output */
+	y[5] = 	V[197];
+	y[6] = 	V[198];
+	y[7] = 	V[199];
+	y[8] = 	V[200];
+	y[9] = 	V[201];
+	y[10] = 	V[202];
+	y[11] = 	V[203];
+	y[12] = 	V[204];
+	y[13] = 	V[205];
+	y[14] = 	V[206];
+	y[15] = 	V[207];
+	y[16] = 	V[208];
+	y[17] = 	V[209];
+	y[18] = 	V[210];
+	y[19] = 	V[211];
+	y[20] = 	V[212];		/* T_base_00 */
+	y[21] = 	V[213];
+	y[22] = 	V[214];
+	y[23] = 	V[215];
+	y[24] = 	V[216];
+	y[25] = 	V[217];
+]]></token>
+	<token name="VARIABLE_UNITS"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></token>
+	<token name="WORK_ARRAY_SIZE"><![CDATA[42]]></token>
+	<token name="XX_ALG_IN_ARRAY_NAME"><![CDATA[A]]></token>
+	<token name="XX_ALG_OUT_ARRAY_NAME"><![CDATA[a]]></token>
+	<token name="XX_DEP_RATE_ARRAY_NAME"><![CDATA[r]]></token>
+	<token name="XX_DEP_STATE_ARRAY_NAME"><![CDATA[S]]></token>
+	<token name="XX_EXT_IN_ARRAY_NAME"><![CDATA[e]]></token>
+	<token name="XX_EXT_OUT_ARRAY_NAME"><![CDATA[E]]></token>
+	<token name="XX_FAVORITE_PARS_ARRAY_NAME"><![CDATA[F]]></token>
+	<token name="XX_FAVORITE_VARS_ARRAY_NAME"><![CDATA[f]]></token>
+	<token name="XX_INITIAL_VALUE_ARRAY_NAME"><![CDATA[I]]></token>
+	<token name="VARPREFIX"><![CDATA[]]></token>
+	<token name="FUNCTIONPREFIX"><![CDATA[XX]]></token>
+	<token name="XX_TIME"><![CDATA[time]]></token>
+	<token name="XX_INITIALIZE"><![CDATA[initialize]]></token>
+	<token name="XX_VARIABLE_ARRAY_NAME"><![CDATA[V]]></token>
+	<token name="XX_PARAMETER_ARRAY_NAME"><![CDATA[P]]></token>
+	<token name="XX_CONSTANT_ARRAY_NAME"><![CDATA[C]]></token>
+	<token name="XX_STATE_ARRAY_NAME"><![CDATA[s]]></token>
+	<token name="XX_RATE_ARRAY_NAME"><![CDATA[R]]></token>
+	<token name="XX_MATRIX_ARRAY_NAME"><![CDATA[M]]></token>
+	<token name="XX_UNNAMED_ARRAY_NAME"><![CDATA[U]]></token>
+	<token name="EVENT_DELTA"><![CDATA[1e-006]]></token>
+	<token name="FORMAJORVERSION"><![CDATA[4]]></token>
+	<token name="FORMINORVERSION"><![CDATA[0]]></token>
+	<token name="FORMAJORBUILD"><![CDATA[1]]></token>
+	<token name="FORMINORBUILD"><![CDATA[5]]></token>
+	<token name="MAJORVERSION"><![CDATA[4]]></token>
+	<token name="MINORVERSION"><![CDATA[1]]></token>
+	<token name="MAJORBUILD"><![CDATA[2]]></token>
+	<token name="MINORBUILD"><![CDATA[4]]></token>
+	<token name="TEMPLATENAME"><![CDATA[Orocos]]></token>
+	<token name="TEMPLATEDIR"><![CDATA[C:\Program Files\20-sim 4.1\Ccode\orocos\.]]></token>
+	<token name="TEMPLATE_DIR"><![CDATA[C:\Program Files\20-sim 4.1\Ccode\orocos\.]]></token>
+	<token name="TOKENNAMES"><![CDATA[MODEL_NAME
+20SIM_DIR
+SUBMODEL_NAME
+ALGLOOP_NAMES
+ALGLOOP_NAMES2
+ALGLOOP_NAMES3
+ALGLOOP_UNITS
+ALIAS_EQUATIONS
+ALIAS_MATRIX_NAMES
+ALIAS_MATRIX_NAMES2
+ALIAS_MATRIX_NAMES3
+ALIAS_MATRIX_UNITS
+ALIAS_VARIABLE_INDICES
+ALIAS_VARIABLE_NAMES
+ALIAS_VARIABLE_NAMES2
+ALIAS_VARIABLE_NAMES3
+ALIAS_VARIABLE_UNITS
+COMPANY_NAME
+CONSTANT_NAMES
+CONSTANT_NAMES2
+CONSTANT_NAMES3
+CONSTANT_UNITS
+CONSTANT_VALUES
+CONSTRAINT_NAMES
+CONSTRAINT_NAMES2
+CONSTRAINT_NAMES3
+CONSTRAINT_UNITS
+DEPRATE_NAMES
+DEPRATE_NAMES2
+DEPRATE_NAMES3
+DEPRATE_UNITS
+DEPSTATE_NAMES
+DEPSTATE_NAMES2
+DEPSTATE_NAMES3
+DEPSTATE_UNITS
+DIRECT_FEEDTHROUGH
+DYNAMIC_EQUATIONS
+EXPERIMENT_NAME
+EXPORT_NAMES
+EXPORT_NAMES2
+EXPORT_NAMES3
+EXPORT_UNITS
+FAVORITE_PARAMETER_NAMES
+FAVORITE_PARAMETER_NAMES2
+FAVORITE_PARAMETER_NAMES3
+FAVORITE_PARAMETER_UNITS
+FAVORITE_PARS_EQUATIONS
+FAVORITE_VARIABLE_NAMES
+FAVORITE_VARIABLE_NAMES2
+FAVORITE_VARIABLE_NAMES3
+FAVORITE_VARIABLE_UNITS
+FAVORITE_VARS_EQUATIONS
+FILE_NAME
+FINAL_EQUATIONS
+FINISH_TIME
+GENERATION_BUILD
+GENERATION_DATE
+GENERATION_DIR
+GENERATION_TIME
+IMPORT_NAMES
+IMPORT_NAMES2
+IMPORT_NAMES3
+IMPORT_UNITS
+INITIALIZE_ALIAS_MATRICES
+INITIALIZE_CONSTANTS
+INITIALIZE_FAVORITE_PARS
+INITIALIZE_FAVORITE_VARS
+INITIALIZE_INITIAL_VALUES
+INITIALIZE_INPUTS
+INITIALIZE_MATRICES
+INITIALIZE_OUTPUTS
+INITIALIZE_PARAMETERS
+INITIALIZE_STATES
+INITIAL_EQUATIONS
+INITIAL_VALUE_NAMES
+INITIAL_VALUE_NAMES2
+INITIAL_VALUE_NAMES3
+INITIAL_VALUE_UNITS
+INITIAL_VALUE_VALUES
+INPUT_EQUATIONS
+INPUT_NAMES
+INPUT_NAMES2
+INPUT_NAMES3
+INPUT_TO_VARIABLE_EQUATIONS
+INPUT_UNITS
+INTEGRATION_METHOD_NAME
+MATRIX_NAMES
+MATRIX_NAMES2
+MATRIX_NAMES3
+MATRIX_UNITS
+MODEL_CONFIGURATION
+MODEL_DESCRIPTION
+MODEL_FILE
+MODEL_IS_DISCRETE
+NUMBEROF_ABSFUNCTION
+NUMBEROF_ARCCOSFUNCTION
+NUMBEROF_ASSIGNMENT
+NUMBEROF_ATAN2FUNCTION
+NUMBEROF_CODEBLOCK
+NUMBEROF_CODESTATEMENT
+NUMBEROF_DIAGFUNCTION
+NUMBEROF_DISCRETERATE
+NUMBEROF_DISCRETESTATE
+NUMBEROF_DIV
+NUMBEROF_EQUAL
+NUMBEROF_EQUATION
+NUMBEROF_FALSE
+NUMBEROF_GREATER
+NUMBEROF_IFSTATEMENT
+NUMBEROF_INITIALSTATEMENT
+NUMBEROF_INITIALVALUE
+NUMBEROF_INVERSEFUNCTION
+NUMBEROF_INVERSEHOMOGENEOUSFUNCTION
+NUMBEROF_LESS
+NUMBEROF_LITERAL
+NUMBEROF_MATRIX
+NUMBEROF_MATRIXINDEX
+NUMBEROF_MATRIXRANGE
+NUMBEROF_MIN
+NUMBEROF_MUL
+NUMBEROF_PARAMETER
+NUMBEROF_PARENTHESIS
+NUMBEROF_PLUS
+NUMBEROF_PORT
+NUMBEROF_PORTVARIABLE
+NUMBEROF_PREFIXMIN
+NUMBEROF_PREFIXNOT
+NUMBEROF_SAMPLETIME
+NUMBEROF_SIGNFUNCTION
+NUMBEROF_SINFUNCTION
+NUMBEROF_TRACEFUNCTION
+NUMBEROF_TRANSPOSEFUNCTION
+NUMBEROF_TRUE
+NUMBEROF_UNNAMED
+NUMBEROF_VARIABLE
+NUMBER_ALGLOOPS
+NUMBER_ALIAS_MATRICES
+NUMBER_ALIAS_VARIABLES
+NUMBER_CONSTANTS
+NUMBER_CONSTRAINTS
+NUMBER_DEPSTATES
+NUMBER_EXPORTS
+NUMBER_FAVORITE_PARAMETERS
+NUMBER_FAVORITE_VARIABLES
+NUMBER_IMPORTS
+NUMBER_INITIAL_VALUES
+NUMBER_INPUTS
+NUMBER_MATRICES
+NUMBER_OUTPUTS
+NUMBER_PARAMETERS
+NUMBER_STATES
+NUMBER_UNNAMED
+NUMBER_VARIABLES
+OUTPUT2_EQUATIONS
+OUTPUT_EQUATIONS
+OUTPUT_NAMES
+OUTPUT_NAMES2
+OUTPUT_NAMES3
+OUTPUT_UNITS
+PARAMETER_NAMES
+PARAMETER_NAMES2
+PARAMETER_NAMES3
+PARAMETER_UNITS
+PARAMETER_VALUES
+RATE_NAMES
+RATE_NAMES2
+RATE_NAMES3
+RATE_UNITS
+SIMULINK_MODEL
+SIMULINK_SUBMODEL
+START_TIME
+STATE_NAMES
+STATE_NAMES2
+STATE_NAMES3
+STATE_UNITS
+STATIC_EQUATIONS
+TIME_STEP_SIZE
+USER_NAME
+VARIABLE_NAMES
+VARIABLE_NAMES2
+VARIABLE_NAMES3
+VARIABLE_TO_OUTPUT_EQUATIONS
+VARIABLE_UNITS
+WORK_ARRAY_SIZE
+XX_ALG_IN_ARRAY_NAME
+XX_ALG_OUT_ARRAY_NAME
+XX_DEP_RATE_ARRAY_NAME
+XX_DEP_STATE_ARRAY_NAME
+XX_EXT_IN_ARRAY_NAME
+XX_EXT_OUT_ARRAY_NAME
+XX_FAVORITE_PARS_ARRAY_NAME
+XX_FAVORITE_VARS_ARRAY_NAME
+XX_INITIAL_VALUE_ARRAY_NAME
+VARPREFIX
+FUNCTIONPREFIX
+XX_TIME
+XX_INITIALIZE
+XX_VARIABLE_ARRAY_NAME
+XX_PARAMETER_ARRAY_NAME
+XX_CONSTANT_ARRAY_NAME
+XX_STATE_ARRAY_NAME
+XX_RATE_ARRAY_NAME
+XX_MATRIX_ARRAY_NAME
+XX_UNNAMED_ARRAY_NAME
+EVENT_DELTA
+FORMAJORVERSION
+FORMINORVERSION
+FORMAJORBUILD
+FORMINORBUILD
+MAJORVERSION
+MINORVERSION
+MAJORBUILD
+MINORBUILD
+TEMPLATENAME
+TEMPLATEDIR
+TEMPLATE_DIR
+]]></token>
+</tokens>
+
+

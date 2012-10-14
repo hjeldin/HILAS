@@ -27,7 +27,7 @@ cp_ros_Hytip0.name_id = "/HapticMaster/Hytip0";
 stream("IM_configure.input", cp_ros_Hytip0); 
 IM_configure.configure;
 IM_configure.start;
-
+print.ln("stop Special component configuration procedure")
 #
 # Load components and configure
 #
@@ -50,8 +50,9 @@ loadComponent("transform_to_tsim", "geometry_TransformStamped_to_TSim");
 loadComponent("tsim_to_wrench", "TSim_to_geometry_Wrench");
 
 loadComponent("haptic_master", "youbot_control_d_sefltest_POPC::HapticMaster");
+print.ln("loading interactive marker")
 loadComponent("interactive_marker", "youbot_control_d_sefltest_POPC::InteractiveMarker");
-
+print.ln("interactive marker loaded")
 setMasterSlaveActivity("scheduler", "interactive_marker");
 setMasterSlaveActivity("scheduler", "phantom");
 setMasterSlaveActivity("scheduler", "joystick");
@@ -85,15 +86,11 @@ cp_ros_joystick.name_id = "/joy";
 
 var ConnPolicy cp_ros_inH;
 cp_ros_inH.transport = 3;
-cp_ros_inH.size=1000;
-cp_ros_inH.type=BUFFER;
 cp_ros_inH.name_id = "/HapticMaster/inH";
 
 # From HapticMaster
 var ConnPolicy cp_ros_outH;
 cp_ros_outH.transport = 3;
-cp_ros_outH.size=1000;
-cp_ros_outH.type=BUFFER;
 cp_ros_outH.name_id = "/HapticMaster/outH";
 
 var ConnPolicy cp_ros_Hout0;
@@ -121,7 +118,11 @@ var ConnPolicy cp_ros_HJoy0;
 cp_ros_HJoy0.transport = 3;
 cp_ros_HJoy0.name_id = "/HapticMaster/HJoy0";
 
-
+// From HapticMaster
+var ConnPolicy cp_ros_EnergyTank;
+cp_ros_EnergyTank.transport = 3;
+cp_ros_EnergyTank.name_id = "/HapticMaster/EnergyTank";
+stream("haptic_master.EnergyTank",cp_ros_EnergyTank);
 #
 # Connections
 #
@@ -147,6 +148,8 @@ connect("executive.EnergyQuanta","haptic_master.inH2",cp_rt2);
 connect("joystick.slider_command", "executive.stiffness_slider", cp_rt2);
 connect("executive.CartSpaceStiffness", "haptic_master.CartSpaceStiffness", cp_rt2);
 connect("haptic_master.PhantomJointState","phantom.joint_space",cp_rt2);
+connect("joystick.f7_command", "executive.submit_quota", cp_rt2);
+
 # Master <-> Slave
 stream("haptic_master.inH", cp_ros_inH);
 stream("haptic_master.Hytip0", cp_ros_Hytip0);

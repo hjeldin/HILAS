@@ -1,0 +1,30 @@
+import("rtt_rosnode");
+import("amcl_odom_combine");
+
+require("ros_integration")
+
+
+loadComponent("pose_combine", "amcl_odom_combine");
+
+pose_combine.configure;
+#pose_combine.setPeriod(0.01);
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  // Use ''BUFFER'' or ''DATA''
+cp_rt.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
+
+connectPeers("driver", "joystick")
+#connect("driver.Base.odometry_state","joystick.odometry_state", cp_rt)
+connect("joystick.pose_command","BasePoseController.H_vp_0", cp_rt)
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/amcl_pose";
+stream("joystick.joystick", cp_ros);
+
+# 
+# Start running
+# 
+joystick.start;
+
+

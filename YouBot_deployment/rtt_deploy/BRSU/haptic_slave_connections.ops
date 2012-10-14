@@ -1,0 +1,61 @@
+#
+# Connections policies
+#
+# Towards Haptic_master
+var ConnPolicy cp_ros_Hytip0;
+cp_ros_Hytip0.transport = 3;
+cp_ros_Hytip0.name_id = "/HapticMaster/Hytip0";
+
+var ConnPolicy cp_ros_inH;
+cp_ros_inH.transport = 3;
+cp_ros_inH.size = 1000;
+cp_ros_inH.type=BUFFER;
+cp_ros_inH.name_id = "/HapticMaster/inH";
+
+# From Haptic_master
+var ConnPolicy cp_ros_outH;
+cp_ros_outH.transport = 3;
+cp_ros_outH.size=1000;
+cp_ros_outH.type=BUFFER;
+cp_ros_outH.name_id = "/HapticMaster/outH";
+
+var ConnPolicy cp_ros_Hout0;
+cp_ros_Hout0.transport = 3;
+cp_ros_Hout0.name_id = "/HapticMaster/Hout0";
+      
+var ConnPolicy cp_ros_JointSetpoint;
+cp_ros_JointSetpoint.transport = 3;
+cp_ros_JointSetpoint.name_id = "/HapticMaster/JointSetpoint";
+
+var ConnPolicy cp_ros_button2;
+cp_ros_button2.transport = 3;
+cp_ros_button2.name_id = "/HapticMaster/button2";
+
+var ConnPolicy cp_ros_slider;
+cp_ros_slider.transport = 3;
+cp_ros_slider.name_id = "/HapticMaster/slider";
+
+#
+# Load components
+#
+
+#
+# Connections
+# 
+
+stream("controller.Htip0", cp_ros_Hytip0);
+stream("controller.outH", cp_ros_inH);
+
+stream("controller.inH", cp_ros_outH);
+stream("controller.Hvp0", cp_ros_Hout0);
+
+stream("controller.JointSpaceSetpoint", cp_ros_JointSetpoint);
+
+stream("executive.open_gripper", cp_ros_button2);
+
+stream("executive.stiffness_slider", cp_ros_slider);
+
+#
+# Start running
+#
+
