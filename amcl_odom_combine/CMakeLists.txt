@@ -54,8 +54,10 @@ SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 INCLUDE_DIRECTORIES(${COMMON_INCLUDE_DIR})
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
 
-orocos_component(amcl_odom_combine src/Helpers.hpp src/amcl_odom_combine.hpp src/amcl_odom_combine.cpp ${COMMON_INCLUDE_DIR})
+orocos_component(amcl_odom_combine src/amcl_odom_combine.hpp src/amcl_odom_combine.cpp ${COMMON_INCLUDE_DIR})
 
 orocos_generate_package()
+
+target_link_libraries(amcl_odom_combine xxmatrix)
 
 endif()

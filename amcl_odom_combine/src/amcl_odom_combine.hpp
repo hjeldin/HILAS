@@ -35,12 +35,12 @@ class amcl_odom_combine: public TaskContext
 
   private:
     InputPort<geometry_msgs::PoseWithCovarianceStamped> amcl_pose;
-    InputPort<std_msgs::Float64MultiArray> T_base_base_0;
+    InputPort<std_msgs::Float64MultiArray> T_base_00;
     OutputPort<std_msgs::Float64MultiArray> H_base_0;
     OutputPort<std_msgs::Float64MultiArray> H_base_baseprev;
 
     geometry_msgs::PoseWithCovarianceStamped m_amcl_pose;
-    std_msgs::Float64MultiArray m_T_base_base_0;
+    std_msgs::Float64MultiArray m_T_base_00;
     std_msgs::Float64MultiArray m_H_base_0;
     std_msgs::Float64MultiArray m_H_base_baseprev;
 

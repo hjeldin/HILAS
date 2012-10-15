@@ -19,6 +19,7 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 1) Clone the UTwente youbot-stack & generic Orocos components:
 git clone https://git.ce.utwente.nl/youbot-stack
 git clone https://git.ce.utwente.nl/generic_components 
+cd generic_components; git checkout devel; git pull origin devel
 
 2) Install the external stack/package dependencies:
 2a) Replace DEV by your install folder
@@ -32,7 +33,7 @@ rosmake motion_control fbsched rFSM youbot_driver
 3) Adjust the ROS_PACKAGE_PATH to find all packages and stacks.
 
 4) Build the UTwente youbot-stack
-rosmake youbot-stack
+rosmake youbot-stack generic_components
 
 == USAGE (example) ==
 1) roscd YouBot_deployment/rtt_deploy

@@ -13,6 +13,7 @@
   <depend package="rtt_sensor_msgs"/>
   <depend package="rtt_geometry_msgs"/>
   <depend package="tf"/>
+  <depend package="xxmatrix"/>
 </package>
 
 
