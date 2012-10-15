@@ -3,16 +3,17 @@
 #include <ocl/Component.hpp>
 
 #include <vector>
-#include "Helpers.hpp"
+#include "xxmatrix.hpp"
 
 using namespace RTT;
 using namespace std;
+using namespace xxmatrix;
 
 amcl_odom_combine::amcl_odom_combine(const string& name) :
     TaskContext(name, PreOperational)
 {
   // Inputs
-  m_T_base_base_0.data.resize(6, 0.0);
+  m_T_base_00.data.resize(6, 0.0);
 
   // Outputs
   m_H_base_0.data.assign(EYE4, EYE4 + SIZE_H);
@@ -22,7 +23,7 @@ amcl_odom_combine::amcl_odom_combine(const string& name) :
   H_base_baseprev.setDataSample(m_H_base_baseprev);
  
   this->addPort("amcl_pose", amcl_pose).doc("H_base_0 update based on extra sensory information.");
-  this->addPort("T_base_base_0", T_base_base_0).doc("Base Twist from sensors");
+  this->addPort("T_base_00", T_base_00).doc("Base Twist from sensors");
   this->addPort("H_base_0", H_base_0).doc("Combined base pose");
   this->addPort("H_base_baseprev", H_base_baseprev).doc("");
 
@@ -57,7 +58,7 @@ bool amcl_odom_combine::startHook()
     return false;
   }
 
-  if (!T_base_base_0.connected())
+  if (!T_base_00.connected())
   {
     log(Error) << "T not connected." << endlog();
     return false;
@@ -95,11 +96,11 @@ void amcl_odom_combine::updateHook()
     makeHMatrixFromQuaternion(m_H_amcl.data, m_amcl_pose.pose.pose.orientation, m_amcl_pose.pose.pose.position);
   }
 
-  T_base_base_0.read(m_T_base_base_0);
+  T_base_00.read(m_T_base_00);
 
 //  H_base_baseprev=aldo*H; // output to amcl at any point in time
 //  aldo=H_base_baseprev;
-  computeFiniteTwist(m_H.data, m_T_base_base_0.data, m_sampletime);
+  computeFiniteTwist(m_H.data, m_T_base_00.data, m_sampletime);
   mulMatrixMatrixSquare(m_H_base_baseprev.data, m_H_base_baseprev.data, m_H.data, 4);
 
 //  H_base_0=Hamcl*H_base_baseprev; //output to controller
