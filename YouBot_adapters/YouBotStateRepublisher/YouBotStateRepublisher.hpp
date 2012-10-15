@@ -5,6 +5,7 @@
 #include <sensor_msgs/typekit/Types.h>
 #include <geometry_msgs/typekit/Types.h>
 #include <ocl/Component.hpp>
+#include <std_msgs/Float64MultiArray.h>
 
 namespace YouBot
 {
@@ -19,7 +20,7 @@ namespace YouBot
       "gripper_finger_joint_l", "gripper_finger_joint_r"};
 
   static const unsigned int SIZE_JOINT_NAME_ARRAY=15;
-
+  static const double MIN_ENERGY =0.0;
 
   class YouBotStateRepublisher: public RTT::TaskContext
   {
@@ -37,10 +38,21 @@ namespace YouBot
     InputPort<sensor_msgs::JointState> base_state;
     sensor_msgs::JointState m_arm_state;
     sensor_msgs::JointState m_base_state;
+
+    std_msgs::Float64MultiArray m_energy_tank;
+    double m_arm_energy_tank;
+    double m_base_energy_tank;
+    double m_kinematics_energy_tank;
+    std::string m_events;
   //	InputPort<flat_matrix_t> odometry;
 
     OutputPort<sensor_msgs::JointState> youbot_state;
     sensor_msgs::JointState m_youbot_state;
+    // Republishing energy states to make an event when energy in the tanks drop below zeros
+    InputPort<std_msgs::Float64MultiArray> arm_energy_tank;
+    InputPort<std_msgs::Float64MultiArray> base_energy_tank;
+    InputPort<std_msgs::Float64MultiArray> kinematics_energy_tank;
+    OutputPort<std::string> events;
 
     unsigned int m_dimension;
     double wheel;
