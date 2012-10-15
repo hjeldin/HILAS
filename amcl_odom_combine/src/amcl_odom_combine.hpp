@@ -47,6 +47,7 @@ class amcl_odom_combine: public TaskContext
     //temps
     std_msgs::Float64MultiArray m_H_amcl;
     std_msgs::Float64MultiArray m_H;
+    std_msgs::Float64MultiArray m_aldo;
 
     tf::StampedTransform m_transform_map_odom;
 

@@ -29,6 +29,7 @@ amcl_odom_combine::amcl_odom_combine(const string& name) :
 
   m_H_amcl.data.assign(EYE4, EYE4 + SIZE_H);
   m_H.data.assign(EYE4, EYE4 + SIZE_H);
+  m_aldo.data.assign(EYE4, EYE4 + SIZE_H);
 }
 
 amcl_odom_combine::~amcl_odom_combine()
@@ -37,15 +38,17 @@ amcl_odom_combine::~amcl_odom_combine()
 
 bool amcl_odom_combine::configureHook()
 {
-  tf::TransformListener listener;
-  listener.waitForTransform("/map", "/odom", ros::Time::now(), ros::Duration(5.0));
-  
-  try{
-    listener.lookupTransform("/map", "/odom", ros::Time(0), m_transform_map_odom);
-  }
-  catch (tf::TransformException ex){
-    ROS_ERROR("%s",ex.what());
-}
+//  tf::TransformListener listener;
+//  listener.waitForTransform("/map", "/odom", ros::Time::now(), ros::Duration(5.0));
+//
+//  try
+//  {
+//    listener.lookupTransform("/map", "/odom", ros::Time(0), m_transform_map_odom);
+//  }
+//  catch (tf::TransformException ex)
+//  {
+//    ROS_ERROR("%s",ex.what());
+//  }
   
   return TaskContext::configureHook();
 }
@@ -101,7 +104,8 @@ void amcl_odom_combine::updateHook()
 //  H_base_baseprev=aldo*H; // output to amcl at any point in time
 //  aldo=H_base_baseprev;
   computeFiniteTwist(m_H.data, m_T_base_00.data, m_sampletime);
-  mulMatrixMatrixSquare(m_H_base_baseprev.data, m_H_base_baseprev.data, m_H.data, 4);
+  mulMatrixMatrixSquare(m_H_base_baseprev.data, m_aldo.data, m_H.data, 4);
+  memcpy(&m_aldo.data[0], &m_H_base_baseprev.data[0], SIZE_H);
 
 //  H_base_0=Hamcl*H_base_baseprev; //output to controller
   mulMatrixMatrixSquare(m_H_base_0.data, m_H_amcl.data, m_H_base_baseprev.data, 4);
@@ -113,8 +117,6 @@ void amcl_odom_combine::updateHook()
 
 void amcl_odom_combine::stopHook()
 {
-  
-
   TaskContext::stopHook();
 }
 
