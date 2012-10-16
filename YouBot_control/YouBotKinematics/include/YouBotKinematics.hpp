@@ -7,11 +7,11 @@
  *  subm:  YouBotKinematics
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:19:05 am
+ *  date:  October 15, 2012
+ *  time:  11:25:06 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  *
  **********************************************************/
 
@@ -87,17 +87,9 @@ namespace motion_stack
 		virtual bool setPeriod(RTT::Seconds s);
 
 	protected:
-    void CopyInputsToVariables();
+    virtual void CopyInputsToVariables();
 
-    void CopyVariablesToOutputs();
-
-    int event_Initialize();
-
-    int event_edge(std::string const event_str, int inputs, double *outarr, int outputs, int major);
-
-    int event_level(std::string const event_str, int inputs, double *outarr, int outputs, int major);
-
-    int event_Terminate();
+    virtual void CopyVariablesToOutputs();
 
     void setupComponentInterface();
 

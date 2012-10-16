@@ -16,14 +16,14 @@
  &lt;TimeStamp&gt;2012-6-20 16:17:43&lt;/TimeStamp&gt;
  &lt;AllowLibraryUpdate&gt;False&lt;/AllowLibraryUpdate&gt;
 &lt;/Description&gt;</description>
-		<creationDate>2012-08-06T16:55:55.0Z</creationDate>
+		<creationDate>2012-10-15T17:29:29.0Z</creationDate>
 		<modelDir></modelDir>
-		<originalModel>Z:\home\youbot\DEV\20SimModels\Devel\motion_stack.emx</originalModel>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
 		<version>
 			<major>4</major>
 			<minor>1</minor>
-			<revision>2</revision>
-			<patch>4</patch>
+			<revision>4</revision>
+			<patch>1</patch>
 		</version>
 		<additional>Campuslicentie, Universiteit Twente</additional>
 	</general>
@@ -34,7 +34,7 @@
 	</run>
 	<modelVariables>
 		<modelVariable id="1">
-			<name>T</name>
+			<name>T_base_00</name>
 			<kind>input</kind>
 			<type>real</type>
 			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
@@ -50,7 +50,7 @@
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 		<modelVariable id="2">
-			<name>H_base_0</name>
+			<name>H_base_map</name>
 			<kind>output</kind>
 			<type>real</type>
 			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
@@ -66,13 +66,14 @@
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 		<modelVariable id="3">
-			<name>R</name>
-			<kind>parameter</kind>
+			<name>H_odom_map</name>
+			<kind>input</kind>
 			<type>real</type>
-			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
 			<size>
-				<rows>3</rows>
-				<columns>3</columns>
+				<rows>4</rows>
+				<columns>4</columns>
 			</size>
 			<storage>
 				<name>V</name>
@@ -81,54 +82,14 @@
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 		<modelVariable id="4">
-			<name>omega</name>
-			<kind>parameter</kind>
+			<name>H_base_odom</name>
+			<kind>output</kind>
 			<type>real</type>
-			<value>0.0; 0.0; 0.0</value>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
 			<size>
-				<rows>3</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>31</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="5">
-			<name>v</name>
-			<kind>parameter</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0</value>
-			<size>
-				<rows>3</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>34</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="6">
-			<name>omega_norm</name>
-			<kind>parameter</kind>
-			<type>real</type>
-			<value>0.0</value>
-			<storage>
-				<name>V</name>
-				<index>37</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="7">
-			<name>omega_temp</name>
-			<kind>parameter</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0</value>
-			<size>
-				<rows>3</rows>
-				<columns>1</columns>
+				<rows>4</rows>
+				<columns>4</columns>
 			</size>
 			<storage>
 				<name>V</name>
@@ -136,24 +97,80 @@
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="8">
-			<name>H</name>
-			<kind>parameter</kind>
+		<modelVariable id="5">
+			<name>R</name>
+			<kind>variable</kind>
 			<type>real</type>
-			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
 			<size>
-				<rows>4</rows>
-				<columns>4</columns>
+				<rows>3</rows>
+				<columns>3</columns>
 			</size>
 			<storage>
 				<name>V</name>
-				<index>41</index>
+				<index>54</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>63</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>v</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>66</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>omega_norm</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>69</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 		<modelVariable id="9">
-			<name>Hbase0</name>
-			<kind>parameter</kind>
+			<name>omega_temp</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>70</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>H</name>
+			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
 			<size>
@@ -162,33 +179,80 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>57</index>
+				<index>73</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>20sim bug</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>aldoH_odom_map</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>safety</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>105</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>H_base_baseprev</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>121</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 	</modelVariables>
 	<storage>
 		<name>ivc_motion_stack</name>
-		<size>1848</size>
+		<size>2368</size>
 		<tables>
 			<table>
 				<name>V</name>
-				<size>584</size>
+				<size>1096</size>
 				<kind>real</kind>
 				<kindSize>8</kindSize>
-				<count>73</count>
+				<count>137</count>
 			</table>
 			<table>
 				<name>U</name>
-				<size>1264</size>
+				<size>1272</size>
 				<kind>real</kind>
 				<kindSize>8</kindSize>
-				<count>158</count>
+				<count>159</count>
 			</table>
 		</tables>
 	</storage>
 	<icons>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
 	</icons>
 </modelConfiguration>
 

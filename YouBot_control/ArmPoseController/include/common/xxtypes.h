@@ -4,11 +4,11 @@
  *  file:  include\common\xxtypes.h
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:18:08 am
+ *  date:  October 15, 2012
+ *  time:  11:24:17 am
  *  user:  Campuslicentie 
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* This file describes the typedefs that are used for integers and

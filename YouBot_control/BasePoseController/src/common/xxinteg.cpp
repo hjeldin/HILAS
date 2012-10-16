@@ -5,11 +5,11 @@
  *  subm:  BasePoseController
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 7, 2012
- *  time:  4:29:14 pm
+ *  date:  October 15, 2012
+ *  time:  11:24:29 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* This file describes the integration methods

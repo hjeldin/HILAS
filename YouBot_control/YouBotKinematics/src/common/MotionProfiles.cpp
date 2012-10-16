@@ -4,11 +4,11 @@
  *  file:  src\common\MotionProfiles.cpp
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:19:05 am
+ *  date:  October 15, 2012
+ *  time:  11:25:06 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* This file implements the functions necessary for motion profiles

@@ -7,11 +7,11 @@
  *  subm:  ArmPoseControllerModel
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:18:08 am
+ *  date:  October 15, 2012
+ *  time:  11:24:17 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  *
  **********************************************************/
 
@@ -110,14 +110,6 @@ namespace motion_stack
      * @param y This is the array with all output signals from this submodel
      */
     virtual void CopyVariablesToOutputs () = 0;
-
-    virtual int event_Initialize() = 0;
-
-    virtual int event_edge(std::string const event_str, int inputs, double *outarr, int outputs, int major) = 0;
-
-    virtual int event_level(std::string const event_str, int inputs, double *outarr, int outputs, int major) = 0;
-
-    virtual int event_Terminate() = 0;
 
 	protected:
 		/**

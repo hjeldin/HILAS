@@ -5,11 +5,11 @@
  *  subm:  YouBotKinematicsModel
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:19:05 am
+ *  date:  October 15, 2012
+ *  time:  11:25:06 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* Standard include files */
@@ -58,23 +58,23 @@ namespace motion_stack
     major = true;
 
     number_constants = 24;
-    number_parameters = 50;
-    number_initialvalues = 8;
-    number_variables = 573;
-    number_states = 8;
-    number_rates = 8;
-    number_matrices = 119;
+    number_parameters = 64;
+    number_initialvalues = 11;
+    number_variables = 612;
+    number_states = 11;
+    number_rates = 11;
+    number_matrices = 131;
     number_unnamed = 528;
 
     /* the variable arrays */
     C = new XXDouble[24 + 1]; /* constants */
-    P = new XXDouble[50 + 1]; /* parameters, currently only one type of parameter exists: double */
-    I = new XXDouble[8 + 1]; /* initial values */
-    V = new XXDouble[573 + 1]; /* variables */
+    P = new XXDouble[64 + 1]; /* parameters, currently only one type of parameter exists: double */
+    I = new XXDouble[11 + 1]; /* initial values */
+    V = new XXDouble[612 + 1]; /* variables */
 
-    s = new XXDouble[8 + 1]; /* states */
-    R = new XXDouble[8 + 1]; /* rates (or new states) */
-    M = new XXMatrix[119 + 1]; /* matrices */
+    s = new XXDouble[11 + 1]; /* states */
+    R = new XXDouble[11 + 1]; /* rates (or new states) */
+    M = new XXMatrix[131 + 1]; /* matrices */
     U = new XXDouble[528 + 1]; /* unnamed */
     workarray = new XXDouble[0 + 1];
   }
@@ -174,6 +174,20 @@ namespace motion_stack
 	P[47] = 0.0;		
 	P[48] = 0.0;		
 	P[49] = 0.0;		
+	P[50] = 1000.0;		/* EnergyEncodingArm\roundUp */
+	P[51] = 348.0;		/* EnergyEncodingArm\counter */
+	P[52] = 1000.0;		/* EnergyEncodingBase\roundUp */
+	P[53] = 348.0;		/* EnergyEncodingBase\counter */
+	P[54] = 1000.0;		/* EnergyEncodingSpring\roundUp */
+	P[55] = 348.0;		/* EnergyEncodingSpring\counter */
+	P[56] = 1.0;		/* PassivityLayer\EnegyTank1\InitialEnegyState {J} */
+	P[57] = 3.0;		/* PassivityLayer\Gain\K */
+	P[58] = 0.0;		/* PassivityLayer\SETP1\CommunicationTreshold {J} */
+	P[59] = 0.1;		/* PassivityLayer\SETP1\SendoutPercent */
+	P[60] = 0.0;		/* PassivityLayer\SETP2\CommunicationTreshold {J} */
+	P[61] = 0.1;		/* PassivityLayer\SETP2\SendoutPercent */
+	P[62] = 0.0;		/* PassivityLayer\SETP3\CommunicationTreshold {J} */
+	P[63] = 0.1;		/* PassivityLayer\SETP3\SendoutPercent */
 
 
     //INITIAL VALUES
@@ -185,13 +199,16 @@ namespace motion_stack
 	I[5] = 0.0;		
 	I[6] = 0.0;		
 	I[7] = 0.0;		
+	I[8] = 0.0;		/* new_initial */
+	I[9] = 0.0;		/* new_initial */
+	I[10] = 0.0;		/* new_initial */
 
 
     //MATRICES
-    	M[0].mat = &V[0];		/* CalculateJ\controllableJ */
+    	M[0].mat = &V[1];		/* CalculateJ\controllableJ */
 	M[0].rows = 6;
 	M[0].columns = 8;
-	M[1].mat = &V[48];		/* CalculateJ\Htip0 */
+	M[1].mat = &V[49];		/* CalculateJ\Htip0 */
 	M[1].rows = 4;
 	M[1].columns = 4;
 	M[2].mat = &P[0];		/* CalculateJ\InitialJointPos */
@@ -230,321 +247,357 @@ namespace motion_stack
 	M[13].mat = &C[21];		/* CalculateJ\omega5 */
 	M[13].rows = 3;
 	M[13].columns = 1;
-	M[14].mat = &V[64];		/* CalculateJ\uTrzrefref */
+	M[14].mat = &V[65];		/* CalculateJ\uTrzrefref */
 	M[14].rows = 6;
 	M[14].columns = 1;
-	M[15].mat = &V[70];		/* CalculateJ\uTryrefref */
+	M[15].mat = &V[71];		/* CalculateJ\uTryrefref */
 	M[15].rows = 6;
 	M[15].columns = 1;
-	M[16].mat = &V[76];		/* CalculateJ\uTrxrefref */
+	M[16].mat = &V[77];		/* CalculateJ\uTrxrefref */
 	M[16].rows = 6;
 	M[16].columns = 1;
-	M[17].mat = &V[82];		/* CalculateJ\uTr1refref */
+	M[17].mat = &V[83];		/* CalculateJ\uTr1refref */
 	M[17].rows = 6;
 	M[17].columns = 1;
-	M[18].mat = &V[88];		/* CalculateJ\uTr211 */
+	M[18].mat = &V[89];		/* CalculateJ\uTr211 */
 	M[18].rows = 6;
 	M[18].columns = 1;
-	M[19].mat = &V[94];		/* CalculateJ\uTr322 */
+	M[19].mat = &V[95];		/* CalculateJ\uTr322 */
 	M[19].rows = 6;
 	M[19].columns = 1;
-	M[20].mat = &V[100];		/* CalculateJ\uTr433 */
+	M[20].mat = &V[101];		/* CalculateJ\uTr433 */
 	M[20].rows = 6;
 	M[20].columns = 1;
-	M[21].mat = &V[106];		/* CalculateJ\uTr544 */
+	M[21].mat = &V[107];		/* CalculateJ\uTr544 */
 	M[21].rows = 6;
 	M[21].columns = 1;
-	M[22].mat = &V[112];		/* CalculateJ\R21 */
+	M[22].mat = &V[113];		/* CalculateJ\R21 */
 	M[22].rows = 3;
 	M[22].columns = 3;
-	M[23].mat = &V[121];		/* CalculateJ\R32 */
+	M[23].mat = &V[122];		/* CalculateJ\R32 */
 	M[23].rows = 3;
 	M[23].columns = 3;
-	M[24].mat = &V[130];		/* CalculateJ\R43 */
+	M[24].mat = &V[131];		/* CalculateJ\R43 */
 	M[24].rows = 3;
 	M[24].columns = 3;
-	M[25].mat = &V[139];		/* CalculateJ\R54 */
+	M[25].mat = &V[140];		/* CalculateJ\R54 */
 	M[25].rows = 3;
 	M[25].columns = 3;
-	M[26].mat = &V[148];		/* CalculateJ\Rtip5 */
+	M[26].mat = &V[149];		/* CalculateJ\Rtip5 */
 	M[26].rows = 3;
 	M[26].columns = 3;
-	M[27].mat = &V[157];		/* CalculateJ\p21 */
+	M[27].mat = &V[158];		/* CalculateJ\p21 */
 	M[27].rows = 3;
 	M[27].columns = 1;
-	M[28].mat = &V[160];		/* CalculateJ\p32 */
+	M[28].mat = &V[161];		/* CalculateJ\p32 */
 	M[28].rows = 3;
 	M[28].columns = 1;
-	M[29].mat = &V[163];		/* CalculateJ\p43 */
+	M[29].mat = &V[164];		/* CalculateJ\p43 */
 	M[29].rows = 3;
 	M[29].columns = 1;
-	M[30].mat = &V[166];		/* CalculateJ\p54 */
+	M[30].mat = &V[167];		/* CalculateJ\p54 */
 	M[30].rows = 3;
 	M[30].columns = 1;
-	M[31].mat = &V[169];		/* CalculateJ\ptip5 */
+	M[31].mat = &V[170];		/* CalculateJ\ptip5 */
 	M[31].rows = 3;
 	M[31].columns = 1;
-	M[32].mat = &V[172];		/* CalculateJ\H21 */
+	M[32].mat = &V[173];		/* CalculateJ\H21 */
 	M[32].rows = 4;
 	M[32].columns = 4;
-	M[33].mat = &V[188];		/* CalculateJ\H32 */
+	M[33].mat = &V[189];		/* CalculateJ\H32 */
 	M[33].rows = 4;
 	M[33].columns = 4;
-	M[34].mat = &V[204];		/* CalculateJ\H43 */
+	M[34].mat = &V[205];		/* CalculateJ\H43 */
 	M[34].rows = 4;
 	M[34].columns = 4;
-	M[35].mat = &V[220];		/* CalculateJ\H54 */
+	M[35].mat = &V[221];		/* CalculateJ\H54 */
 	M[35].rows = 4;
 	M[35].columns = 4;
-	M[36].mat = &V[236];		/* CalculateJ\Htip5 */
+	M[36].mat = &V[237];		/* CalculateJ\Htip5 */
 	M[36].rows = 4;
 	M[36].columns = 4;
-	M[37].mat = &V[252];		/* CalculateJ\H10 */
+	M[37].mat = &V[253];		/* CalculateJ\H10 */
 	M[37].rows = 4;
 	M[37].columns = 4;
-	M[38].mat = &V[268];		/* CalculateJ\H20 */
+	M[38].mat = &V[269];		/* CalculateJ\H20 */
 	M[38].rows = 4;
 	M[38].columns = 4;
-	M[39].mat = &V[284];		/* CalculateJ\H30 */
+	M[39].mat = &V[285];		/* CalculateJ\H30 */
 	M[39].rows = 4;
 	M[39].columns = 4;
-	M[40].mat = &V[300];		/* CalculateJ\H40 */
+	M[40].mat = &V[301];		/* CalculateJ\H40 */
 	M[40].rows = 4;
 	M[40].columns = 4;
-	M[41].mat = &V[316];		/* CalculateJ\H50 */
+	M[41].mat = &V[317];		/* CalculateJ\H50 */
 	M[41].rows = 4;
 	M[41].columns = 4;
-	M[42].mat = &V[332];		/* CalculateJ\Href0 */
+	M[42].mat = &V[333];		/* CalculateJ\Href0 */
 	M[42].rows = 4;
 	M[42].columns = 4;
-	M[43].mat = &V[348];		/* CalculateJ\H1ref */
+	M[43].mat = &V[349];		/* CalculateJ\H1ref */
 	M[43].rows = 4;
 	M[43].columns = 4;
-	M[44].mat = &V[364];		/* CalculateJ\R1ref */
+	M[44].mat = &V[365];		/* CalculateJ\R1ref */
 	M[44].rows = 3;
 	M[44].columns = 3;
-	M[45].mat = &V[373];		/* CalculateJ\p1ref */
+	M[45].mat = &V[374];		/* CalculateJ\p1ref */
 	M[45].rows = 3;
 	M[45].columns = 1;
-	M[46].mat = &V[376];		/* CalculateJ\base_offset_H */
+	M[46].mat = &V[377];		/* CalculateJ\base_offset_H */
 	M[46].rows = 4;
 	M[46].columns = 4;
-	M[47].mat = &V[392];		/* CalculateJ\initialq */
+	M[47].mat = &V[393];		/* CalculateJ\initialq */
 	M[47].rows = 8;
 	M[47].columns = 1;
-	M[48].mat = &V[400];		/* CalculateJ\Rz */
+	M[48].mat = &V[401];		/* CalculateJ\Rz */
 	M[48].rows = 3;
 	M[48].columns = 3;
-	M[49].mat = &V[409];		/* CmdDemux\arm_torque */
+	M[49].mat = &V[410];		/* CmdDemux\arm_torque */
 	M[49].rows = 5;
 	M[49].columns = 1;
-	M[50].mat = &V[414];		/* CmdDemux\W_base_00 */
+	M[50].mat = &V[415];		/* CmdDemux\W_base_00 */
 	M[50].rows = 6;
 	M[50].columns = 1;
-	M[51].mat = &V[420];		/* DiscreteDifferential\output */
+	M[51].mat = &V[421];		/* DiscreteDifferential\output */
 	M[51].rows = 8;
 	M[51].columns = 1;
 	M[52].mat = &P[42];		/* DiscreteDifferential\initial */
 	M[52].rows = 8;
 	M[52].columns = 1;
-	M[53].mat = &V[428];		/* DiscreteDifferential\initial_input */
+	M[53].mat = &V[429];		/* DiscreteDifferential\initial_input */
 	M[53].rows = 8;
 	M[53].columns = 1;
-	M[54].mat = &V[437];		/* HToAngles\H_vp_0 */
-	M[54].rows = 4;
-	M[54].columns = 4;
-	M[55].mat = &V[453];		/* HToAngles\pose */
-	M[55].rows = 3;
+	M[54].mat = &V[438];		/* EnergyEncodingArm\inputMessage */
+	M[54].rows = 2;
+	M[54].columns = 1;
+	M[55].mat = &V[441];		/* EnergyEncodingArm\outputMessage */
+	M[55].rows = 2;
 	M[55].columns = 1;
-	M[56].mat = &V[456];		/* HToAngles\H_vp_base */
-	M[56].rows = 4;
-	M[56].columns = 4;
-	M[57].mat = &V[474];		/* HToAngles\norm_omega */
-	M[57].rows = 3;
+	M[56].mat = &V[443];		/* EnergyEncodingBase\inputMessage */
+	M[56].rows = 2;
+	M[56].columns = 1;
+	M[57].mat = &V[446];		/* EnergyEncodingBase\outputMessage */
+	M[57].rows = 2;
 	M[57].columns = 1;
-	M[58].mat = &V[477];		/* HToAngles\omega */
-	M[58].rows = 3;
+	M[58].mat = &V[448];		/* EnergyEncodingSpring\inputMessage */
+	M[58].rows = 2;
 	M[58].columns = 1;
-	M[59].mat = &V[480];		/* StateMux\arm_angles */
-	M[59].rows = 5;
+	M[59].mat = &V[451];		/* EnergyEncodingSpring\outputMessage */
+	M[59].rows = 2;
 	M[59].columns = 1;
-	M[60].mat = &V[485];		/* StateMux\measured_angles */
-	M[60].rows = 8;
-	M[60].columns = 1;
-	M[61].mat = &V[493];		/* TF\joints_e */
-	M[61].rows = 8;
+	M[60].mat = &V[453];		/* HToAngles\H_vp_0 */
+	M[60].rows = 4;
+	M[60].columns = 4;
+	M[61].mat = &V[469];		/* HToAngles\pose */
+	M[61].rows = 3;
 	M[61].columns = 1;
-	M[62].mat = &V[501];		/* TF\tip_e */
-	M[62].rows = 6;
-	M[62].columns = 1;
-	M[63].mat = &V[507];		/* TF\tip_f */
-	M[63].rows = 6;
+	M[62].mat = &V[472];		/* HToAngles\H_vp_base */
+	M[62].rows = 4;
+	M[62].columns = 4;
+	M[63].mat = &V[490];		/* HToAngles\norm_omega */
+	M[63].rows = 3;
 	M[63].columns = 1;
-	M[64].mat = &V[513];		/* H_base_0 */
-	M[64].rows = 4;
-	M[64].columns = 4;
-	M[65].mat = &V[529];		/* torques_cmd */
+	M[64].mat = &V[493];		/* HToAngles\omega */
+	M[64].rows = 3;
+	M[64].columns = 1;
+	M[65].mat = &V[506];		/* StateMux\arm_angles */
 	M[65].rows = 5;
 	M[65].columns = 1;
-	M[66].mat = &V[534];		/* W_base_00 */
-	M[66].rows = 6;
+	M[66].mat = &V[511];		/* StateMux\measured_angles */
+	M[66].rows = 8;
 	M[66].columns = 1;
-	M[67].mat = &V[540];		/* angles_measured */
-	M[67].rows = 5;
+	M[67].mat = &V[519];		/* TF\joints_e */
+	M[67].rows = 8;
 	M[67].columns = 1;
-	M[68].mat = &V[545];		/* T_tooltip_00 */
+	M[68].mat = &V[527];		/* TF\tip_e */
 	M[68].rows = 6;
 	M[68].columns = 1;
-	M[69].mat = &V[551];		/* W_tooltip_00 */
+	M[69].mat = &V[533];		/* TF\tip_f */
 	M[69].rows = 6;
 	M[69].columns = 1;
-	M[70].mat = &V[557];		/* H_tooltip_0 */
+	M[70].mat = &V[539];		/* H_base_0 */
 	M[70].rows = 4;
 	M[70].columns = 4;
-	M[71].mat = &R[0];		/* DiscreteDifferential\input */
-	M[71].rows = 8;
+	M[71].mat = &V[555];		/* input_energy_arm */
+	M[71].rows = 2;
 	M[71].columns = 1;
-	M[72].mat = &s[0];		/* DiscreteDifferential\input_previous */
-	M[72].rows = 8;
+	M[72].mat = &V[557];		/* torques_cmd */
+	M[72].rows = 5;
 	M[72].columns = 1;
-	M[73].mat = &I[0];		/* DiscreteDifferential\input_previous_initial */
-	M[73].rows = 8;
+	M[73].mat = &V[562];		/* W_base_00 */
+	M[73].rows = 6;
 	M[73].columns = 1;
-	M[74].mat = &U[0];		/* U1 */
-	M[74].rows = 3;
-	M[74].columns = 3;
-	M[75].mat = &U[9];		/* U2 */
-	M[75].rows = 3;
+	M[74].mat = &V[568];		/* output_energy_arm */
+	M[74].rows = 2;
+	M[74].columns = 1;
+	M[75].mat = &V[570];		/* input_energy_base */
+	M[75].rows = 2;
 	M[75].columns = 1;
-	M[76].mat = &U[12];		/* U3 */
-	M[76].rows = 3;
-	M[76].columns = 3;
-	M[77].mat = &U[21];		/* U4 */
-	M[77].rows = 3;
+	M[76].mat = &V[572];		/* output_energy_spring */
+	M[76].rows = 2;
+	M[76].columns = 1;
+	M[77].mat = &V[574];		/* angles_measured */
+	M[77].rows = 5;
 	M[77].columns = 1;
-	M[78].mat = &U[24];		/* U5 */
-	M[78].rows = 3;
+	M[78].mat = &V[579];		/* input_energy_spring */
+	M[78].rows = 2;
 	M[78].columns = 1;
-	M[79].mat = &U[27];		/* U6 */
-	M[79].rows = 3;
-	M[79].columns = 3;
-	M[80].mat = &U[36];		/* U7 */
-	M[80].rows = 3;
+	M[79].mat = &V[581];		/* H_tooltip_0 */
+	M[79].rows = 4;
+	M[79].columns = 4;
+	M[80].mat = &V[598];		/* output_energy_base */
+	M[80].rows = 2;
 	M[80].columns = 1;
-	M[81].mat = &U[39];		/* U8 */
-	M[81].rows = 3;
+	M[81].mat = &V[600];		/* W_tooltip_00 */
+	M[81].rows = 6;
 	M[81].columns = 1;
-	M[82].mat = &U[42];		/* U9 */
-	M[82].rows = 3;
-	M[82].columns = 3;
-	M[83].mat = &U[51];		/* U10 */
-	M[83].rows = 3;
+	M[82].mat = &V[606];		/* T_tooltip_00 */
+	M[82].rows = 6;
+	M[82].columns = 1;
+	M[83].mat = &R[0];		/* DiscreteDifferential\input */
+	M[83].rows = 8;
 	M[83].columns = 1;
-	M[84].mat = &U[54];		/* U11 */
-	M[84].rows = 3;
+	M[84].mat = &s[0];		/* DiscreteDifferential\input_previous */
+	M[84].rows = 8;
 	M[84].columns = 1;
-	M[85].mat = &U[57];		/* U12 */
-	M[85].rows = 3;
-	M[85].columns = 3;
-	M[86].mat = &U[66];		/* U13 */
+	M[85].mat = &I[0];		/* DiscreteDifferential\input_previous_initial */
+	M[85].rows = 8;
+	M[85].columns = 1;
+	M[86].mat = &U[0];		/* U1 */
 	M[86].rows = 3;
-	M[86].columns = 1;
-	M[87].mat = &U[69];		/* U14 */
+	M[86].columns = 3;
+	M[87].mat = &U[9];		/* U2 */
 	M[87].rows = 3;
 	M[87].columns = 1;
-	M[88].mat = &U[72];		/* U15 */
+	M[88].mat = &U[12];		/* U3 */
 	M[88].rows = 3;
 	M[88].columns = 3;
-	M[89].mat = &U[81];		/* U16 */
+	M[89].mat = &U[21];		/* U4 */
 	M[89].rows = 3;
 	M[89].columns = 1;
-	M[90].mat = &U[84];		/* U17 */
-	M[90].rows = 1;
+	M[90].mat = &U[24];		/* U5 */
+	M[90].rows = 3;
 	M[90].columns = 1;
-	M[91].mat = &U[85];		/* U18 */
+	M[91].mat = &U[27];		/* U6 */
 	M[91].rows = 3;
 	M[91].columns = 3;
-	M[92].mat = &U[94];		/* U19 */
-	M[92].rows = 1;
+	M[92].mat = &U[36];		/* U7 */
+	M[92].rows = 3;
 	M[92].columns = 1;
-	M[93].mat = &U[95];		/* U20 */
-	M[93].rows = 1;
+	M[93].mat = &U[39];		/* U8 */
+	M[93].rows = 3;
 	M[93].columns = 1;
-	M[94].mat = &U[96];		/* U21 */
+	M[94].mat = &U[42];		/* U9 */
 	M[94].rows = 3;
-	M[94].columns = 1;
-	M[95].mat = &U[99];		/* U22 */
-	M[95].rows = 4;
-	M[95].columns = 4;
-	M[96].mat = &U[115];		/* U23 */
+	M[94].columns = 3;
+	M[95].mat = &U[51];		/* U10 */
+	M[95].rows = 3;
+	M[95].columns = 1;
+	M[96].mat = &U[54];		/* U11 */
 	M[96].rows = 3;
 	M[96].columns = 1;
-	M[97].mat = &U[118];		/* U24 */
-	M[97].rows = 6;
-	M[97].columns = 1;
-	M[98].mat = &U[124];		/* U25 */
-	M[98].rows = 6;
-	M[98].columns = 6;
-	M[99].mat = &U[160];		/* U26 */
-	M[99].rows = 6;
+	M[97].mat = &U[57];		/* U12 */
+	M[97].rows = 3;
+	M[97].columns = 3;
+	M[98].mat = &U[66];		/* U13 */
+	M[98].rows = 3;
+	M[98].columns = 1;
+	M[99].mat = &U[69];		/* U14 */
+	M[99].rows = 3;
 	M[99].columns = 1;
-	M[100].mat = &U[166];		/* U27 */
-	M[100].rows = 6;
-	M[100].columns = 6;
-	M[101].mat = &U[202];		/* U28 */
-	M[101].rows = 6;
+	M[100].mat = &U[72];		/* U15 */
+	M[100].rows = 3;
+	M[100].columns = 3;
+	M[101].mat = &U[81];		/* U16 */
+	M[101].rows = 3;
 	M[101].columns = 1;
-	M[102].mat = &U[208];		/* U29 */
-	M[102].rows = 6;
-	M[102].columns = 6;
-	M[103].mat = &U[244];		/* U30 */
-	M[103].rows = 6;
-	M[103].columns = 1;
-	M[104].mat = &U[250];		/* U31 */
-	M[104].rows = 6;
-	M[104].columns = 6;
-	M[105].mat = &U[286];		/* U32 */
-	M[105].rows = 6;
+	M[102].mat = &U[84];		/* U17 */
+	M[102].rows = 1;
+	M[102].columns = 1;
+	M[103].mat = &U[85];		/* U18 */
+	M[103].rows = 3;
+	M[103].columns = 3;
+	M[104].mat = &U[94];		/* U19 */
+	M[104].rows = 1;
+	M[104].columns = 1;
+	M[105].mat = &U[95];		/* U20 */
+	M[105].rows = 1;
 	M[105].columns = 1;
-	M[106].mat = &U[292];		/* U33 */
-	M[106].rows = 6;
-	M[106].columns = 6;
-	M[107].mat = &U[328];		/* U34 */
-	M[107].rows = 6;
-	M[107].columns = 1;
-	M[108].mat = &U[334];		/* U35 */
-	M[108].rows = 6;
-	M[108].columns = 6;
-	M[109].mat = &U[370];		/* U36 */
+	M[106].mat = &U[96];		/* U21 */
+	M[106].rows = 3;
+	M[106].columns = 1;
+	M[107].mat = &U[99];		/* U22 */
+	M[107].rows = 4;
+	M[107].columns = 4;
+	M[108].mat = &U[115];		/* U23 */
+	M[108].rows = 3;
+	M[108].columns = 1;
+	M[109].mat = &U[118];		/* U24 */
 	M[109].rows = 6;
 	M[109].columns = 1;
-	M[110].mat = &U[376];		/* U37 */
+	M[110].mat = &U[124];		/* U25 */
 	M[110].rows = 6;
 	M[110].columns = 6;
-	M[111].mat = &U[412];		/* U38 */
+	M[111].mat = &U[160];		/* U26 */
 	M[111].rows = 6;
 	M[111].columns = 1;
-	M[112].mat = &U[418];		/* U39 */
+	M[112].mat = &U[166];		/* U27 */
 	M[112].rows = 6;
 	M[112].columns = 6;
-	M[113].mat = &U[454];		/* U40 */
-	M[113].rows = 1;
+	M[113].mat = &U[202];		/* U28 */
+	M[113].rows = 6;
 	M[113].columns = 1;
-	M[114].mat = &U[455];		/* U41 */
-	M[114].rows = 8;
-	M[114].columns = 1;
-	M[115].mat = &U[463];		/* U42 */
-	M[115].rows = 1;
+	M[114].mat = &U[208];		/* U29 */
+	M[114].rows = 6;
+	M[114].columns = 6;
+	M[115].mat = &U[244];		/* U30 */
+	M[115].rows = 6;
 	M[115].columns = 1;
-	M[116].mat = &U[464];		/* U43 */
-	M[116].rows = 8;
-	M[116].columns = 1;
-	M[117].mat = &U[472];		/* U44 */
-	M[117].rows = 8;
+	M[116].mat = &U[250];		/* U31 */
+	M[116].rows = 6;
+	M[116].columns = 6;
+	M[117].mat = &U[286];		/* U32 */
+	M[117].rows = 6;
 	M[117].columns = 1;
-	M[118].mat = &U[480];		/* U45 */
-	M[118].rows = 8;
+	M[118].mat = &U[292];		/* U33 */
+	M[118].rows = 6;
 	M[118].columns = 6;
+	M[119].mat = &U[328];		/* U34 */
+	M[119].rows = 6;
+	M[119].columns = 1;
+	M[120].mat = &U[334];		/* U35 */
+	M[120].rows = 6;
+	M[120].columns = 6;
+	M[121].mat = &U[370];		/* U36 */
+	M[121].rows = 6;
+	M[121].columns = 1;
+	M[122].mat = &U[376];		/* U37 */
+	M[122].rows = 6;
+	M[122].columns = 6;
+	M[123].mat = &U[412];		/* U38 */
+	M[123].rows = 6;
+	M[123].columns = 1;
+	M[124].mat = &U[418];		/* U39 */
+	M[124].rows = 6;
+	M[124].columns = 6;
+	M[125].mat = &U[454];		/* U40 */
+	M[125].rows = 1;
+	M[125].columns = 1;
+	M[126].mat = &U[455];		/* U41 */
+	M[126].rows = 8;
+	M[126].columns = 1;
+	M[127].mat = &U[463];		/* U42 */
+	M[127].rows = 1;
+	M[127].columns = 1;
+	M[128].mat = &U[464];		/* U43 */
+	M[128].rows = 8;
+	M[128].columns = 1;
+	M[129].mat = &U[472];		/* U44 */
+	M[129].rows = 8;
+	M[129].columns = 1;
+	M[130].mat = &U[480];		/* U45 */
+	M[130].rows = 8;
+	M[130].columns = 6;
 
 
     //INITIALIZE_DEPSTATES
@@ -588,6 +641,9 @@ namespace motion_stack
 	s[5] = I[5];
 	s[6] = I[6];
 	s[7] = I[7];
+	s[8] = I[8];		/* new_discrete_state */
+	s[9] = I[9];		/* new_discrete_state */
+	s[10] = I[10];		/* new_discrete_state */
 
 
     /* end of initialization phase */
@@ -650,7 +706,37 @@ namespace motion_stack
 		M[47].mat[7] = M[2].mat[4];
 
 		/* DiscreteDifferential\initialized = 0.0; */
-		V[436] = XXFALSE;
+		V[437] = XXFALSE;
+
+		/* EnergyEncodingArm\counter = 0; */
+		P[51] = 0.0;
+
+		/* EnergyEncodingBase\counter = 0; */
+		P[53] = 0.0;
+
+		/* EnergyEncodingSpring\counter = 0; */
+		P[55] = 0.0;
+
+		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\InitialEnegyState; */
+		V[497] = P[56];
+
+		/* PassivityLayer\SETP1\outputPackage = 0; */
+		V[501] = 0.0;
+
+		/* PassivityLayer\SETP1\energyQuanta = 0; */
+		V[500] = 0.0;
+
+		/* PassivityLayer\SETP2\outputPackage = 0; */
+		V[503] = 0.0;
+
+		/* PassivityLayer\SETP2\energyQuanta = 0; */
+		V[502] = 0.0;
+
+		/* PassivityLayer\SETP3\outputPackage = 0; */
+		V[505] = 0.0;
+
+		/* PassivityLayer\SETP3\energyQuanta = 0; */
+		V[504] = 0.0;
 
 	}
 
@@ -660,8 +746,8 @@ namespace motion_stack
 	inline void YouBotKinematicsModel::CalculateStatic (void)
 	{
 			/* CalculateJ\base_offset_H = homogeneous (eye (3), CalculateJ\baseoffset); */
-	XXMatrixEye (&M[74]);
-	XXMatrixHomogeneous (&M[46], &M[74], &M[5]);
+	XXMatrixEye (&M[86]);
+	XXMatrixHomogeneous (&M[46], &M[86], &M[5]);
 
 	/* CalculateJ\p1ref = CalculateJ\Linkdim[1:3,1]; */
 	M[45].mat[0] = M[3].mat[0];
@@ -735,14 +821,14 @@ namespace motion_stack
 	M[17].mat[2] = M[9].mat[2];
 
 	/* CalculateJ\uTr1refref[4:6] = skew (CalculateJ\Linkdim[1:3,1]) * CalculateJ\omega1; */
-	M[77].mat[0] = M[3].mat[0];
-	M[77].mat[1] = M[3].mat[6];
-	M[77].mat[2] = M[3].mat[12];
-	XXMatrixSkew (&M[76], &M[77]);
-	XXMatrixMul (&M[75], &M[76], &M[9]);
-	M[17].mat[3] = M[75].mat[0];
-	M[17].mat[4] = M[75].mat[1];
-	M[17].mat[5] = M[75].mat[2];
+	M[89].mat[0] = M[3].mat[0];
+	M[89].mat[1] = M[3].mat[6];
+	M[89].mat[2] = M[3].mat[12];
+	XXMatrixSkew (&M[88], &M[89]);
+	XXMatrixMul (&M[87], &M[88], &M[9]);
+	M[17].mat[3] = M[87].mat[0];
+	M[17].mat[4] = M[87].mat[1];
+	M[17].mat[5] = M[87].mat[2];
 
 	/* CalculateJ\uTr211[1:3] = CalculateJ\omega2; */
 	M[18].mat[0] = M[10].mat[0];
@@ -750,14 +836,14 @@ namespace motion_stack
 	M[18].mat[2] = M[10].mat[2];
 
 	/* CalculateJ\uTr211[4:6] = skew (CalculateJ\Linkdim[1:3,2]) * CalculateJ\omega2; */
-	M[80].mat[0] = M[3].mat[1];
-	M[80].mat[1] = M[3].mat[7];
-	M[80].mat[2] = M[3].mat[13];
-	XXMatrixSkew (&M[79], &M[80]);
-	XXMatrixMul (&M[78], &M[79], &M[10]);
-	M[18].mat[3] = M[78].mat[0];
-	M[18].mat[4] = M[78].mat[1];
-	M[18].mat[5] = M[78].mat[2];
+	M[92].mat[0] = M[3].mat[1];
+	M[92].mat[1] = M[3].mat[7];
+	M[92].mat[2] = M[3].mat[13];
+	XXMatrixSkew (&M[91], &M[92]);
+	XXMatrixMul (&M[90], &M[91], &M[10]);
+	M[18].mat[3] = M[90].mat[0];
+	M[18].mat[4] = M[90].mat[1];
+	M[18].mat[5] = M[90].mat[2];
 
 	/* CalculateJ\uTr322[1:3] = CalculateJ\omega3; */
 	M[19].mat[0] = M[11].mat[0];
@@ -765,14 +851,14 @@ namespace motion_stack
 	M[19].mat[2] = M[11].mat[2];
 
 	/* CalculateJ\uTr322[4:6] = skew (CalculateJ\Linkdim[1:3,3]) * CalculateJ\omega3; */
-	M[83].mat[0] = M[3].mat[2];
-	M[83].mat[1] = M[3].mat[8];
-	M[83].mat[2] = M[3].mat[14];
-	XXMatrixSkew (&M[82], &M[83]);
-	XXMatrixMul (&M[81], &M[82], &M[11]);
-	M[19].mat[3] = M[81].mat[0];
-	M[19].mat[4] = M[81].mat[1];
-	M[19].mat[5] = M[81].mat[2];
+	M[95].mat[0] = M[3].mat[2];
+	M[95].mat[1] = M[3].mat[8];
+	M[95].mat[2] = M[3].mat[14];
+	XXMatrixSkew (&M[94], &M[95]);
+	XXMatrixMul (&M[93], &M[94], &M[11]);
+	M[19].mat[3] = M[93].mat[0];
+	M[19].mat[4] = M[93].mat[1];
+	M[19].mat[5] = M[93].mat[2];
 
 	/* CalculateJ\uTr433[1:3] = CalculateJ\omega4; */
 	M[20].mat[0] = M[12].mat[0];
@@ -780,14 +866,14 @@ namespace motion_stack
 	M[20].mat[2] = M[12].mat[2];
 
 	/* CalculateJ\uTr433[4:6] = skew (CalculateJ\Linkdim[1:3,4]) * CalculateJ\omega4; */
-	M[86].mat[0] = M[3].mat[3];
-	M[86].mat[1] = M[3].mat[9];
-	M[86].mat[2] = M[3].mat[15];
-	XXMatrixSkew (&M[85], &M[86]);
-	XXMatrixMul (&M[84], &M[85], &M[12]);
-	M[20].mat[3] = M[84].mat[0];
-	M[20].mat[4] = M[84].mat[1];
-	M[20].mat[5] = M[84].mat[2];
+	M[98].mat[0] = M[3].mat[3];
+	M[98].mat[1] = M[3].mat[9];
+	M[98].mat[2] = M[3].mat[15];
+	XXMatrixSkew (&M[97], &M[98]);
+	XXMatrixMul (&M[96], &M[97], &M[12]);
+	M[20].mat[3] = M[96].mat[0];
+	M[20].mat[4] = M[96].mat[1];
+	M[20].mat[5] = M[96].mat[2];
 
 	/* CalculateJ\uTr544[1:3] = CalculateJ\omega5; */
 	M[21].mat[0] = M[13].mat[0];
@@ -795,14 +881,14 @@ namespace motion_stack
 	M[21].mat[2] = M[13].mat[2];
 
 	/* CalculateJ\uTr544[4:6] = skew (CalculateJ\Linkdim[1:3,5]) * CalculateJ\omega5; */
-	M[89].mat[0] = M[3].mat[4];
-	M[89].mat[1] = M[3].mat[10];
-	M[89].mat[2] = M[3].mat[16];
-	XXMatrixSkew (&M[88], &M[89]);
-	XXMatrixMul (&M[87], &M[88], &M[13]);
-	M[21].mat[3] = M[87].mat[0];
-	M[21].mat[4] = M[87].mat[1];
-	M[21].mat[5] = M[87].mat[2];
+	M[101].mat[0] = M[3].mat[4];
+	M[101].mat[1] = M[3].mat[10];
+	M[101].mat[2] = M[3].mat[16];
+	XXMatrixSkew (&M[100], &M[101]);
+	XXMatrixMul (&M[99], &M[100], &M[13]);
+	M[21].mat[3] = M[99].mat[0];
+	M[21].mat[4] = M[99].mat[1];
+	M[21].mat[5] = M[99].mat[2];
 
 	}
 
@@ -821,111 +907,210 @@ namespace motion_stack
 	 */
 	inline void YouBotKinematicsModel::CalculateDynamic (void)
 	{
-			/* StateMux\arm_angles = angles_measured; */
-	XXMatrixMov (&M[59], &M[67]);
+			/* EnergyEncodingArm\inputMessage = input_energy_arm; */
+	XXMatrixMov (&M[54], &M[71]);
+
+	/* EnergyEncodingBase\inputMessage = input_energy_base; */
+	XXMatrixMov (&M[56], &M[75]);
+
+	/* StateMux\arm_angles = angles_measured; */
+	XXMatrixMov (&M[65], &M[77]);
+
+	/* EnergyEncodingSpring\inputMessage = input_energy_spring; */
+	XXMatrixMov (&M[58], &M[78]);
 
 	/* TF\tip_e = W_tooltip_00; */
-	XXMatrixMov (&M[62], &M[69]);
+	XXMatrixMov (&M[68], &M[81]);
+
+	/* new_discrete_rate = EnergyEncodingArm\inputMessage[2]; */
+	R[8] = M[54].mat[1];
+
+		/* EnergyEncodingArm\counter = (EnergyEncodingArm\counter + 1) mod EnergyEncodingArm\roundUp; */
+		P[51] = XXIntegerModulo ((P[51] + 1.0), P[50]);
+
+		/* if (EnergyEncodingArm\inputMessage[2] == new_discrete_state) */
+		if (M[54].mat[1] == s[8])
+		{
+			/* EnergyEncodingArm\inputEnergy = 0; */
+			V[440] = 0.0;
+		}
+		else
+		{
+			/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputMessage[1]; */
+			V[440] = M[54].mat[0];
+		}
+
+		/* EnergyEncodingArm\outputMessage[1] = PassivityLayer\SETP1\outputPackage; */
+		M[55].mat[0] = V[501];
+
+		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\counter; */
+		M[55].mat[1] = P[51];
+
+	/* new_discrete_rate = EnergyEncodingBase\inputMessage[2]; */
+	R[9] = M[56].mat[1];
+
+		/* EnergyEncodingBase\counter = (EnergyEncodingBase\counter + 1) mod EnergyEncodingBase\roundUp; */
+		P[53] = XXIntegerModulo ((P[53] + 1.0), P[52]);
+
+		/* if (EnergyEncodingBase\inputMessage[2] == new_discrete_state) */
+		if (M[56].mat[1] == s[9])
+		{
+			/* EnergyEncodingBase\inputEnergy = 0; */
+			V[445] = 0.0;
+		}
+		else
+		{
+			/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputMessage[1]; */
+			V[445] = M[56].mat[0];
+		}
+
+		/* EnergyEncodingBase\outputMessage[1] = PassivityLayer\SETP2\outputPackage; */
+		M[57].mat[0] = V[503];
+
+		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\counter; */
+		M[57].mat[1] = P[53];
+
+	/* new_discrete_rate = EnergyEncodingSpring\inputMessage[2]; */
+	R[10] = M[58].mat[1];
+
+		/* EnergyEncodingSpring\counter = (EnergyEncodingSpring\counter + 1) mod EnergyEncodingSpring\roundUp; */
+		P[55] = XXIntegerModulo ((P[55] + 1.0), P[54]);
+
+		/* if (EnergyEncodingSpring\inputMessage[2] == new_discrete_state) */
+		if (M[58].mat[1] == s[10])
+		{
+			/* EnergyEncodingSpring\inputEnergy = 0; */
+			V[450] = 0.0;
+		}
+		else
+		{
+			/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputMessage[1]; */
+			V[450] = M[58].mat[0];
+		}
+
+		/* EnergyEncodingSpring\outputMessage[1] = PassivityLayer\SETP3\outputPackage; */
+		M[59].mat[0] = V[505];
+
+		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\counter; */
+		M[59].mat[1] = P[55];
 
 		/* HToAngles\H_vp_base = HToAngles\H_vp_0; */
-		XXMatrixMov (&M[56], &M[54]);
+		XXMatrixMov (&M[62], &M[60]);
 
 		/* HToAngles\aldo = (trace (HToAngles\H_vp_base[1:3,1:3]) - 1) / 2; */
-		M[91].mat[0] = M[56].mat[0];
-		M[91].mat[1] = M[56].mat[1];
-		M[91].mat[2] = M[56].mat[2];
-		M[91].mat[3] = M[56].mat[4];
-		M[91].mat[4] = M[56].mat[5];
-		M[91].mat[5] = M[56].mat[6];
-		M[91].mat[6] = M[56].mat[8];
-		M[91].mat[7] = M[56].mat[9];
-		M[91].mat[8] = M[56].mat[10];
-		M[90].mat[0] = XXMatrixTrace (&M[91]);
-		V[472] = (XXMatrixTrace (&M[91]) - 1.0) / 2.0;
+		M[103].mat[0] = M[62].mat[0];
+		M[103].mat[1] = M[62].mat[1];
+		M[103].mat[2] = M[62].mat[2];
+		M[103].mat[3] = M[62].mat[4];
+		M[103].mat[4] = M[62].mat[5];
+		M[103].mat[5] = M[62].mat[6];
+		M[103].mat[6] = M[62].mat[8];
+		M[103].mat[7] = M[62].mat[9];
+		M[103].mat[8] = M[62].mat[10];
+		M[102].mat[0] = XXMatrixTrace (&M[103]);
+		V[488] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
 
 		/* if (HToAngles\aldo < -1) */
-		if (V[472] < -1.0)
+		if (V[488] < -1.0)
 		{
 			/* HToAngles\aldo = -1; */
-			V[472] = -1.0;
+			V[488] = -1.0;
 		}
 
 		/* if (HToAngles\aldo > 1) */
-		if (V[472] > 1.0)
+		if (V[488] > 1.0)
 		{
 			/* HToAngles\aldo = 1; */
-			V[472] = 1.0;
+			V[488] = 1.0;
 		}
 
 		/* HToAngles\theta = arccos (HToAngles\aldo); */
-		V[473] = acos (V[472]);
+		V[489] = acos (V[488]);
 
 		/* if (HToAngles\theta == 0) */
-		if (V[473] == 0.0)
+		if (V[489] == 0.0)
 		{
 			/* HToAngles\norm_omega = 0; */
-			XXMatrixScalarMov (&M[57], 0.0);
+			XXMatrixScalarMov (&M[63], 0.0);
 		}
 		else
 		{
 			/* HToAngles\norm_omega = (1 / (2 * sin (HToAngles\theta))) * [HToAngles\H_vp_base[3,2] - HToAngles\H_vp_base[2,3]; HToAngles\H_vp_base[1,3] - HToAngles\H_vp_base[3,1]; HToAngles\H_vp_base[2,1] - HToAngles\H_vp_base[1,2]]; */
-			M[94].mat[0] = M[56].mat[9] - M[56].mat[6];
-			M[94].mat[1] = M[56].mat[2] - M[56].mat[8];
-			M[94].mat[2] = M[56].mat[4] - M[56].mat[1];
-			XXScalarMatrixMul (&M[57], (1.0 / (2.0 * sin (V[473]))), &M[94]);
+			M[106].mat[0] = M[62].mat[9] - M[62].mat[6];
+			M[106].mat[1] = M[62].mat[2] - M[62].mat[8];
+			M[106].mat[2] = M[62].mat[4] - M[62].mat[1];
+			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[489]))), &M[106]);
 		}
 
 		/* HToAngles\omega = HToAngles\theta * HToAngles\norm_omega; */
-		XXScalarMatrixMul (&M[58], V[473], &M[57]);
+		XXScalarMatrixMul (&M[64], V[489], &M[63]);
 
 		/* HToAngles\pose[1] = HToAngles\omega[3]; */
-		M[55].mat[0] = M[58].mat[2];
+		M[61].mat[0] = M[64].mat[2];
 
 		/* HToAngles\pose[2] = HToAngles\H_vp_base[1,4]; */
-		M[55].mat[1] = M[56].mat[3];
+		M[61].mat[1] = M[62].mat[3];
 
 		/* HToAngles\pose[3] = HToAngles\H_vp_base[2,4]; */
-		M[55].mat[2] = M[56].mat[7];
+		M[61].mat[2] = M[62].mat[7];
 
 	/* StateMux\measured_angles[4:8] = StateMux\arm_angles; */
-	M[60].mat[3] = M[59].mat[0];
-	M[60].mat[4] = M[59].mat[1];
-	M[60].mat[5] = M[59].mat[2];
-	M[60].mat[6] = M[59].mat[3];
-	M[60].mat[7] = M[59].mat[4];
+	M[66].mat[3] = M[65].mat[0];
+	M[66].mat[4] = M[65].mat[1];
+	M[66].mat[5] = M[65].mat[2];
+	M[66].mat[6] = M[65].mat[3];
+	M[66].mat[7] = M[65].mat[4];
+
+	/* output_energy_arm = EnergyEncodingArm\outputMessage; */
+	XXMatrixMov (&M[74], &M[55]);
+
+	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
+	XXMatrixMov (&M[76], &M[59]);
+
+	/* output_energy_base = EnergyEncodingBase\outputMessage; */
+	XXMatrixMov (&M[80], &M[57]);
+
+		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\EnergyState + PassivityLayer\PlusMinus1\output; */
+		V[497] = V[497] + V[499];
+
+		/* PassivityLayer\EnegyTank1\energyState = PassivityLayer\EnegyTank1\EnergyState; */
+		V[496] = V[497];
 
 	/* StateMux\measured_angles[1:3] = HToAngles\pose; */
-	M[60].mat[0] = M[55].mat[0];
-	M[60].mat[1] = M[55].mat[1];
-	M[60].mat[2] = M[55].mat[2];
+	M[66].mat[0] = M[61].mat[0];
+	M[66].mat[1] = M[61].mat[1];
+	M[66].mat[2] = M[61].mat[2];
 
 	/* DiscreteDifferential\input = StateMux\measured_angles; */
-	XXMatrixMov (&M[71], &M[60]);
+	XXMatrixMov (&M[83], &M[66]);
+
+	/* EnergyTank = PassivityLayer\EnegyTank1\energyState; */
+	V[597] = V[496];
 
 	/* CalculateJ\Rz = [cos (StateMux\measured_angles[1]), -sin (StateMux\measured_angles[1]), 0; sin (StateMux\measured_angles[1]), cos (StateMux\measured_angles[1]), 0; 0, 0, 1]; */
-	M[48].mat[0] = cos (M[60].mat[0]);
-	M[48].mat[1] = -(sin (M[60].mat[0]));
+	M[48].mat[0] = cos (M[66].mat[0]);
+	M[48].mat[1] = -(sin (M[66].mat[0]));
 	M[48].mat[2] = 0.0;
-	M[48].mat[3] = sin (M[60].mat[0]);
-	M[48].mat[4] = cos (M[60].mat[0]);
+	M[48].mat[3] = sin (M[66].mat[0]);
+	M[48].mat[4] = cos (M[66].mat[0]);
 	M[48].mat[5] = 0.0;
 	M[48].mat[6] = 0.0;
 	M[48].mat[7] = 0.0;
 	M[48].mat[8] = 1.0;
 
 	/* CalculateJ\Href0 = homogeneous (CalculateJ\Rz, [StateMux\measured_angles[2]; StateMux\measured_angles[3]; 0]) * CalculateJ\base_offset_H; */
-	M[96].mat[0] = M[60].mat[1];
-	M[96].mat[1] = M[60].mat[2];
-	M[96].mat[2] = 0.0;
-	XXMatrixHomogeneous (&M[95], &M[48], &M[96]);
-	XXMatrixMul (&M[42], &M[95], &M[46]);
+	M[108].mat[0] = M[66].mat[1];
+	M[108].mat[1] = M[66].mat[2];
+	M[108].mat[2] = 0.0;
+	XXMatrixHomogeneous (&M[107], &M[48], &M[108]);
+	XXMatrixMul (&M[42], &M[107], &M[46]);
 
 	/* CalculateJ\R1ref = [cos (-StateMux\measured_angles[4]), -sin (-StateMux\measured_angles[4]), 0; sin (-StateMux\measured_angles[4]), cos (-StateMux\measured_angles[4]), 0; 0, 0, 1]; */
-	M[44].mat[0] = cos (-M[60].mat[3]);
-	M[44].mat[1] = -(sin (-M[60].mat[3]));
+	M[44].mat[0] = cos (-M[66].mat[3]);
+	M[44].mat[1] = -(sin (-M[66].mat[3]));
 	M[44].mat[2] = 0.0;
-	M[44].mat[3] = sin (-M[60].mat[3]);
-	M[44].mat[4] = cos (-M[60].mat[3]);
+	M[44].mat[3] = sin (-M[66].mat[3]);
+	M[44].mat[4] = cos (-M[66].mat[3]);
 	M[44].mat[5] = 0.0;
 	M[44].mat[6] = 0.0;
 	M[44].mat[7] = 0.0;
@@ -935,53 +1120,53 @@ namespace motion_stack
 	XXMatrixHomogeneous (&M[43], &M[44], &M[45]);
 
 	/* CalculateJ\R21 = [cos (StateMux\measured_angles[5]), 0, sin (StateMux\measured_angles[5]); 0, 1, 0; -sin (StateMux\measured_angles[5]), 0, cos (StateMux\measured_angles[5])]; */
-	M[22].mat[0] = cos (M[60].mat[4]);
+	M[22].mat[0] = cos (M[66].mat[4]);
 	M[22].mat[1] = 0.0;
-	M[22].mat[2] = sin (M[60].mat[4]);
+	M[22].mat[2] = sin (M[66].mat[4]);
 	M[22].mat[3] = 0.0;
 	M[22].mat[4] = 1.0;
 	M[22].mat[5] = 0.0;
-	M[22].mat[6] = -(sin (M[60].mat[4]));
+	M[22].mat[6] = -(sin (M[66].mat[4]));
 	M[22].mat[7] = 0.0;
-	M[22].mat[8] = cos (M[60].mat[4]);
+	M[22].mat[8] = cos (M[66].mat[4]);
 
 	/* CalculateJ\H21 = homogeneous (CalculateJ\R21, CalculateJ\p21); */
 	XXMatrixHomogeneous (&M[32], &M[22], &M[27]);
 
 	/* CalculateJ\R32 = [cos (StateMux\measured_angles[6]), 0, sin (StateMux\measured_angles[6]); 0, 1, 0; -sin (StateMux\measured_angles[6]), 0, cos (StateMux\measured_angles[6])]; */
-	M[23].mat[0] = cos (M[60].mat[5]);
+	M[23].mat[0] = cos (M[66].mat[5]);
 	M[23].mat[1] = 0.0;
-	M[23].mat[2] = sin (M[60].mat[5]);
+	M[23].mat[2] = sin (M[66].mat[5]);
 	M[23].mat[3] = 0.0;
 	M[23].mat[4] = 1.0;
 	M[23].mat[5] = 0.0;
-	M[23].mat[6] = -(sin (M[60].mat[5]));
+	M[23].mat[6] = -(sin (M[66].mat[5]));
 	M[23].mat[7] = 0.0;
-	M[23].mat[8] = cos (M[60].mat[5]);
+	M[23].mat[8] = cos (M[66].mat[5]);
 
 	/* CalculateJ\H32 = homogeneous (CalculateJ\R32, CalculateJ\p32); */
 	XXMatrixHomogeneous (&M[33], &M[23], &M[28]);
 
 	/* CalculateJ\R43 = [cos (StateMux\measured_angles[7]), 0, sin (StateMux\measured_angles[7]); 0, 1, 0; -sin (StateMux\measured_angles[7]), 0, cos (StateMux\measured_angles[7])]; */
-	M[24].mat[0] = cos (M[60].mat[6]);
+	M[24].mat[0] = cos (M[66].mat[6]);
 	M[24].mat[1] = 0.0;
-	M[24].mat[2] = sin (M[60].mat[6]);
+	M[24].mat[2] = sin (M[66].mat[6]);
 	M[24].mat[3] = 0.0;
 	M[24].mat[4] = 1.0;
 	M[24].mat[5] = 0.0;
-	M[24].mat[6] = -(sin (M[60].mat[6]));
+	M[24].mat[6] = -(sin (M[66].mat[6]));
 	M[24].mat[7] = 0.0;
-	M[24].mat[8] = cos (M[60].mat[6]);
+	M[24].mat[8] = cos (M[66].mat[6]);
 
 	/* CalculateJ\H43 = homogeneous (CalculateJ\R43, CalculateJ\p43); */
 	XXMatrixHomogeneous (&M[34], &M[24], &M[29]);
 
 	/* CalculateJ\R54 = [cos (-StateMux\measured_angles[8]), -sin (-StateMux\measured_angles[8]), 0; sin (-StateMux\measured_angles[8]), cos (-StateMux\measured_angles[8]), 0; 0, 0, 1]; */
-	M[25].mat[0] = cos (-M[60].mat[7]);
-	M[25].mat[1] = -(sin (-M[60].mat[7]));
+	M[25].mat[0] = cos (-M[66].mat[7]);
+	M[25].mat[1] = -(sin (-M[66].mat[7]));
 	M[25].mat[2] = 0.0;
-	M[25].mat[3] = sin (-M[60].mat[7]);
-	M[25].mat[4] = cos (-M[60].mat[7]);
+	M[25].mat[3] = sin (-M[66].mat[7]);
+	M[25].mat[4] = cos (-M[66].mat[7]);
 	M[25].mat[5] = 0.0;
 	M[25].mat[6] = 0.0;
 	M[25].mat[7] = 0.0;
@@ -1009,94 +1194,94 @@ namespace motion_stack
 	XXMatrixMul (&M[1], &M[41], &M[36]);
 
 	/* CalculateJ\controllableJ[1:6,1] = Adjoint (CalculateJ\Href0) * CalculateJ\uTrzrefref; */
-	XXMatrixAdjoint (&M[98], &M[42]);
-	XXMatrixMul (&M[97], &M[98], &M[14]);
-	M[0].mat[0] = M[97].mat[0];
-	M[0].mat[8] = M[97].mat[1];
-	M[0].mat[16] = M[97].mat[2];
-	M[0].mat[24] = M[97].mat[3];
-	M[0].mat[32] = M[97].mat[4];
-	M[0].mat[40] = M[97].mat[5];
+	XXMatrixAdjoint (&M[110], &M[42]);
+	XXMatrixMul (&M[109], &M[110], &M[14]);
+	M[0].mat[0] = M[109].mat[0];
+	M[0].mat[8] = M[109].mat[1];
+	M[0].mat[16] = M[109].mat[2];
+	M[0].mat[24] = M[109].mat[3];
+	M[0].mat[32] = M[109].mat[4];
+	M[0].mat[40] = M[109].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,3] = Adjoint (CalculateJ\Href0) * CalculateJ\uTryrefref; */
-	XXMatrixAdjoint (&M[100], &M[42]);
-	XXMatrixMul (&M[99], &M[100], &M[15]);
-	M[0].mat[2] = M[99].mat[0];
-	M[0].mat[10] = M[99].mat[1];
-	M[0].mat[18] = M[99].mat[2];
-	M[0].mat[26] = M[99].mat[3];
-	M[0].mat[34] = M[99].mat[4];
-	M[0].mat[42] = M[99].mat[5];
+	XXMatrixAdjoint (&M[112], &M[42]);
+	XXMatrixMul (&M[111], &M[112], &M[15]);
+	M[0].mat[2] = M[111].mat[0];
+	M[0].mat[10] = M[111].mat[1];
+	M[0].mat[18] = M[111].mat[2];
+	M[0].mat[26] = M[111].mat[3];
+	M[0].mat[34] = M[111].mat[4];
+	M[0].mat[42] = M[111].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,2] = Adjoint (CalculateJ\Href0) * CalculateJ\uTrxrefref; */
-	XXMatrixAdjoint (&M[102], &M[42]);
-	XXMatrixMul (&M[101], &M[102], &M[16]);
-	M[0].mat[1] = M[101].mat[0];
-	M[0].mat[9] = M[101].mat[1];
-	M[0].mat[17] = M[101].mat[2];
-	M[0].mat[25] = M[101].mat[3];
-	M[0].mat[33] = M[101].mat[4];
-	M[0].mat[41] = M[101].mat[5];
+	XXMatrixAdjoint (&M[114], &M[42]);
+	XXMatrixMul (&M[113], &M[114], &M[16]);
+	M[0].mat[1] = M[113].mat[0];
+	M[0].mat[9] = M[113].mat[1];
+	M[0].mat[17] = M[113].mat[2];
+	M[0].mat[25] = M[113].mat[3];
+	M[0].mat[33] = M[113].mat[4];
+	M[0].mat[41] = M[113].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,4] = Adjoint (CalculateJ\Href0) * CalculateJ\uTr1refref; */
-	XXMatrixAdjoint (&M[104], &M[42]);
-	XXMatrixMul (&M[103], &M[104], &M[17]);
-	M[0].mat[3] = M[103].mat[0];
-	M[0].mat[11] = M[103].mat[1];
-	M[0].mat[19] = M[103].mat[2];
-	M[0].mat[27] = M[103].mat[3];
-	M[0].mat[35] = M[103].mat[4];
-	M[0].mat[43] = M[103].mat[5];
+	XXMatrixAdjoint (&M[116], &M[42]);
+	XXMatrixMul (&M[115], &M[116], &M[17]);
+	M[0].mat[3] = M[115].mat[0];
+	M[0].mat[11] = M[115].mat[1];
+	M[0].mat[19] = M[115].mat[2];
+	M[0].mat[27] = M[115].mat[3];
+	M[0].mat[35] = M[115].mat[4];
+	M[0].mat[43] = M[115].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,5] = Adjoint (CalculateJ\H10) * CalculateJ\uTr211; */
-	XXMatrixAdjoint (&M[106], &M[37]);
-	XXMatrixMul (&M[105], &M[106], &M[18]);
-	M[0].mat[4] = M[105].mat[0];
-	M[0].mat[12] = M[105].mat[1];
-	M[0].mat[20] = M[105].mat[2];
-	M[0].mat[28] = M[105].mat[3];
-	M[0].mat[36] = M[105].mat[4];
-	M[0].mat[44] = M[105].mat[5];
+	XXMatrixAdjoint (&M[118], &M[37]);
+	XXMatrixMul (&M[117], &M[118], &M[18]);
+	M[0].mat[4] = M[117].mat[0];
+	M[0].mat[12] = M[117].mat[1];
+	M[0].mat[20] = M[117].mat[2];
+	M[0].mat[28] = M[117].mat[3];
+	M[0].mat[36] = M[117].mat[4];
+	M[0].mat[44] = M[117].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,6] = Adjoint (CalculateJ\H20) * CalculateJ\uTr322; */
-	XXMatrixAdjoint (&M[108], &M[38]);
-	XXMatrixMul (&M[107], &M[108], &M[19]);
-	M[0].mat[5] = M[107].mat[0];
-	M[0].mat[13] = M[107].mat[1];
-	M[0].mat[21] = M[107].mat[2];
-	M[0].mat[29] = M[107].mat[3];
-	M[0].mat[37] = M[107].mat[4];
-	M[0].mat[45] = M[107].mat[5];
+	XXMatrixAdjoint (&M[120], &M[38]);
+	XXMatrixMul (&M[119], &M[120], &M[19]);
+	M[0].mat[5] = M[119].mat[0];
+	M[0].mat[13] = M[119].mat[1];
+	M[0].mat[21] = M[119].mat[2];
+	M[0].mat[29] = M[119].mat[3];
+	M[0].mat[37] = M[119].mat[4];
+	M[0].mat[45] = M[119].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,7] = Adjoint (CalculateJ\H30) * CalculateJ\uTr433; */
-	XXMatrixAdjoint (&M[110], &M[39]);
-	XXMatrixMul (&M[109], &M[110], &M[20]);
-	M[0].mat[6] = M[109].mat[0];
-	M[0].mat[14] = M[109].mat[1];
-	M[0].mat[22] = M[109].mat[2];
-	M[0].mat[30] = M[109].mat[3];
-	M[0].mat[38] = M[109].mat[4];
-	M[0].mat[46] = M[109].mat[5];
+	XXMatrixAdjoint (&M[122], &M[39]);
+	XXMatrixMul (&M[121], &M[122], &M[20]);
+	M[0].mat[6] = M[121].mat[0];
+	M[0].mat[14] = M[121].mat[1];
+	M[0].mat[22] = M[121].mat[2];
+	M[0].mat[30] = M[121].mat[3];
+	M[0].mat[38] = M[121].mat[4];
+	M[0].mat[46] = M[121].mat[5];
 
 	/* CalculateJ\controllableJ[1:6,8] = Adjoint (CalculateJ\H40) * CalculateJ\uTr544; */
-	XXMatrixAdjoint (&M[112], &M[40]);
-	XXMatrixMul (&M[111], &M[112], &M[21]);
-	M[0].mat[7] = M[111].mat[0];
-	M[0].mat[15] = M[111].mat[1];
-	M[0].mat[23] = M[111].mat[2];
-	M[0].mat[31] = M[111].mat[3];
-	M[0].mat[39] = M[111].mat[4];
-	M[0].mat[47] = M[111].mat[5];
+	XXMatrixAdjoint (&M[124], &M[40]);
+	XXMatrixMul (&M[123], &M[124], &M[21]);
+	M[0].mat[7] = M[123].mat[0];
+	M[0].mat[15] = M[123].mat[1];
+	M[0].mat[23] = M[123].mat[2];
+	M[0].mat[31] = M[123].mat[3];
+	M[0].mat[39] = M[123].mat[4];
+	M[0].mat[47] = M[123].mat[5];
 
 	/* if notDiscreteDifferential\initialized */
-	if (!V[436])
+	if (!V[437])
 	{
 		/* DiscreteDifferential\initial_input = DiscreteDifferential\initial - DiscreteDifferential\input / sampletime; */
-		XXMatrixScalarDiv (&M[114], &M[71], step_size);
-		XXMatrixSub (&M[53], &M[52], &M[114]);
+		XXMatrixScalarDiv (&M[126], &M[83], step_size);
+		XXMatrixSub (&M[53], &M[52], &M[126]);
 
 		/* DiscreteDifferential\initialized = 1.0; */
-		V[436] = XXTRUE;
+		V[437] = XXTRUE;
 	}
 	else
 	{
@@ -1105,43 +1290,100 @@ namespace motion_stack
 	}
 
 	/* DiscreteDifferential\output = (DiscreteDifferential\input - DiscreteDifferential\input_previous) / sampletime + DiscreteDifferential\initial_input; */
-	XXMatrixSub (&M[117], &M[71], &M[72]);
-	XXMatrixScalarDiv (&M[116], &M[117], step_size);
-	XXMatrixAdd (&M[51], &M[116], &M[53]);
+	XXMatrixSub (&M[129], &M[83], &M[84]);
+	XXMatrixScalarDiv (&M[128], &M[129], step_size);
+	XXMatrixAdd (&M[51], &M[128], &M[53]);
+
+	/* PassivityLayer\Gain\output = PassivityLayer\EnegyTank1\energyState / 3; */
+	V[498] = V[496] / 3.0;
 
 	/* H_tooltip_0 = CalculateJ\Htip0; */
-	XXMatrixMov (&M[70], &M[1]);
+	XXMatrixMov (&M[79], &M[1]);
 
 	/* TF\joints_e = transpose (CalculateJ\controllableJ) * TF\tip_e; */
-	XXMatrixTranspose (&M[118], &M[0]);
-	XXMatrixMul (&M[61], &M[118], &M[62]);
+	XXMatrixTranspose (&M[130], &M[0]);
+	XXMatrixMul (&M[67], &M[130], &M[68]);
 
 	/* TF\tip_f = (CalculateJ\controllableJ) * DiscreteDifferential\output; */
-	XXMatrixMul (&M[63], &M[0], &M[51]);
+	XXMatrixMul (&M[69], &M[0], &M[51]);
+
+		/* if PassivityLayer\SETP1\CommunicationTreshold > PassivityLayer\Gain\output */
+		if (P[58] > V[498])
+		{
+			/* PassivityLayer\SETP1\outputPackage = 0; */
+			V[501] = 0.0;
+
+			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy; */
+			V[500] = V[440];
+		}
+		else
+		{
+			/* PassivityLayer\SETP1\outputPackage = -(PassivityLayer\SETP1\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP1\SendoutPercent; */
+			V[501] = -(P[58] - V[498]) * P[59];
+
+			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy - PassivityLayer\SETP1\outputPackage; */
+			V[500] = V[440] - V[501];
+		}
+
+		/* if PassivityLayer\SETP2\CommunicationTreshold > PassivityLayer\Gain\output */
+		if (P[60] > V[498])
+		{
+			/* PassivityLayer\SETP2\outputPackage = 0; */
+			V[503] = 0.0;
+
+			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy; */
+			V[502] = V[445];
+		}
+		else
+		{
+			/* PassivityLayer\SETP2\outputPackage = -(PassivityLayer\SETP2\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP2\SendoutPercent; */
+			V[503] = -(P[60] - V[498]) * P[61];
+
+			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy - PassivityLayer\SETP2\outputPackage; */
+			V[502] = V[445] - V[503];
+		}
+
+		/* if PassivityLayer\SETP3\CommunicationTreshold > PassivityLayer\Gain\output */
+		if (P[62] > V[498])
+		{
+			/* PassivityLayer\SETP3\outputPackage = 0; */
+			V[505] = 0.0;
+
+			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy; */
+			V[504] = V[450];
+		}
+		else
+		{
+			/* PassivityLayer\SETP3\outputPackage = -(PassivityLayer\SETP3\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP3\SendoutPercent; */
+			V[505] = -(P[62] - V[498]) * P[63];
+
+			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy - PassivityLayer\SETP3\outputPackage; */
+			V[504] = V[450] - V[505];
+		}
 
 	/* T_tooltip_00 = TF\tip_f; */
-	XXMatrixMov (&M[68], &M[63]);
+	XXMatrixMov (&M[82], &M[69]);
 
 	/* CmdDemux\W_base_00 = [0; 0; TF\joints_e[1]; TF\joints_e[2]; TF\joints_e[3]; 0]; */
 	M[50].mat[0] = 0.0;
 	M[50].mat[1] = 0.0;
-	M[50].mat[2] = M[61].mat[0];
-	M[50].mat[3] = M[61].mat[1];
-	M[50].mat[4] = M[61].mat[2];
+	M[50].mat[2] = M[67].mat[0];
+	M[50].mat[3] = M[67].mat[1];
+	M[50].mat[4] = M[67].mat[2];
 	M[50].mat[5] = 0.0;
 
 	/* CmdDemux\arm_torque = TF\joints_e[4:8]; */
-	M[49].mat[0] = M[61].mat[3];
-	M[49].mat[1] = M[61].mat[4];
-	M[49].mat[2] = M[61].mat[5];
-	M[49].mat[3] = M[61].mat[6];
-	M[49].mat[4] = M[61].mat[7];
+	M[49].mat[0] = M[67].mat[3];
+	M[49].mat[1] = M[67].mat[4];
+	M[49].mat[2] = M[67].mat[5];
+	M[49].mat[3] = M[67].mat[6];
+	M[49].mat[4] = M[67].mat[7];
 
 	/* torques_cmd = CmdDemux\arm_torque; */
-	XXMatrixMov (&M[65], &M[49]);
+	XXMatrixMov (&M[72], &M[49]);
 
 	/* W_base_00 = CmdDemux\W_base_00; */
-	XXMatrixMov (&M[66], &M[50]);
+	XXMatrixMov (&M[73], &M[50]);
 
 	}
 
@@ -1154,7 +1396,13 @@ namespace motion_stack
 	inline void YouBotKinematicsModel::CalculateOutput (void)
 	{
 			/* HToAngles\H_vp_0 = H_base_0; */
-	XXMatrixMov (&M[54], &M[64]);
+	XXMatrixMov (&M[60], &M[70]);
+
+	/* PassivityLayer\PlusMinus1\output = (PassivityLayer\SETP3\energyQuanta + PassivityLayer\SETP2\energyQuanta) + PassivityLayer\SETP1\energyQuanta; */
+	V[499] = (V[504] + V[502]) + V[500];
+
+	/* AntiBug\aldo = EnergyEncodingArm\inputEnergy + TF\tip_f[1]; */
+	V[0] = V[440] + M[69].mat[0];
 
 			}
 
