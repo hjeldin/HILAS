@@ -1,0 +1,5 @@
+Notes:
+* For visualisation in RVIZ use: roslaunch YouBot_deployment youbot_description.launch
+* minimalistic.launch will start hokuyo node & amcl
+* BRSU.ops can be run with and without laser scanner
+
