@@ -3,7 +3,9 @@
 source /opt/ros/electric/setup.bash;
 source /opt/ros/electric/stacks/orocos_toolchain/env.sh;
 
-export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/DEV
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/ros_stacks
+
+export ROS_MASTER_URI=http://robert:11311
 
 export YOUBOT_PATH=$(rosstack find youbot-stack)
 

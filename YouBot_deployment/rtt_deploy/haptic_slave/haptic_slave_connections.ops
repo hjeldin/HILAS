@@ -8,15 +8,15 @@ cp_ros_Hytip0.name_id = "/HapticMaster/Hytip0";
 
 var ConnPolicy cp_ros_inH;
 cp_ros_inH.transport = 3;
-cp_ros_inH.size = 1000;
-cp_ros_inH.type=BUFFER;
 cp_ros_inH.name_id = "/HapticMaster/inH";
+
+var ConnPolicy cp_ros_ET;
+cp_ros_ET.transport = 3;
+cp_ros_ET.name_id = "/youbot/EnergyTank";
 
 # From Haptic_master
 var ConnPolicy cp_ros_outH;
 cp_ros_outH.transport = 3;
-cp_ros_outH.size=1000;
-cp_ros_outH.type=BUFFER;
 cp_ros_outH.name_id = "/HapticMaster/outH";
 
 var ConnPolicy cp_ros_Hout0;
@@ -35,6 +35,8 @@ var ConnPolicy cp_ros_slider;
 cp_ros_slider.transport = 3;
 cp_ros_slider.name_id = "/HapticMaster/slider";
 
+
+
 #
 # Load components
 #
@@ -45,6 +47,7 @@ cp_ros_slider.name_id = "/HapticMaster/slider";
 
 stream("controller.Htip0", cp_ros_Hytip0);
 stream("controller.outH", cp_ros_inH);
+stream("controller.EnergyTank", cp_ros_ET);
 
 stream("controller.inH", cp_ros_outH);
 stream("controller.Hvp0", cp_ros_Hout0);

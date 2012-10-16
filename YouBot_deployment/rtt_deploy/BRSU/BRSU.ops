@@ -31,7 +31,11 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/executive.ops")
 #runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/configuration_publisher.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/youbot_state_republisher.ops")
 
+print.ln("Starting joystick_to_geometry_Twist/slave.ops")
 runScript( rospack.find("joystick_to_geometry_Twist") + "/slave.ops")
+
+print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/laser.ops");
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/laser.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;

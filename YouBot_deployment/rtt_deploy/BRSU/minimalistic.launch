@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+   <include file="$(find youbot_navigation_common)/launch/base_front_hokuyo_node.launch" />
+   <include file="$(find youbot_navigation_global)/launch/amcl.launch" />
+</launch>
