@@ -90,7 +90,7 @@ connect("interactive_marker.HJoym", "haptic_master.HJoym", cp_rt);
 
 # Master
 connect("haptic_master.EnergyTank","executive.EnergyState1",cp_rt2);
-connect("executive.EnergyQuanta","haptic_master.inH2",cp_rt2);
+//tempoeral connect("executive.EnergyQuanta","haptic_master.inH2",cp_rt2);
 
 connect("joystick.slider_command", "executive.stiffness_slider", cp_rt2);
 connect("executive.CartSpaceStiffness", "haptic_master.CartSpaceStiffness", cp_rt2);
@@ -220,7 +220,10 @@ haptic_master.start;
 
 var cfloat64[] cart_stiff(9);
 //haptic_master.CartesianSpaceStiffness1.cart_stiffness = cart_stiff;
-
+// Start passivity layer
+haptic_master.PassivityLayerW.PassiveZOH.PassivityLayerActive[0]=1; //true
+haptic_master.PassivityLayerW.SETP.CommunicationTreshold[0]=0.5; // just a test value
+//
 phantom.start
 
 scheduler.configure;
