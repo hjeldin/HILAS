@@ -5,11 +5,11 @@
  *  subm:  CartesianController
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:18:34 am
+ *  date:  October 17, 2012
+ *  time:  12:46:40 pm
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* Standard include files */
@@ -178,31 +178,6 @@ namespace motion_stack
 			it->getPort()->write(it->getPortData());
 	  }
 	}
-
-  int CartesianController::event_Initialize()
-  {
-    return 0;
-  }
-
-  int CartesianController::event_edge(std::string const event_str, int inputs, double *outarr, int outputs, int major)
-  {
-    if( inputs != 1 or outputs != 1)
-      return 1;
-    return 0;
-  }
-
-  int CartesianController::event_level(std::string const event_str, int inputs, double *outarr, int outputs, int major)
-  {
-    if( inputs != 1 or outputs != 1)
-      return 1;
-    return 0;
-  }
-
-
-  int CartesianController::event_Terminate()
-  {
-    return 0;
-  }
 
 	bool CartesianController::setPeriod(RTT::Seconds s)
 	{

@@ -14,14 +14,14 @@
  &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
  &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
 &lt;/Description&gt;</description>
-		<creationDate>2012-08-06T10:18:18.0Z</creationDate>
+		<creationDate>2012-10-17T12:46:46.0Z</creationDate>
 		<modelDir></modelDir>
-		<originalModel>Z:\home\robert\DEV\20SimModels\Devel\motion_stack.emx</originalModel>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
 		<version>
 			<major>4</major>
 			<minor>1</minor>
-			<revision>2</revision>
-			<patch>4</patch>
+			<revision>4</revision>
+			<patch>1</patch>
 		</version>
 		<additional>Campuslicentie, Universiteit Twente</additional>
 	</general>
@@ -382,7 +382,7 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>234</index>
+				<index>240</index>
 			</storage>
 			<iconIndex>3</iconIndex>
 		</modelVariable>
@@ -403,6 +403,22 @@
 			<iconIndex>3</iconIndex>
 		</modelVariable>
 		<modelVariable id="25">
+			<name>Damping\Damping</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>204</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="26">
 			<name>Damping\K</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -414,7 +430,7 @@
 			</storage>
 			<iconIndex>3</iconIndex>
 		</modelVariable>
-		<modelVariable id="26">
+		<modelVariable id="27">
 			<name>dHToErrors1\H_vp_0</name>
 			<aliasOf>Delay\input</aliasOf>
 			<kind>variable</kind>
@@ -431,7 +447,7 @@
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="27">
+		<modelVariable id="28">
 			<name>dHToErrors1\H_base_0</name>
 			<aliasOf>Delay\output</aliasOf>
 			<kind>variable</kind>
@@ -448,7 +464,7 @@
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="28">
+		<modelVariable id="29">
 			<name>dHToErrors1\Twist</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -460,11 +476,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>204</index>
+				<index>210</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="29">
+		<modelVariable id="30">
 			<name>dHToErrors1\H_vp_base</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -475,11 +491,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>210</index>
+				<index>216</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="30">
+		<modelVariable id="31">
 			<name>dHToErrors1\aldo</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -487,11 +503,11 @@
 			<description>temporal variable to resolve numerical round up errors</description>
 			<storage>
 				<name>V</name>
-				<index>226</index>
+				<index>232</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="31">
+		<modelVariable id="32">
 			<name>dHToErrors1\theta</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -499,11 +515,11 @@
 			<description>angle of rotation</description>
 			<storage>
 				<name>V</name>
-				<index>227</index>
+				<index>233</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="32">
+		<modelVariable id="33">
 			<name>dHToErrors1\norm_omega</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -515,11 +531,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>228</index>
+				<index>234</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="33">
+		<modelVariable id="34">
 			<name>dHToErrors1\omega</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -531,28 +547,12 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>231</index>
+				<index>237</index>
 			</storage>
 			<iconIndex>5</iconIndex>
 		</modelVariable>
-		<modelVariable id="34">
-			<name>PlusMinus2\output</name>
-			<kind>variable</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>6</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>234</index>
-			</storage>
-			<iconIndex>6</iconIndex>
-		</modelVariable>
 		<modelVariable id="35">
-			<name>PlusMinus2\plus1</name>
+			<name>PlusMinus2\output</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
@@ -568,24 +568,7 @@
 			<iconIndex>6</iconIndex>
 		</modelVariable>
 		<modelVariable id="36">
-			<name>PlusMinus2\minus1</name>
-			<aliasOf>dHToErrors1\Twist</aliasOf>
-			<kind>variable</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>6</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>204</index>
-			</storage>
-			<iconIndex>6</iconIndex>
-		</modelVariable>
-		<modelVariable id="37">
-			<name>PlusMinus5\output</name>
+			<name>PlusMinus2\plus1</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
@@ -598,9 +581,42 @@
 				<name>V</name>
 				<index>246</index>
 			</storage>
-			<iconIndex>7</iconIndex>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="37">
+			<name>PlusMinus2\minus1</name>
+			<aliasOf>dHToErrors1\Twist</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>210</index>
+			</storage>
+			<iconIndex>6</iconIndex>
 		</modelVariable>
 		<modelVariable id="38">
+			<name>PlusMinus5\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>252</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="39">
 			<name>PlusMinus5\plus1</name>
 			<aliasOf>CartesianSpaceStiffness\effort</aliasOf>
 			<kind>variable</kind>
@@ -617,7 +633,7 @@
 			</storage>
 			<iconIndex>7</iconIndex>
 		</modelVariable>
-		<modelVariable id="39">
+		<modelVariable id="40">
 			<name>PlusMinus5\minus1</name>
 			<aliasOf>Damping\output</aliasOf>
 			<kind>variable</kind>
@@ -634,7 +650,7 @@
 			</storage>
 			<iconIndex>7</iconIndex>
 		</modelVariable>
-		<modelVariable id="40">
+		<modelVariable id="41">
 			<name>Splitter1\input</name>
 			<aliasOf>Delay\input</aliasOf>
 			<kind>variable</kind>
@@ -651,7 +667,7 @@
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
-		<modelVariable id="41">
+		<modelVariable id="42">
 			<name>Splitter1\output1</name>
 			<aliasOf>Delay\input</aliasOf>
 			<kind>variable</kind>
@@ -668,7 +684,7 @@
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
-		<modelVariable id="42">
+		<modelVariable id="43">
 			<name>Splitter1\output2</name>
 			<aliasOf>Delay\input</aliasOf>
 			<kind>variable</kind>
@@ -685,7 +701,7 @@
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
-		<modelVariable id="43">
+		<modelVariable id="44">
 			<name>Splitter1\output3</name>
 			<aliasOf>Delay\input</aliasOf>
 			<kind>variable</kind>
@@ -702,7 +718,23 @@
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
-		<modelVariable id="44">
+		<modelVariable id="45">
+			<name>CartesianDamping</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>258</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="46">
 			<name>T_tooltip_00</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -714,11 +746,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>252</index>
+				<index>264</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="45">
+		<modelVariable id="47">
 			<name>Hvp0</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -730,11 +762,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>258</index>
+				<index>270</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="46">
+		<modelVariable id="48">
 			<name>Htip0</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -746,11 +778,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>274</index>
+				<index>286</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="47">
+		<modelVariable id="49">
 			<name>StiffnessCC</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -762,11 +794,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>290</index>
+				<index>302</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="48">
+		<modelVariable id="50">
 			<name>HtipCC</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -778,11 +810,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>299</index>
+				<index>311</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="49">
+		<modelVariable id="51">
 			<name>W_tooltip_00</name>
 			<kind>output</kind>
 			<type>real</type>
@@ -794,11 +826,11 @@
 			</size>
 			<storage>
 				<name>V</name>
-				<index>315</index>
+				<index>327</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="50">
+		<modelVariable id="52">
 			<name>Delay\input</name>
 			<kind>rate</kind>
 			<type>real</type>
@@ -815,7 +847,7 @@
 			</storage>
 			<iconIndex>4</iconIndex>
 		</modelVariable>
-		<modelVariable id="51">
+		<modelVariable id="53">
 			<name>Delay\output</name>
 			<kind>state</kind>
 			<type>real</type>
@@ -832,7 +864,7 @@
 			</storage>
 			<iconIndex>4</iconIndex>
 		</modelVariable>
-		<modelVariable id="52">
+		<modelVariable id="54">
 			<name>Delay\output_initial</name>
 			<kind>initial value</kind>
 			<type>real</type>
@@ -851,14 +883,14 @@
 	</modelVariables>
 	<storage>
 		<name>ivc_motion_stack</name>
-		<size>7776</size>
+		<size>8160</size>
 		<tables>
 			<table>
 				<name>U</name>
-				<size>4816</size>
+				<size>5104</size>
 				<kind>real</kind>
 				<kindSize>8</kindSize>
-				<count>602</count>
+				<count>638</count>
 			</table>
 			<table>
 				<name>s</name>
@@ -876,10 +908,10 @@
 			</table>
 			<table>
 				<name>V</name>
-				<size>2568</size>
+				<size>2664</size>
 				<kind>real</kind>
 				<kindSize>8</kindSize>
-				<count>321</count>
+				<count>333</count>
 			</table>
 			<table>
 				<name>I</name>
@@ -898,11 +930,11 @@
 		</tables>
 	</storage>
 	<icons>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000024504C5445FFFFFF8F89899DA1A2A3A3A3A4A4A5A7A7A5BABABAC2C3C3C6C6C5C8C8C8CBCCCBD5D5D587274FE60000002B4944415478016360A00260664301CC0C6CDC28800D970027073B178A002B230B137E2D480218D6520100005C5B046FE91D1F540000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000010E504C5445554DF67872F27A83EF7B80F07E73F17E81F0808BEE8181818281F08684F08785EF8B91EF8F85F18F8EEF9091EE918CEE9295ED9597EE9690EF9694EE9697EE96A4EC979CED9A9AED9AA1EC9B9FED9FA6ECA0A5EDA29BEEA39EEEA5A7ECA7A8ECA7ABEBA8A8ECA8ADEBA9A1EEA9A5EEA9A6EEA9A9ECAAA7EDAAAFEBABA3EEABB4EBACACACADACECADADECADB0EBAEA9ECAEAAEDB1B6EAB4B6EAB5B7EAB6B5EBB8B2ECB8B6EBB9BAEBB9BDEABABEE9BCC2EABDB8EBBDC1E9BEB8EBC0BBEBC0BEEAC1BBEBC2C1EAC4BFEAC6C6E9C6CBE8CBC6EACBCAE9CCC9E8CFCBE9D1CDE8D1D2E7D1D6E7D2CDE9D2D5E7D2D5E8D4D2E8D6D6E7DBDDE7DEE4E6DFDBE7E2E0E7E2E5E6E4E1E6E5E5E6E5E6E6E6E6E65AC90365000000984944415478016360D74601EC0CDA9128401B2A108E2460AAEB2C69CE61EF22AB6FA56160091450F7316314551492E3E1D7629557030A84198598F87ABA795B7BF9DB0404686331D455211C55C0964F504C939B4B990926E0202EA224232D6C6F88704700BAC3D0CCD014E0556560D37372917594080509D8714AA9B088AA015DA6C31C041208B6F0F473F70DF0F0B60E348E000AA07B1F00D5783C3CDF4AC1C70000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000003F504C54450002FD1813FD2712FC282DF72B1EFB3258F13939393E5FF14653F54F6CEF737373906CF695BBE7A67FF5AAC7E7B4D3E6CAB1EFCADBE6E4D9EAE5E6E6E6E6E686E0FD52000000354944415478016360E342016C0C5C2228808B8A02DC9C02CC8228021C2C7CA82A1818795005D879598551CD1062E2A79EC3D0BD0F00E6AA10B014DFE32E0000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000003F504C54452027F73939394428FB456CEF6373EF6C73EF7373737373F17373F2926CF793B6E89AA9EABBA9EEBEADEFCFDFE6D0B6EFD4DBEAE5DFE8E5E6E6E6DFEAE6E6E60D088A4F0000004149444154780163606443018C0C6C2228800DAF002F0B8A000FBB002B9A0A6184000F070737AA19824C5CA8029CCC422802FC0C7CA8D6629A41A44B7108A07B1F0045BC0FA87B98BCFD0000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000005D504C5445A0A0A0B8B8B8FFFFFF5F5F69685E5F696863696D6C7A7E827D8180808084968B899A97999A9D9FA0A0A0A2A5A7A6A8A9ABAEB0AFAEAAB0B0B3B1B1B1B1B5B8B3B0B0B5B8BCB7B4B0B7B6B3B8B8B8BBB8B4BCBBBCC0BCBBC0BCBCD5D5D58E07234600000041494441547801636042030C8405782551002F83B01C0A1026524086475C809B4F4A0C2EC0C5C9C1CAC2CCC60E17909516E41715921021D250064614C0C040BAE700908D0F3E84CA6B8D0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001B504C5445FFFFFF8F8F8FA3A3A3A6A6A6A9A9A9BABABAC7C7C7CBCBCBD5D5D5EFF9FEA00000002B4944415478016360A002606245014C0CAC1C28801597003B1B1B3B8A000B2333137E2D480218D652010000C6490355B71F49E30000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000024504C54455656F57373F28181818181F08F8FEF9E9EEDACACACACACECBABAEAC9C9E9D7D7E7E6E6E69EC5BC6800000064494441547801858F410E84300CC4BA34A927E1FFFFDD843D2C2024E654598AE58E6D5DB68DB55FB61E8008341510F52C40EA03869B26F4897665442A33329F1CC15DEA3DF37902804BFF8E7C09AB0086A9CA5ADF0E835F197E8054745195556281FBF7BF7B61084BD40E462A0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000036504C54450606FE1717FC2222FB3434F93939395C5CF45C5CF56464F47373737373F28585F0B5B5EBBFBFEACBCBE9D5D5E7DBDBE7DDDDE7E6E6E698F0ECFE000000344944415478016360E140012C0C1C822880838A029C9CDCCC0228026C4CBCA82A1818795005D8B958D1CCE067E4A39EC3D0BD0F0081000E125F500EA70000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000021504C54452D2DFA3939397171F27373737373F27676F2ACACECB2B2EBBABAEAE0E0E6E6E6E6471F33370000003E4944415478018DCF490E00200803403611F8FF833D9A6234F63809058815C2A405D127CC01E056D64736B8996347522088E096A044383B3E2FBD407F7F012E2407E503C748200000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>

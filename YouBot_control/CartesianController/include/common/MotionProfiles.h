@@ -4,11 +4,11 @@
  *  file:  include\common\MotionProfiles.h
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  August 6, 2012
- *  time:  10:18:34 am
+ *  date:  October 17, 2012
+ *  time:  12:46:40 pm
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
- *  build: 4.1.2.4
+ *  build: 4.1.4.1
  **********************************************************/
 
 /* This file defines the functions necessary for motion profiles
