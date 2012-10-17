@@ -37,18 +37,20 @@ namespace YouBot
   void YouBot_executive::setupComponentInterface()
   {
     // Predefined actions
-    this->addOperation("unfoldArm", &YouBot_executive::unfoldArm, this,
+    this->addOperation("unfoldArmPosition", &YouBot_executive::unfoldArmPosition, this,
         OwnThread).doc("Unfold the arm. Takes no arguments");
-    this->addOperation("foldArm", &YouBot_executive::foldArm, this, OwnThread).doc(
+    this->addOperation("foldArmPosition", &YouBot_executive::foldArmPosition, this, OwnThread).doc(
         "Fold the arm. Takes no arguments");
 
     // Transaction configuration
     this->addOperation("gravityCompensation", &YouBot_executive::setupGravityMode, this, OwnThread).doc(
-        "Set gravity compensation mode (disables joint/cartesian mode setpoints.");
+        "Set gravity compensation mode.");
     this->addOperation("cartesianControl", &YouBot_executive::setupCartesianControl, this, OwnThread).doc(
-        "Set cartesian space control mode (disables joint/full mode setpoints).");
+        "Set cartesian space control mode.");
     this->addOperation("jointspaceControl", &YouBot_executive::setupJointControl, this, OwnThread).doc(
-        "Set joint space control mode (disables cartesian/full mode setpoints).");
+        "Set joint space control mode.");
+    this->addOperation("dualControl", &YouBot_executive::setupDualControl, this, OwnThread).doc(
+        "Set joint space and Cartesian control mode simultaneously.");
 
     this->addOperation("useBaseOnly", &YouBot_executive::useBaseOnly, this, OwnThread).doc("");
     this->addOperation("useArmOnly", &YouBot_executive::useArmOnly, this, OwnThread).doc("");
@@ -60,16 +62,13 @@ namespace YouBot
         "Joint space setpoints for the base");
 
     this->addOperation("setHvp0", &YouBot_executive::setHvp0, this, OwnThread).doc(
-        "Define attraction point with respect to inertial frame. Takes vector flatten H matrix");
+        "Defines attraction point with respect to inertial frame. Takes vector flatten H matrix");
     this->addOperation("setHtipCC", &YouBot_executive::setHtipCC, this, OwnThread).doc(
-        "Define center of stiffness and principal axes with respect to tool tip frame. Takes vector flatten H matrix");
+        "Defines center of stiffness and principal axes with respect to tool tip frame. Takes vector flatten H matrix");
     this->addOperation("setCartesianStiffness", &YouBot_executive::setCartesianStiffness, this, OwnThread).doc(
-        "Define the cartesian stiffness for the virtual springs. Takes vector flatten H matrix");
-
-    this->addOperation("setupBypass", &YouBot_executive::setupBypass, this, OwnThread).doc(
-        "Apply setpoint signals from source component to controller components");
-    this->addOperation("undoBypass", &YouBot_executive::undoBypass, this, OwnThread).doc(
-        "Apply setpoints set within Executive to controller components");
+        "Defines the cartesian stiffness for the virtual springs.");
+    this->addOperation("setCartesianDamping", &YouBot_executive::setCartesianDamping, this, OwnThread).doc(
+            "Defines the cartesian damping in the tooltip of the robot.");
 
     this->addOperation("execute", &YouBot_executive::execute, this, OwnThread).doc(
         "Apply all settings in one transaction.");
@@ -104,6 +103,7 @@ namespace YouBot
     this->addPort("CartSpaceSetpoint", CartSpaceSetpoint).doc("");
     this->addPort("CartSpaceStiffness", CartSpaceStiffness).doc("");
     this->addPort("HtipCC", HtipCC).doc("");
+    this->addPort("CartSpaceDamping", CartSpaceDamping).doc("");
 
     this->addPort("ArmJointStates", ArmJointStates).doc("Joint space joint states");
 
@@ -124,12 +124,14 @@ namespace YouBot
     this->addProperty("ArmJointActive", m_ArmJointActive.data);
     this->addProperty("BaseJointActive", m_BaseJointActive.data);
 
-    this->addProperty("ArmJointAnlgesSetpoint", m_ArmJointAnglesSetpoint.data);
+    this->addProperty("ArmJointAnglesSetpoint", m_ArmJointAnglesSetpoint.data);
     this->addProperty("HBase0Setpoint", m_HBase0Setpoint.data);
 
     this->addProperty("Hvp0", m_Hvp0.data);
     this->addProperty("H_base_0", m_H_base_0.data).doc("Base only pose");
     this->addProperty("CartSpaceStiffness", m_CartSpaceStiffness.data);
+    this->addProperty("CartSpaceDamping", m_CartSpaceDamping.data);
+
     this->addProperty("Wtip0", m_Wtip0.data);
     this->addProperty("HtipCC", m_HtipCC.data);
     this->addProperty("state", m_state);
@@ -154,6 +156,7 @@ namespace YouBot
     m_CartSpaceStiffness.data.resize(SIZE_CART_STIFFNESS, 0.0);
     m_CartSpaceStiffness_orig.data.resize(SIZE_CART_STIFFNESS, 0.0);
     m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 0.0);
 
     m_Htip0.data.resize(SIZE_H, 0.0);
     m_ArmJointState.data.resize(SIZE_ARM_JOINTS_ARRAY, 0.0);
@@ -179,18 +182,16 @@ namespace YouBot
     CartSpaceSetpoint.setDataSample(m_Hvp0);
     CartSpaceStiffness.setDataSample(m_CartSpaceStiffness);
     HtipCC.setDataSample(m_HtipCC);
+    CartSpaceDamping.setDataSample(m_CartSpaceDamping);
 
     gripper_cmd.setDataSample(m_gripper_cmd);
 
-    m_do_bypass_executive = false;
     use_stiffness_slider = false;
 
     // default state
     m_state = GRAVITY_MODE;
     setupGravityMode();
     execute();
-
-    connection_mappings.push_back(new ConnectionMapping<flat_matrix_t>(NULL, NULL));
   }
 
   void YouBot_executive::openGripper()
@@ -207,24 +208,18 @@ namespace YouBot
     gripper_cmd.write(m_gripper_cmd);
   }
 
-  void YouBot_executive::unfoldArm()
+  void YouBot_executive::unfoldArmPosition()
   {
     //log(Info) << "Executing: " << __FUNCTION__ << endlog();
     m_ArmJointAnglesSetpoint.data.assign(UNFOLD_JOINT_POSE,
         UNFOLD_JOINT_POSE + SIZE_ARM_JOINTS_ARRAY);
-    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
-    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
-    setupJointControl();
   }
 
-  void YouBot_executive::foldArm()
+  void YouBot_executive::foldArmPosition()
   {
     //log(Info) << "Executing: " << __FUNCTION__ << endlog();
     m_ArmJointAnglesSetpoint.data.assign(FOLD_JOINT_POSE,
         FOLD_JOINT_POSE + SIZE_ARM_JOINTS_ARRAY);
-    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
-    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
-    setupJointControl();
   }
 
   void YouBot_executive::setCartesianStiffness(vector<double> stiffness_c)
@@ -238,6 +233,18 @@ namespace YouBot
     }
     m_CartSpaceStiffness_orig.data.assign(stiffness_c.begin(), stiffness_c.end());
     calculateCartStiffness(); // adjust for the slider position
+  }
+
+  void YouBot_executive::setCartesianDamping(vector<double> damping)
+  {
+    //log(Info) << "Executing: " << __FUNCTION__ << endlog();
+    if (damping.size() != SIZE_CART_SPACE)
+    {
+      log(Error) << "setCartesianDamping - expects a " << SIZE_CART_SPACE
+          << " dimensional vector" << endlog();
+      return;
+    }
+    m_CartSpaceDamping.data.assign(damping.begin(), damping.end());
   }
 
   void YouBot_executive::setArmJointAngles(vector<double> position_j)
@@ -340,7 +347,29 @@ namespace YouBot
 
   void YouBot_executive::stateTransition(state_t new_state)
   {
+    readAll();
+
+    // The clearControlModes will setup gravity mode always
+    clearControlModes();
+
     m_state = new_state;
+  }
+
+  void YouBot_executive::calculateCartStiffness()
+  {
+    double percentage = 1.0;
+
+    if(use_stiffness_slider)
+      percentage = (m_stiffness_slider.data[0] + 1) / 2; // For the Logitech joystick the input will be between -1 and +1
+
+    if (percentage >= 0.0 && percentage <= 1.0)
+    {
+      for (unsigned int i = 0; i < SIZE_CART_STIFFNESS; ++i)
+      {
+        m_CartSpaceStiffness.data[i] = m_CartSpaceStiffness_orig.data[i] * percentage;
+//        log(Info) << "CartSpaceStiffness[" << i << "] = " << m_CartSpaceStiffness.data[i] << endlog();
+      }
+    }
   }
 
   void YouBot_executive::updateHook()
@@ -362,27 +391,7 @@ namespace YouBot
     {
       use_stiffness_slider = true;
       calculateCartStiffness();
-      if (m_state == CARTESIAN_CONTROL) // Apply immediately iff in these modes. Does NOT affect gravity nor jointspace control modes
-      {
-        execute();
-      }
-    }
-  }
-
-  void YouBot_executive::calculateCartStiffness()
-  {
-    double percentage = 1.0;
-
-    if(use_stiffness_slider)
-      percentage = (m_stiffness_slider.data[0] + 1) / 2; // For the Logitech joystick the input will be between -1 and +1
-
-    if (percentage >= 0.0 && percentage <= 1.0)
-    {
-      for (unsigned int i = 0; i < SIZE_CART_STIFFNESS; ++i)
-      {
-        m_CartSpaceStiffness.data[i] = m_CartSpaceStiffness_orig.data[i] * percentage;
-//        log(Info) << "CartSpaceStiffness[" << i << "] = " << m_CartSpaceStiffness.data[i] << endlog();
-      }
+      CartSpaceStiffness.write(m_CartSpaceStiffness);
     }
   }
 
@@ -401,53 +410,52 @@ namespace YouBot
 
   void YouBot_executive::setupGravityMode()
   {
-    readAll();
-    // Assigns the current states as setpoints and sets the stiffness zero
-    // zero out Joint control part
-    m_ArmJointAnglesSetpoint.data.assign(m_ArmJointState.data.begin(), m_ArmJointState.data.end());
-    m_HBase0Setpoint.data.assign(m_H_base_0.data.begin(), m_H_base_0.data.end());
-
-    // zero out Cartesian control part
-    m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS, 0.0);
-    m_Hvp0.data.assign(m_Htip0.data.begin(), m_Htip0.data.end());
-
-    // Disable both PD controllers
-    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 0.0);
-    m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
-
     stateTransition(GRAVITY_MODE);
   }
 
   void YouBot_executive::setupJointControl()
   {
-    readAll();
-    // zero out Cartesian control part
-    m_CartSpaceStiffness.data.assign(SIZE_CART_STIFFNESS, 0.0);
-    m_Hvp0.data.assign(m_Htip0.data.begin(), m_Htip0.data.end());
-    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
-
     stateTransition(JOINT_CONTROL);
   }
 
   void YouBot_executive::setupCartesianControl()
   {
-    readAll();
+    stateTransition(CARTESIAN_CONTROL);
+
+    // Default parameters
+    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
+    m_CartSpaceStiffness_orig.data.assign(BASIC_CART_STIFFNESS, BASIC_CART_STIFFNESS + SIZE_CART_STIFFNESS);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 10.0);
+    calculateCartStiffness();
+  }
+
+  void YouBot_executive::setupDualControl()
+  {
+    stateTransition(DUAL_CONTROL);
+
+    // Default parameters
+    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
+    m_CartSpaceStiffness_orig.data.assign(BASIC_CART_STIFFNESS, BASIC_CART_STIFFNESS + SIZE_CART_STIFFNESS);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 10.0);
+    calculateCartStiffness();
+  }
+
+  void YouBot_executive::clearControlModes()
+  {
+    // Assigns the current states as setpoints and sets the stiffness zero
     // zero out Joint control part
     m_ArmJointAnglesSetpoint.data.assign(m_ArmJointState.data.begin(), m_ArmJointState.data.end());
     m_HBase0Setpoint.data.assign(m_H_base_0.data.begin(), m_H_base_0.data.end());
+    // Disable both PD controllers
+    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 0.0);
+    m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
 
-    stateTransition(CARTESIAN_CONTROL);
-  }
-
-
-  void YouBot_executive::setupBypass()
-  {
-    m_do_bypass_executive = true;
-  }
-
-  void YouBot_executive::undoBypass()
-  {
-    m_do_bypass_executive = false;
+    // zero out Cartesian control part
+    m_CartSpaceStiffness_orig.data.assign(SIZE_CART_STIFFNESS, 0.0);
+    m_Hvp0.data.assign(m_Htip0.data.begin(), m_Htip0.data.end());
+    m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 0.0);
+    calculateCartStiffness();
   }
 
   /**
@@ -456,39 +464,23 @@ namespace YouBot
   void YouBot_executive::execute()
   {
     //log(Info) << "Executing: " << __FUNCTION__ << endlog();
-    if(m_do_bypass_executive && m_not_bypassed_yet)
-    {
-      flat_matrix_t temp;
-      temp.data.assign(SIZE_ARM_JOINTS_ARRAY, 0.0);
-      flat_matrix_t temp2;
-      temp2.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
+    assert(m_ArmJointAnglesSetpoint.data.size() == SIZE_ARM_JOINTS_ARRAY);
+    ArmJointAnglesSetpoint.write(m_ArmJointAnglesSetpoint);
 
-//      log(Info) << __FUNCTION__ << " - bypass active" << endlog();
-      // do by-pass
-    }
-    else if(!m_do_bypass_executive)
-    {
-      assert(m_ArmJointAnglesSetpoint.data.size() == SIZE_ARM_JOINTS_ARRAY);
-      ArmJointAnglesSetpoint.write(m_ArmJointAnglesSetpoint);
+    assert(m_Hvp0.data.size() == SIZE_H);
+    CartSpaceSetpoint.write(m_Hvp0);
 
-      assert(m_Hvp0.data.size() == SIZE_H);
-      CartSpaceSetpoint.write(m_Hvp0);
+    assert(m_CartSpaceStiffness.data.size() == SIZE_CART_STIFFNESS);
+    CartSpaceStiffness.write(m_CartSpaceStiffness);
 
-      assert(m_CartSpaceStiffness.data.size() == SIZE_CART_STIFFNESS);
-      CartSpaceStiffness.write(m_CartSpaceStiffness);
+    assert(m_HtipCC.data.size() == SIZE_H);
+    HtipCC.write(m_HtipCC);
 
-      assert(m_HtipCC.data.size() == SIZE_H);
-      HtipCC.write(m_HtipCC);
+    assert(m_CartSpaceDamping.data.size() == SIZE_CART_SPACE);
+    CartSpaceDamping.write(m_CartSpaceDamping);
 
-      assert(m_HBase0Setpoint.data.size() == SIZE_H);
-      HBase0Setpoint.write(m_HBase0Setpoint);
-
-//      log(Info) << __FUNCTION__ << " - bypass inactive" << endlog();
-    }
-//    else
-//    {
-//      log(Info) << __FUNCTION__ << " - bypassed" << endlog();
-//    }
+    assert(m_HBase0Setpoint.data.size() == SIZE_H);
+    HBase0Setpoint.write(m_HBase0Setpoint);
 
     assert(m_ArmJointActive.data.size() == SIZE_ARM_JOINTS_ARRAY);
     ArmJointActive.write(m_ArmJointActive);
@@ -503,41 +495,32 @@ namespace YouBot
 
   void YouBot_executive::useBaseOnly()
   {
-    if(m_state != GRAVITY_MODE)
+    if(m_state != JOINT_CONTROL && m_state != DUAL_CONTROL)
     {
-      m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 0.0);
-      m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 1.0);
+      log(Warning) << "Cannot specify: " << __FUNCTION__ << ", this is only sensible in joint space and dual mode control." << endlog();
     }
-    else
-    {
-      log(Warning) << "Cannot specify: " << __FUNCTION__ << " in gravity compensation mode." << endlog();
-    }
+    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 0.0);
+    m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 1.0);
   }
 
   void YouBot_executive::useArmOnly()
   {
-    if(m_state != GRAVITY_MODE)
+    if(m_state != JOINT_CONTROL && m_state != DUAL_CONTROL)
     {
-      m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
-      m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
+      log(Warning) << "Cannot specify: " << __FUNCTION__ << ", this is only sensible in joint space and dual mode control." << endlog();
     }
-    else
-    {
-      log(Warning) << "Cannot specify: " << __FUNCTION__ << " in gravity compensation mode." << endlog();
-    }
+    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
+    m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 0.0);
   }
 
   void YouBot_executive::useFullRobot()
   {
-    if(m_state != GRAVITY_MODE)
+    if(m_state != JOINT_CONTROL && m_state != DUAL_CONTROL)
     {
-      m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
-      m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 1.0);
+      log(Warning) << "Cannot specify: " << __FUNCTION__ << ", this is only sensible in joint space and dual mode control." << endlog();
     }
-    else
-    {
-      log(Warning) << "Cannot specify: " << __FUNCTION__ << " in gravity compensation mode." << endlog();
-    }
+    m_ArmJointActive.data.assign(SIZE_ARM_JOINTS_ARRAY, 1.0);
+    m_BaseJointActive.data.assign(SIZE_BASE_JOINTS_ARRAY, 1.0);
   }
 
   void YouBot_executive::quaternionToH(vector<double>& quat, vector<double>& H)

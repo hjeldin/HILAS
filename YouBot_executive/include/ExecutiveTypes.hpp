@@ -5,7 +5,7 @@
 namespace YouBot
 {
 	typedef std_msgs::Float64MultiArray flat_matrix_t;
-	enum state_t {JOINT_CONTROL, CARTESIAN_CONTROL, GRAVITY_MODE};
+	enum state_t {JOINT_CONTROL, CARTESIAN_CONTROL, GRAVITY_MODE, DUAL_CONTROL};
 
 	static const unsigned int SIZE_CART_STIFFNESS=9;
 	static const unsigned int SIZE_H=16;
@@ -20,7 +20,7 @@ namespace YouBot
 
 	static const double UNFOLD_CART_POSE[]={0,0,1,0,0,0};
 //	static const double BASIC_JOINT_STIFFNESS[]={0,0,0,10,5,5,5,5};
-	static const double BASIC_CART_STIFFNESS[]={50,50,50,50,50,50,0,0,0};
+	static const double BASIC_CART_STIFFNESS[]={200,200,200,10,10,10,0,0,0};
 	static const double EYE4[]={1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
 
 //	static const double RETRACT_STIFFNESS_C[]={500,500,500,0,0,0,0,0,0};
