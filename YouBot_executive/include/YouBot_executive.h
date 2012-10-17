@@ -36,24 +36,20 @@ namespace YouBot
     void setupGravityMode();
     void setupJointControl();
     void setupCartesianControl();
+    void setupDualControl();
 
+    // predefined settings
+    void unfoldArmPosition();
+    void foldArmPosition();
     // Specify the DOF to use
     void useBaseOnly();
     void useArmOnly();
     void useFullRobot();
 
-    // Bypass the Executive and use planner or so?
-    void setupBypass();
-    void undoBypass();
-
     // Apply
     void execute();
 
-    void doneEvent();
-
-// predefined actions
-    void unfoldArm();
-    void foldArm();
+    // predefined actions
     void openGripper();
     void closeGripper();
 
@@ -61,6 +57,7 @@ namespace YouBot
     void setHvp0(vector<double> position_c);
     void setHtipCC(vector<double> position_c);
     void setCartesianStiffness(vector<double> stiffness_c);
+    void setCartesianDamping(vector<double> damping);
 
     //Joint Space actions
     void setArmJointAngles(vector<double> position_j);
@@ -71,6 +68,8 @@ namespace YouBot
     void getTip_xyzypr(vector<double>& sample);
     void getHtip0(vector<double>& sample_H);
     void getHBase0(vector<double>& sample_H);
+
+    void doneEvent();
 
     // hacks
     void sleep(double seconds);
@@ -86,6 +85,7 @@ namespace YouBot
     RTT::OutputPort<flat_matrix_t> CartSpaceSetpoint;
     RTT::OutputPort<flat_matrix_t> CartSpaceStiffness;
     RTT::OutputPort<flat_matrix_t> HtipCC;
+    RTT::OutputPort<flat_matrix_t> CartSpaceDamping;
 
     RTT::InputPort<flat_matrix_t> Htip0;
     RTT::InputPort<flat_matrix_t> ArmJointStates;
@@ -110,6 +110,8 @@ namespace YouBot
 
     void stateTransition(state_t new_state);
 
+    void clearControlModes(); // Go to gravityMode settings -> always safe!
+
     // Variables for ports
     flat_matrix_t m_ArmJointAnglesSetpoint;
     flat_matrix_t m_HBase0Setpoint;
@@ -121,6 +123,7 @@ namespace YouBot
     flat_matrix_t m_CartSpaceStiffness;
     flat_matrix_t m_CartSpaceStiffness_orig;
     flat_matrix_t m_HtipCC;
+    flat_matrix_t m_CartSpaceDamping;
 
     flat_matrix_t m_Htip0;
     flat_matrix_t m_ArmJointState;
@@ -139,11 +142,6 @@ namespace YouBot
     bool use_stiffness_slider;
 
     std::string m_events;
-
-    bool m_do_bypass_executive;
-    bool m_not_bypassed_yet;
-
-    std::list<IConnectionMapping*> connection_mappings;
   };
 
 }
