@@ -73,15 +73,7 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/haptic_slave_co
 #executive.fullControlMode;
 #executive.sleep(1);
 
-var float64[] setp
-setp = float64[](5, 0.0)
 executive.jointspaceControl
 executive.useArmOnly
-
-ArmPoseController.JointSpaceController.PD_Joint1.kp[0] = 30
-ArmPoseController.JointSpaceController.PD_Joint2.kp[0] = 30
-ArmPoseController.JointSpaceController.PD_Joint3.kp[0] = 30
-ArmPoseController.JointSpaceController.PD_Joint4.kp[0] = 30
-ArmPoseController.JointSpaceController.PD_Joint5.kp[0] = 30
-
+executive.unfoldArmPosition
 executive.execute
