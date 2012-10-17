@@ -8,7 +8,6 @@
   <review status="unreviewed" notes=""/>
   <url>ce203</url>
   <depend package="TSimAdapters"/>  
-  <depend package="youbot_description"/>
 </package>
 
 
