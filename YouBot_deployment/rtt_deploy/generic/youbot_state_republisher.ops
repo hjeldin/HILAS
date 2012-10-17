@@ -1,6 +1,7 @@
 import("YouBot_adapters");
 
 loadComponent("rviz_publisher","YouBot::YouBotStateRepublisher");
+setActivity("rviz_publisher", 0.1, LowestPriority, ORO_SCHED_OTHER);
 
 var ConnPolicy cp_rt;
 cp_rt.type = DATA;
@@ -17,6 +18,5 @@ stream("rviz_publisher.youbot_state", cp_ros);
 
 
 rviz_publisher.configure
-rviz_publisher.setPeriod(0.1)
 rviz_publisher.start
 
