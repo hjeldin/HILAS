@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rtt:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rtt="http://rtt/1.0" name="DefaultDiagram">
+  <taskContext name="Odometry" namespace="motion_stack" type="Odometry">
+    <inputPort name="T_base_00" type="std::vector&lt;double>"/>
+    <inputPort name="H_odom_map" type="std::vector&lt;double>"/>
+    <outputPort name="H_base_map" type="std::vector&lt;double>"/>
+    <outputPort name="H_base_odom" type="std::vector&lt;double>"/>
+  </taskContext>
+</rtt:Package>
