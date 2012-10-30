@@ -16,6 +16,8 @@
 
 #include <list>
 
+#include <YouBotTypes.hpp>
+
 #include "ExecutiveTypes.hpp"
 #include "ConnectionMapping.hpp"
 
@@ -31,6 +33,7 @@ namespace YouBot
     YouBot_executive(const string& name);
     virtual ~YouBot_executive();
 
+    virtual bool configureHook();
     virtual void updateHook();
 
     void setupGravityMode();
@@ -136,6 +139,8 @@ namespace YouBot
 
     motion_control_msgs::JointPositions m_gripper_cmd;
 
+    OperationCaller<void(vector<ctrl_modes>)> base_setControlModes;
+    OperationCaller<void(vector<ctrl_modes>)> arm1_setControlModes;
 
     state_t m_state;
 

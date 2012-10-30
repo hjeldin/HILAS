@@ -21,7 +21,7 @@ namespace YouBot
 {
 
   YouBot_executive::YouBot_executive(const string& name) :
-      TaskContext(name)
+      TaskContext(name, PreOperational)
   {
     //log(Info) << "Executing: " << __FUNCTION__ << endlog();
 
@@ -32,6 +32,39 @@ namespace YouBot
 
   YouBot_executive::~YouBot_executive()
   {
+  }
+
+  bool YouBot_executive::configureHook()
+  {
+    TaskContext* driver = getPeer("driver"); //setControlModes(vector<ctrl_modes>& all)
+    if(driver == NULL)
+    {
+        log(Error) << "No driver TaskContext found, please connectPeers()" << endlog();
+        this->exception();
+    }
+
+    Service::shared_ptr base = driver->provides(std::string("Base"));
+    Service::shared_ptr arm1 = driver->provides(std::string("Arm1"));
+
+    if(base == NULL || arm1 == NULL)
+    {
+      log(Error) << "Base or Arm1 service not present in driver!" << endlog();
+      this->exception();
+    }
+
+    base_setControlModes = base->getOperation("setControlModes");
+    if( !base_setControlModes.ready() )
+    {
+      log(Error) << "setControlModes Operation not found!" << endlog();
+      this->exception();
+    }
+
+    arm1_setControlModes = arm1->getOperation("setControlModes");
+    if( !arm1_setControlModes.ready() )
+    {
+      log(Error) << "setControlModes Operation not found!" << endlog();
+      this->exception();
+    }
   }
 
   void YouBot_executive::setupComponentInterface()
@@ -139,7 +172,6 @@ namespace YouBot
 
     this->addOperation("sleep", &YouBot_executive::sleep, this, OwnThread).doc(
         "Hack: Sleeping management.");
-
   }
 
   void YouBot_executive::init()
@@ -456,6 +488,9 @@ namespace YouBot
     m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
     m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 0.0);
     calculateCartStiffness();
+
+    base_setControlModes(vector<ctrl_modes>(NR_OF_BASE_SLAVES, TORQUE));
+    arm1_setControlModes(vector<ctrl_modes>(NR_OF_ARM_SLAVES, TORQUE));
   }
 
   /**

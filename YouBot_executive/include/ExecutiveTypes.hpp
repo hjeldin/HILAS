@@ -28,6 +28,4 @@ namespace YouBot
 	static const int X_H=3;
 	static const int Y_H=7;
 	static const int Z_H=11;
-
-	static const size_t max_event_length = 50; // 50 is long enough for any event string exchanged
 }

@@ -25,60 +25,6 @@ namespace YouBot
 		xyzypr[5] = r;
 	}
 
-	void Multiply(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output)
-	{
-		using namespace std;
-
-		if(lhs.size() != 16 || rhs.size() != 4 || output.size() != 4)
-		{
-			 throw std::out_of_range("Multiply::vector::_M_range_check");
-		}
-
-		for(int i=0;i<4;i++)
-		{
-			for(int j=0;j<4;j++)
-			{
-				output[i]+=lhs[i*4+j]*rhs[j];
-			}
-		}
-	}
-	void MultiplyH(const vector<double>& lhs, const vector<double>& rhs, vector<double>& output)
-	{
-		using namespace std;
-
-		if(lhs.size() != 16 || rhs.size() != 16 || output.size() != 16)
-		{
-			 throw std::out_of_range("Multiply::vector::_M_range_check");
-		}
-
-		for(int i = 0; i < 4; i++)
-		{
-			for(int j = 0; j<4; j++)
-			{
-				output[i*4+j]=0;
-				for(int k=0; k<4; k++)
-				{
-				output[i*4+j]+=lhs[i*4+k]*rhs[k*4+j];
-				}
-			}
-		}
-	}
-
-	void Sum(const vector<double>& lhs,const vector<double>& rhs, vector<double>& output)
-	{
-		using namespace std;
-
-		if(lhs.size() != rhs.size() || output.size() != rhs.size())
-		{
-			 throw std::out_of_range("Sum::vector::_M_range_check");
-		}
-
-		for(unsigned int i = 0; i < rhs.size();i++)
-		{
-			output[i]=rhs[i]*lhs[i];
-		}
-	}
-
 	std::string& make_event(std::string& s, const std::string& event)
 	{
 		using namespace RTT;
