@@ -16,7 +16,7 @@ connectPeers("executive", "driver");
 # Connections
 # 
 connect("executive.ArmJointAnglesSetpoint","ArmPoseController.angles_setpoint",cp_rt)
-#connect("executive.HBase0Setpoint", "BaseController.H_vp_0", cp_rt)
+connect("executive.HBase0Setpoint", "BaseController.H_vp_0", cp_rt)
  
 connect("executive.CartSpaceSetpoint","CartesianController.Hvp0",cp_rt)
 connect("executive.CartSpaceStiffness","CartesianController.StiffnessCC",cp_rt) 
