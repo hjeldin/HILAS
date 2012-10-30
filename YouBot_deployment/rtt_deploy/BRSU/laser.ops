@@ -28,8 +28,8 @@ odom_to_map.setSourceFrame("odom");
 odom_to_map.setTargetFrame("map");
 connect("odom_to_map.output_transform", "Odometry.H_odom_map", cp_rt_lf);
 
-odometry_to_amcl.setSourceFrame("odom");
-odometry_to_amcl.setTargetFrame("base_link");
+odometry_to_amcl.setTargetFrame("odom");
+odometry_to_amcl.setSourceFrame("base_footprint");
 connect("Odometry.H_base_odom", "odometry_to_amcl.input_transform", cp_rt_lf);
 
 #
