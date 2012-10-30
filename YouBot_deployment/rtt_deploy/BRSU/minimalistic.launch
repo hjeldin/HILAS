@@ -4,4 +4,5 @@
 <!--   <include file="$(find youbot_navigation_global)/launch/amcl.launch" />-->
 	<include file="$(find raw_2dnav)/ros/launch/2dnav.launch" />
 	<include file="$(find raw_bringup)/components/youbot_joint_state_publisher.launch" />
+	<include file="$(find raw_teleop)/ros/launch/teleop_joypad.launch" />
 </launch>

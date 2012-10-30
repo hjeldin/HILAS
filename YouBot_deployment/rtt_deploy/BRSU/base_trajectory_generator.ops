@@ -1,0 +1,17 @@
+import("TSimAdapters");
+
+loadComponent("command_twist", "geometry_Twist_to_TSim");
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/cmd_vel";
+stream("command_twist.input_twist", cp_ros);
+
+connect("command_twist.output_twist", "BaseController.setpoint_twist", cp_rt);
+command_twist.configure;
+command_twist.start;
+
