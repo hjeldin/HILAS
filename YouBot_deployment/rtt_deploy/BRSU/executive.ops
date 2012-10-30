@@ -10,6 +10,8 @@ var ConnPolicy cp_rt;
 cp_rt.type = DATA;  
 cp_rt.lock_policy = LOCK_FREE; 
 
+connectPeers("executive", "driver");
+
 #
 # Connections
 # 
