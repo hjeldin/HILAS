@@ -16,7 +16,7 @@ connectPeers("executive", "driver");
 # Connections
 # 
 connect("executive.ArmJointAnglesSetpoint","ArmPoseController.angles_setpoint",cp_rt)
-connect("executive.HBase0Setpoint", "BaseController.H_vp_0", cp_rt)
+connect("executive.HBase0Setpoint", "BasePoseController.H_vp_0", cp_rt)
  
 connect("executive.CartSpaceSetpoint","CartesianController.Hvp0",cp_rt)
 connect("executive.CartSpaceStiffness","CartesianController.StiffnessCC",cp_rt) 
@@ -25,13 +25,13 @@ connect("executive.CartSpaceDamping", "CartesianController.CartesianDamping", cp
 
 connect("YouBotKinematics.H_tooltip_0", "executive.Htip0", cp_rt)
 connect("ArmPoseController.joints_angle_output", "executive.ArmJointStates", cp_rt)
-connect("BaseController.H_base_0_output", "executive.H_base_0", cp_rt)
+connect("BasePoseController.H_base_0_output", "executive.H_base_0", cp_rt)
 connect("CartesianController.W_tooltip_00", "executive.Wtip0", cp_rt)
 
 connect("executive.gripper_cmd","driver.Gripper1.gripper_cmd_position",cp_rt)
 
 connect("executive.ArmJointActive","ArmPoseController.active_joint",cp_rt)
-connect("executive.BaseJointActive","BaseController.active_joint",cp_rt)
+connect("executive.BaseJointActive","BasePoseController.active_joint",cp_rt)
 
 #
 # Start running
