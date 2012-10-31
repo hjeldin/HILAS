@@ -1,4 +1,3 @@
-# Source: KU Leuven -> youbot_driver_rtt/fix_caps.sh
 
 OCL_BIN="`rospack find ocl`/bin/"
 OTR_BIN="`rosstack find orocos_toolchain`/install/bin"
