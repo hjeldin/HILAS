@@ -84,6 +84,8 @@ namespace YouBot
         "Set joint space control mode.");
     this->addOperation("dualControl", &YouBot_executive::setupDualControl, this, OwnThread).doc(
         "Set joint space and Cartesian control mode simultaneously.");
+    this->addOperation("navigationControl", &YouBot_executive::setupNavigationControl, this, OwnThread).doc(
+        "Set the driver to TWIST ctrl_mode.");
 
     this->addOperation("useBaseOnly", &YouBot_executive::useBaseOnly, this, OwnThread).doc("");
     this->addOperation("useArmOnly", &YouBot_executive::useArmOnly, this, OwnThread).doc("");
@@ -170,6 +172,9 @@ namespace YouBot
     this->addProperty("state", m_state);
     this->addProperty("cartesianSlider", m_stiffness_slider.data);
 
+    this->addProperty("base_ctrl_modes", m_base_ctrl_modes);
+    this->addProperty("arm1_ctrl_modes", m_arm1_ctrl_modes);
+
     this->addOperation("sleep", &YouBot_executive::sleep, this, OwnThread).doc(
         "Hack: Sleeping management.");
   }
@@ -221,6 +226,8 @@ namespace YouBot
     use_stiffness_slider = false;
 
     // default state
+    m_base_ctrl_modes.assign(NR_OF_BASE_SLAVES, TORQUE);
+    m_arm1_ctrl_modes.assign(NR_OF_ARM_SLAVES, TORQUE);
     m_state = GRAVITY_MODE;
     setupGravityMode();
     execute();
@@ -472,6 +479,13 @@ namespace YouBot
     calculateCartStiffness();
   }
 
+  void YouBot_executive::setupNavigationControl()
+  {
+    stateTransition(NAVIGATION);
+
+    m_base_ctrl_modes.assign(NR_OF_BASE_SLAVES, TWIST);
+  }
+
   void YouBot_executive::clearControlModes()
   {
     // Assigns the current states as setpoints and sets the stiffness zero
@@ -489,8 +503,8 @@ namespace YouBot
     m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 0.0);
     calculateCartStiffness();
 
-    base_setControlModes(vector<ctrl_modes>(NR_OF_BASE_SLAVES, TORQUE));
-    arm1_setControlModes(vector<ctrl_modes>(NR_OF_ARM_SLAVES, TORQUE));
+    m_base_ctrl_modes.assign(NR_OF_BASE_SLAVES, TORQUE);
+    m_arm1_ctrl_modes.assign(NR_OF_ARM_SLAVES, TORQUE);
   }
 
   /**
@@ -522,6 +536,9 @@ namespace YouBot
 
     assert(m_BaseJointActive.data.size() == SIZE_BASE_JOINTS_ARRAY);
     BaseJointActive.write(m_BaseJointActive);
+
+    base_setControlModes(m_base_ctrl_modes);
+    arm1_setControlModes(m_arm1_ctrl_modes);
   }
 
   /*

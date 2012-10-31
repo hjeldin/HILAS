@@ -40,6 +40,7 @@ namespace YouBot
     void setupJointControl();
     void setupCartesianControl();
     void setupDualControl();
+    void setupNavigationControl();
 
     // predefined settings
     void unfoldArmPosition();
@@ -141,6 +142,8 @@ namespace YouBot
 
     OperationCaller<void(vector<ctrl_modes>)> base_setControlModes;
     OperationCaller<void(vector<ctrl_modes>)> arm1_setControlModes;
+    vector<ctrl_modes> m_base_ctrl_modes;
+    vector<ctrl_modes> m_arm1_ctrl_modes;
 
     state_t m_state;
 
