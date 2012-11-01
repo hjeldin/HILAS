@@ -21,11 +21,11 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/controller.ops"
 print.ln("Starting BRSU/cmd_vel.ops");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/cmd_vel.ops")
 
-#print.ln("Starting generic/diagnostics.ops")
-#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/diagnostics.ops")
-
 print.ln("Starting BRSU/executive.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/executive.ops")
+
+print.ln("Starting BRSU/diagnostics.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/diagnostics.ops")
 
 print.ln("Starting raw_arm_bridge_ros_orocos/orocos/deploy/arm_bridge.ops")
 runScript( rospack.find("raw_arm_bridge_ros_orocos") + "/orocos/deploy/arm_bridge.ops")
@@ -38,6 +38,9 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/youbot_state
 
 print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/laser.ops");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/laser.ops")
+
+print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/tracing.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/tracing.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;

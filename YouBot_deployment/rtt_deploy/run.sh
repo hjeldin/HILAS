@@ -25,7 +25,8 @@ export RTT_BRICS_ACTUATOR=$(rospack find rtt_brics_actuator)/lib
 export RAW_ARM_BRIDGE=$(rospack find raw_arm_bridge_ros_orocos)/lib/orocos
 export RTT_PATH=$(rospack find rtt)/../install
 export OCL_PATH=$(rospack find ocl)/../install/lib/orocos/gnulinux
+export DATATRACER_PATH=$(rospack find DataTracer)/lib/orocos
 
-export RTT_COMPONENT_PATH=${RTT_PATH}:${OCL_PATH}:${RTT_MOTION_CONTROL_MSGS_PATH}:${YOUBOT_OODL_PATH}:${YOUBOT_ADAPTERS}:${TSIM_ADAPTERS}:${RAW_ARM_BRIDGE}:${RTT_BRICS_ACTUATOR}
+export RTT_COMPONENT_PATH=${RTT_PATH}:${OCL_PATH}:${RTT_MOTION_CONTROL_MSGS_PATH}:${YOUBOT_OODL_PATH}:${YOUBOT_ADAPTERS}:${TSIM_ADAPTERS}:${RAW_ARM_BRIDGE}:${RTT_BRICS_ACTUATOR}:${DATATRACER_PATH}
 
 rosrun ocl deployer-gnulinux -s $1 $2 $3 $4 $5

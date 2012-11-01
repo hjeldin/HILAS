@@ -21,6 +21,7 @@ namespace YouBot
 	static const double UNFOLD_CART_POSE[]={0,0,1,0,0,0};
 //	static const double BASIC_JOINT_STIFFNESS[]={0,0,0,10,5,5,5,5};
 	static const double BASIC_CART_STIFFNESS[]={200,200,200,10,10,10,0,0,0};
+	static const double DEFAULT_CART_DAMPING = 5.0;
 	static const double EYE4[]={1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
 
 //	static const double RETRACT_STIFFNESS_C[]={500,500,500,0,0,0,0,0,0};

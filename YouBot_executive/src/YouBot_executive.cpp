@@ -464,7 +464,7 @@ namespace YouBot
     // Default parameters
     m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
     m_CartSpaceStiffness_orig.data.assign(BASIC_CART_STIFFNESS, BASIC_CART_STIFFNESS + SIZE_CART_STIFFNESS);
-    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 10.0);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, DEFAULT_CART_DAMPING);
     calculateCartStiffness();
   }
 
@@ -475,7 +475,7 @@ namespace YouBot
     // Default parameters
     m_HtipCC.data.assign(EYE4, EYE4 + SIZE_H);
     m_CartSpaceStiffness_orig.data.assign(BASIC_CART_STIFFNESS, BASIC_CART_STIFFNESS + SIZE_CART_STIFFNESS);
-    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, 10.0);
+    m_CartSpaceDamping.data.assign(SIZE_CART_SPACE, DEFAULT_CART_DAMPING);
     calculateCartStiffness();
   }
 

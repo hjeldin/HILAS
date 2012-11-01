@@ -1,3 +1,5 @@
+import("TSimAdapters")
+
 #
 # Driver
 #
@@ -74,6 +76,24 @@
 //stream("BasePoseController.H_base_0_output", ros_bp_3);
 
 
+var ConnPolicy cp_rt_lf;
+cp_rt_lf.type = DATA;
+cp_rt_lf.lock_policy = LOCK_FREE;
+
+loadComponent("odometry_to_debug", "TSim_to_TF");
+
+setActivity("odometry_to_debug", 0.1, LowestPriority, ORO_SCHED_OTHER);
+odometry_to_debug.setSourceFrame("base_debug");
+odometry_to_debug.setTargetFrame("map");
+connect( "Odometry.H_base_map", "odometry_to_debug.input_transform",cp_rt_lf);
+odometry_to_debug.start
+
+loadComponent("executive_to_debug", "TSim_to_TF");
+setActivity("executive_to_debug", 0.1, LowestPriority, ORO_SCHED_OTHER);
+executive_to_debug.setSourceFrame("goal_debug");
+executive_to_debug.setTargetFrame("map");
+connect("executive.CartSpaceSetpoint", "executive_to_debug.input_transform", cp_rt_lf);
+executive_to_debug.start
 #var ConnPolicy ros_odo_1;
 #ros_odo_1.transport = 3;
 #ros_odo_1.name_id = "/youBot/Odometry/H_base_0";
