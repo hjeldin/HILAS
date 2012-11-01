@@ -5,8 +5,8 @@
  *  subm:  OdometryModel
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  October 15, 2012
- *  time:  5:29:56 pm
+ *  date:  November 1, 2012
+ *  time:  4:08:55 pm
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
  *  build: 4.1.4.1
@@ -430,8 +430,8 @@ namespace motion_stack
 			XXMatrixMov (&M[10], &M[2]);
 		}
 
-		/* H_base_map = H_base_odom * aldoH_odom_map; */
-		XXMatrixMul (&M[1], &M[3], &M[10]);
+		/* H_base_map = (aldoH_odom_map) * H_base_odom; */
+		XXMatrixMul (&M[1], &M[10], &M[3]);
 
 	}
 
