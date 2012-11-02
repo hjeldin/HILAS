@@ -5,8 +5,8 @@
  *  subm:  BasePoseControllerModel
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  October 15, 2012
- *  time:  11:24:29 am
+ *  date:  November 2, 2012
+ *  time:  9:44:01 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
  *  build: 4.1.4.1
@@ -60,7 +60,7 @@ namespace motion_stack
     number_constants = 0;
     number_parameters = 60;
     number_initialvalues = 23;
-    number_variables = 446;
+    number_variables = 449;
     number_states = 23;
     number_rates = 23;
     number_matrices = 251;
@@ -70,7 +70,7 @@ namespace motion_stack
     C = new XXDouble[0 + 1]; /* constants */
     P = new XXDouble[60 + 1]; /* parameters, currently only one type of parameter exists: double */
     I = new XXDouble[23 + 1]; /* initial values */
-    V = new XXDouble[446 + 1]; /* variables */
+    V = new XXDouble[449 + 1]; /* variables */
 
     s = new XXDouble[23 + 1]; /* states */
     R = new XXDouble[23 + 1]; /* rates (or new states) */
@@ -114,7 +114,7 @@ namespace motion_stack
 	P[11] = 0.15;		/* BaseTF\y */
 	P[12] = 0.0;		/* DiscreteDifferential\initial */
 	P[13] = 1000.0;		/* EnergyEncoding\roundUp */
-	P[14] = 348.0;		/* EnergyEncoding\counter */
+	P[14] = 100.0;		/* EnergyEncoding\MaxCounter */
 	P[15] = 0.0675;		/* FilterBaseJointVelocities1\FilterGain */
 	P[16] = 0.1349;		
 	P[17] = 0.0675;		
@@ -122,7 +122,7 @@ namespace motion_stack
 	P[19] = -0.4128;		
 	P[20] = 0.0;		
 	P[21] = 4.0;		/* FilterBaseJointVelocities1\num */
-	P[22] = 1.0;		/* PassivityLayer\EnegyTank\InitialEnegyState {J} */
+	P[22] = 10.0;		/* PassivityLayer\EnergyTankBlock\InitialEnergyState {J} */
 	P[23] = 4.0;		/* PassivityLayer\EnergyTankControl\n */
 	P[24] = 5.0;		/* PassivityLayer\EnergyTankControl\DumpingInjectionTreshold {J} */
 	P[25] = 10.0;		/* PassivityLayer\EnergyTankControl\RecoveryMultiplier */
@@ -158,8 +158,8 @@ namespace motion_stack
 	P[55] = 1.0;		
 	P[56] = 1.0;		
 	P[57] = 1.0;		
-	P[58] = 100.0;		/* PassivityLayer\SETP\CommunicationTreshold {J} */
-	P[59] = 0.1;		/* PassivityLayer\SETP\SendoutPercent */
+	P[58] = 10.0;		/* PassivityLayer\SETP\CommunicationTreshold {J} */
+	P[59] = 0.01;		/* PassivityLayer\SETP\SendoutPercent */
 
 
     //INITIAL VALUES
@@ -173,7 +173,7 @@ namespace motion_stack
 	I[7] = 0.0;		
 	I[8] = 0.0;		
 	I[9] = 0.0;		
-	I[10] = 0.0;		/* new_initial */
+	I[10] = 0.0;		/* EnergyEncoding\outputCount_previous_initial */
 	I[11] = 0.0;		/* PassivityLayer\EnergyTankControl\sensorValue_previous_initial */
 	I[12] = 0.0;		
 	I[13] = 0.0;		
@@ -246,22 +246,22 @@ namespace motion_stack
 	M[18].mat = &P[15];		/* FilterBaseJointVelocities1\FilterGain */
 	M[18].rows = 2;
 	M[18].columns = 3;
-	M[19].mat = &V[118];		/* FilterBaseJointVelocities1\InputMemory */
+	M[19].mat = &V[121];		/* FilterBaseJointVelocities1\InputMemory */
 	M[19].rows = 3;
 	M[19].columns = 4;
-	M[20].mat = &V[130];		/* FilterBaseJointVelocities1\InputUpdate */
+	M[20].mat = &V[133];		/* FilterBaseJointVelocities1\InputUpdate */
 	M[20].rows = 3;
 	M[20].columns = 3;
-	M[21].mat = &V[139];		/* FilterBaseJointVelocities1\State */
+	M[21].mat = &V[142];		/* FilterBaseJointVelocities1\State */
 	M[21].rows = 3;
 	M[21].columns = 4;
-	M[22].mat = &V[151];		/* FilterBaseJointVelocities1\A */
+	M[22].mat = &V[154];		/* FilterBaseJointVelocities1\A */
 	M[22].rows = 3;
 	M[22].columns = 3;
-	M[23].mat = &V[160];		/* FilterBaseJointVelocities1\B */
+	M[23].mat = &V[163];		/* FilterBaseJointVelocities1\B */
 	M[23].rows = 3;
 	M[23].columns = 3;
-	M[24].mat = &V[171];		/* PassivityLayer\EnergyTankControl\adjustedForce */
+	M[24].mat = &V[174];		/* PassivityLayer\EnergyTankControl\adjustedForce */
 	M[24].rows = 4;
 	M[24].columns = 1;
 	M[25].mat = &P[25];		/* PassivityLayer\EnergyTankControl\RecoveryMultiplier */
@@ -270,22 +270,22 @@ namespace motion_stack
 	M[26].mat = &P[29];		/* PassivityLayer\EnergyTankControl\MaxmimDampingConstant */
 	M[26].rows = 4;
 	M[26].columns = 1;
-	M[27].mat = &V[175];		/* PassivityLayer\EnergyTankControl\DumpingInjectionForce */
+	M[27].mat = &V[178];		/* PassivityLayer\EnergyTankControl\DumpingInjectionForce */
 	M[27].rows = 4;
 	M[27].columns = 1;
-	M[28].mat = &V[179];		/* PassivityLayer\EnergyTankControl\dSensorValue */
+	M[28].mat = &V[182];		/* PassivityLayer\EnergyTankControl\dSensorValue */
 	M[28].rows = 4;
 	M[28].columns = 1;
-	M[29].mat = &V[183];		/* PassivityLayer\EnergyTankControl\SensorSpeed */
+	M[29].mat = &V[186];		/* PassivityLayer\EnergyTankControl\SensorSpeed */
 	M[29].rows = 4;
 	M[29].columns = 1;
-	M[30].mat = &V[187];		/* PassivityLayer\EnergyTankControl\MaxmimDumping */
+	M[30].mat = &V[190];		/* PassivityLayer\EnergyTankControl\MaxmimDumping */
 	M[30].rows = 4;
 	M[30].columns = 1;
-	M[31].mat = &V[194];		/* PassivityLayer\PassiveSampling\dSensorValue */
+	M[31].mat = &V[197];		/* PassivityLayer\PassiveSampling\dSensorValue */
 	M[31].rows = 4;
 	M[31].columns = 1;
-	M[32].mat = &V[198];		/* PassivityLayer\PassiveZOH\adjustedForce */
+	M[32].mat = &V[201];		/* PassivityLayer\PassiveZOH\adjustedForce */
 	M[32].rows = 4;
 	M[32].columns = 1;
 	M[33].mat = &P[36];		/* PassivityLayer\PassiveZOH\SpringConstant */
@@ -300,89 +300,89 @@ namespace motion_stack
 	M[36].mat = &P[54];		/* PassivityLayer\PassiveZOH\Channelweights */
 	M[36].rows = 4;
 	M[36].columns = 1;
-	M[37].mat = &V[202];		/* PassivityLayer\PassiveZOH\dSensorValue */
+	M[37].mat = &V[205];		/* PassivityLayer\PassiveZOH\dSensorValue */
 	M[37].rows = 4;
 	M[37].columns = 1;
-	M[38].mat = &V[206];		/* PassivityLayer\PassiveZOH\SensorSpeed */
+	M[38].mat = &V[209];		/* PassivityLayer\PassiveZOH\SensorSpeed */
 	M[38].rows = 4;
 	M[38].columns = 1;
-	M[39].mat = &V[210];		/* PassivityLayer\PassiveZOH\ForceSaturationArray */
+	M[39].mat = &V[213];		/* PassivityLayer\PassiveZOH\ForceSaturationArray */
 	M[39].rows = 4;
 	M[39].columns = 3;
-	M[40].mat = &V[222];		/* PassivityLayer\PassiveZOH\SaturatedForce */
+	M[40].mat = &V[225];		/* PassivityLayer\PassiveZOH\SaturatedForce */
 	M[40].rows = 4;
 	M[40].columns = 1;
-	M[41].mat = &V[228];		/* PassivityLayer\PassiveZOH\xd */
+	M[41].mat = &V[231];		/* PassivityLayer\PassiveZOH\xd */
 	M[41].rows = 4;
 	M[41].columns = 1;
-	M[42].mat = &V[232];		/* PassivityLayer\PassiveZOH\A */
+	M[42].mat = &V[235];		/* PassivityLayer\PassiveZOH\A */
 	M[42].rows = 4;
 	M[42].columns = 4;
-	M[43].mat = &V[248];		/* PassivityLayer\PassiveZOH\B1 */
+	M[43].mat = &V[251];		/* PassivityLayer\PassiveZOH\B1 */
 	M[43].rows = 4;
 	M[43].columns = 4;
-	M[44].mat = &V[264];		/* PassivityLayer\PassiveZOH\B2 */
+	M[44].mat = &V[267];		/* PassivityLayer\PassiveZOH\B2 */
 	M[44].rows = 4;
 	M[44].columns = 4;
-	M[45].mat = &V[280];		/* PassivityLayer\PassiveZOH\B3 */
+	M[45].mat = &V[283];		/* PassivityLayer\PassiveZOH\B3 */
 	M[45].rows = 4;
 	M[45].columns = 4;
-	M[46].mat = &V[296];		/* PassivityLayer\PassiveZOH\a */
+	M[46].mat = &V[299];		/* PassivityLayer\PassiveZOH\a */
 	M[46].rows = 4;
 	M[46].columns = 1;
-	M[47].mat = &V[301];		/* PassivityLayer\PassiveZOH\xcl */
+	M[47].mat = &V[304];		/* PassivityLayer\PassiveZOH\xcl */
 	M[47].rows = 4;
 	M[47].columns = 1;
-	M[48].mat = &V[305];		/* PassivityLayer\PassiveZOH\dx */
+	M[48].mat = &V[308];		/* PassivityLayer\PassiveZOH\dx */
 	M[48].rows = 4;
 	M[48].columns = 1;
-	M[49].mat = &V[309];		/* PassivityLayer\PassiveZOH\dObjective */
+	M[49].mat = &V[312];		/* PassivityLayer\PassiveZOH\dObjective */
 	M[49].rows = 4;
 	M[49].columns = 1;
-	M[50].mat = &V[313];		/* PassivityLayer\PassiveZOH\HObjective */
+	M[50].mat = &V[316];		/* PassivityLayer\PassiveZOH\HObjective */
 	M[50].rows = 4;
 	M[50].columns = 4;
-	M[51].mat = &V[334];		/* PassivityLayer\PassiveZOH\xAldo */
+	M[51].mat = &V[337];		/* PassivityLayer\PassiveZOH\xAldo */
 	M[51].rows = 4;
 	M[51].columns = 1;
-	M[52].mat = &V[342];		/* PlusMinus4\output */
+	M[52].mat = &V[345];		/* PlusMinus4\output */
 	M[52].rows = 6;
 	M[52].columns = 1;
-	M[53].mat = &V[348];		/* PlusMinus4\plus2 */
+	M[53].mat = &V[351];		/* PlusMinus4\plus2 */
 	M[53].rows = 6;
 	M[53].columns = 1;
-	M[54].mat = &V[354];		/* Splitter5\input */
+	M[54].mat = &V[357];		/* Splitter5\input */
 	M[54].rows = 4;
 	M[54].columns = 4;
-	M[55].mat = &V[370];		/* H_vp_0 */
-	M[55].rows = 4;
-	M[55].columns = 4;
-	M[56].mat = &V[386];		/* output_energy */
+	M[55].mat = &V[373];		/* input_energy */
+	M[55].rows = 2;
+	M[55].columns = 1;
+	M[56].mat = &V[375];		/* output_energy */
 	M[56].rows = 2;
 	M[56].columns = 1;
-	M[57].mat = &V[388];		/* H_base_0_output */
-	M[57].rows = 4;
-	M[57].columns = 4;
-	M[58].mat = &V[404];		/* T_base_00 */
-	M[58].rows = 6;
+	M[57].mat = &V[377];		/* T_base_00 */
+	M[57].rows = 6;
+	M[57].columns = 1;
+	M[58].mat = &V[383];		/* active_joint */
+	M[58].rows = 3;
 	M[58].columns = 1;
-	M[59].mat = &V[410];		/* active_joint */
-	M[59].rows = 3;
+	M[59].mat = &V[386];		/* Base_wheels_angle */
+	M[59].rows = 4;
 	M[59].columns = 1;
-	M[60].mat = &V[413];		/* Base_wheels_angle */
+	M[60].mat = &V[391];		/* H_vp_0 */
 	M[60].rows = 4;
-	M[60].columns = 1;
-	M[61].mat = &V[418];		/* W_base_00 */
-	M[61].rows = 6;
-	M[61].columns = 1;
-	M[62].mat = &V[424];		/* H_base_0 */
-	M[62].rows = 4;
-	M[62].columns = 4;
-	M[63].mat = &V[440];		/* Base_torque */
+	M[60].columns = 4;
+	M[61].mat = &V[407];		/* H_base_0_output */
+	M[61].rows = 4;
+	M[61].columns = 4;
+	M[62].mat = &V[423];		/* W_base_00 */
+	M[62].rows = 6;
+	M[62].columns = 1;
+	M[63].mat = &V[429];		/* H_base_0 */
 	M[63].rows = 4;
-	M[63].columns = 1;
-	M[64].mat = &V[444];		/* input_energy */
-	M[64].rows = 2;
+	M[63].columns = 4;
+	M[64].mat = &V[445];		/* Base_torque */
+	M[64].rows = 4;
 	M[64].columns = 1;
 	M[65].mat = &R[6];		/* DiscreteDifferential\input */
 	M[65].rows = 4;
@@ -987,7 +987,7 @@ namespace motion_stack
 	s[7] = I[7];
 	s[8] = I[8];
 	s[9] = I[9];
-	s[10] = I[10];		/* new_discrete_state */
+	s[10] = I[10];		/* EnergyEncoding\outputCount_previous */
 	s[11] = I[11];		/* PassivityLayer\EnergyTankControl\sensorValue_previous */
 	s[12] = I[12];
 	s[13] = I[13];
@@ -1063,8 +1063,11 @@ namespace motion_stack
 		/* DiscreteDifferential\initialized = 0.0; */
 		V[112] = XXFALSE;
 
-		/* EnergyEncoding\counter = 0; */
-		P[14] = 0.0;
+		/* EnergyEncoding\inputSum = 0; */
+		V[118] = 0.0;
+
+		/* EnergyEncoding\outputSum = 0; */
+		V[120] = 0.0;
 
 		/* FilterBaseJointVelocities1\InputUpdate = [0, 0, 0; 1, 0, 0; 0, 1, 0]; */
 		M[20].mat[0] = 0.0;
@@ -1121,8 +1124,8 @@ namespace motion_stack
 		M[23].mat[7] = 0.0;
 		M[23].mat[8] = 0.0;
 
-		/* PassivityLayer\EnegyTank\EnergyState = PassivityLayer\EnegyTank\InitialEnegyState; */
-		V[170] = P[22];
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\InitialEnergyState; */
+		V[173] = P[22];
 
 		/* PassivityLayer\EnergyTankControl\adjustedForce = 0; */
 		XXMatrixScalarMov (&M[24], 0.0);
@@ -1149,16 +1152,16 @@ namespace motion_stack
 		XXMatrixDiag (&M[45], &M[35]);
 
 		/* PassivityLayer\PassiveZOH\numIter = 0; */
-		V[331] = 0.0;
+		V[334] = 0.0;
 
 		/* PassivityLayer\PassiveZOH\aldo = 0; */
-		V[227] = 0.0;
+		V[230] = 0.0;
 
 		/* PassivityLayer\SETP\outputPackage = 0; */
-		V[341] = 0.0;
+		V[344] = 0.0;
 
 		/* PassivityLayer\SETP\energyQuanta = 0; */
-		V[340] = 0.0;
+		V[343] = 0.0;
 
 	}
 
@@ -1194,47 +1197,53 @@ namespace motion_stack
 	/* BasePositionController\PD_BaseY\factor = 1 / (sampletime + BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\beta); */
 	V[32] = 1.0 / (step_size + P[7] * P[8]);
 
+	/* EnergyEncoding\inputMessage = input_energy; */
+	XXMatrixMov (&M[16], &M[55]);
+
 	/* T_base_00 = BaseTF\Twist; */
-	XXMatrixMov (&M[58], &M[8]);
+	XXMatrixMov (&M[57], &M[8]);
 
 	/* PassivityLayer\PassiveSampling\sensorValue = Base_wheels_angle; */
-	XXMatrixMov (&M[71], &M[60]);
+	XXMatrixMov (&M[71], &M[59]);
 
 	/* Splitter5\input = H_base_0; */
-	XXMatrixMov (&M[54], &M[62]);
+	XXMatrixMov (&M[54], &M[63]);
 
-	/* EnergyEncoding\inputMessage = input_energy; */
-	XXMatrixMov (&M[16], &M[64]);
-
-	/* new_discrete_rate = EnergyEncoding\inputMessage[2]; */
-	R[10] = M[16].mat[1];
-
-		/* EnergyEncoding\counter = (EnergyEncoding\counter + 1) mod EnergyEncoding\roundUp; */
-		P[14] = XXIntegerModulo ((P[14] + 1.0), P[13]);
-
-		/* if (EnergyEncoding\inputMessage[2] == new_discrete_state) */
-		if (M[16].mat[1] == s[10])
+		/* if (EnergyEncoding\inputMessage[1] + 0.1 * EnergyEncoding\roundUp) < EnergyEncoding\inputSum */
+		if ((M[16].mat[0] + 0.1 * P[13]) < V[118])
 		{
-			/* EnergyEncoding\inputEnergy = 0; */
-			V[115] = 0.0;
+			/* EnergyEncoding\inputDiff = (EnergyEncoding\roundUp + EnergyEncoding\inputMessage[1]) - EnergyEncoding\inputSum; */
+			V[119] = (P[13] + M[16].mat[0]) - V[118];
 		}
 		else
 		{
-			/* EnergyEncoding\inputEnergy = EnergyEncoding\inputMessage[1]; */
-			V[115] = M[16].mat[0];
+			/* EnergyEncoding\inputDiff = EnergyEncoding\inputMessage[1] - EnergyEncoding\inputSum; */
+			V[119] = M[16].mat[0] - V[118];
 		}
 
-		/* EnergyEncoding\outputMessage[1] = PassivityLayer\SETP\outputPackage; */
-		M[17].mat[0] = V[341];
+		/* EnergyEncoding\inputSum = (EnergyEncoding\inputSum + EnergyEncoding\inputDiff) mod EnergyEncoding\roundUp; */
+		V[118] = XXIntegerModulo ((V[118] + V[119]), P[13]);
 
-		/* EnergyEncoding\outputMessage[2] = EnergyEncoding\counter; */
-		M[17].mat[1] = P[14];
+		/* EnergyEncoding\inputEnergy = EnergyEncoding\inputDiff; */
+		V[115] = V[119];
+
+		/* EnergyEncoding\outputCount = (EnergyEncoding\outputCount_previous + 1) mod EnergyEncoding\MaxCounter; */
+		R[10] = XXIntegerModulo ((s[10] + 1.0), P[14]);
+
+		/* EnergyEncoding\outputSum = (EnergyEncoding\outputSum + PassivityLayer\SETP\outputPackage) mod EnergyEncoding\roundUp; */
+		V[120] = XXIntegerModulo ((V[120] + V[344]), P[13]);
+
+		/* EnergyEncoding\outputMessage[1] = EnergyEncoding\outputSum; */
+		M[17].mat[0] = V[120];
+
+		/* EnergyEncoding\outputMessage[2] = EnergyEncoding\outputCount; */
+		M[17].mat[1] = R[10];
 
 	/* output_energy = EnergyEncoding\outputMessage; */
 	XXMatrixMov (&M[56], &M[17]);
 
 	/* Base_torque = PassivityLayer\EnergyTankControl\adjustedForce; */
-	XXMatrixMov (&M[63], &M[24]);
+	XXMatrixMov (&M[64], &M[24]);
 
 		/* FilterBaseJointVelocities1\InputMemory = FilterBaseJointVelocities1\InputUpdate * FilterBaseJointVelocities1\InputMemory + [1; 0; 0] * transpose (PassivityLayer\PassiveSampling\sensorValue); */
 		XXMatrixMul (&M[86], &M[20], &M[19]);
@@ -1258,7 +1267,7 @@ namespace motion_stack
 		XXMatrixTranspose (&M[65], &M[92]);
 
 	/* H_base_0_output = Splitter5\input; */
-	XXMatrixMov (&M[57], &M[54]);
+	XXMatrixMov (&M[61], &M[54]);
 
 	/* if notDiscreteDifferential\initialized */
 	if (!V[112])
@@ -1343,13 +1352,13 @@ namespace motion_stack
 		/* PassivityLayer\PassiveSampling\energyQuanta = -transpose (PassivityLayer\EnergyTankControl\adjustedForce) * PassivityLayer\PassiveSampling\dSensorValue; */
 		XXMatrixTranspose (&M[104], &M[24]);
 		XXMatrixInv (&M[103], &M[104]);
-		XXScalarMatrixMatrixMul (&V[193], &M[103], &M[31]);
-
-	/* PassivityLayer\PassiveZOH\sensorValue = PassivityLayer\PassiveSampling\sensorValue; */
-	XXMatrixMov (&M[74], &M[71]);
+		XXScalarMatrixMatrixMul (&V[196], &M[103], &M[31]);
 
 	/* PassivityLayer\EnergyTankControl\sensorValue = PassivityLayer\PassiveSampling\sensorValue; */
 	XXMatrixMov (&M[68], &M[71]);
+
+	/* PassivityLayer\PassiveZOH\sensorValue = PassivityLayer\PassiveSampling\sensorValue; */
+	XXMatrixMov (&M[74], &M[71]);
 
 	/* BasePositionController\PD_BaseAngle\uD = BasePositionController\PD_BaseAngle\factor * (((BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\uD_previous) * BasePositionController\PD_BaseAngle\beta + (BasePositionController\PD_BaseAngle\tauD * BasePositionController\PD_BaseAngle\kp) * (BasePositionController\PD_BaseAngle\error - BasePositionController\PD_BaseAngle\error_previous)) + (sampletime * BasePositionController\PD_BaseAngle\kp) * BasePositionController\PD_BaseAngle\error); */
 	R[0] = V[30] * (((P[1] * s[0]) * P[2] + (P[1] * P[0]) * (R[1] - s[1])) + (step_size * P[0]) * R[1]);
@@ -1360,31 +1369,31 @@ namespace motion_stack
 	/* BasePositionController\PD_BaseY\uD = BasePositionController\PD_BaseY\factor * (((BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\uD_previous) * BasePositionController\PD_BaseY\beta + (BasePositionController\PD_BaseY\tauD * BasePositionController\PD_BaseY\kp) * (BasePositionController\PD_BaseY\error - BasePositionController\PD_BaseY\error_previous)) + (sampletime * BasePositionController\PD_BaseY\kp) * BasePositionController\PD_BaseY\error); */
 	R[4] = V[32] * (((P[7] * s[4]) * P[8] + (P[7] * P[6]) * (R[5] - s[5])) + (step_size * P[6]) * R[5]);
 
-		/* PassivityLayer\EnegyTank\EnergyState = PassivityLayer\EnegyTank\EnergyState + PassivityLayer\PlusMinus1\output; */
-		V[170] = V[170] + V[339];
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\EnergyState + PassivityLayer\PlusMinus1\output; */
+		V[173] = V[173] + V[342];
 
-		/* PassivityLayer\EnegyTank\energyState = PassivityLayer\EnegyTank\EnergyState; */
-		V[169] = V[170];
+		/* PassivityLayer\EnergyTankBlock\energyState = PassivityLayer\EnergyTankBlock\EnergyState; */
+		V[172] = V[173];
 
-	/* EnergyTank = PassivityLayer\EnegyTank\energyState; */
-	V[417] = V[169];
+	/* EnergyTank = PassivityLayer\EnergyTankBlock\energyState; */
+	V[390] = V[172];
 
-		/* if PassivityLayer\SETP\CommunicationTreshold > PassivityLayer\EnegyTank\energyState */
-		if (P[58] > V[169])
+		/* if PassivityLayer\SETP\CommunicationTreshold > PassivityLayer\EnergyTankBlock\energyState */
+		if (P[58] > V[172])
 		{
 			/* PassivityLayer\SETP\outputPackage = 0; */
-			V[341] = 0.0;
+			V[344] = 0.0;
 
 			/* PassivityLayer\SETP\energyQuanta = EnergyEncoding\inputEnergy; */
-			V[340] = V[115];
+			V[343] = V[115];
 		}
 		else
 		{
-			/* PassivityLayer\SETP\outputPackage = -(PassivityLayer\SETP\CommunicationTreshold - PassivityLayer\EnegyTank\energyState) * PassivityLayer\SETP\SendoutPercent; */
-			V[341] = -(P[58] - V[169]) * P[59];
+			/* PassivityLayer\SETP\outputPackage = -(PassivityLayer\SETP\CommunicationTreshold - PassivityLayer\EnergyTankBlock\energyState) * PassivityLayer\SETP\SendoutPercent; */
+			V[344] = -(P[58] - V[172]) * P[59];
 
 			/* PassivityLayer\SETP\energyQuanta = EnergyEncoding\inputEnergy - PassivityLayer\SETP\outputPackage; */
-			V[340] = V[115] - V[341];
+			V[343] = V[115] - V[344];
 		}
 
 		/* BaseTF\A = (1 / (BaseTF\r)) * [BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y, BaseTF\x + BaseTF\y; -1, 1, -1, 1; 1, 1, -1, -1]; */
@@ -1445,11 +1454,11 @@ namespace motion_stack
 		/* PassivityLayer\EnergyTankControl\MaxmimDumping = PassivityLayer\EnergyTankControl\MaxmimDampingConstant / (sampletime); */
 		XXMatrixScalarDiv (&M[30], &M[26], (step_size));
 
-		/* PassivityLayer\EnergyTankControl\energyStateError = PassivityLayer\EnergyTankControl\DumpingInjectionTreshold - PassivityLayer\EnegyTank\energyState; */
-		V[191] = P[24] - V[169];
+		/* PassivityLayer\EnergyTankControl\energyStateError = PassivityLayer\EnergyTankControl\DumpingInjectionTreshold - PassivityLayer\EnergyTankBlock\energyState; */
+		V[194] = P[24] - V[172];
 
 		/* if PassivityLayer\EnergyTankControl\energyStateError <= 0 */
-		if (V[191] <= 0.0)
+		if (V[194] <= 0.0)
 		{
 			/* PassivityLayer\EnergyTankControl\DumpingInjectionForce = 0; */
 			XXMatrixScalarMov (&M[27], 0.0);
@@ -1459,15 +1468,15 @@ namespace motion_stack
 			/* PassivityLayer\EnergyTankControl\DumpingInjectionForce = (-diag (PassivityLayer\EnergyTankControl\RecoveryMultiplier) * PassivityLayer\EnergyTankControl\energyStateError) * PassivityLayer\EnergyTankControl\SensorSpeed; */
 			XXMatrixDiag (&M[116], &M[25]);
 			XXMatrixInv (&M[115], &M[116]);
-			XXMatrixScalarMul (&M[114], &M[115], V[191]);
+			XXMatrixScalarMul (&M[114], &M[115], V[194]);
 			XXMatrixMul (&M[27], &M[114], &M[29]);
 		}
 
 		/* for PassivityLayer\EnergyTankControl\i = 1 to PassivityLayer\EnergyTankControl\n */
-		for (V[192] = 1.0; V[192] <= P[23]; V[192]++)
+		for (V[195] = 1.0; V[195] <= P[23]; V[195]++)
 		{
 			/* PassivityLayer\EnergyTankControl\DumpingInjectionForce[PassivityLayer\EnergyTankControl\i] = if PassivityLayer\EnergyTankControl\DumpingInjectionForce[PassivityLayer\EnergyTankControl\i] < -PassivityLayer\EnergyTankControl\MaxmimDumping[PassivityLayer\EnergyTankControl\i] then -PassivityLayer\EnergyTankControl\MaxmimDumping[PassivityLayer\EnergyTankControl\i] else if PassivityLayer\EnergyTankControl\DumpingInjectionForce[PassivityLayer\EnergyTankControl\i] > PassivityLayer\EnergyTankControl\MaxmimDumping[PassivityLayer\EnergyTankControl\i] then PassivityLayer\EnergyTankControl\MaxmimDumping[PassivityLayer\EnergyTankControl\i] else PassivityLayer\EnergyTankControl\DumpingInjectionForce[PassivityLayer\EnergyTankControl\i] end end; */
-			M[27].mat[(XXInteger) (V[192]) - 1] = ((M[27].mat[(XXInteger) (V[192]) - 1] < -(M[30].mat[(XXInteger) (V[192]) - 1])) ? (-(M[30].mat[(XXInteger) (V[192]) - 1])) : (((M[27].mat[(XXInteger) (V[192]) - 1] > M[30].mat[(XXInteger) (V[192]) - 1]) ? (M[30].mat[(XXInteger) (V[192]) - 1]) : (M[27].mat[(XXInteger) (V[192]) - 1]))));
+			M[27].mat[(XXInteger) (V[195]) - 1] = ((M[27].mat[(XXInteger) (V[195]) - 1] < -(M[30].mat[(XXInteger) (V[195]) - 1])) ? (-(M[30].mat[(XXInteger) (V[195]) - 1])) : (((M[27].mat[(XXInteger) (V[195]) - 1] > M[30].mat[(XXInteger) (V[195]) - 1]) ? (M[30].mat[(XXInteger) (V[195]) - 1]) : (M[27].mat[(XXInteger) (V[195]) - 1]))));
 		}
 
 		/* if PassivityLayer\EnergyTankControl\TCLactive */
@@ -1494,8 +1503,8 @@ namespace motion_stack
 		/* PassivityLayer\PassiveZOH\SensorSpeed = PassivityLayer\PassiveZOH\dSensorValue / sampletime; */
 		XXMatrixScalarDiv (&M[38], &M[37], step_size);
 
-		/* PassivityLayer\PassiveZOH\b = 2 * PassivityLayer\EnegyTank\energyState; */
-		V[300] = 2.0 * V[169];
+		/* PassivityLayer\PassiveZOH\b = 2 * PassivityLayer\EnergyTankBlock\energyState; */
+		V[303] = 2.0 * V[172];
 
 		/* PassivityLayer\PassiveZOH\a = PassivityLayer\PassiveZOH\SensorSpeed; */
 		XXMatrixMov (&M[46], &M[38]);
@@ -1504,19 +1513,19 @@ namespace motion_stack
 		XXMatrixMov (&M[41], &M[10]);
 
 		/* PassivityLayer\PassiveZOH\numIter = 0; */
-		V[331] = 0.0;
+		V[334] = 0.0;
 
 		/* if PassivityLayer\PassiveZOH\b > 0 and PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a > 0 */
 		XXMatrixTranspose (&M[121], &M[46]);
 		XXMatrixMul (&M[120], &M[121], &M[45]);
 		XXScalarMatrixMatrixMul (M[119].mat, &M[120], &M[46]);
-		if (V[300] > 0.0 && V[300] - M[119].mat[0] > 0.0)
+		if (V[303] > 0.0 && V[303] - M[119].mat[0] > 0.0)
 		{
 			/* PassivityLayer\PassiveZOH\xcl = BaseTF\Base_torque; */
 			XXMatrixMov (&M[47], &M[10]);
 
 			/* PassivityLayer\PassiveZOH\numIter = 0; */
-			V[331] = 0.0;
+			V[334] = 0.0;
 
 			/* if (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xcl) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a < 0) */
 			XXMatrixTranspose (&M[125], &M[47]);
@@ -1528,7 +1537,7 @@ namespace motion_stack
 			XXMatrixTranspose (&M[131], &M[46]);
 			XXMatrixMul (&M[130], &M[131], &M[45]);
 			XXScalarMatrixMatrixMul (M[129].mat, &M[130], &M[46]);
-			if (((V[300] - M[123].mat[0]) - M[126].mat[0]) - M[129].mat[0] < 0.0)
+			if (((V[303] - M[123].mat[0]) - M[126].mat[0]) - M[129].mat[0] < 0.0)
 			{
 				/* warning */
 				XXWarning ( XXDouble2String (XXString2Double (" there is enough energy to do control3")), 0);
@@ -1538,30 +1547,30 @@ namespace motion_stack
 				XXMatrixScalarMov (&M[47], 0.0);
 
 				/* PassivityLayer\PassiveZOH\lamda2 = 1; */
-				V[329] = 1.0;
+				V[332] = 1.0;
 
 				/* PassivityLayer\PassiveZOH\numIter = 0; */
-				V[331] = 0.0;
+				V[334] = 0.0;
 
 				/* PassivityLayer\PassiveZOH\lamda2 = 1; */
-				V[329] = 1.0;
+				V[332] = 1.0;
 
 				/* PassivityLayer\PassiveZOH\t = 1; */
-				V[330] = 1.0;
+				V[333] = 1.0;
 
 				/* while (sqrt (PassivityLayer\PassiveZOH\lamda2) / PassivityLayer\PassiveZOH\t > PassivityLayer\PassiveZOH\eps and PassivityLayer\PassiveZOH\numIter < PassivityLayer\PassiveZOH\maxNumIter) */
-				while (sqrt (V[329]) / V[330] > P[49] && V[331] < P[53])
+				while (sqrt (V[332]) / V[333] > P[49] && V[334] < P[53])
 				{
 					/* PassivityLayer\PassiveZOH\numIter = PassivityLayer\PassiveZOH\numIter + 1; */
-					V[331] = V[331] + 1.0;
+					V[334] = V[334] + 1.0;
 
 					/* PassivityLayer\PassiveZOH\t = PassivityLayer\PassiveZOH\t * PassivityLayer\PassiveZOH\betaBarrier1; */
-					V[330] = V[330] * P[51];
+					V[333] = V[333] * P[51];
 
 					/* PassivityLayer\PassiveZOH\dObjective = (PassivityLayer\PassiveZOH\t * (PassivityLayer\PassiveZOH\A + transpose (PassivityLayer\PassiveZOH\A))) * (PassivityLayer\PassiveZOH\xd - PassivityLayer\PassiveZOH\xcl) - (1 / (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xcl) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a)) * (-(PassivityLayer\PassiveZOH\B1 + transpose (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl - PassivityLayer\PassiveZOH\B2 * PassivityLayer\PassiveZOH\a); */
 					XXMatrixTranspose (&M[136], &M[42]);
 					XXMatrixAdd (&M[135], &M[42], &M[136]);
-					XXScalarMatrixMul (&M[134], V[330], &M[135]);
+					XXScalarMatrixMul (&M[134], V[333], &M[135]);
 					XXMatrixSub (&M[137], &M[41], &M[47]);
 					XXMatrixMul (&M[133], &M[134], &M[137]);
 					XXMatrixTranspose (&M[141], &M[47]);
@@ -1579,13 +1588,13 @@ namespace motion_stack
 					XXMatrixMul (&M[149], &M[150], &M[47]);
 					XXMatrixMul (&M[153], &M[44], &M[46]);
 					XXMatrixSub (&M[148], &M[149], &M[153]);
-					XXScalarMatrixMul (&M[138], 1.0 / (((V[300] - M[139].mat[0]) - M[142].mat[0]) - M[145].mat[0]), &M[148]);
+					XXScalarMatrixMul (&M[138], 1.0 / (((V[303] - M[139].mat[0]) - M[142].mat[0]) - M[145].mat[0]), &M[148]);
 					XXMatrixSub (&M[49], &M[133], &M[138]);
 
 					/* PassivityLayer\PassiveZOH\HObjective = (-PassivityLayer\PassiveZOH\t * (PassivityLayer\PassiveZOH\A + transpose (PassivityLayer\PassiveZOH\A)) - ((1 / (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xcl) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a) ^ 2) * (-(PassivityLayer\PassiveZOH\B1 + transpose (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl - PassivityLayer\PassiveZOH\B2 * PassivityLayer\PassiveZOH\a)) * transpose (-(PassivityLayer\PassiveZOH\B1 + transpose (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl - PassivityLayer\PassiveZOH\B2 * PassivityLayer\PassiveZOH\a)) - (1 / (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xcl) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a)) * (PassivityLayer\PassiveZOH\B1 + transpose (PassivityLayer\PassiveZOH\B1)); */
 					XXMatrixTranspose (&M[157], &M[42]);
 					XXMatrixAdd (&M[156], &M[42], &M[157]);
-					XXScalarMatrixMul (&M[155], -V[330], &M[156]);
+					XXScalarMatrixMul (&M[155], -V[333], &M[156]);
 					XXMatrixTranspose (&M[162], &M[47]);
 					XXMatrixMul (&M[161], &M[162], &M[43]);
 					XXScalarMatrixMatrixMul (M[160].mat, &M[161], &M[47]);
@@ -1601,7 +1610,7 @@ namespace motion_stack
 					XXMatrixMul (&M[170], &M[171], &M[47]);
 					XXMatrixMul (&M[174], &M[44], &M[46]);
 					XXMatrixSub (&M[169], &M[170], &M[174]);
-					XXScalarMatrixMul (&M[159], 1.0 / ((((V[300] - M[160].mat[0]) - M[163].mat[0]) - M[166].mat[0]) * (((V[300] - M[160].mat[0]) - M[163].mat[0]) - M[166].mat[0])), &M[169]);
+					XXScalarMatrixMul (&M[159], 1.0 / ((((V[303] - M[160].mat[0]) - M[163].mat[0]) - M[166].mat[0]) * (((V[303] - M[160].mat[0]) - M[163].mat[0]) - M[166].mat[0])), &M[169]);
 					XXMatrixTranspose (&M[180], &M[43]);
 					XXMatrixAdd (&M[179], &M[43], &M[180]);
 					XXMatrixInv (&M[178], &M[179]);
@@ -1622,7 +1631,7 @@ namespace motion_stack
 					XXScalarMatrixMatrixMul (M[189].mat, &M[190], &M[46]);
 					XXMatrixTranspose (&M[193], &M[43]);
 					XXMatrixAdd (&M[192], &M[43], &M[193]);
-					XXScalarMatrixMul (&M[182], 1.0 / (((V[300] - M[183].mat[0]) - M[186].mat[0]) - M[189].mat[0]), &M[192]);
+					XXScalarMatrixMul (&M[182], 1.0 / (((V[303] - M[183].mat[0]) - M[186].mat[0]) - M[189].mat[0]), &M[192]);
 					XXMatrixSub (&M[50], &M[154], &M[182]);
 
 					/* PassivityLayer\PassiveZOH\dx = -inverse (PassivityLayer\PassiveZOH\HObjective) * PassivityLayer\PassiveZOH\dObjective; */
@@ -1633,12 +1642,12 @@ namespace motion_stack
 					/* PassivityLayer\PassiveZOH\lamda2 = abs (transpose (PassivityLayer\PassiveZOH\dObjective) * PassivityLayer\PassiveZOH\dx); */
 					XXMatrixTranspose (&M[197], &M[49]);
 					XXScalarMatrixMatrixMul (M[196].mat, &M[197], &M[48]);
-					V[329] = XXAbsolute (M[196].mat[0]);
+					V[332] = XXAbsolute (M[196].mat[0]);
 
 					/* PassivityLayer\PassiveZOH\obj = ((PassivityLayer\PassiveZOH\t * transpose (PassivityLayer\PassiveZOH\xd - PassivityLayer\PassiveZOH\xcl)) * PassivityLayer\PassiveZOH\A) * (PassivityLayer\PassiveZOH\xd - PassivityLayer\PassiveZOH\xcl) - log (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xcl) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xcl) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a); */
 					XXMatrixSub (&M[202], &M[41], &M[47]);
 					XXMatrixTranspose (&M[201], &M[202]);
-					XXScalarMatrixMul (&M[200], V[330], &M[201]);
+					XXScalarMatrixMul (&M[200], V[333], &M[201]);
 					XXMatrixMul (&M[199], &M[200], &M[42]);
 					XXMatrixSub (&M[203], &M[41], &M[47]);
 					XXScalarMatrixMatrixMul (M[198].mat, &M[199], &M[203]);
@@ -1651,25 +1660,25 @@ namespace motion_stack
 					XXMatrixTranspose (&M[212], &M[46]);
 					XXMatrixMul (&M[211], &M[212], &M[45]);
 					XXScalarMatrixMatrixMul (M[210].mat, &M[211], &M[46]);
-					V[332] = M[198].mat[0] - log (((V[300] - M[204].mat[0]) - M[207].mat[0]) - M[210].mat[0]);
+					V[335] = M[198].mat[0] - log (((V[303] - M[204].mat[0]) - M[207].mat[0]) - M[210].mat[0]);
 
 					/* PassivityLayer\PassiveZOH\stepSize = 1; */
-					V[338] = 1.0;
+					V[341] = 1.0;
 
 					/* PassivityLayer\PassiveZOH\objAldo = PassivityLayer\PassiveZOH\obj; */
-					V[333] = V[332];
+					V[336] = V[335];
 
 					/* PassivityLayer\PassiveZOH\xAldo = PassivityLayer\PassiveZOH\xcl; */
 					XXMatrixMov (&M[51], &M[47]);
 
 					/* while (PassivityLayer\PassiveZOH\obj <= PassivityLayer\PassiveZOH\objAldo and PassivityLayer\PassiveZOH\stepSize > PassivityLayer\PassiveZOH\eps ^ 3) */
-					while (V[332] <= V[333] && V[338] > XXPower (P[49], 3.0))
+					while (V[335] <= V[336] && V[341] > XXPower (P[49], 3.0))
 					{
 						/* PassivityLayer\PassiveZOH\stepSize = PassivityLayer\PassiveZOH\betaLine * PassivityLayer\PassiveZOH\stepSize; */
-						V[338] = P[50] * V[338];
+						V[341] = P[50] * V[341];
 
 						/* PassivityLayer\PassiveZOH\xAldo = PassivityLayer\PassiveZOH\xcl + PassivityLayer\PassiveZOH\dx * PassivityLayer\PassiveZOH\stepSize; */
-						XXMatrixScalarMul (&M[213], &M[48], V[338]);
+						XXMatrixScalarMul (&M[213], &M[48], V[341]);
 						XXMatrixAdd (&M[51], &M[47], &M[213]);
 
 						/* if (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xAldo) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xAldo) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xAldo) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a > 0) */
@@ -1682,12 +1691,12 @@ namespace motion_stack
 						XXMatrixTranspose (&M[222], &M[46]);
 						XXMatrixMul (&M[221], &M[222], &M[45]);
 						XXScalarMatrixMatrixMul (M[220].mat, &M[221], &M[46]);
-						if (((V[300] - M[214].mat[0]) - M[217].mat[0]) - M[220].mat[0] > 0.0)
+						if (((V[303] - M[214].mat[0]) - M[217].mat[0]) - M[220].mat[0] > 0.0)
 						{
 							/* PassivityLayer\PassiveZOH\objAldo = ((PassivityLayer\PassiveZOH\t * transpose (PassivityLayer\PassiveZOH\xd - PassivityLayer\PassiveZOH\xAldo)) * PassivityLayer\PassiveZOH\A) * (PassivityLayer\PassiveZOH\xd - PassivityLayer\PassiveZOH\xAldo) - log (((PassivityLayer\PassiveZOH\b - (transpose (PassivityLayer\PassiveZOH\xAldo) * (PassivityLayer\PassiveZOH\B1)) * PassivityLayer\PassiveZOH\xAldo) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B2) * PassivityLayer\PassiveZOH\xAldo) - (transpose (PassivityLayer\PassiveZOH\a) * PassivityLayer\PassiveZOH\B3) * PassivityLayer\PassiveZOH\a); */
 							XXMatrixSub (&M[227], &M[41], &M[51]);
 							XXMatrixTranspose (&M[226], &M[227]);
-							XXScalarMatrixMul (&M[225], V[330], &M[226]);
+							XXScalarMatrixMul (&M[225], V[333], &M[226]);
 							XXMatrixMul (&M[224], &M[225], &M[42]);
 							XXMatrixSub (&M[228], &M[41], &M[51]);
 							XXScalarMatrixMatrixMul (M[223].mat, &M[224], &M[228]);
@@ -1700,18 +1709,18 @@ namespace motion_stack
 							XXMatrixTranspose (&M[237], &M[46]);
 							XXMatrixMul (&M[236], &M[237], &M[45]);
 							XXScalarMatrixMatrixMul (M[235].mat, &M[236], &M[46]);
-							V[333] = M[223].mat[0] - log (((V[300] - M[229].mat[0]) - M[232].mat[0]) - M[235].mat[0]);
+							V[336] = M[223].mat[0] - log (((V[303] - M[229].mat[0]) - M[232].mat[0]) - M[235].mat[0]);
 						}
 
 						/* if (PassivityLayer\PassiveZOH\stepSize < PassivityLayer\PassiveZOH\eps ^ 3) */
-						if (V[338] < XXPower (P[49], 3.0))
+						if (V[341] < XXPower (P[49], 3.0))
 						{
 							/* warning */
 							XXWarning ( XXDouble2String (XXString2Double ("had to intreupt")), 1);
 
 
 							/* PassivityLayer\PassiveZOH\t = PassivityLayer\PassiveZOH\t * PassivityLayer\PassiveZOH\betaBarrier2; */
-							V[330] = V[330] * P[52];
+							V[333] = V[333] * P[52];
 
 							/* PassivityLayer\PassiveZOH\xAldo = PassivityLayer\PassiveZOH\xcl; */
 							XXMatrixMov (&M[51], &M[47]);
@@ -1747,17 +1756,17 @@ namespace motion_stack
 		M[39].mat[11] = M[10].mat[3];
 
 		/* for PassivityLayer\PassiveZOH\i = 1 to PassivityLayer\PassiveZOH\n */
-		for (V[226] = 1.0; V[226] <= P[35]; V[226]++)
+		for (V[229] = 1.0; V[229] <= P[35]; V[229]++)
 		{
 			/* PassivityLayer\PassiveZOH\SaturatedForce[PassivityLayer\PassiveZOH\i] = sign (BaseTF\Base_torque[PassivityLayer\PassiveZOH\i]) * min (abs (PassivityLayer\PassiveZOH\ForceSaturationArray[PassivityLayer\PassiveZOH\i,:])); */
-			M[243].mat[0] = M[39].mat[(XXInteger) ((V[226] - 1) * 3 + 0)];
-			M[243].mat[1] = M[39].mat[(XXInteger) ((V[226] - 1) * 3 + 1)];
-			M[243].mat[2] = M[39].mat[(XXInteger) ((V[226] - 1) * 3 + 2)];
+			M[243].mat[0] = M[39].mat[(XXInteger) ((V[229] - 1) * 3 + 0)];
+			M[243].mat[1] = M[39].mat[(XXInteger) ((V[229] - 1) * 3 + 1)];
+			M[243].mat[2] = M[39].mat[(XXInteger) ((V[229] - 1) * 3 + 2)];
 			M[242].mat[0] = XXAbsolute (M[243].mat[0]);
 			M[242].mat[1] = XXAbsolute (M[243].mat[1]);
 			M[242].mat[2] = XXAbsolute (M[243].mat[2]);
 			XXMatrixMinimum (M[241].mat, &M[242]);
-			M[40].mat[(XXInteger) (V[226]) - 1] = XXSign (M[10].mat[(XXInteger) (V[226]) - 1]) * M[241].mat[0];
+			M[40].mat[(XXInteger) (V[229]) - 1] = XXSign (M[10].mat[(XXInteger) (V[229]) - 1]) * M[241].mat[0];
 		}
 
 		/* if PassivityLayer\PassiveZOH\PassivityLayerActive */
@@ -1782,14 +1791,14 @@ namespace motion_stack
 	 */
 	inline void BasePoseControllerModel::CalculateOutput (void)
 	{
-			/* BasePositionController\H_vp_0 = H_vp_0; */
-	XXMatrixMov (&M[6], &M[55]);
+			/* BasePositionController\active_joint = active_joint; */
+	XXMatrixMov (&M[7], &M[58]);
 
-	/* BasePositionController\active_joint = active_joint; */
-	XXMatrixMov (&M[7], &M[59]);
+	/* BasePositionController\H_vp_0 = H_vp_0; */
+	XXMatrixMov (&M[6], &M[60]);
 
 	/* PlusMinus4\plus2 = W_base_00; */
-	XXMatrixMov (&M[53], &M[61]);
+	XXMatrixMov (&M[53], &M[62]);
 
 	/* BasePositionController\Submodel3\aldo = [1; 1; BasePositionController\active_joint[1]; BasePositionController\active_joint[2]; BasePositionController\active_joint[3]; 1]; */
 	M[5].mat[0] = 1.0;
@@ -1805,7 +1814,7 @@ namespace motion_stack
 	XXMatrixAdd (&M[14], &M[246], &M[15]);
 
 	/* PassivityLayer\PlusMinus1\output = PassivityLayer\PassiveSampling\energyQuanta + PassivityLayer\SETP\energyQuanta; */
-	V[339] = V[193] + V[340];
+	V[342] = V[196] + V[343];
 
 	/* BasePositionController\ErrorsToW\W_base_base0 = [0; 0; BasePositionController\PD_BaseAngle\uD; BasePositionController\PD_BaseX\uD; BasePositionController\PD_BaseY\uD; 0]; */
 	M[3].mat[0] = 0.0;

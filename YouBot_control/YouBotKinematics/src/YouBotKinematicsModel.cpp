@@ -5,8 +5,8 @@
  *  subm:  YouBotKinematicsModel
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  October 15, 2012
- *  time:  11:25:06 am
+ *  date:  November 2, 2012
+ *  time:  9:43:30 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
  *  build: 4.1.4.1
@@ -60,7 +60,7 @@ namespace motion_stack
     number_constants = 24;
     number_parameters = 64;
     number_initialvalues = 11;
-    number_variables = 612;
+    number_variables = 621;
     number_states = 11;
     number_rates = 11;
     number_matrices = 131;
@@ -70,7 +70,7 @@ namespace motion_stack
     C = new XXDouble[24 + 1]; /* constants */
     P = new XXDouble[64 + 1]; /* parameters, currently only one type of parameter exists: double */
     I = new XXDouble[11 + 1]; /* initial values */
-    V = new XXDouble[612 + 1]; /* variables */
+    V = new XXDouble[621 + 1]; /* variables */
 
     s = new XXDouble[11 + 1]; /* states */
     R = new XXDouble[11 + 1]; /* rates (or new states) */
@@ -175,12 +175,12 @@ namespace motion_stack
 	P[48] = 0.0;		
 	P[49] = 0.0;		
 	P[50] = 1000.0;		/* EnergyEncodingArm\roundUp */
-	P[51] = 348.0;		/* EnergyEncodingArm\counter */
+	P[51] = 100.0;		/* EnergyEncodingArm\MaxCounter */
 	P[52] = 1000.0;		/* EnergyEncodingBase\roundUp */
-	P[53] = 348.0;		/* EnergyEncodingBase\counter */
+	P[53] = 100.0;		/* EnergyEncodingBase\MaxCounter */
 	P[54] = 1000.0;		/* EnergyEncodingSpring\roundUp */
-	P[55] = 348.0;		/* EnergyEncodingSpring\counter */
-	P[56] = 1.0;		/* PassivityLayer\EnegyTank1\InitialEnegyState {J} */
+	P[55] = 100.0;		/* EnergyEncodingSpring\MaxCounter */
+	P[56] = 1.0;		/* PassivityLayer\EnergyTankBlock\InitialEnergyState {J} */
 	P[57] = 3.0;		/* PassivityLayer\Gain\K */
 	P[58] = 0.0;		/* PassivityLayer\SETP1\CommunicationTreshold {J} */
 	P[59] = 0.1;		/* PassivityLayer\SETP1\SendoutPercent */
@@ -199,9 +199,9 @@ namespace motion_stack
 	I[5] = 0.0;		
 	I[6] = 0.0;		
 	I[7] = 0.0;		
-	I[8] = 0.0;		/* new_initial */
-	I[9] = 0.0;		/* new_initial */
-	I[10] = 0.0;		/* new_initial */
+	I[8] = 0.0;		/* EnergyEncodingArm\outputCount_previous_initial */
+	I[9] = 0.0;		/* EnergyEncodingBase\outputCount_previous_initial */
+	I[10] = 0.0;		/* EnergyEncodingSpring\outputCount_previous_initial */
 
 
     //MATRICES
@@ -373,87 +373,87 @@ namespace motion_stack
 	M[55].mat = &V[441];		/* EnergyEncodingArm\outputMessage */
 	M[55].rows = 2;
 	M[55].columns = 1;
-	M[56].mat = &V[443];		/* EnergyEncodingBase\inputMessage */
+	M[56].mat = &V[446];		/* EnergyEncodingBase\inputMessage */
 	M[56].rows = 2;
 	M[56].columns = 1;
-	M[57].mat = &V[446];		/* EnergyEncodingBase\outputMessage */
+	M[57].mat = &V[449];		/* EnergyEncodingBase\outputMessage */
 	M[57].rows = 2;
 	M[57].columns = 1;
-	M[58].mat = &V[448];		/* EnergyEncodingSpring\inputMessage */
+	M[58].mat = &V[454];		/* EnergyEncodingSpring\inputMessage */
 	M[58].rows = 2;
 	M[58].columns = 1;
-	M[59].mat = &V[451];		/* EnergyEncodingSpring\outputMessage */
+	M[59].mat = &V[457];		/* EnergyEncodingSpring\outputMessage */
 	M[59].rows = 2;
 	M[59].columns = 1;
-	M[60].mat = &V[453];		/* HToAngles\H_vp_0 */
+	M[60].mat = &V[462];		/* HToAngles\H_vp_0 */
 	M[60].rows = 4;
 	M[60].columns = 4;
-	M[61].mat = &V[469];		/* HToAngles\pose */
+	M[61].mat = &V[478];		/* HToAngles\pose */
 	M[61].rows = 3;
 	M[61].columns = 1;
-	M[62].mat = &V[472];		/* HToAngles\H_vp_base */
+	M[62].mat = &V[481];		/* HToAngles\H_vp_base */
 	M[62].rows = 4;
 	M[62].columns = 4;
-	M[63].mat = &V[490];		/* HToAngles\norm_omega */
+	M[63].mat = &V[499];		/* HToAngles\norm_omega */
 	M[63].rows = 3;
 	M[63].columns = 1;
-	M[64].mat = &V[493];		/* HToAngles\omega */
+	M[64].mat = &V[502];		/* HToAngles\omega */
 	M[64].rows = 3;
 	M[64].columns = 1;
-	M[65].mat = &V[506];		/* StateMux\arm_angles */
+	M[65].mat = &V[515];		/* StateMux\arm_angles */
 	M[65].rows = 5;
 	M[65].columns = 1;
-	M[66].mat = &V[511];		/* StateMux\measured_angles */
+	M[66].mat = &V[520];		/* StateMux\measured_angles */
 	M[66].rows = 8;
 	M[66].columns = 1;
-	M[67].mat = &V[519];		/* TF\joints_e */
+	M[67].mat = &V[528];		/* TF\joints_e */
 	M[67].rows = 8;
 	M[67].columns = 1;
-	M[68].mat = &V[527];		/* TF\tip_e */
+	M[68].mat = &V[536];		/* TF\tip_e */
 	M[68].rows = 6;
 	M[68].columns = 1;
-	M[69].mat = &V[533];		/* TF\tip_f */
+	M[69].mat = &V[542];		/* TF\tip_f */
 	M[69].rows = 6;
 	M[69].columns = 1;
-	M[70].mat = &V[539];		/* H_base_0 */
+	M[70].mat = &V[548];		/* H_base_0 */
 	M[70].rows = 4;
 	M[70].columns = 4;
-	M[71].mat = &V[555];		/* input_energy_arm */
+	M[71].mat = &V[565];		/* output_energy_arm */
 	M[71].rows = 2;
 	M[71].columns = 1;
-	M[72].mat = &V[557];		/* torques_cmd */
-	M[72].rows = 5;
+	M[72].mat = &V[567];		/* input_energy_base */
+	M[72].rows = 2;
 	M[72].columns = 1;
-	M[73].mat = &V[562];		/* W_base_00 */
-	M[73].rows = 6;
+	M[73].mat = &V[569];		/* output_energy_base */
+	M[73].rows = 2;
 	M[73].columns = 1;
-	M[74].mat = &V[568];		/* output_energy_arm */
-	M[74].rows = 2;
+	M[74].mat = &V[571];		/* T_tooltip_00 */
+	M[74].rows = 6;
 	M[74].columns = 1;
-	M[75].mat = &V[570];		/* input_energy_base */
-	M[75].rows = 2;
+	M[75].mat = &V[577];		/* torques_cmd */
+	M[75].rows = 5;
 	M[75].columns = 1;
-	M[76].mat = &V[572];		/* output_energy_spring */
-	M[76].rows = 2;
+	M[76].mat = &V[582];		/* W_base_00 */
+	M[76].rows = 6;
 	M[76].columns = 1;
-	M[77].mat = &V[574];		/* angles_measured */
-	M[77].rows = 5;
+	M[77].mat = &V[588];		/* input_energy_spring */
+	M[77].rows = 2;
 	M[77].columns = 1;
-	M[78].mat = &V[579];		/* input_energy_spring */
+	M[78].mat = &V[590];		/* output_energy_spring */
 	M[78].rows = 2;
 	M[78].columns = 1;
-	M[79].mat = &V[581];		/* H_tooltip_0 */
-	M[79].rows = 4;
-	M[79].columns = 4;
-	M[80].mat = &V[598];		/* output_energy_base */
+	M[79].mat = &V[592];		/* angles_measured */
+	M[79].rows = 5;
+	M[79].columns = 1;
+	M[80].mat = &V[597];		/* input_energy_arm */
 	M[80].rows = 2;
 	M[80].columns = 1;
-	M[81].mat = &V[600];		/* W_tooltip_00 */
+	M[81].mat = &V[599];		/* W_tooltip_00 */
 	M[81].rows = 6;
 	M[81].columns = 1;
-	M[82].mat = &V[606];		/* T_tooltip_00 */
-	M[82].rows = 6;
-	M[82].columns = 1;
+	M[82].mat = &V[605];		/* H_tooltip_0 */
+	M[82].rows = 4;
+	M[82].columns = 4;
 	M[83].mat = &R[0];		/* DiscreteDifferential\input */
 	M[83].rows = 8;
 	M[83].columns = 1;
@@ -641,9 +641,9 @@ namespace motion_stack
 	s[5] = I[5];
 	s[6] = I[6];
 	s[7] = I[7];
-	s[8] = I[8];		/* new_discrete_state */
-	s[9] = I[9];		/* new_discrete_state */
-	s[10] = I[10];		/* new_discrete_state */
+	s[8] = I[8];		/* EnergyEncodingArm\outputCount_previous */
+	s[9] = I[9];		/* EnergyEncodingBase\outputCount_previous */
+	s[10] = I[10];		/* EnergyEncodingSpring\outputCount_previous */
 
 
     /* end of initialization phase */
@@ -708,35 +708,44 @@ namespace motion_stack
 		/* DiscreteDifferential\initialized = 0.0; */
 		V[437] = XXFALSE;
 
-		/* EnergyEncodingArm\counter = 0; */
-		P[51] = 0.0;
+		/* EnergyEncodingArm\inputSum = 0; */
+		V[443] = 0.0;
 
-		/* EnergyEncodingBase\counter = 0; */
-		P[53] = 0.0;
+		/* EnergyEncodingArm\outputSum = 0; */
+		V[445] = 0.0;
 
-		/* EnergyEncodingSpring\counter = 0; */
-		P[55] = 0.0;
+		/* EnergyEncodingBase\inputSum = 0; */
+		V[451] = 0.0;
 
-		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\InitialEnegyState; */
-		V[497] = P[56];
+		/* EnergyEncodingBase\outputSum = 0; */
+		V[453] = 0.0;
+
+		/* EnergyEncodingSpring\inputSum = 0; */
+		V[459] = 0.0;
+
+		/* EnergyEncodingSpring\outputSum = 0; */
+		V[461] = 0.0;
+
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\InitialEnergyState; */
+		V[506] = P[56];
 
 		/* PassivityLayer\SETP1\outputPackage = 0; */
-		V[501] = 0.0;
+		V[510] = 0.0;
 
 		/* PassivityLayer\SETP1\energyQuanta = 0; */
-		V[500] = 0.0;
+		V[509] = 0.0;
 
 		/* PassivityLayer\SETP2\outputPackage = 0; */
-		V[503] = 0.0;
+		V[512] = 0.0;
 
 		/* PassivityLayer\SETP2\energyQuanta = 0; */
-		V[502] = 0.0;
+		V[511] = 0.0;
 
 		/* PassivityLayer\SETP3\outputPackage = 0; */
-		V[505] = 0.0;
+		V[514] = 0.0;
 
 		/* PassivityLayer\SETP3\energyQuanta = 0; */
-		V[504] = 0.0;
+		V[513] = 0.0;
 
 	}
 
@@ -907,92 +916,110 @@ namespace motion_stack
 	 */
 	inline void YouBotKinematicsModel::CalculateDynamic (void)
 	{
-			/* EnergyEncodingArm\inputMessage = input_energy_arm; */
-	XXMatrixMov (&M[54], &M[71]);
-
-	/* EnergyEncodingBase\inputMessage = input_energy_base; */
-	XXMatrixMov (&M[56], &M[75]);
-
-	/* StateMux\arm_angles = angles_measured; */
-	XXMatrixMov (&M[65], &M[77]);
+			/* EnergyEncodingBase\inputMessage = input_energy_base; */
+	XXMatrixMov (&M[56], &M[72]);
 
 	/* EnergyEncodingSpring\inputMessage = input_energy_spring; */
-	XXMatrixMov (&M[58], &M[78]);
+	XXMatrixMov (&M[58], &M[77]);
+
+	/* StateMux\arm_angles = angles_measured; */
+	XXMatrixMov (&M[65], &M[79]);
+
+	/* EnergyEncodingArm\inputMessage = input_energy_arm; */
+	XXMatrixMov (&M[54], &M[80]);
 
 	/* TF\tip_e = W_tooltip_00; */
 	XXMatrixMov (&M[68], &M[81]);
 
-	/* new_discrete_rate = EnergyEncodingArm\inputMessage[2]; */
-	R[8] = M[54].mat[1];
-
-		/* EnergyEncodingArm\counter = (EnergyEncodingArm\counter + 1) mod EnergyEncodingArm\roundUp; */
-		P[51] = XXIntegerModulo ((P[51] + 1.0), P[50]);
-
-		/* if (EnergyEncodingArm\inputMessage[2] == new_discrete_state) */
-		if (M[54].mat[1] == s[8])
+		/* if (EnergyEncodingArm\inputMessage[1] + 0.1 * EnergyEncodingArm\roundUp) < EnergyEncodingArm\inputSum */
+		if ((M[54].mat[0] + 0.1 * P[50]) < V[443])
 		{
-			/* EnergyEncodingArm\inputEnergy = 0; */
-			V[440] = 0.0;
+			/* EnergyEncodingArm\inputDiff = (EnergyEncodingArm\roundUp + EnergyEncodingArm\inputMessage[1]) - EnergyEncodingArm\inputSum; */
+			V[444] = (P[50] + M[54].mat[0]) - V[443];
 		}
 		else
 		{
-			/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputMessage[1]; */
-			V[440] = M[54].mat[0];
+			/* EnergyEncodingArm\inputDiff = EnergyEncodingArm\inputMessage[1] - EnergyEncodingArm\inputSum; */
+			V[444] = M[54].mat[0] - V[443];
 		}
 
-		/* EnergyEncodingArm\outputMessage[1] = PassivityLayer\SETP1\outputPackage; */
-		M[55].mat[0] = V[501];
+		/* EnergyEncodingArm\inputSum = (EnergyEncodingArm\inputSum + EnergyEncodingArm\inputDiff) mod EnergyEncodingArm\roundUp; */
+		V[443] = XXIntegerModulo ((V[443] + V[444]), P[50]);
 
-		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\counter; */
-		M[55].mat[1] = P[51];
+		/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputDiff; */
+		V[440] = V[444];
 
-	/* new_discrete_rate = EnergyEncodingBase\inputMessage[2]; */
-	R[9] = M[56].mat[1];
+		/* EnergyEncodingArm\outputCount = (EnergyEncodingArm\outputCount_previous + 1) mod EnergyEncodingArm\MaxCounter; */
+		R[8] = XXIntegerModulo ((s[8] + 1.0), P[51]);
 
-		/* EnergyEncodingBase\counter = (EnergyEncodingBase\counter + 1) mod EnergyEncodingBase\roundUp; */
-		P[53] = XXIntegerModulo ((P[53] + 1.0), P[52]);
+		/* EnergyEncodingArm\outputSum = (EnergyEncodingArm\outputSum + PassivityLayer\SETP1\outputPackage) mod EnergyEncodingArm\roundUp; */
+		V[445] = XXIntegerModulo ((V[445] + V[510]), P[50]);
 
-		/* if (EnergyEncodingBase\inputMessage[2] == new_discrete_state) */
-		if (M[56].mat[1] == s[9])
+		/* EnergyEncodingArm\outputMessage[1] = EnergyEncodingArm\outputSum; */
+		M[55].mat[0] = V[445];
+
+		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\outputCount; */
+		M[55].mat[1] = R[8];
+
+		/* if (EnergyEncodingBase\inputMessage[1] + 0.1 * EnergyEncodingBase\roundUp) < EnergyEncodingBase\inputSum */
+		if ((M[56].mat[0] + 0.1 * P[52]) < V[451])
 		{
-			/* EnergyEncodingBase\inputEnergy = 0; */
-			V[445] = 0.0;
+			/* EnergyEncodingBase\inputDiff = (EnergyEncodingBase\roundUp + EnergyEncodingBase\inputMessage[1]) - EnergyEncodingBase\inputSum; */
+			V[452] = (P[52] + M[56].mat[0]) - V[451];
 		}
 		else
 		{
-			/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputMessage[1]; */
-			V[445] = M[56].mat[0];
+			/* EnergyEncodingBase\inputDiff = EnergyEncodingBase\inputMessage[1] - EnergyEncodingBase\inputSum; */
+			V[452] = M[56].mat[0] - V[451];
 		}
 
-		/* EnergyEncodingBase\outputMessage[1] = PassivityLayer\SETP2\outputPackage; */
-		M[57].mat[0] = V[503];
+		/* EnergyEncodingBase\inputSum = (EnergyEncodingBase\inputSum + EnergyEncodingBase\inputDiff) mod EnergyEncodingBase\roundUp; */
+		V[451] = XXIntegerModulo ((V[451] + V[452]), P[52]);
 
-		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\counter; */
-		M[57].mat[1] = P[53];
+		/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputDiff; */
+		V[448] = V[452];
 
-	/* new_discrete_rate = EnergyEncodingSpring\inputMessage[2]; */
-	R[10] = M[58].mat[1];
+		/* EnergyEncodingBase\outputCount = (EnergyEncodingBase\outputCount_previous + 1) mod EnergyEncodingBase\MaxCounter; */
+		R[9] = XXIntegerModulo ((s[9] + 1.0), P[53]);
 
-		/* EnergyEncodingSpring\counter = (EnergyEncodingSpring\counter + 1) mod EnergyEncodingSpring\roundUp; */
-		P[55] = XXIntegerModulo ((P[55] + 1.0), P[54]);
+		/* EnergyEncodingBase\outputSum = (EnergyEncodingBase\outputSum + PassivityLayer\SETP2\outputPackage) mod EnergyEncodingBase\roundUp; */
+		V[453] = XXIntegerModulo ((V[453] + V[512]), P[52]);
 
-		/* if (EnergyEncodingSpring\inputMessage[2] == new_discrete_state) */
-		if (M[58].mat[1] == s[10])
+		/* EnergyEncodingBase\outputMessage[1] = EnergyEncodingBase\outputSum; */
+		M[57].mat[0] = V[453];
+
+		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\outputCount; */
+		M[57].mat[1] = R[9];
+
+		/* if (EnergyEncodingSpring\inputMessage[1] + 0.1 * EnergyEncodingSpring\roundUp) < EnergyEncodingSpring\inputSum */
+		if ((M[58].mat[0] + 0.1 * P[54]) < V[459])
 		{
-			/* EnergyEncodingSpring\inputEnergy = 0; */
-			V[450] = 0.0;
+			/* EnergyEncodingSpring\inputDiff = (EnergyEncodingSpring\roundUp + EnergyEncodingSpring\inputMessage[1]) - EnergyEncodingSpring\inputSum; */
+			V[460] = (P[54] + M[58].mat[0]) - V[459];
 		}
 		else
 		{
-			/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputMessage[1]; */
-			V[450] = M[58].mat[0];
+			/* EnergyEncodingSpring\inputDiff = EnergyEncodingSpring\inputMessage[1] - EnergyEncodingSpring\inputSum; */
+			V[460] = M[58].mat[0] - V[459];
 		}
 
-		/* EnergyEncodingSpring\outputMessage[1] = PassivityLayer\SETP3\outputPackage; */
-		M[59].mat[0] = V[505];
+		/* EnergyEncodingSpring\inputSum = (EnergyEncodingSpring\inputSum + EnergyEncodingSpring\inputDiff) mod EnergyEncodingSpring\roundUp; */
+		V[459] = XXIntegerModulo ((V[459] + V[460]), P[54]);
 
-		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\counter; */
-		M[59].mat[1] = P[55];
+		/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputDiff; */
+		V[456] = V[460];
+
+		/* EnergyEncodingSpring\outputCount = (EnergyEncodingSpring\outputCount_previous + 1) mod EnergyEncodingSpring\MaxCounter; */
+		R[10] = XXIntegerModulo ((s[10] + 1.0), P[55]);
+
+		/* EnergyEncodingSpring\outputSum = (EnergyEncodingSpring\outputSum + PassivityLayer\SETP3\outputPackage) mod EnergyEncodingSpring\roundUp; */
+		V[461] = XXIntegerModulo ((V[461] + V[514]), P[54]);
+
+		/* EnergyEncodingSpring\outputMessage[1] = EnergyEncodingSpring\outputSum; */
+		M[59].mat[0] = V[461];
+
+		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\outputCount; */
+		M[59].mat[1] = R[10];
 
 		/* HToAngles\H_vp_base = HToAngles\H_vp_0; */
 		XXMatrixMov (&M[62], &M[60]);
@@ -1008,27 +1035,27 @@ namespace motion_stack
 		M[103].mat[7] = M[62].mat[9];
 		M[103].mat[8] = M[62].mat[10];
 		M[102].mat[0] = XXMatrixTrace (&M[103]);
-		V[488] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
+		V[497] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
 
 		/* if (HToAngles\aldo < -1) */
-		if (V[488] < -1.0)
+		if (V[497] < -1.0)
 		{
 			/* HToAngles\aldo = -1; */
-			V[488] = -1.0;
+			V[497] = -1.0;
 		}
 
 		/* if (HToAngles\aldo > 1) */
-		if (V[488] > 1.0)
+		if (V[497] > 1.0)
 		{
 			/* HToAngles\aldo = 1; */
-			V[488] = 1.0;
+			V[497] = 1.0;
 		}
 
 		/* HToAngles\theta = arccos (HToAngles\aldo); */
-		V[489] = acos (V[488]);
+		V[498] = acos (V[497]);
 
 		/* if (HToAngles\theta == 0) */
-		if (V[489] == 0.0)
+		if (V[498] == 0.0)
 		{
 			/* HToAngles\norm_omega = 0; */
 			XXMatrixScalarMov (&M[63], 0.0);
@@ -1039,11 +1066,11 @@ namespace motion_stack
 			M[106].mat[0] = M[62].mat[9] - M[62].mat[6];
 			M[106].mat[1] = M[62].mat[2] - M[62].mat[8];
 			M[106].mat[2] = M[62].mat[4] - M[62].mat[1];
-			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[489]))), &M[106]);
+			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[498]))), &M[106]);
 		}
 
 		/* HToAngles\omega = HToAngles\theta * HToAngles\norm_omega; */
-		XXScalarMatrixMul (&M[64], V[489], &M[63]);
+		XXScalarMatrixMul (&M[64], V[498], &M[63]);
 
 		/* HToAngles\pose[1] = HToAngles\omega[3]; */
 		M[61].mat[0] = M[64].mat[2];
@@ -1062,30 +1089,30 @@ namespace motion_stack
 	M[66].mat[7] = M[65].mat[4];
 
 	/* output_energy_arm = EnergyEncodingArm\outputMessage; */
-	XXMatrixMov (&M[74], &M[55]);
-
-	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
-	XXMatrixMov (&M[76], &M[59]);
+	XXMatrixMov (&M[71], &M[55]);
 
 	/* output_energy_base = EnergyEncodingBase\outputMessage; */
-	XXMatrixMov (&M[80], &M[57]);
+	XXMatrixMov (&M[73], &M[57]);
 
-		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\EnergyState + PassivityLayer\PlusMinus1\output; */
-		V[497] = V[497] + V[499];
+	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
+	XXMatrixMov (&M[78], &M[59]);
 
-		/* PassivityLayer\EnegyTank1\energyState = PassivityLayer\EnegyTank1\EnergyState; */
-		V[496] = V[497];
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\EnergyState + PassivityLayer\PlusMinus1\output; */
+		V[506] = V[506] + V[508];
+
+		/* PassivityLayer\EnergyTankBlock\energyState = PassivityLayer\EnergyTankBlock\EnergyState; */
+		V[505] = V[506];
 
 	/* StateMux\measured_angles[1:3] = HToAngles\pose; */
 	M[66].mat[0] = M[61].mat[0];
 	M[66].mat[1] = M[61].mat[1];
 	M[66].mat[2] = M[61].mat[2];
 
+	/* EnergyTank = PassivityLayer\EnergyTankBlock\energyState; */
+	V[564] = V[505];
+
 	/* DiscreteDifferential\input = StateMux\measured_angles; */
 	XXMatrixMov (&M[83], &M[66]);
-
-	/* EnergyTank = PassivityLayer\EnegyTank1\energyState; */
-	V[597] = V[496];
 
 	/* CalculateJ\Rz = [cos (StateMux\measured_angles[1]), -sin (StateMux\measured_angles[1]), 0; sin (StateMux\measured_angles[1]), cos (StateMux\measured_angles[1]), 0; 0, 0, 1]; */
 	M[48].mat[0] = cos (M[66].mat[0]);
@@ -1294,11 +1321,11 @@ namespace motion_stack
 	XXMatrixScalarDiv (&M[128], &M[129], step_size);
 	XXMatrixAdd (&M[51], &M[128], &M[53]);
 
-	/* PassivityLayer\Gain\output = PassivityLayer\EnegyTank1\energyState / 3; */
-	V[498] = V[496] / 3.0;
+	/* PassivityLayer\Gain\output = PassivityLayer\EnergyTankBlock\energyState / 3; */
+	V[507] = V[505] / 3.0;
 
 	/* H_tooltip_0 = CalculateJ\Htip0; */
-	XXMatrixMov (&M[79], &M[1]);
+	XXMatrixMov (&M[82], &M[1]);
 
 	/* TF\joints_e = transpose (CalculateJ\controllableJ) * TF\tip_e; */
 	XXMatrixTranspose (&M[130], &M[0]);
@@ -1308,61 +1335,61 @@ namespace motion_stack
 	XXMatrixMul (&M[69], &M[0], &M[51]);
 
 		/* if PassivityLayer\SETP1\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[58] > V[498])
+		if (P[58] > V[507])
 		{
 			/* PassivityLayer\SETP1\outputPackage = 0; */
-			V[501] = 0.0;
+			V[510] = 0.0;
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy; */
-			V[500] = V[440];
+			V[509] = V[440];
 		}
 		else
 		{
 			/* PassivityLayer\SETP1\outputPackage = -(PassivityLayer\SETP1\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP1\SendoutPercent; */
-			V[501] = -(P[58] - V[498]) * P[59];
+			V[510] = -(P[58] - V[507]) * P[59];
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy - PassivityLayer\SETP1\outputPackage; */
-			V[500] = V[440] - V[501];
+			V[509] = V[440] - V[510];
 		}
 
 		/* if PassivityLayer\SETP2\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[60] > V[498])
+		if (P[60] > V[507])
 		{
 			/* PassivityLayer\SETP2\outputPackage = 0; */
-			V[503] = 0.0;
+			V[512] = 0.0;
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy; */
-			V[502] = V[445];
+			V[511] = V[448];
 		}
 		else
 		{
 			/* PassivityLayer\SETP2\outputPackage = -(PassivityLayer\SETP2\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP2\SendoutPercent; */
-			V[503] = -(P[60] - V[498]) * P[61];
+			V[512] = -(P[60] - V[507]) * P[61];
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy - PassivityLayer\SETP2\outputPackage; */
-			V[502] = V[445] - V[503];
+			V[511] = V[448] - V[512];
 		}
 
 		/* if PassivityLayer\SETP3\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[62] > V[498])
+		if (P[62] > V[507])
 		{
 			/* PassivityLayer\SETP3\outputPackage = 0; */
-			V[505] = 0.0;
+			V[514] = 0.0;
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy; */
-			V[504] = V[450];
+			V[513] = V[456];
 		}
 		else
 		{
 			/* PassivityLayer\SETP3\outputPackage = -(PassivityLayer\SETP3\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP3\SendoutPercent; */
-			V[505] = -(P[62] - V[498]) * P[63];
+			V[514] = -(P[62] - V[507]) * P[63];
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy - PassivityLayer\SETP3\outputPackage; */
-			V[504] = V[450] - V[505];
+			V[513] = V[456] - V[514];
 		}
 
 	/* T_tooltip_00 = TF\tip_f; */
-	XXMatrixMov (&M[82], &M[69]);
+	XXMatrixMov (&M[74], &M[69]);
 
 	/* CmdDemux\W_base_00 = [0; 0; TF\joints_e[1]; TF\joints_e[2]; TF\joints_e[3]; 0]; */
 	M[50].mat[0] = 0.0;
@@ -1380,10 +1407,10 @@ namespace motion_stack
 	M[49].mat[4] = M[67].mat[7];
 
 	/* torques_cmd = CmdDemux\arm_torque; */
-	XXMatrixMov (&M[72], &M[49]);
+	XXMatrixMov (&M[75], &M[49]);
 
 	/* W_base_00 = CmdDemux\W_base_00; */
-	XXMatrixMov (&M[73], &M[50]);
+	XXMatrixMov (&M[76], &M[50]);
 
 	}
 
@@ -1399,7 +1426,7 @@ namespace motion_stack
 	XXMatrixMov (&M[60], &M[70]);
 
 	/* PassivityLayer\PlusMinus1\output = (PassivityLayer\SETP3\energyQuanta + PassivityLayer\SETP2\energyQuanta) + PassivityLayer\SETP1\energyQuanta; */
-	V[499] = (V[504] + V[502]) + V[500];
+	V[508] = (V[513] + V[511]) + V[509];
 
 	/* AntiBug\aldo = EnergyEncodingArm\inputEnergy + TF\tip_f[1]; */
 	V[0] = V[440] + M[69].mat[0];

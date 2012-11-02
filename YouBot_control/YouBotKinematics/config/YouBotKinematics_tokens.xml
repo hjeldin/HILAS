@@ -8,81 +8,81 @@
 	<token name="ALGLOOP_NAMES3"><![CDATA[]]></token>
 	<token name="ALGLOOP_UNITS"><![CDATA[]]></token>
 	<token name="ALIAS_EQUATIONS"><![CDATA[	/* PassivityLayer\output_energy_arm = PassivityLayer\SETP1\outputPackage; */
-	V[664] = V[501];
-
-	/* PassivityLayer\PlusMinus1\plus1 = PassivityLayer\SETP3\energyQuanta; */
-	V[648] = V[504];
-
-	/* PassivityLayer\PlusMinus1\plus2 = PassivityLayer\SETP1\energyQuanta; */
-	V[649] = V[500];
-
-	/* PassivityLayer\PlusMinus1\plus3 = PassivityLayer\SETP2\energyQuanta; */
-	V[650] = V[502];
+	V[673] = V[510];
 
 	/* PassivityLayer\output_energy_base = PassivityLayer\SETP2\outputPackage; */
-	V[667] = V[503];
+	V[676] = V[512];
 
 	/* PassivityLayer\output_energy_spring = PassivityLayer\SETP3\outputPackage; */
-	V[669] = V[505];
+	V[678] = V[514];
+
+	/* PassivityLayer\PlusMinus1\plus1 = PassivityLayer\SETP3\energyQuanta; */
+	V[657] = V[513];
+
+	/* PassivityLayer\PlusMinus1\plus2 = PassivityLayer\SETP1\energyQuanta; */
+	V[658] = V[509];
+
+	/* PassivityLayer\PlusMinus1\plus3 = PassivityLayer\SETP2\energyQuanta; */
+	V[659] = V[511];
 
 	/* EnergyEncodingArm\outputEnergy = PassivityLayer\SETP1\outputPackage; */
-	V[643] = V[501];
+	V[652] = V[510];
 
 	/* EnergyEncodingSpring\outputEnergy = PassivityLayer\SETP3\outputPackage; */
-	V[645] = V[505];
+	V[654] = V[514];
 
 	/* EnergyEncodingBase\outputEnergy = PassivityLayer\SETP2\outputPackage; */
-	V[644] = V[503];
+	V[653] = V[512];
 
-	/* PassivityLayer\EnegyTank1\energyQuanta = PassivityLayer\PlusMinus1\output; */
-	V[646] = V[499];
+	/* PassivityLayer\EnergyTankBlock\energyQuanta = PassivityLayer\PlusMinus1\output; */
+	V[655] = V[508];
+
+	/* PassivityLayer\input_energy_base = EnergyEncodingBase\inputEnergy; */
+	V[675] = V[448];
+
+	/* Splitter2\input = EnergyEncodingArm\inputEnergy; */
+	V[704] = V[440];
 
 	/* StateMux\base_pose = HToAngles\pose; */
 	XXMatrixMov (&M[98], &M[61]);
 
-	/* PassivityLayer\input_energy_base = EnergyEncodingBase\inputEnergy; */
-	V[666] = V[445];
-
 	/* PassivityLayer\input_energy_spring = EnergyEncodingSpring\inputEnergy; */
-	V[668] = V[450];
-
-	/* Splitter2\input = EnergyEncodingArm\inputEnergy; */
-	V[695] = V[440];
-
-	/* PassivityLayer\Splitter2\input = PassivityLayer\EnegyTank1\energyState; */
-	V[661] = V[496];
+	V[677] = V[456];
 
 	/* PassivityLayer\SETP2\inputPackage = EnergyEncodingBase\inputEnergy; */
-	V[654] = V[445];
+	V[663] = V[448];
 
 	/* PassivityLayer\SETP3\inputPackage = EnergyEncodingSpring\inputEnergy; */
-	V[656] = V[450];
+	V[665] = V[456];
+
+	/* PassivityLayer\Splitter2\input = PassivityLayer\EnergyTankBlock\energyState; */
+	V[670] = V[505];
 
 	/* [Splitter2\output1, Splitter2\output2] = EnergyEncodingArm\inputEnergy; */
-	V[696] = V[440];
-	V[697] = V[440];
-
-	/* PassivityLayer\input_energy_arm = EnergyEncodingArm\inputEnergy; */
-	V[665] = V[440];
+	V[705] = V[440];
+	V[706] = V[440];
 
 	/* Splitter1\input = StateMux\measured_angles; */
 	XXMatrixMov (&M[90], &M[66]);
 
 	/* AntiBug\port2 = EnergyEncodingArm\inputEnergy; */
-	V[618] = V[440];
+	V[627] = V[440];
 
-	/* [PassivityLayer\Splitter2\output1, PassivityLayer\Splitter2\output2] = PassivityLayer\EnegyTank1\energyState; */
-	V[662] = V[496];
-	V[663] = V[496];
+	/* PassivityLayer\input_energy_arm = EnergyEncodingArm\inputEnergy; */
+	V[674] = V[440];
+
+	/* [PassivityLayer\Splitter2\output1, PassivityLayer\Splitter2\output2] = PassivityLayer\EnergyTankBlock\energyState; */
+	V[671] = V[505];
+	V[672] = V[505];
 
 	/* PassivityLayer\SETP1\inputPackage = EnergyEncodingArm\inputEnergy; */
-	V[652] = V[440];
+	V[661] = V[440];
 
-	/* PassivityLayer\Gain\input = PassivityLayer\EnegyTank1\energyState; */
-	V[647] = V[496];
+	/* PassivityLayer\Gain\input = PassivityLayer\EnergyTankBlock\energyState; */
+	V[656] = V[505];
 
-	/* PassivityLayer\EnergyTank = PassivityLayer\EnegyTank1\energyState; */
-	V[670] = V[496];
+	/* PassivityLayer\EnergyTank = PassivityLayer\EnergyTankBlock\energyState; */
+	V[679] = V[505];
 
 	/* [Splitter1\output1, Splitter1\output2] = StateMux\measured_angles; */
 	XXMatrixMov (&M[91], &M[66]);
@@ -95,7 +95,7 @@
 	XXMatrixMov (&M[88], &M[66]);
 
 	/* PassivityLayer\Splitter1\input = PassivityLayer\Gain\output; */
-	V[657] = V[498];
+	V[666] = V[507];
 
 	/* TF\joints_f = DiscreteDifferential\output; */
 	XXMatrixMov (&M[100], &M[51]);
@@ -104,18 +104,18 @@
 	XXMatrixMov (&M[99], &M[0]);
 
 	/* [PassivityLayer\Splitter1\output1, PassivityLayer\Splitter1\output2, PassivityLayer\Splitter1\output3] = PassivityLayer\Gain\output; */
-	V[658] = V[498];
-	V[659] = V[498];
-	V[660] = V[498];
+	V[667] = V[507];
+	V[668] = V[507];
+	V[669] = V[507];
 
 	/* PassivityLayer\SETP1\energyState = PassivityLayer\Gain\output; */
-	V[651] = V[498];
+	V[660] = V[507];
 
 	/* PassivityLayer\SETP2\energyState = PassivityLayer\Gain\output; */
-	V[653] = V[498];
+	V[662] = V[507];
 
 	/* PassivityLayer\SETP3\energyState = PassivityLayer\Gain\output; */
-	V[655] = V[498];
+	V[664] = V[507];
 
 	/* Splitter3\input = TF\joints_e; */
 	XXMatrixMov (&M[93], &M[67]);
@@ -130,11 +130,11 @@
 	XXMatrixMov (&M[96], &M[69]);
 	XXMatrixMov (&M[97], &M[69]);
 
-	/* AntiBug\port1 = TF\tip_f; */
-	XXMatrixMov (&M[86], &M[69]);
-
 	/* CmdDemux\effort = TF\joints_e; */
 	XXMatrixMov (&M[89], &M[67]);
+
+	/* AntiBug\port1 = TF\tip_f; */
+	XXMatrixMov (&M[86], &M[69]);
 ]]></token>
 	<token name="ALIAS_MATRIX_NAMES"><![CDATA[	"AntiBug\\port1",
 	"CalculateJ\\jointVelocities",
@@ -190,18 +190,18 @@ TF\joints_f
 	39,	45,	4,	10,	16,	22,	28,	34,	40,	46,	5,
 	11,	17,	23,	29,	35,	41,	47,	6,	12,	18,	24,
 	30,	36,	42,	48,	421,	422,	423,	424,	425,	426,	427,
-	428,	440,	440,	440,	440,	440,	440,	445,	445,	450,	450,
-	469,	470,	471,	496,	496,	496,	496,	496,	498,	498,	498,
-	498,	498,	498,	498,	499,	500,	501,	501,	502,	503,	503,
-	504,	505,	505,	511,	512,	513,	514,	515,	516,	517,	518,
-	511,	512,	513,	514,	515,	516,	517,	518,	511,	512,	513,
-	514,	515,	516,	517,	518,	511,	512,	513,	514,	515,	516,
-	517,	518,	511,	512,	513,	514,	515,	516,	517,	518,	519,
-	520,	521,	522,	523,	524,	525,	526,	519,	520,	521,	522,
-	523,	524,	525,	526,	519,	520,	521,	522,	523,	524,	525,
-	526,	533,	534,	535,	536,	537,	538,	533,	534,	535,	536,
-	537,	538,	533,	534,	535,	536,	537,	538,	533,	534,	535,
-	536,	537,	538
+	428,	440,	440,	440,	440,	440,	440,	448,	448,	456,	456,
+	478,	479,	480,	505,	505,	505,	505,	505,	507,	507,	507,
+	507,	507,	507,	507,	508,	509,	510,	510,	511,	512,	512,
+	513,	514,	514,	520,	521,	522,	523,	524,	525,	526,	527,
+	520,	521,	522,	523,	524,	525,	526,	527,	520,	521,	522,
+	523,	524,	525,	526,	527,	520,	521,	522,	523,	524,	525,
+	526,	527,	520,	521,	522,	523,	524,	525,	526,	527,	528,
+	529,	530,	531,	532,	533,	534,	535,	528,	529,	530,	531,
+	532,	533,	534,	535,	528,	529,	530,	531,	532,	533,	534,
+	535,	542,	543,	544,	545,	546,	547,	542,	543,	544,	545,
+	546,	547,	542,	543,	544,	545,	546,	547,	542,	543,	544,
+	545,	546,	547
 ]]></token>
 	<token name="ALIAS_VARIABLE_NAMES"><![CDATA[	"TF\\Jacobian[1,1]",
 	"TF\\Jacobian[1,2]",
@@ -265,8 +265,8 @@ TF\joints_f
 	"Splitter2\\input",
 	"PassivityLayer\\SETP1\\inputPackage",
 	"PassivityLayer\\input_energy_arm",
-	"PassivityLayer\\SETP2\\inputPackage",
 	"PassivityLayer\\input_energy_base",
+	"PassivityLayer\\SETP2\\inputPackage",
 	"PassivityLayer\\input_energy_spring",
 	"PassivityLayer\\SETP3\\inputPackage",
 	"StateMux\\base_pose[1]",
@@ -277,39 +277,23 @@ TF\joints_f
 	"PassivityLayer\\Splitter2\\output2",
 	"PassivityLayer\\Splitter2\\output1",
 	"PassivityLayer\\Splitter2\\input",
-	"PassivityLayer\\Splitter1\\output3",
-	"PassivityLayer\\Splitter1\\output2",
 	"PassivityLayer\\Splitter1\\input",
 	"PassivityLayer\\SETP1\\energyState",
-	"PassivityLayer\\Splitter1\\output1",
+	"PassivityLayer\\Splitter1\\output3",
 	"PassivityLayer\\SETP2\\energyState",
+	"PassivityLayer\\Splitter1\\output2",
 	"PassivityLayer\\SETP3\\energyState",
-	"PassivityLayer\\EnegyTank1\\energyQuanta",
+	"PassivityLayer\\Splitter1\\output1",
+	"PassivityLayer\\EnergyTankBlock\\energyQuanta",
 	"PassivityLayer\\PlusMinus1\\plus2",
-	"EnergyEncodingArm\\outputEnergy",
 	"PassivityLayer\\output_energy_arm",
+	"EnergyEncodingArm\\outputEnergy",
 	"PassivityLayer\\PlusMinus1\\plus3",
 	"EnergyEncodingBase\\outputEnergy",
 	"PassivityLayer\\output_energy_base",
 	"PassivityLayer\\PlusMinus1\\plus1",
 	"PassivityLayer\\output_energy_spring",
 	"EnergyEncodingSpring\\outputEnergy",
-	"Splitter1\\input[1]",
-	"Splitter1\\input[2]",
-	"Splitter1\\input[3]",
-	"Splitter1\\input[4]",
-	"Splitter1\\input[5]",
-	"Splitter1\\input[6]",
-	"Splitter1\\input[7]",
-	"Splitter1\\input[8]",
-	"Splitter1\\output1[1]",
-	"Splitter1\\output1[2]",
-	"Splitter1\\output1[3]",
-	"Splitter1\\output1[4]",
-	"Splitter1\\output1[5]",
-	"Splitter1\\output1[6]",
-	"Splitter1\\output1[7]",
-	"Splitter1\\output1[8]",
 	"Splitter1\\output2[1]",
 	"Splitter1\\output2[2]",
 	"Splitter1\\output2[3]",
@@ -318,6 +302,14 @@ TF\joints_f
 	"Splitter1\\output2[6]",
 	"Splitter1\\output2[7]",
 	"Splitter1\\output2[8]",
+	"Splitter1\\output1[1]",
+	"Splitter1\\output1[2]",
+	"Splitter1\\output1[3]",
+	"Splitter1\\output1[4]",
+	"Splitter1\\output1[5]",
+	"Splitter1\\output1[6]",
+	"Splitter1\\output1[7]",
+	"Splitter1\\output1[8]",
 	"CalculateJ\\q[1]",
 	"CalculateJ\\q[2]",
 	"CalculateJ\\q[3]",
@@ -334,6 +326,22 @@ TF\joints_f
 	"CalculateJ\\jointVelocities[6]",
 	"CalculateJ\\jointVelocities[7]",
 	"CalculateJ\\jointVelocities[8]",
+	"Splitter1\\input[1]",
+	"Splitter1\\input[2]",
+	"Splitter1\\input[3]",
+	"Splitter1\\input[4]",
+	"Splitter1\\input[5]",
+	"Splitter1\\input[6]",
+	"Splitter1\\input[7]",
+	"Splitter1\\input[8]",
+	"CmdDemux\\effort[1]",
+	"CmdDemux\\effort[2]",
+	"CmdDemux\\effort[3]",
+	"CmdDemux\\effort[4]",
+	"CmdDemux\\effort[5]",
+	"CmdDemux\\effort[6]",
+	"CmdDemux\\effort[7]",
+	"CmdDemux\\effort[8]",
 	"Splitter3\\input[1]",
 	"Splitter3\\input[2]",
 	"Splitter3\\input[3]",
@@ -350,32 +358,24 @@ TF\joints_f
 	"Splitter3\\output1[6]",
 	"Splitter3\\output1[7]",
 	"Splitter3\\output1[8]",
-	"CmdDemux\\effort[1]",
-	"CmdDemux\\effort[2]",
-	"CmdDemux\\effort[3]",
-	"CmdDemux\\effort[4]",
-	"CmdDemux\\effort[5]",
-	"CmdDemux\\effort[6]",
-	"CmdDemux\\effort[7]",
-	"CmdDemux\\effort[8]",
-	"Splitter4\\input[1]",
-	"Splitter4\\input[2]",
-	"Splitter4\\input[3]",
-	"Splitter4\\input[4]",
-	"Splitter4\\input[5]",
-	"Splitter4\\input[6]",
-	"Splitter4\\output1[1]",
-	"Splitter4\\output1[2]",
-	"Splitter4\\output1[3]",
-	"Splitter4\\output1[4]",
-	"Splitter4\\output1[5]",
-	"Splitter4\\output1[6]",
 	"Splitter4\\output2[1]",
 	"Splitter4\\output2[2]",
 	"Splitter4\\output2[3]",
 	"Splitter4\\output2[4]",
 	"Splitter4\\output2[5]",
 	"Splitter4\\output2[6]",
+	"Splitter4\\output1[1]",
+	"Splitter4\\output1[2]",
+	"Splitter4\\output1[3]",
+	"Splitter4\\output1[4]",
+	"Splitter4\\output1[5]",
+	"Splitter4\\output1[6]",
+	"Splitter4\\input[1]",
+	"Splitter4\\input[2]",
+	"Splitter4\\input[3]",
+	"Splitter4\\input[4]",
+	"Splitter4\\input[5]",
+	"Splitter4\\input[6]",
 	"AntiBug\\port1[1]",
 	"AntiBug\\port1[2]",
 	"AntiBug\\port1[3]",
@@ -445,8 +445,8 @@ TF\joints_f
 	"Splitter2_input",
 	"PassivityLayer_SETP1_inputPackage",
 	"PassivityLayer_input_energy_arm",
-	"PassivityLayer_SETP2_inputPackage",
 	"PassivityLayer_input_energy_base",
+	"PassivityLayer_SETP2_inputPackage",
 	"PassivityLayer_input_energy_spring",
 	"PassivityLayer_SETP3_inputPackage",
 	"StateMux_base_pose[1]",
@@ -457,39 +457,23 @@ TF\joints_f
 	"PassivityLayer_Splitter2_output2",
 	"PassivityLayer_Splitter2_output1",
 	"PassivityLayer_Splitter2_input",
-	"PassivityLayer_Splitter1_output3",
-	"PassivityLayer_Splitter1_output2",
 	"PassivityLayer_Splitter1_input",
 	"PassivityLayer_SETP1_energyState",
-	"PassivityLayer_Splitter1_output1",
+	"PassivityLayer_Splitter1_output3",
 	"PassivityLayer_SETP2_energyState",
+	"PassivityLayer_Splitter1_output2",
 	"PassivityLayer_SETP3_energyState",
-	"PassivityLayer_EnegyTank1_energyQuanta",
+	"PassivityLayer_Splitter1_output1",
+	"PassivityLayer_EnergyTankBlock_energyQuanta",
 	"PassivityLayer_PlusMinus1_plus2",
-	"EnergyEncodingArm_outputEnergy",
 	"PassivityLayer_output_energy_arm",
+	"EnergyEncodingArm_outputEnergy",
 	"PassivityLayer_PlusMinus1_plus3",
 	"EnergyEncodingBase_outputEnergy",
 	"PassivityLayer_output_energy_base",
 	"PassivityLayer_PlusMinus1_plus1",
 	"PassivityLayer_output_energy_spring",
 	"EnergyEncodingSpring_outputEnergy",
-	"Splitter1_input[1]",
-	"Splitter1_input[2]",
-	"Splitter1_input[3]",
-	"Splitter1_input[4]",
-	"Splitter1_input[5]",
-	"Splitter1_input[6]",
-	"Splitter1_input[7]",
-	"Splitter1_input[8]",
-	"Splitter1_output1[1]",
-	"Splitter1_output1[2]",
-	"Splitter1_output1[3]",
-	"Splitter1_output1[4]",
-	"Splitter1_output1[5]",
-	"Splitter1_output1[6]",
-	"Splitter1_output1[7]",
-	"Splitter1_output1[8]",
 	"Splitter1_output2[1]",
 	"Splitter1_output2[2]",
 	"Splitter1_output2[3]",
@@ -498,6 +482,14 @@ TF\joints_f
 	"Splitter1_output2[6]",
 	"Splitter1_output2[7]",
 	"Splitter1_output2[8]",
+	"Splitter1_output1[1]",
+	"Splitter1_output1[2]",
+	"Splitter1_output1[3]",
+	"Splitter1_output1[4]",
+	"Splitter1_output1[5]",
+	"Splitter1_output1[6]",
+	"Splitter1_output1[7]",
+	"Splitter1_output1[8]",
 	"CalculateJ_q[1]",
 	"CalculateJ_q[2]",
 	"CalculateJ_q[3]",
@@ -514,6 +506,22 @@ TF\joints_f
 	"CalculateJ_jointVelocities[6]",
 	"CalculateJ_jointVelocities[7]",
 	"CalculateJ_jointVelocities[8]",
+	"Splitter1_input[1]",
+	"Splitter1_input[2]",
+	"Splitter1_input[3]",
+	"Splitter1_input[4]",
+	"Splitter1_input[5]",
+	"Splitter1_input[6]",
+	"Splitter1_input[7]",
+	"Splitter1_input[8]",
+	"CmdDemux_effort[1]",
+	"CmdDemux_effort[2]",
+	"CmdDemux_effort[3]",
+	"CmdDemux_effort[4]",
+	"CmdDemux_effort[5]",
+	"CmdDemux_effort[6]",
+	"CmdDemux_effort[7]",
+	"CmdDemux_effort[8]",
 	"Splitter3_input[1]",
 	"Splitter3_input[2]",
 	"Splitter3_input[3]",
@@ -530,32 +538,24 @@ TF\joints_f
 	"Splitter3_output1[6]",
 	"Splitter3_output1[7]",
 	"Splitter3_output1[8]",
-	"CmdDemux_effort[1]",
-	"CmdDemux_effort[2]",
-	"CmdDemux_effort[3]",
-	"CmdDemux_effort[4]",
-	"CmdDemux_effort[5]",
-	"CmdDemux_effort[6]",
-	"CmdDemux_effort[7]",
-	"CmdDemux_effort[8]",
-	"Splitter4_input[1]",
-	"Splitter4_input[2]",
-	"Splitter4_input[3]",
-	"Splitter4_input[4]",
-	"Splitter4_input[5]",
-	"Splitter4_input[6]",
-	"Splitter4_output1[1]",
-	"Splitter4_output1[2]",
-	"Splitter4_output1[3]",
-	"Splitter4_output1[4]",
-	"Splitter4_output1[5]",
-	"Splitter4_output1[6]",
 	"Splitter4_output2[1]",
 	"Splitter4_output2[2]",
 	"Splitter4_output2[3]",
 	"Splitter4_output2[4]",
 	"Splitter4_output2[5]",
 	"Splitter4_output2[6]",
+	"Splitter4_output1[1]",
+	"Splitter4_output1[2]",
+	"Splitter4_output1[3]",
+	"Splitter4_output1[4]",
+	"Splitter4_output1[5]",
+	"Splitter4_output1[6]",
+	"Splitter4_input[1]",
+	"Splitter4_input[2]",
+	"Splitter4_input[3]",
+	"Splitter4_input[4]",
+	"Splitter4_input[5]",
+	"Splitter4_input[6]",
 	"AntiBug_port1[1]",
 	"AntiBug_port1[2]",
 	"AntiBug_port1[3]",
@@ -625,8 +625,8 @@ Splitter2\output1
 Splitter2\input
 PassivityLayer\SETP1\inputPackage
 PassivityLayer\input_energy_arm
-PassivityLayer\SETP2\inputPackage
 PassivityLayer\input_energy_base
+PassivityLayer\SETP2\inputPackage
 PassivityLayer\input_energy_spring
 PassivityLayer\SETP3\inputPackage
 StateMux\base_pose[1]
@@ -637,39 +637,23 @@ PassivityLayer\Gain\input
 PassivityLayer\Splitter2\output2
 PassivityLayer\Splitter2\output1
 PassivityLayer\Splitter2\input
-PassivityLayer\Splitter1\output3
-PassivityLayer\Splitter1\output2
 PassivityLayer\Splitter1\input
 PassivityLayer\SETP1\energyState
-PassivityLayer\Splitter1\output1
+PassivityLayer\Splitter1\output3
 PassivityLayer\SETP2\energyState
+PassivityLayer\Splitter1\output2
 PassivityLayer\SETP3\energyState
-PassivityLayer\EnegyTank1\energyQuanta
+PassivityLayer\Splitter1\output1
+PassivityLayer\EnergyTankBlock\energyQuanta
 PassivityLayer\PlusMinus1\plus2
-EnergyEncodingArm\outputEnergy
 PassivityLayer\output_energy_arm
+EnergyEncodingArm\outputEnergy
 PassivityLayer\PlusMinus1\plus3
 EnergyEncodingBase\outputEnergy
 PassivityLayer\output_energy_base
 PassivityLayer\PlusMinus1\plus1
 PassivityLayer\output_energy_spring
 EnergyEncodingSpring\outputEnergy
-Splitter1\input[1]
-Splitter1\input[2]
-Splitter1\input[3]
-Splitter1\input[4]
-Splitter1\input[5]
-Splitter1\input[6]
-Splitter1\input[7]
-Splitter1\input[8]
-Splitter1\output1[1]
-Splitter1\output1[2]
-Splitter1\output1[3]
-Splitter1\output1[4]
-Splitter1\output1[5]
-Splitter1\output1[6]
-Splitter1\output1[7]
-Splitter1\output1[8]
 Splitter1\output2[1]
 Splitter1\output2[2]
 Splitter1\output2[3]
@@ -678,6 +662,14 @@ Splitter1\output2[5]
 Splitter1\output2[6]
 Splitter1\output2[7]
 Splitter1\output2[8]
+Splitter1\output1[1]
+Splitter1\output1[2]
+Splitter1\output1[3]
+Splitter1\output1[4]
+Splitter1\output1[5]
+Splitter1\output1[6]
+Splitter1\output1[7]
+Splitter1\output1[8]
 CalculateJ\q[1]
 CalculateJ\q[2]
 CalculateJ\q[3]
@@ -694,6 +686,22 @@ CalculateJ\jointVelocities[5]
 CalculateJ\jointVelocities[6]
 CalculateJ\jointVelocities[7]
 CalculateJ\jointVelocities[8]
+Splitter1\input[1]
+Splitter1\input[2]
+Splitter1\input[3]
+Splitter1\input[4]
+Splitter1\input[5]
+Splitter1\input[6]
+Splitter1\input[7]
+Splitter1\input[8]
+CmdDemux\effort[1]
+CmdDemux\effort[2]
+CmdDemux\effort[3]
+CmdDemux\effort[4]
+CmdDemux\effort[5]
+CmdDemux\effort[6]
+CmdDemux\effort[7]
+CmdDemux\effort[8]
 Splitter3\input[1]
 Splitter3\input[2]
 Splitter3\input[3]
@@ -710,32 +718,24 @@ Splitter3\output1[5]
 Splitter3\output1[6]
 Splitter3\output1[7]
 Splitter3\output1[8]
-CmdDemux\effort[1]
-CmdDemux\effort[2]
-CmdDemux\effort[3]
-CmdDemux\effort[4]
-CmdDemux\effort[5]
-CmdDemux\effort[6]
-CmdDemux\effort[7]
-CmdDemux\effort[8]
-Splitter4\input[1]
-Splitter4\input[2]
-Splitter4\input[3]
-Splitter4\input[4]
-Splitter4\input[5]
-Splitter4\input[6]
-Splitter4\output1[1]
-Splitter4\output1[2]
-Splitter4\output1[3]
-Splitter4\output1[4]
-Splitter4\output1[5]
-Splitter4\output1[6]
 Splitter4\output2[1]
 Splitter4\output2[2]
 Splitter4\output2[3]
 Splitter4\output2[4]
 Splitter4\output2[5]
 Splitter4\output2[6]
+Splitter4\output1[1]
+Splitter4\output1[2]
+Splitter4\output1[3]
+Splitter4\output1[4]
+Splitter4\output1[5]
+Splitter4\output1[6]
+Splitter4\input[1]
+Splitter4\input[2]
+Splitter4\input[3]
+Splitter4\input[4]
+Splitter4\input[5]
+Splitter4\input[6]
 AntiBug\port1[1]
 AntiBug\port1[2]
 AntiBug\port1[3]
@@ -867,92 +867,110 @@ AntiBug\port1[6]
 	<token name="DEPSTATE_NAMES3"><![CDATA[]]></token>
 	<token name="DEPSTATE_UNITS"><![CDATA[]]></token>
 	<token name="DIRECT_FEEDTHROUGH"><![CDATA[XXTRUE]]></token>
-	<token name="DYNAMIC_EQUATIONS"><![CDATA[	/* EnergyEncodingArm\inputMessage = input_energy_arm; */
-	XXMatrixMov (&M[54], &M[71]);
-
-	/* EnergyEncodingBase\inputMessage = input_energy_base; */
-	XXMatrixMov (&M[56], &M[75]);
-
-	/* StateMux\arm_angles = angles_measured; */
-	XXMatrixMov (&M[65], &M[77]);
+	<token name="DYNAMIC_EQUATIONS"><![CDATA[	/* EnergyEncodingBase\inputMessage = input_energy_base; */
+	XXMatrixMov (&M[56], &M[72]);
 
 	/* EnergyEncodingSpring\inputMessage = input_energy_spring; */
-	XXMatrixMov (&M[58], &M[78]);
+	XXMatrixMov (&M[58], &M[77]);
+
+	/* StateMux\arm_angles = angles_measured; */
+	XXMatrixMov (&M[65], &M[79]);
+
+	/* EnergyEncodingArm\inputMessage = input_energy_arm; */
+	XXMatrixMov (&M[54], &M[80]);
 
 	/* TF\tip_e = W_tooltip_00; */
 	XXMatrixMov (&M[68], &M[81]);
 
-	/* new_discrete_rate = EnergyEncodingArm\inputMessage[2]; */
-	R[8] = M[54].mat[1];
-
-		/* EnergyEncodingArm\counter = (EnergyEncodingArm\counter + 1) mod EnergyEncodingArm\roundUp; */
-		P[51] = XXIntegerModulo ((P[51] + 1.0), P[50]);
-
-		/* if (EnergyEncodingArm\inputMessage[2] == new_discrete_state) */
-		if (M[54].mat[1] == s[8])
+		/* if (EnergyEncodingArm\inputMessage[1] + 0.1 * EnergyEncodingArm\roundUp) < EnergyEncodingArm\inputSum */
+		if ((M[54].mat[0] + 0.1 * P[50]) < V[443])
 		{
-			/* EnergyEncodingArm\inputEnergy = 0; */
-			V[440] = 0.0;
+			/* EnergyEncodingArm\inputDiff = (EnergyEncodingArm\roundUp + EnergyEncodingArm\inputMessage[1]) - EnergyEncodingArm\inputSum; */
+			V[444] = (P[50] + M[54].mat[0]) - V[443];
 		}
 		else
 		{
-			/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputMessage[1]; */
-			V[440] = M[54].mat[0];
+			/* EnergyEncodingArm\inputDiff = EnergyEncodingArm\inputMessage[1] - EnergyEncodingArm\inputSum; */
+			V[444] = M[54].mat[0] - V[443];
 		}
 
-		/* EnergyEncodingArm\outputMessage[1] = PassivityLayer\SETP1\outputPackage; */
-		M[55].mat[0] = V[501];
+		/* EnergyEncodingArm\inputSum = (EnergyEncodingArm\inputSum + EnergyEncodingArm\inputDiff) mod EnergyEncodingArm\roundUp; */
+		V[443] = XXIntegerModulo ((V[443] + V[444]), P[50]);
 
-		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\counter; */
-		M[55].mat[1] = P[51];
+		/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputDiff; */
+		V[440] = V[444];
 
-	/* new_discrete_rate = EnergyEncodingBase\inputMessage[2]; */
-	R[9] = M[56].mat[1];
+		/* EnergyEncodingArm\outputCount = (EnergyEncodingArm\outputCount_previous + 1) mod EnergyEncodingArm\MaxCounter; */
+		R[8] = XXIntegerModulo ((s[8] + 1.0), P[51]);
 
-		/* EnergyEncodingBase\counter = (EnergyEncodingBase\counter + 1) mod EnergyEncodingBase\roundUp; */
-		P[53] = XXIntegerModulo ((P[53] + 1.0), P[52]);
+		/* EnergyEncodingArm\outputSum = (EnergyEncodingArm\outputSum + PassivityLayer\SETP1\outputPackage) mod EnergyEncodingArm\roundUp; */
+		V[445] = XXIntegerModulo ((V[445] + V[510]), P[50]);
 
-		/* if (EnergyEncodingBase\inputMessage[2] == new_discrete_state) */
-		if (M[56].mat[1] == s[9])
+		/* EnergyEncodingArm\outputMessage[1] = EnergyEncodingArm\outputSum; */
+		M[55].mat[0] = V[445];
+
+		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\outputCount; */
+		M[55].mat[1] = R[8];
+
+		/* if (EnergyEncodingBase\inputMessage[1] + 0.1 * EnergyEncodingBase\roundUp) < EnergyEncodingBase\inputSum */
+		if ((M[56].mat[0] + 0.1 * P[52]) < V[451])
 		{
-			/* EnergyEncodingBase\inputEnergy = 0; */
-			V[445] = 0.0;
+			/* EnergyEncodingBase\inputDiff = (EnergyEncodingBase\roundUp + EnergyEncodingBase\inputMessage[1]) - EnergyEncodingBase\inputSum; */
+			V[452] = (P[52] + M[56].mat[0]) - V[451];
 		}
 		else
 		{
-			/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputMessage[1]; */
-			V[445] = M[56].mat[0];
+			/* EnergyEncodingBase\inputDiff = EnergyEncodingBase\inputMessage[1] - EnergyEncodingBase\inputSum; */
+			V[452] = M[56].mat[0] - V[451];
 		}
 
-		/* EnergyEncodingBase\outputMessage[1] = PassivityLayer\SETP2\outputPackage; */
-		M[57].mat[0] = V[503];
+		/* EnergyEncodingBase\inputSum = (EnergyEncodingBase\inputSum + EnergyEncodingBase\inputDiff) mod EnergyEncodingBase\roundUp; */
+		V[451] = XXIntegerModulo ((V[451] + V[452]), P[52]);
 
-		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\counter; */
-		M[57].mat[1] = P[53];
+		/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputDiff; */
+		V[448] = V[452];
 
-	/* new_discrete_rate = EnergyEncodingSpring\inputMessage[2]; */
-	R[10] = M[58].mat[1];
+		/* EnergyEncodingBase\outputCount = (EnergyEncodingBase\outputCount_previous + 1) mod EnergyEncodingBase\MaxCounter; */
+		R[9] = XXIntegerModulo ((s[9] + 1.0), P[53]);
 
-		/* EnergyEncodingSpring\counter = (EnergyEncodingSpring\counter + 1) mod EnergyEncodingSpring\roundUp; */
-		P[55] = XXIntegerModulo ((P[55] + 1.0), P[54]);
+		/* EnergyEncodingBase\outputSum = (EnergyEncodingBase\outputSum + PassivityLayer\SETP2\outputPackage) mod EnergyEncodingBase\roundUp; */
+		V[453] = XXIntegerModulo ((V[453] + V[512]), P[52]);
 
-		/* if (EnergyEncodingSpring\inputMessage[2] == new_discrete_state) */
-		if (M[58].mat[1] == s[10])
+		/* EnergyEncodingBase\outputMessage[1] = EnergyEncodingBase\outputSum; */
+		M[57].mat[0] = V[453];
+
+		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\outputCount; */
+		M[57].mat[1] = R[9];
+
+		/* if (EnergyEncodingSpring\inputMessage[1] + 0.1 * EnergyEncodingSpring\roundUp) < EnergyEncodingSpring\inputSum */
+		if ((M[58].mat[0] + 0.1 * P[54]) < V[459])
 		{
-			/* EnergyEncodingSpring\inputEnergy = 0; */
-			V[450] = 0.0;
+			/* EnergyEncodingSpring\inputDiff = (EnergyEncodingSpring\roundUp + EnergyEncodingSpring\inputMessage[1]) - EnergyEncodingSpring\inputSum; */
+			V[460] = (P[54] + M[58].mat[0]) - V[459];
 		}
 		else
 		{
-			/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputMessage[1]; */
-			V[450] = M[58].mat[0];
+			/* EnergyEncodingSpring\inputDiff = EnergyEncodingSpring\inputMessage[1] - EnergyEncodingSpring\inputSum; */
+			V[460] = M[58].mat[0] - V[459];
 		}
 
-		/* EnergyEncodingSpring\outputMessage[1] = PassivityLayer\SETP3\outputPackage; */
-		M[59].mat[0] = V[505];
+		/* EnergyEncodingSpring\inputSum = (EnergyEncodingSpring\inputSum + EnergyEncodingSpring\inputDiff) mod EnergyEncodingSpring\roundUp; */
+		V[459] = XXIntegerModulo ((V[459] + V[460]), P[54]);
 
-		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\counter; */
-		M[59].mat[1] = P[55];
+		/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputDiff; */
+		V[456] = V[460];
+
+		/* EnergyEncodingSpring\outputCount = (EnergyEncodingSpring\outputCount_previous + 1) mod EnergyEncodingSpring\MaxCounter; */
+		R[10] = XXIntegerModulo ((s[10] + 1.0), P[55]);
+
+		/* EnergyEncodingSpring\outputSum = (EnergyEncodingSpring\outputSum + PassivityLayer\SETP3\outputPackage) mod EnergyEncodingSpring\roundUp; */
+		V[461] = XXIntegerModulo ((V[461] + V[514]), P[54]);
+
+		/* EnergyEncodingSpring\outputMessage[1] = EnergyEncodingSpring\outputSum; */
+		M[59].mat[0] = V[461];
+
+		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\outputCount; */
+		M[59].mat[1] = R[10];
 
 		/* HToAngles\H_vp_base = HToAngles\H_vp_0; */
 		XXMatrixMov (&M[62], &M[60]);
@@ -968,27 +986,27 @@ AntiBug\port1[6]
 		M[103].mat[7] = M[62].mat[9];
 		M[103].mat[8] = M[62].mat[10];
 		M[102].mat[0] = XXMatrixTrace (&M[103]);
-		V[488] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
+		V[497] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
 
 		/* if (HToAngles\aldo < -1) */
-		if (V[488] < -1.0)
+		if (V[497] < -1.0)
 		{
 			/* HToAngles\aldo = -1; */
-			V[488] = -1.0;
+			V[497] = -1.0;
 		}
 
 		/* if (HToAngles\aldo > 1) */
-		if (V[488] > 1.0)
+		if (V[497] > 1.0)
 		{
 			/* HToAngles\aldo = 1; */
-			V[488] = 1.0;
+			V[497] = 1.0;
 		}
 
 		/* HToAngles\theta = arccos (HToAngles\aldo); */
-		V[489] = acos (V[488]);
+		V[498] = acos (V[497]);
 
 		/* if (HToAngles\theta == 0) */
-		if (V[489] == 0.0)
+		if (V[498] == 0.0)
 		{
 			/* HToAngles\norm_omega = 0; */
 			XXMatrixScalarMov (&M[63], 0.0);
@@ -999,11 +1017,11 @@ AntiBug\port1[6]
 			M[106].mat[0] = M[62].mat[9] - M[62].mat[6];
 			M[106].mat[1] = M[62].mat[2] - M[62].mat[8];
 			M[106].mat[2] = M[62].mat[4] - M[62].mat[1];
-			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[489]))), &M[106]);
+			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[498]))), &M[106]);
 		}
 
 		/* HToAngles\omega = HToAngles\theta * HToAngles\norm_omega; */
-		XXScalarMatrixMul (&M[64], V[489], &M[63]);
+		XXScalarMatrixMul (&M[64], V[498], &M[63]);
 
 		/* HToAngles\pose[1] = HToAngles\omega[3]; */
 		M[61].mat[0] = M[64].mat[2];
@@ -1022,30 +1040,30 @@ AntiBug\port1[6]
 	M[66].mat[7] = M[65].mat[4];
 
 	/* output_energy_arm = EnergyEncodingArm\outputMessage; */
-	XXMatrixMov (&M[74], &M[55]);
-
-	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
-	XXMatrixMov (&M[76], &M[59]);
+	XXMatrixMov (&M[71], &M[55]);
 
 	/* output_energy_base = EnergyEncodingBase\outputMessage; */
-	XXMatrixMov (&M[80], &M[57]);
+	XXMatrixMov (&M[73], &M[57]);
 
-		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\EnergyState + PassivityLayer\PlusMinus1\output; */
-		V[497] = V[497] + V[499];
+	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
+	XXMatrixMov (&M[78], &M[59]);
 
-		/* PassivityLayer\EnegyTank1\energyState = PassivityLayer\EnegyTank1\EnergyState; */
-		V[496] = V[497];
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\EnergyState + PassivityLayer\PlusMinus1\output; */
+		V[506] = V[506] + V[508];
+
+		/* PassivityLayer\EnergyTankBlock\energyState = PassivityLayer\EnergyTankBlock\EnergyState; */
+		V[505] = V[506];
 
 	/* StateMux\measured_angles[1:3] = HToAngles\pose; */
 	M[66].mat[0] = M[61].mat[0];
 	M[66].mat[1] = M[61].mat[1];
 	M[66].mat[2] = M[61].mat[2];
 
+	/* EnergyTank = PassivityLayer\EnergyTankBlock\energyState; */
+	V[564] = V[505];
+
 	/* DiscreteDifferential\input = StateMux\measured_angles; */
 	XXMatrixMov (&M[83], &M[66]);
-
-	/* EnergyTank = PassivityLayer\EnegyTank1\energyState; */
-	V[597] = V[496];
 
 	/* CalculateJ\Rz = [cos (StateMux\measured_angles[1]), -sin (StateMux\measured_angles[1]), 0; sin (StateMux\measured_angles[1]), cos (StateMux\measured_angles[1]), 0; 0, 0, 1]; */
 	M[48].mat[0] = cos (M[66].mat[0]);
@@ -1254,11 +1272,11 @@ AntiBug\port1[6]
 	XXMatrixScalarDiv (&M[128], &M[129], step_size);
 	XXMatrixAdd (&M[51], &M[128], &M[53]);
 
-	/* PassivityLayer\Gain\output = PassivityLayer\EnegyTank1\energyState / 3; */
-	V[498] = V[496] / 3.0;
+	/* PassivityLayer\Gain\output = PassivityLayer\EnergyTankBlock\energyState / 3; */
+	V[507] = V[505] / 3.0;
 
 	/* H_tooltip_0 = CalculateJ\Htip0; */
-	XXMatrixMov (&M[79], &M[1]);
+	XXMatrixMov (&M[82], &M[1]);
 
 	/* TF\joints_e = transpose (CalculateJ\controllableJ) * TF\tip_e; */
 	XXMatrixTranspose (&M[130], &M[0]);
@@ -1268,61 +1286,61 @@ AntiBug\port1[6]
 	XXMatrixMul (&M[69], &M[0], &M[51]);
 
 		/* if PassivityLayer\SETP1\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[58] > V[498])
+		if (P[58] > V[507])
 		{
 			/* PassivityLayer\SETP1\outputPackage = 0; */
-			V[501] = 0.0;
+			V[510] = 0.0;
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy; */
-			V[500] = V[440];
+			V[509] = V[440];
 		}
 		else
 		{
 			/* PassivityLayer\SETP1\outputPackage = -(PassivityLayer\SETP1\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP1\SendoutPercent; */
-			V[501] = -(P[58] - V[498]) * P[59];
+			V[510] = -(P[58] - V[507]) * P[59];
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy - PassivityLayer\SETP1\outputPackage; */
-			V[500] = V[440] - V[501];
+			V[509] = V[440] - V[510];
 		}
 
 		/* if PassivityLayer\SETP2\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[60] > V[498])
+		if (P[60] > V[507])
 		{
 			/* PassivityLayer\SETP2\outputPackage = 0; */
-			V[503] = 0.0;
+			V[512] = 0.0;
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy; */
-			V[502] = V[445];
+			V[511] = V[448];
 		}
 		else
 		{
 			/* PassivityLayer\SETP2\outputPackage = -(PassivityLayer\SETP2\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP2\SendoutPercent; */
-			V[503] = -(P[60] - V[498]) * P[61];
+			V[512] = -(P[60] - V[507]) * P[61];
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy - PassivityLayer\SETP2\outputPackage; */
-			V[502] = V[445] - V[503];
+			V[511] = V[448] - V[512];
 		}
 
 		/* if PassivityLayer\SETP3\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[62] > V[498])
+		if (P[62] > V[507])
 		{
 			/* PassivityLayer\SETP3\outputPackage = 0; */
-			V[505] = 0.0;
+			V[514] = 0.0;
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy; */
-			V[504] = V[450];
+			V[513] = V[456];
 		}
 		else
 		{
 			/* PassivityLayer\SETP3\outputPackage = -(PassivityLayer\SETP3\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP3\SendoutPercent; */
-			V[505] = -(P[62] - V[498]) * P[63];
+			V[514] = -(P[62] - V[507]) * P[63];
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy - PassivityLayer\SETP3\outputPackage; */
-			V[504] = V[450] - V[505];
+			V[513] = V[456] - V[514];
 		}
 
 	/* T_tooltip_00 = TF\tip_f; */
-	XXMatrixMov (&M[82], &M[69]);
+	XXMatrixMov (&M[74], &M[69]);
 
 	/* CmdDemux\W_base_00 = [0; 0; TF\joints_e[1]; TF\joints_e[2]; TF\joints_e[3]; 0]; */
 	M[50].mat[0] = 0.0;
@@ -1340,10 +1358,10 @@ AntiBug\port1[6]
 	M[49].mat[4] = M[67].mat[7];
 
 	/* torques_cmd = CmdDemux\arm_torque; */
-	XXMatrixMov (&M[72], &M[49]);
+	XXMatrixMov (&M[75], &M[49]);
 
 	/* W_base_00 = CmdDemux\W_base_00; */
-	XXMatrixMov (&M[73], &M[50]);
+	XXMatrixMov (&M[76], &M[50]);
 ]]></token>
 	<token name="EXPERIMENT_NAME"><![CDATA[motion_stack]]></token>
 	<token name="EXPORT_NAMES"><![CDATA[	NULL]]></token>
@@ -1364,50 +1382,50 @@ AntiBug\port1[6]
 	<token name="FINAL_EQUATIONS"><![CDATA[]]></token>
 	<token name="FINISH_TIME"><![CDATA[40.0]]></token>
 	<token name="GENERATION_BUILD"><![CDATA[4.1.4.1]]></token>
-	<token name="GENERATION_DATE"><![CDATA[October 15, 2012]]></token>
+	<token name="GENERATION_DATE"><![CDATA[November 2, 2012]]></token>
 	<token name="GENERATION_DIR"><![CDATA[c:\temp\YouBotKinematics]]></token>
-	<token name="GENERATION_TIME"><![CDATA[11:25:06 am]]></token>
+	<token name="GENERATION_TIME"><![CDATA[9:43:30 am]]></token>
 	<token name="IMPORT_NAMES"><![CDATA[	NULL]]></token>
 	<token name="IMPORT_NAMES2"><![CDATA[	NULL]]></token>
 	<token name="IMPORT_NAMES3"><![CDATA[]]></token>
 	<token name="IMPORT_UNITS"><![CDATA[]]></token>
-	<token name="INITIALIZE_ALIAS_MATRICES"><![CDATA[	M[86].mat = &V[533];		/* AntiBug\port1 */
+	<token name="INITIALIZE_ALIAS_MATRICES"><![CDATA[	M[86].mat = &V[542];		/* AntiBug\port1 */
 	M[86].rows = 6;
 	M[86].columns = 1;
-	M[87].mat = &V[511];		/* CalculateJ\jointVelocities */
+	M[87].mat = &V[520];		/* CalculateJ\jointVelocities */
 	M[87].rows = 8;
 	M[87].columns = 1;
-	M[88].mat = &V[511];		/* CalculateJ\q */
+	M[88].mat = &V[520];		/* CalculateJ\q */
 	M[88].rows = 8;
 	M[88].columns = 1;
-	M[89].mat = &V[519];		/* CmdDemux\effort */
+	M[89].mat = &V[528];		/* CmdDemux\effort */
 	M[89].rows = 8;
 	M[89].columns = 1;
-	M[90].mat = &V[511];		/* Splitter1\input */
+	M[90].mat = &V[520];		/* Splitter1\input */
 	M[90].rows = 8;
 	M[90].columns = 1;
-	M[91].mat = &V[511];		/* Splitter1\output1 */
+	M[91].mat = &V[520];		/* Splitter1\output1 */
 	M[91].rows = 8;
 	M[91].columns = 1;
-	M[92].mat = &V[511];		/* Splitter1\output2 */
+	M[92].mat = &V[520];		/* Splitter1\output2 */
 	M[92].rows = 8;
 	M[92].columns = 1;
-	M[93].mat = &V[519];		/* Splitter3\input */
+	M[93].mat = &V[528];		/* Splitter3\input */
 	M[93].rows = 8;
 	M[93].columns = 1;
-	M[94].mat = &V[519];		/* Splitter3\output1 */
+	M[94].mat = &V[528];		/* Splitter3\output1 */
 	M[94].rows = 8;
 	M[94].columns = 1;
-	M[95].mat = &V[533];		/* Splitter4\input */
+	M[95].mat = &V[542];		/* Splitter4\input */
 	M[95].rows = 6;
 	M[95].columns = 1;
-	M[96].mat = &V[533];		/* Splitter4\output1 */
+	M[96].mat = &V[542];		/* Splitter4\output1 */
 	M[96].rows = 6;
 	M[96].columns = 1;
-	M[97].mat = &V[533];		/* Splitter4\output2 */
+	M[97].mat = &V[542];		/* Splitter4\output2 */
 	M[97].rows = 6;
 	M[97].columns = 1;
-	M[98].mat = &V[469];		/* StateMux\base_pose */
+	M[98].mat = &V[478];		/* StateMux\base_pose */
 	M[98].rows = 3;
 	M[98].columns = 1;
 	M[99].mat = &V[1];		/* TF\Jacobian */
@@ -1452,9 +1470,9 @@ AntiBug\port1[6]
 	I[5] = 0.0;		
 	I[6] = 0.0;		
 	I[7] = 0.0;		
-	I[8] = 0.0;		/* new_initial */
-	I[9] = 0.0;		/* new_initial */
-	I[10] = 0.0;		/* new_initial */
+	I[8] = 0.0;		/* EnergyEncodingArm\outputCount_previous_initial */
+	I[9] = 0.0;		/* EnergyEncodingBase\outputCount_previous_initial */
+	I[10] = 0.0;		/* EnergyEncodingSpring\outputCount_previous_initial */
 ]]></token>
 	<token name="INITIALIZE_INPUTS"><![CDATA[	u[0] = 0.0;		/* angles_measured */
 	u[1] = 0.0;
@@ -1658,87 +1676,87 @@ AntiBug\port1[6]
 	M[55].mat = &V[441];		/* EnergyEncodingArm\outputMessage */
 	M[55].rows = 2;
 	M[55].columns = 1;
-	M[56].mat = &V[443];		/* EnergyEncodingBase\inputMessage */
+	M[56].mat = &V[446];		/* EnergyEncodingBase\inputMessage */
 	M[56].rows = 2;
 	M[56].columns = 1;
-	M[57].mat = &V[446];		/* EnergyEncodingBase\outputMessage */
+	M[57].mat = &V[449];		/* EnergyEncodingBase\outputMessage */
 	M[57].rows = 2;
 	M[57].columns = 1;
-	M[58].mat = &V[448];		/* EnergyEncodingSpring\inputMessage */
+	M[58].mat = &V[454];		/* EnergyEncodingSpring\inputMessage */
 	M[58].rows = 2;
 	M[58].columns = 1;
-	M[59].mat = &V[451];		/* EnergyEncodingSpring\outputMessage */
+	M[59].mat = &V[457];		/* EnergyEncodingSpring\outputMessage */
 	M[59].rows = 2;
 	M[59].columns = 1;
-	M[60].mat = &V[453];		/* HToAngles\H_vp_0 */
+	M[60].mat = &V[462];		/* HToAngles\H_vp_0 */
 	M[60].rows = 4;
 	M[60].columns = 4;
-	M[61].mat = &V[469];		/* HToAngles\pose */
+	M[61].mat = &V[478];		/* HToAngles\pose */
 	M[61].rows = 3;
 	M[61].columns = 1;
-	M[62].mat = &V[472];		/* HToAngles\H_vp_base */
+	M[62].mat = &V[481];		/* HToAngles\H_vp_base */
 	M[62].rows = 4;
 	M[62].columns = 4;
-	M[63].mat = &V[490];		/* HToAngles\norm_omega */
+	M[63].mat = &V[499];		/* HToAngles\norm_omega */
 	M[63].rows = 3;
 	M[63].columns = 1;
-	M[64].mat = &V[493];		/* HToAngles\omega */
+	M[64].mat = &V[502];		/* HToAngles\omega */
 	M[64].rows = 3;
 	M[64].columns = 1;
-	M[65].mat = &V[506];		/* StateMux\arm_angles */
+	M[65].mat = &V[515];		/* StateMux\arm_angles */
 	M[65].rows = 5;
 	M[65].columns = 1;
-	M[66].mat = &V[511];		/* StateMux\measured_angles */
+	M[66].mat = &V[520];		/* StateMux\measured_angles */
 	M[66].rows = 8;
 	M[66].columns = 1;
-	M[67].mat = &V[519];		/* TF\joints_e */
+	M[67].mat = &V[528];		/* TF\joints_e */
 	M[67].rows = 8;
 	M[67].columns = 1;
-	M[68].mat = &V[527];		/* TF\tip_e */
+	M[68].mat = &V[536];		/* TF\tip_e */
 	M[68].rows = 6;
 	M[68].columns = 1;
-	M[69].mat = &V[533];		/* TF\tip_f */
+	M[69].mat = &V[542];		/* TF\tip_f */
 	M[69].rows = 6;
 	M[69].columns = 1;
-	M[70].mat = &V[539];		/* H_base_0 */
+	M[70].mat = &V[548];		/* H_base_0 */
 	M[70].rows = 4;
 	M[70].columns = 4;
-	M[71].mat = &V[555];		/* input_energy_arm */
+	M[71].mat = &V[565];		/* output_energy_arm */
 	M[71].rows = 2;
 	M[71].columns = 1;
-	M[72].mat = &V[557];		/* torques_cmd */
-	M[72].rows = 5;
+	M[72].mat = &V[567];		/* input_energy_base */
+	M[72].rows = 2;
 	M[72].columns = 1;
-	M[73].mat = &V[562];		/* W_base_00 */
-	M[73].rows = 6;
+	M[73].mat = &V[569];		/* output_energy_base */
+	M[73].rows = 2;
 	M[73].columns = 1;
-	M[74].mat = &V[568];		/* output_energy_arm */
-	M[74].rows = 2;
+	M[74].mat = &V[571];		/* T_tooltip_00 */
+	M[74].rows = 6;
 	M[74].columns = 1;
-	M[75].mat = &V[570];		/* input_energy_base */
-	M[75].rows = 2;
+	M[75].mat = &V[577];		/* torques_cmd */
+	M[75].rows = 5;
 	M[75].columns = 1;
-	M[76].mat = &V[572];		/* output_energy_spring */
-	M[76].rows = 2;
+	M[76].mat = &V[582];		/* W_base_00 */
+	M[76].rows = 6;
 	M[76].columns = 1;
-	M[77].mat = &V[574];		/* angles_measured */
-	M[77].rows = 5;
+	M[77].mat = &V[588];		/* input_energy_spring */
+	M[77].rows = 2;
 	M[77].columns = 1;
-	M[78].mat = &V[579];		/* input_energy_spring */
+	M[78].mat = &V[590];		/* output_energy_spring */
 	M[78].rows = 2;
 	M[78].columns = 1;
-	M[79].mat = &V[581];		/* H_tooltip_0 */
-	M[79].rows = 4;
-	M[79].columns = 4;
-	M[80].mat = &V[598];		/* output_energy_base */
+	M[79].mat = &V[592];		/* angles_measured */
+	M[79].rows = 5;
+	M[79].columns = 1;
+	M[80].mat = &V[597];		/* input_energy_arm */
 	M[80].rows = 2;
 	M[80].columns = 1;
-	M[81].mat = &V[600];		/* W_tooltip_00 */
+	M[81].mat = &V[599];		/* W_tooltip_00 */
 	M[81].rows = 6;
 	M[81].columns = 1;
-	M[82].mat = &V[606];		/* T_tooltip_00 */
-	M[82].rows = 6;
-	M[82].columns = 1;
+	M[82].mat = &V[605];		/* H_tooltip_0 */
+	M[82].rows = 4;
+	M[82].columns = 4;
 	M[83].mat = &R[0];		/* DiscreteDifferential\input */
 	M[83].rows = 8;
 	M[83].columns = 1;
@@ -1976,12 +1994,12 @@ AntiBug\port1[6]
 	P[48] = 0.0;		
 	P[49] = 0.0;		
 	P[50] = 1000.0;		/* EnergyEncodingArm\roundUp */
-	P[51] = 348.0;		/* EnergyEncodingArm\counter */
+	P[51] = 100.0;		/* EnergyEncodingArm\MaxCounter */
 	P[52] = 1000.0;		/* EnergyEncodingBase\roundUp */
-	P[53] = 348.0;		/* EnergyEncodingBase\counter */
+	P[53] = 100.0;		/* EnergyEncodingBase\MaxCounter */
 	P[54] = 1000.0;		/* EnergyEncodingSpring\roundUp */
-	P[55] = 348.0;		/* EnergyEncodingSpring\counter */
-	P[56] = 1.0;		/* PassivityLayer\EnegyTank1\InitialEnegyState {J} */
+	P[55] = 100.0;		/* EnergyEncodingSpring\MaxCounter */
+	P[56] = 1.0;		/* PassivityLayer\EnergyTankBlock\InitialEnergyState {J} */
 	P[57] = 3.0;		/* PassivityLayer\Gain\K */
 	P[58] = 0.0;		/* PassivityLayer\SETP1\CommunicationTreshold {J} */
 	P[59] = 0.1;		/* PassivityLayer\SETP1\SendoutPercent */
@@ -1998,9 +2016,9 @@ AntiBug\port1[6]
 	s[5] = I[5];
 	s[6] = I[6];
 	s[7] = I[7];
-	s[8] = I[8];		/* new_discrete_state */
-	s[9] = I[9];		/* new_discrete_state */
-	s[10] = I[10];		/* new_discrete_state */
+	s[8] = I[8];		/* EnergyEncodingArm\outputCount_previous */
+	s[9] = I[9];		/* EnergyEncodingBase\outputCount_previous */
+	s[10] = I[10];		/* EnergyEncodingSpring\outputCount_previous */
 ]]></token>
 	<token name="INITIAL_EQUATIONS"><![CDATA[		/* CalculateJ\initialq = [0; 0; 0; CalculateJ\InitialJointPos[1]; CalculateJ\InitialJointPos[2]; CalculateJ\InitialJointPos[3]; CalculateJ\InitialJointPos[4]; CalculateJ\InitialJointPos[5]]; */
 		M[47].mat[0] = 0.0;
@@ -2015,35 +2033,44 @@ AntiBug\port1[6]
 		/* DiscreteDifferential\initialized = 0.0; */
 		V[437] = XXFALSE;
 
-		/* EnergyEncodingArm\counter = 0; */
-		P[51] = 0.0;
+		/* EnergyEncodingArm\inputSum = 0; */
+		V[443] = 0.0;
 
-		/* EnergyEncodingBase\counter = 0; */
-		P[53] = 0.0;
+		/* EnergyEncodingArm\outputSum = 0; */
+		V[445] = 0.0;
 
-		/* EnergyEncodingSpring\counter = 0; */
-		P[55] = 0.0;
+		/* EnergyEncodingBase\inputSum = 0; */
+		V[451] = 0.0;
 
-		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\InitialEnegyState; */
-		V[497] = P[56];
+		/* EnergyEncodingBase\outputSum = 0; */
+		V[453] = 0.0;
+
+		/* EnergyEncodingSpring\inputSum = 0; */
+		V[459] = 0.0;
+
+		/* EnergyEncodingSpring\outputSum = 0; */
+		V[461] = 0.0;
+
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\InitialEnergyState; */
+		V[506] = P[56];
 
 		/* PassivityLayer\SETP1\outputPackage = 0; */
-		V[501] = 0.0;
+		V[510] = 0.0;
 
 		/* PassivityLayer\SETP1\energyQuanta = 0; */
-		V[500] = 0.0;
+		V[509] = 0.0;
 
 		/* PassivityLayer\SETP2\outputPackage = 0; */
-		V[503] = 0.0;
+		V[512] = 0.0;
 
 		/* PassivityLayer\SETP2\energyQuanta = 0; */
-		V[502] = 0.0;
+		V[511] = 0.0;
 
 		/* PassivityLayer\SETP3\outputPackage = 0; */
-		V[505] = 0.0;
+		V[514] = 0.0;
 
 		/* PassivityLayer\SETP3\energyQuanta = 0; */
-		V[504] = 0.0;
+		V[513] = 0.0;
 ]]></token>
 	<token name="INITIAL_VALUE_NAMES"><![CDATA[	"DiscreteDifferential\\input_previous_initial[1]",
 	"DiscreteDifferential\\input_previous_initial[2]",
@@ -2053,9 +2080,9 @@ AntiBug\port1[6]
 	"DiscreteDifferential\\input_previous_initial[6]",
 	"DiscreteDifferential\\input_previous_initial[7]",
 	"DiscreteDifferential\\input_previous_initial[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm\\outputCount_previous_initial",
+	"EnergyEncodingBase\\outputCount_previous_initial",
+	"EnergyEncodingSpring\\outputCount_previous_initial"
 ]]></token>
 	<token name="INITIAL_VALUE_NAMES2"><![CDATA[	"DiscreteDifferential_input_previous_initial[1]",
 	"DiscreteDifferential_input_previous_initial[2]",
@@ -2065,9 +2092,9 @@ AntiBug\port1[6]
 	"DiscreteDifferential_input_previous_initial[6]",
 	"DiscreteDifferential_input_previous_initial[7]",
 	"DiscreteDifferential_input_previous_initial[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm_outputCount_previous_initial",
+	"EnergyEncodingBase_outputCount_previous_initial",
+	"EnergyEncodingSpring_outputCount_previous_initial"
 ]]></token>
 	<token name="INITIAL_VALUE_NAMES3"><![CDATA[DiscreteDifferential\input_previous_initial[1]
 DiscreteDifferential\input_previous_initial[2]
@@ -2077,9 +2104,9 @@ DiscreteDifferential\input_previous_initial[5]
 DiscreteDifferential\input_previous_initial[6]
 DiscreteDifferential\input_previous_initial[7]
 DiscreteDifferential\input_previous_initial[8]
-
-
-
+EnergyEncodingArm\outputCount_previous_initial
+EnergyEncodingBase\outputCount_previous_initial
+EnergyEncodingSpring\outputCount_previous_initial
 ]]></token>
 	<token name="INITIAL_VALUE_UNITS"><![CDATA[
 
@@ -2149,17 +2176,17 @@ DiscreteDifferential\input_previous_initial[8]
 	"H_base_0[4,2]",
 	"H_base_0[4,3]",
 	"H_base_0[4,4]",
-	"input_energy_arm[1]",
-	"input_energy_arm[2]",
 	"input_energy_base[1]",
 	"input_energy_base[2]",
+	"input_energy_spring[1]",
+	"input_energy_spring[2]",
 	"angles_measured[1]",
 	"angles_measured[2]",
 	"angles_measured[3]",
 	"angles_measured[4]",
 	"angles_measured[5]",
-	"input_energy_spring[1]",
-	"input_energy_spring[2]",
+	"input_energy_arm[1]",
+	"input_energy_arm[2]",
 	"W_tooltip_00[1]",
 	"W_tooltip_00[2]",
 	"W_tooltip_00[3]",
@@ -2201,39 +2228,39 @@ W_tooltip_00[4]
 W_tooltip_00[5]
 W_tooltip_00[6]
 ]]></token>
-	<token name="INPUT_TO_VARIABLE_EQUATIONS"><![CDATA[	V[574] = u[0];		/* angles_measured */
-	V[575] = u[1];
-	V[576] = u[2];
-	V[577] = u[3];
-	V[578] = u[4];
-	V[539] = u[5];		/* H_base_0 */
-	V[540] = u[6];
-	V[541] = u[7];
-	V[542] = u[8];
-	V[543] = u[9];
-	V[544] = u[10];
-	V[545] = u[11];
-	V[546] = u[12];
-	V[547] = u[13];
-	V[548] = u[14];
-	V[549] = u[15];
-	V[550] = u[16];
-	V[551] = u[17];
-	V[552] = u[18];
-	V[553] = u[19];
-	V[554] = u[20];
-	V[555] = u[21];		/* input_energy_arm */
-	V[556] = u[22];
-	V[570] = u[23];		/* input_energy_base */
-	V[571] = u[24];
-	V[579] = u[25];		/* input_energy_spring */
-	V[580] = u[26];
-	V[600] = u[27];		/* W_tooltip_00 */
-	V[601] = u[28];
-	V[602] = u[29];
-	V[603] = u[30];
-	V[604] = u[31];
-	V[605] = u[32];
+	<token name="INPUT_TO_VARIABLE_EQUATIONS"><![CDATA[	V[592] = u[0];		/* angles_measured */
+	V[593] = u[1];
+	V[594] = u[2];
+	V[595] = u[3];
+	V[596] = u[4];
+	V[548] = u[5];		/* H_base_0 */
+	V[549] = u[6];
+	V[550] = u[7];
+	V[551] = u[8];
+	V[552] = u[9];
+	V[553] = u[10];
+	V[554] = u[11];
+	V[555] = u[12];
+	V[556] = u[13];
+	V[557] = u[14];
+	V[558] = u[15];
+	V[559] = u[16];
+	V[560] = u[17];
+	V[561] = u[18];
+	V[562] = u[19];
+	V[563] = u[20];
+	V[597] = u[21];		/* input_energy_arm */
+	V[598] = u[22];
+	V[567] = u[23];		/* input_energy_base */
+	V[568] = u[24];
+	V[588] = u[25];		/* input_energy_spring */
+	V[589] = u[26];
+	V[599] = u[27];		/* W_tooltip_00 */
+	V[600] = u[28];
+	V[601] = u[29];
+	V[602] = u[30];
+	V[603] = u[31];
+	V[604] = u[32];
 ]]></token>
 	<token name="INPUT_UNITS"><![CDATA[
 
@@ -2314,18 +2341,18 @@ W_tooltip_00[6]
 	"TF\\tip_e",
 	"TF\\tip_f",
 	"H_base_0",
-	"input_energy_arm",
-	"torques_cmd",
-	"W_base_00",
 	"output_energy_arm",
 	"input_energy_base",
+	"output_energy_base",
+	"T_tooltip_00",
+	"torques_cmd",
+	"W_base_00",
+	"input_energy_spring",
 	"output_energy_spring",
 	"angles_measured",
-	"input_energy_spring",
-	"H_tooltip_0",
-	"output_energy_base",
+	"input_energy_arm",
 	"W_tooltip_00",
-	"T_tooltip_00",
+	"H_tooltip_0",
 	"DiscreteDifferential\\input",
 	"DiscreteDifferential\\input_previous",
 	"DiscreteDifferential\\input_previous_initial",
@@ -2446,18 +2473,18 @@ W_tooltip_00[6]
 	"TF_tip_e",
 	"TF_tip_f",
 	"H_base_0",
-	"input_energy_arm",
-	"torques_cmd",
-	"W_base_00",
 	"output_energy_arm",
 	"input_energy_base",
+	"output_energy_base",
+	"T_tooltip_00",
+	"torques_cmd",
+	"W_base_00",
+	"input_energy_spring",
 	"output_energy_spring",
 	"angles_measured",
-	"input_energy_spring",
-	"H_tooltip_0",
-	"output_energy_base",
+	"input_energy_arm",
 	"W_tooltip_00",
-	"T_tooltip_00",
+	"H_tooltip_0",
 	"DiscreteDifferential_input",
 	"DiscreteDifferential_input_previous",
 	"DiscreteDifferential_input_previous_initial",
@@ -2578,18 +2605,18 @@ TF\joints_e
 TF\tip_e
 TF\tip_f
 H_base_0
-input_energy_arm
-torques_cmd
-W_base_00
 output_energy_arm
 input_energy_base
+output_energy_base
+T_tooltip_00
+torques_cmd
+W_base_00
+input_energy_spring
 output_energy_spring
 angles_measured
-input_energy_spring
-H_tooltip_0
-output_energy_base
+input_energy_arm
 W_tooltip_00
-T_tooltip_00
+H_tooltip_0
 DiscreteDifferential\input
 DiscreteDifferential\input_previous
 DiscreteDifferential\input_previous_initial
@@ -2788,7 +2815,7 @@ U45
  &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
  &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
 &lt;/Description&gt;</description>
-		<creationDate>2012-10-15T11:25:25.0Z</creationDate>
+		<creationDate>2012-11-02T09:43:43.0Z</creationDate>
 		<modelDir></modelDir>
 		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
 		<version>
@@ -2818,7 +2845,7 @@ U45
 			</size>
 			<storage>
 				<name>V</name>
-				<index>533</index>
+				<index>542</index>
 			</storage>
 			<iconIndex>2</iconIndex>
 		</modelVariable>
@@ -2859,7 +2886,7 @@ U45
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>3</iconIndex>
 		</modelVariable>
@@ -3469,7 +3496,7 @@ U45
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>3</iconIndex>
 		</modelVariable>
@@ -3556,7 +3583,7 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>519</index>
+				<index>528</index>
 			</storage>
 			<iconIndex>7</iconIndex>
 		</modelVariable>
@@ -3645,7 +3672,7 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>501</index>
+				<index>510</index>
 			</storage>
 			<iconIndex>9</iconIndex>
 		</modelVariable>
@@ -3661,10 +3688,10 @@ code
 			<iconIndex>9</iconIndex>
 		</modelVariable>
 		<modelVariable id="57">
-			<name>EnergyEncodingArm\counter</name>
+			<name>EnergyEncodingArm\MaxCounter</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>348.0</value>
+			<value>100.0</value>
 			<storage>
 				<name>P</name>
 				<index>51</index>
@@ -3672,35 +3699,43 @@ code
 			<iconIndex>9</iconIndex>
 		</modelVariable>
 		<modelVariable id="58">
-			<name>EnergyEncodingBase\inputMessage</name>
+			<name>EnergyEncodingArm\inputSum</name>
 			<kind>variable</kind>
 			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
 			<storage>
 				<name>V</name>
 				<index>443</index>
 			</storage>
-			<iconIndex>10</iconIndex>
+			<iconIndex>9</iconIndex>
 		</modelVariable>
 		<modelVariable id="59">
-			<name>EnergyEncodingBase\inputEnergy</name>
+			<name>EnergyEncodingArm\inputDiff</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
-			<description></description>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>444</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="60">
+			<name>EnergyEncodingArm\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
 			<storage>
 				<name>V</name>
 				<index>445</index>
 			</storage>
-			<iconIndex>10</iconIndex>
+			<iconIndex>9</iconIndex>
 		</modelVariable>
-		<modelVariable id="60">
-			<name>EnergyEncodingBase\outputMessage</name>
+		<modelVariable id="61">
+			<name>EnergyEncodingBase\inputMessage</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0; 0.0</value>
@@ -3715,7 +3750,35 @@ code
 			</storage>
 			<iconIndex>10</iconIndex>
 		</modelVariable>
-		<modelVariable id="61">
+		<modelVariable id="62">
+			<name>EnergyEncodingBase\inputEnergy</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>448</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="63">
+			<name>EnergyEncodingBase\outputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>449</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="64">
 			<name>EnergyEncodingBase\outputEnergy</name>
 			<aliasOf>PassivityLayer\SETP2\outputPackage</aliasOf>
 			<kind>variable</kind>
@@ -3724,11 +3787,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>503</index>
+				<index>512</index>
 			</storage>
 			<iconIndex>10</iconIndex>
 		</modelVariable>
-		<modelVariable id="62">
+		<modelVariable id="65">
 			<name>EnergyEncodingBase\roundUp</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -3739,18 +3802,54 @@ code
 			</storage>
 			<iconIndex>10</iconIndex>
 		</modelVariable>
-		<modelVariable id="63">
-			<name>EnergyEncodingBase\counter</name>
+		<modelVariable id="66">
+			<name>EnergyEncodingBase\MaxCounter</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>348.0</value>
+			<value>100.0</value>
 			<storage>
 				<name>P</name>
 				<index>53</index>
 			</storage>
 			<iconIndex>10</iconIndex>
 		</modelVariable>
-		<modelVariable id="64">
+		<modelVariable id="67">
+			<name>EnergyEncodingBase\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>451</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="68">
+			<name>EnergyEncodingBase\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>452</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="69">
+			<name>EnergyEncodingBase\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>453</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="70">
 			<name>EnergyEncodingSpring\inputMessage</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3762,11 +3861,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>448</index>
+				<index>454</index>
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="65">
+		<modelVariable id="71">
 			<name>EnergyEncodingSpring\inputEnergy</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3774,11 +3873,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>450</index>
+				<index>456</index>
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="66">
+		<modelVariable id="72">
 			<name>EnergyEncodingSpring\outputMessage</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3790,11 +3889,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>451</index>
+				<index>457</index>
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="67">
+		<modelVariable id="73">
 			<name>EnergyEncodingSpring\outputEnergy</name>
 			<aliasOf>PassivityLayer\SETP3\outputPackage</aliasOf>
 			<kind>variable</kind>
@@ -3803,11 +3902,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>505</index>
+				<index>514</index>
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="68">
+		<modelVariable id="74">
 			<name>EnergyEncodingSpring\roundUp</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -3818,18 +3917,54 @@ code
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="69">
-			<name>EnergyEncodingSpring\counter</name>
+		<modelVariable id="75">
+			<name>EnergyEncodingSpring\MaxCounter</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>348.0</value>
+			<value>100.0</value>
 			<storage>
 				<name>P</name>
 				<index>55</index>
 			</storage>
 			<iconIndex>11</iconIndex>
 		</modelVariable>
-		<modelVariable id="70">
+		<modelVariable id="76">
+			<name>EnergyEncodingSpring\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>459</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="77">
+			<name>EnergyEncodingSpring\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>460</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="78">
+			<name>EnergyEncodingSpring\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>461</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="79">
 			<name>HToAngles\H_vp_0</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3841,11 +3976,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>453</index>
+				<index>462</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="71">
+		<modelVariable id="80">
 			<name>HToAngles\pose</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3857,11 +3992,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>469</index>
+				<index>478</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="72">
+		<modelVariable id="81">
 			<name>HToAngles\H_vp_base</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3872,11 +4007,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>472</index>
+				<index>481</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="73">
+		<modelVariable id="82">
 			<name>HToAngles\aldo</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3884,11 +4019,11 @@ code
 			<description>temporal variable to resolve numerical round up errors</description>
 			<storage>
 				<name>V</name>
-				<index>488</index>
+				<index>497</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="74">
+		<modelVariable id="83">
 			<name>HToAngles\theta</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3896,11 +4031,11 @@ code
 			<description>angle of rotation</description>
 			<storage>
 				<name>V</name>
-				<index>489</index>
+				<index>498</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="75">
+		<modelVariable id="84">
 			<name>HToAngles\norm_omega</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3912,11 +4047,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>490</index>
+				<index>499</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="76">
+		<modelVariable id="85">
 			<name>HToAngles\omega</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3928,24 +4063,24 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>493</index>
+				<index>502</index>
 			</storage>
 			<iconIndex>12</iconIndex>
 		</modelVariable>
-		<modelVariable id="77">
-			<name>PassivityLayer\EnegyTank1\energyState</name>
+		<modelVariable id="86">
+			<name>PassivityLayer\EnergyTankBlock\energyState</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>496</index>
+				<index>505</index>
 			</storage>
 			<iconIndex>14</iconIndex>
 		</modelVariable>
-		<modelVariable id="78">
-			<name>PassivityLayer\EnegyTank1\energyQuanta</name>
+		<modelVariable id="87">
+			<name>PassivityLayer\EnergyTankBlock\energyQuanta</name>
 			<aliasOf>PassivityLayer\PlusMinus1\output</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
@@ -3953,12 +4088,12 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>499</index>
+				<index>508</index>
 			</storage>
 			<iconIndex>14</iconIndex>
 		</modelVariable>
-		<modelVariable id="79">
-			<name>PassivityLayer\EnegyTank1\InitialEnegyState</name>
+		<modelVariable id="88">
+			<name>PassivityLayer\EnergyTankBlock\InitialEnergyState</name>
 			<kind>parameter</kind>
 			<type>real</type>
 			<value>1.0</value>
@@ -3974,31 +4109,31 @@ code
 			</storage>
 			<iconIndex>14</iconIndex>
 		</modelVariable>
-		<modelVariable id="80">
-			<name>PassivityLayer\EnegyTank1\EnergyState</name>
+		<modelVariable id="89">
+			<name>PassivityLayer\EnergyTankBlock\EnergyState</name>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<storage>
 				<name>V</name>
-				<index>497</index>
+				<index>506</index>
 			</storage>
 			<iconIndex>14</iconIndex>
 		</modelVariable>
-		<modelVariable id="81">
+		<modelVariable id="90">
 			<name>PassivityLayer\Gain\input</name>
-			<aliasOf>PassivityLayer\EnegyTank1\energyState</aliasOf>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>496</index>
+				<index>505</index>
 			</storage>
 			<iconIndex>15</iconIndex>
 		</modelVariable>
-		<modelVariable id="82">
+		<modelVariable id="91">
 			<name>PassivityLayer\Gain\output</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4006,11 +4141,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>15</iconIndex>
 		</modelVariable>
-		<modelVariable id="83">
+		<modelVariable id="92">
 			<name>PassivityLayer\Gain\K</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4022,7 +4157,7 @@ code
 			</storage>
 			<iconIndex>15</iconIndex>
 		</modelVariable>
-		<modelVariable id="84">
+		<modelVariable id="93">
 			<name>PassivityLayer\PlusMinus1\output</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4030,11 +4165,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>499</index>
+				<index>508</index>
 			</storage>
 			<iconIndex>16</iconIndex>
 		</modelVariable>
-		<modelVariable id="85">
+		<modelVariable id="94">
 			<name>PassivityLayer\PlusMinus1\plus1</name>
 			<aliasOf>PassivityLayer\SETP3\energyQuanta</aliasOf>
 			<kind>variable</kind>
@@ -4043,11 +4178,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>504</index>
+				<index>513</index>
 			</storage>
 			<iconIndex>16</iconIndex>
 		</modelVariable>
-		<modelVariable id="86">
+		<modelVariable id="95">
 			<name>PassivityLayer\PlusMinus1\plus2</name>
 			<aliasOf>PassivityLayer\SETP1\energyQuanta</aliasOf>
 			<kind>variable</kind>
@@ -4056,11 +4191,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>500</index>
+				<index>509</index>
 			</storage>
 			<iconIndex>16</iconIndex>
 		</modelVariable>
-		<modelVariable id="87">
+		<modelVariable id="96">
 			<name>PassivityLayer\PlusMinus1\plus3</name>
 			<aliasOf>PassivityLayer\SETP2\energyQuanta</aliasOf>
 			<kind>variable</kind>
@@ -4069,11 +4204,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>502</index>
+				<index>511</index>
 			</storage>
 			<iconIndex>16</iconIndex>
 		</modelVariable>
-		<modelVariable id="88">
+		<modelVariable id="97">
 			<name>PassivityLayer\SETP1\energyState</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4082,11 +4217,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="89">
+		<modelVariable id="98">
 			<name>PassivityLayer\SETP1\energyQuanta</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4094,11 +4229,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>500</index>
+				<index>509</index>
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="90">
+		<modelVariable id="99">
 			<name>PassivityLayer\SETP1\outputPackage</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4106,11 +4241,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>501</index>
+				<index>510</index>
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="91">
+		<modelVariable id="100">
 			<name>PassivityLayer\SETP1\inputPackage</name>
 			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4123,7 +4258,7 @@ code
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="92">
+		<modelVariable id="101">
 			<name>PassivityLayer\SETP1\CommunicationTreshold</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4140,7 +4275,7 @@ code
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="93">
+		<modelVariable id="102">
 			<name>PassivityLayer\SETP1\SendoutPercent</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4152,7 +4287,7 @@ code
 			</storage>
 			<iconIndex>17</iconIndex>
 		</modelVariable>
-		<modelVariable id="94">
+		<modelVariable id="103">
 			<name>PassivityLayer\SETP2\energyState</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4161,11 +4296,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="95">
+		<modelVariable id="104">
 			<name>PassivityLayer\SETP2\energyQuanta</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4173,11 +4308,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>502</index>
+				<index>511</index>
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="96">
+		<modelVariable id="105">
 			<name>PassivityLayer\SETP2\outputPackage</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4185,11 +4320,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>503</index>
+				<index>512</index>
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="97">
+		<modelVariable id="106">
 			<name>PassivityLayer\SETP2\inputPackage</name>
 			<aliasOf>EnergyEncodingBase\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4198,11 +4333,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>445</index>
+				<index>448</index>
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="98">
+		<modelVariable id="107">
 			<name>PassivityLayer\SETP2\CommunicationTreshold</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4219,7 +4354,7 @@ code
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="99">
+		<modelVariable id="108">
 			<name>PassivityLayer\SETP2\SendoutPercent</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4231,7 +4366,7 @@ code
 			</storage>
 			<iconIndex>18</iconIndex>
 		</modelVariable>
-		<modelVariable id="100">
+		<modelVariable id="109">
 			<name>PassivityLayer\SETP3\energyState</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4240,11 +4375,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="101">
+		<modelVariable id="110">
 			<name>PassivityLayer\SETP3\energyQuanta</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4252,11 +4387,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>504</index>
+				<index>513</index>
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="102">
+		<modelVariable id="111">
 			<name>PassivityLayer\SETP3\outputPackage</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4264,11 +4399,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>505</index>
+				<index>514</index>
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="103">
+		<modelVariable id="112">
 			<name>PassivityLayer\SETP3\inputPackage</name>
 			<aliasOf>EnergyEncodingSpring\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4277,11 +4412,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>450</index>
+				<index>456</index>
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="104">
+		<modelVariable id="113">
 			<name>PassivityLayer\SETP3\CommunicationTreshold</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4298,7 +4433,7 @@ code
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="105">
+		<modelVariable id="114">
 			<name>PassivityLayer\SETP3\SendoutPercent</name>
 			<kind>parameter</kind>
 			<type>real</type>
@@ -4310,7 +4445,7 @@ code
 			</storage>
 			<iconIndex>19</iconIndex>
 		</modelVariable>
-		<modelVariable id="106">
+		<modelVariable id="115">
 			<name>PassivityLayer\Splitter1\input</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4319,11 +4454,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>20</iconIndex>
 		</modelVariable>
-		<modelVariable id="107">
+		<modelVariable id="116">
 			<name>PassivityLayer\Splitter1\output1</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4332,11 +4467,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>20</iconIndex>
 		</modelVariable>
-		<modelVariable id="108">
+		<modelVariable id="117">
 			<name>PassivityLayer\Splitter1\output2</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4345,11 +4480,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>20</iconIndex>
 		</modelVariable>
-		<modelVariable id="109">
+		<modelVariable id="118">
 			<name>PassivityLayer\Splitter1\output3</name>
 			<aliasOf>PassivityLayer\Gain\output</aliasOf>
 			<kind>variable</kind>
@@ -4358,50 +4493,50 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>498</index>
+				<index>507</index>
 			</storage>
 			<iconIndex>20</iconIndex>
 		</modelVariable>
-		<modelVariable id="110">
+		<modelVariable id="119">
 			<name>PassivityLayer\Splitter2\input</name>
-			<aliasOf>PassivityLayer\EnegyTank1\energyState</aliasOf>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>496</index>
+				<index>505</index>
 			</storage>
 			<iconIndex>21</iconIndex>
 		</modelVariable>
-		<modelVariable id="111">
+		<modelVariable id="120">
 			<name>PassivityLayer\Splitter2\output1</name>
-			<aliasOf>PassivityLayer\EnegyTank1\energyState</aliasOf>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>496</index>
+				<index>505</index>
 			</storage>
 			<iconIndex>21</iconIndex>
 		</modelVariable>
-		<modelVariable id="112">
+		<modelVariable id="121">
 			<name>PassivityLayer\Splitter2\output2</name>
-			<aliasOf>PassivityLayer\EnegyTank1\energyState</aliasOf>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>496</index>
+				<index>505</index>
 			</storage>
 			<iconIndex>21</iconIndex>
 		</modelVariable>
-		<modelVariable id="113">
+		<modelVariable id="122">
 			<name>PassivityLayer\output_energy_arm</name>
 			<aliasOf>PassivityLayer\SETP1\outputPackage</aliasOf>
 			<kind>variable</kind>
@@ -4410,11 +4545,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>501</index>
+				<index>510</index>
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="114">
+		<modelVariable id="123">
 			<name>PassivityLayer\input_energy_arm</name>
 			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4427,7 +4562,7 @@ code
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="115">
+		<modelVariable id="124">
 			<name>PassivityLayer\input_energy_base</name>
 			<aliasOf>EnergyEncodingBase\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4436,11 +4571,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>445</index>
+				<index>448</index>
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="116">
+		<modelVariable id="125">
 			<name>PassivityLayer\output_energy_base</name>
 			<aliasOf>PassivityLayer\SETP2\outputPackage</aliasOf>
 			<kind>variable</kind>
@@ -4449,11 +4584,11 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>503</index>
+				<index>512</index>
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="117">
+		<modelVariable id="126">
 			<name>PassivityLayer\input_energy_spring</name>
 			<aliasOf>EnergyEncodingSpring\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4462,13 +4597,26 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>450</index>
+				<index>456</index>
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="118">
+		<modelVariable id="127">
 			<name>PassivityLayer\output_energy_spring</name>
 			<aliasOf>PassivityLayer\SETP3\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>514</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="128">
+			<name>PassivityLayer\EnergyTank</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
 			<kind>variable</kind>
 			<type>real</type>
 			<value>0.0</value>
@@ -4479,20 +4627,7 @@ code
 			</storage>
 			<iconIndex>13</iconIndex>
 		</modelVariable>
-		<modelVariable id="119">
-			<name>PassivityLayer\EnergyTank</name>
-			<aliasOf>PassivityLayer\EnegyTank1\energyState</aliasOf>
-			<kind>variable</kind>
-			<type>real</type>
-			<value>0.0</value>
-			<description></description>
-			<storage>
-				<name>V</name>
-				<index>496</index>
-			</storage>
-			<iconIndex>13</iconIndex>
-		</modelVariable>
-		<modelVariable id="120">
+		<modelVariable id="129">
 			<name>Splitter1\input</name>
 			<aliasOf>StateMux\measured_angles</aliasOf>
 			<kind>variable</kind>
@@ -4505,11 +4640,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>22</iconIndex>
 		</modelVariable>
-		<modelVariable id="121">
+		<modelVariable id="130">
 			<name>Splitter1\output1</name>
 			<aliasOf>StateMux\measured_angles</aliasOf>
 			<kind>variable</kind>
@@ -4522,11 +4657,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>22</iconIndex>
 		</modelVariable>
-		<modelVariable id="122">
+		<modelVariable id="131">
 			<name>Splitter1\output2</name>
 			<aliasOf>StateMux\measured_angles</aliasOf>
 			<kind>variable</kind>
@@ -4539,11 +4674,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>22</iconIndex>
 		</modelVariable>
-		<modelVariable id="123">
+		<modelVariable id="132">
 			<name>Splitter2\input</name>
 			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4556,7 +4691,7 @@ code
 			</storage>
 			<iconIndex>23</iconIndex>
 		</modelVariable>
-		<modelVariable id="124">
+		<modelVariable id="133">
 			<name>Splitter2\output1</name>
 			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4569,7 +4704,7 @@ code
 			</storage>
 			<iconIndex>23</iconIndex>
 		</modelVariable>
-		<modelVariable id="125">
+		<modelVariable id="134">
 			<name>Splitter2\output2</name>
 			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
 			<kind>variable</kind>
@@ -4582,7 +4717,7 @@ code
 			</storage>
 			<iconIndex>23</iconIndex>
 		</modelVariable>
-		<modelVariable id="126">
+		<modelVariable id="135">
 			<name>Splitter3\input</name>
 			<aliasOf>TF\joints_e</aliasOf>
 			<kind>variable</kind>
@@ -4595,11 +4730,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>519</index>
+				<index>528</index>
 			</storage>
 			<iconIndex>24</iconIndex>
 		</modelVariable>
-		<modelVariable id="127">
+		<modelVariable id="136">
 			<name>Splitter3\output1</name>
 			<aliasOf>TF\joints_e</aliasOf>
 			<kind>variable</kind>
@@ -4612,11 +4747,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>519</index>
+				<index>528</index>
 			</storage>
 			<iconIndex>24</iconIndex>
 		</modelVariable>
-		<modelVariable id="128">
+		<modelVariable id="137">
 			<name>Splitter4\input</name>
 			<aliasOf>TF\tip_f</aliasOf>
 			<kind>variable</kind>
@@ -4629,11 +4764,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>533</index>
+				<index>542</index>
 			</storage>
 			<iconIndex>25</iconIndex>
 		</modelVariable>
-		<modelVariable id="129">
+		<modelVariable id="138">
 			<name>Splitter4\output1</name>
 			<aliasOf>TF\tip_f</aliasOf>
 			<kind>variable</kind>
@@ -4646,11 +4781,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>533</index>
+				<index>542</index>
 			</storage>
 			<iconIndex>25</iconIndex>
 		</modelVariable>
-		<modelVariable id="130">
+		<modelVariable id="139">
 			<name>Splitter4\output2</name>
 			<aliasOf>TF\tip_f</aliasOf>
 			<kind>variable</kind>
@@ -4663,11 +4798,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>533</index>
+				<index>542</index>
 			</storage>
 			<iconIndex>25</iconIndex>
 		</modelVariable>
-		<modelVariable id="131">
+		<modelVariable id="140">
 			<name>StateMux\arm_angles</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4679,11 +4814,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>506</index>
+				<index>515</index>
 			</storage>
 			<iconIndex>26</iconIndex>
 		</modelVariable>
-		<modelVariable id="132">
+		<modelVariable id="141">
 			<name>StateMux\base_pose</name>
 			<aliasOf>HToAngles\pose</aliasOf>
 			<kind>variable</kind>
@@ -4696,11 +4831,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>469</index>
+				<index>478</index>
 			</storage>
 			<iconIndex>26</iconIndex>
 		</modelVariable>
-		<modelVariable id="133">
+		<modelVariable id="142">
 			<name>StateMux\measured_angles</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4712,11 +4847,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>511</index>
+				<index>520</index>
 			</storage>
 			<iconIndex>26</iconIndex>
 		</modelVariable>
-		<modelVariable id="134">
+		<modelVariable id="143">
 			<name>TF\Jacobian</name>
 			<aliasOf>CalculateJ\controllableJ</aliasOf>
 			<kind>variable</kind>
@@ -4733,7 +4868,7 @@ code
 			</storage>
 			<iconIndex>27</iconIndex>
 		</modelVariable>
-		<modelVariable id="135">
+		<modelVariable id="144">
 			<name>TF\joints_e</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4745,11 +4880,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>519</index>
+				<index>528</index>
 			</storage>
 			<iconIndex>27</iconIndex>
 		</modelVariable>
-		<modelVariable id="136">
+		<modelVariable id="145">
 			<name>TF\tip_e</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4761,11 +4896,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>527</index>
+				<index>536</index>
 			</storage>
 			<iconIndex>27</iconIndex>
 		</modelVariable>
-		<modelVariable id="137">
+		<modelVariable id="146">
 			<name>TF\joints_f</name>
 			<aliasOf>DiscreteDifferential\output</aliasOf>
 			<kind>variable</kind>
@@ -4782,7 +4917,7 @@ code
 			</storage>
 			<iconIndex>27</iconIndex>
 		</modelVariable>
-		<modelVariable id="138">
+		<modelVariable id="147">
 			<name>TF\tip_f</name>
 			<kind>variable</kind>
 			<type>real</type>
@@ -4794,11 +4929,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>533</index>
+				<index>542</index>
 			</storage>
 			<iconIndex>27</iconIndex>
 		</modelVariable>
-		<modelVariable id="139">
+		<modelVariable id="148">
 			<name>H_base_0</name>
 			<kind>input</kind>
 			<type>real</type>
@@ -4810,151 +4945,7 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>539</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="140">
-			<name>input_energy_arm</name>
-			<kind>input</kind>
-			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>555</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="141">
-			<name>torques_cmd</name>
-			<kind>output</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>5</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>557</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="142">
-			<name>W_base_00</name>
-			<kind>output</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>6</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>562</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="143">
-			<name>output_energy_arm</name>
-			<kind>output</kind>
-			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>568</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="144">
-			<name>input_energy_base</name>
-			<kind>input</kind>
-			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>570</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="145">
-			<name>output_energy_spring</name>
-			<kind>output</kind>
-			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>572</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="146">
-			<name>angles_measured</name>
-			<kind>input</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>5</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>574</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="147">
-			<name>input_energy_spring</name>
-			<kind>input</kind>
-			<type>real</type>
-			<value>0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>2</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>579</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="148">
-			<name>H_tooltip_0</name>
-			<kind>output</kind>
-			<type>real</type>
-			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
-			<description></description>
-			<size>
-				<rows>4</rows>
-				<columns>4</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>581</index>
+				<index>548</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
@@ -4966,11 +4957,43 @@ code
 			<description></description>
 			<storage>
 				<name>V</name>
-				<index>597</index>
+				<index>564</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
 		<modelVariable id="150">
+			<name>output_energy_arm</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>565</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="151">
+			<name>input_energy_base</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>567</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="152">
 			<name>output_energy_base</name>
 			<kind>output</kind>
 			<type>real</type>
@@ -4982,27 +5005,11 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>598</index>
+				<index>569</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="151">
-			<name>W_tooltip_00</name>
-			<kind>input</kind>
-			<type>real</type>
-			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
-			<description></description>
-			<size>
-				<rows>6</rows>
-				<columns>1</columns>
-			</size>
-			<storage>
-				<name>V</name>
-				<index>600</index>
-			</storage>
-			<iconIndex>1</iconIndex>
-		</modelVariable>
-		<modelVariable id="152">
+		<modelVariable id="153">
 			<name>T_tooltip_00</name>
 			<kind>output</kind>
 			<type>real</type>
@@ -5014,11 +5021,139 @@ code
 			</size>
 			<storage>
 				<name>V</name>
-				<index>606</index>
+				<index>571</index>
 			</storage>
 			<iconIndex>1</iconIndex>
 		</modelVariable>
-		<modelVariable id="153">
+		<modelVariable id="154">
+			<name>torques_cmd</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>577</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="155">
+			<name>W_base_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>582</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="156">
+			<name>input_energy_spring</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>588</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="157">
+			<name>output_energy_spring</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>590</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="158">
+			<name>angles_measured</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>592</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="159">
+			<name>input_energy_arm</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>597</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="160">
+			<name>W_tooltip_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>599</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="161">
+			<name>H_tooltip_0</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>605</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="162">
 			<name>DiscreteDifferential\input</name>
 			<kind>rate</kind>
 			<type>real</type>
@@ -5035,7 +5170,7 @@ code
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
-		<modelVariable id="154">
+		<modelVariable id="163">
 			<name>DiscreteDifferential\input_previous</name>
 			<kind>state</kind>
 			<type>real</type>
@@ -5050,7 +5185,7 @@ code
 				<index>0</index>
 			</storage>
 		</modelVariable>
-		<modelVariable id="155">
+		<modelVariable id="164">
 			<name>DiscreteDifferential\input_previous_initial</name>
 			<kind>initial value</kind>
 			<type>real</type>
@@ -5066,10 +5201,118 @@ code
 			</storage>
 			<iconIndex>8</iconIndex>
 		</modelVariable>
+		<modelVariable id="165">
+			<name>EnergyEncodingArm\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingArm\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="166">
+			<name>EnergyEncodingArm\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingArm\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>8</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="167">
+			<name>EnergyEncodingArm\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingArm\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="168">
+			<name>EnergyEncodingBase\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingBase\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="169">
+			<name>EnergyEncodingBase\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingBase\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>9</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="170">
+			<name>EnergyEncodingBase\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingBase\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="171">
+			<name>EnergyEncodingSpring\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingSpring\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="172">
+			<name>EnergyEncodingSpring\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingSpring\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>10</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="173">
+			<name>EnergyEncodingSpring\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingSpring\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
 	</modelVariables>
 	<storage>
 		<name>ivc_motion_stack</name>
-		<size>10088</size>
+		<size>10160</size>
 		<tables>
 			<table>
 				<name>U</name>
@@ -5094,10 +5337,10 @@ code
 			</table>
 			<table>
 				<name>V</name>
-				<size>4896</size>
+				<size>4968</size>
 				<kind>real</kind>
 				<kindSize>8</kindSize>
-				<count>612</count>
+				<count>621</count>
 			</table>
 			<table>
 				<name>I</name>
@@ -5131,9 +5374,9 @@ code
 		<icon>89504E470D0A1A0A0000000D49484452000000100000000D0806000000A0BBEE240000006E494441547801A592410E80300804D92FF63D5E7D4EFBC5D5564D6C0394EA9EE030130280A4FC091C010510D482C4AAA0C1FBDD6C8E441374B04C24A340853DC95BE0C296A4179C29A584B69F52823A412817834F3BC8399B134CAF30C24B7FA0C1E14FB4E099A0499EAB6870CD01556A5CE787CF88AD0000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001E504C54458484849C9C9CFFFFFF5E5E5E8484848E8E8E9C9C9CA5A5A5BDBDBDD5D5D5FAB5EF540000003B4944415478016360626260850316208F898991130ED8A828C00C84A802ECCCAC9C405BE102ACCCAC200176B800070707272B8860A39DC350BD0F00236B05EBC8D06B510000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000027504C5445888888A1A1A1AAAAAAC6C6C66666F37F7FF18888889999999999EEA1A1A1B2B2EBCCCCE8E6E6E629A7E1440000005549444154780165CF411280200C034014D090F2FFF75AB0075373DC199A50CA2DB9CA312523800A041430335802A37DC12F00A62D4C2D687D4B0BF012EC4B08A075B7666B5E0CA3F750A6FBFBB768FC3F574F497D004EF509AB01B5202C0000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002A504C5445CDCDCDD4D4D4FFFFFF8B8B8B999999A9A9A9BABABABDBDBDC4C4C4CBCBCBCDCDCDCECECED4D4D4D5D5D52DC464BD00000036494441547801636042030C640870F1A0002E06365E14C086438093839D8D831B49809D95999D850D9F166401064614C0C04005BF00006014060C10ACC2030000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002A504C5445CDCDCDD4D4D4FFFFFF8B8B8B999999A9A9A9BABABABDBDBDC4C4C4CBCBCBCDCDCDCECECED4D4D4D5D5D52DC464BD00000036494441547801636042030C640870F1A0002E06365E14C086438093839D8D831B49809D95999D850D9F166401064614C0C04005BF00006014060C10ACC2030000000049454E44AE426082</icon>
-		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002A504C5445CDCDCDD4D4D4FFFFFF8B8B8B999999A9A9A9BABABABDBDBDC4C4C4CBCBCBCDCDCDCECECED4D4D4D5D5D52DC464BD00000036494441547801636042030C640870F1A0002E06365E14C086438093839D8D831B49809D95999D850D9F166401064614C0C04005BF00006014060C10ACC2030000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000000C504C54453535356A6A6A9F9F9FD5D5D512D5793D0000002E49444154780163606044010C0C8CCC2880916A024C8C60BB989054303233A26A010A3032321350414D87A17B1F0044590262B7BA353B0000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445ABABABBFBFBFFFFFFF9F9F9FA3A3A3A6A6A6ABABABB3B3B3BABABABDBDBDBFBFBFC1C1C1C7C7C7CECECED5D5D5F6C50F5A0000002B49444154780163606262E0800336208F8989910F0EB8E82BC0CEC2C2CA8C2CC0CBC9C3C34D5B6B51BD0F00E3AA09330880DF6C0000000049454E44AE426082</icon>
 		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
@@ -5175,7 +5418,7 @@ code
 	<token name="NUMBEROF_ARCSINHYPERBOLICFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_ARCTANFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_ARCTANHYPERBOLICFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_ASSIGNMENT"><![CDATA[104]]></token>
+	<token name="NUMBEROF_ASSIGNMENT"><![CDATA[116]]></token>
 	<token name="NUMBEROF_ATAN2FUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_BACKDIVISION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_CASESTATEMENT"><![CDATA[0]]></token>
@@ -5215,9 +5458,9 @@ code
 	<token name="NUMBEROF_ELEMENTMUL"><![CDATA[0]]></token>
 	<token name="NUMBEROF_ELEMENTPOWER"><![CDATA[0]]></token>
 	<token name="NUMBEROF_ENERGYFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_EQUAL"><![CDATA[4]]></token>
+	<token name="NUMBEROF_EQUAL"><![CDATA[1]]></token>
 	<token name="NUMBEROF_EQUALSTATEMENT"><![CDATA[0]]></token>
-	<token name="NUMBEROF_EQUATION"><![CDATA[71]]></token>
+	<token name="NUMBEROF_EQUATION"><![CDATA[68]]></token>
 	<token name="NUMBEROF_EVENTDOWNFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_EVENTFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_EVENTUPFUNCTION"><![CDATA[0]]></token>
@@ -5255,22 +5498,22 @@ code
 	<token name="NUMBEROF_INTFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_INVERSEFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_INVERSEHOMOGENEOUSFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_LESS"><![CDATA[1]]></token>
+	<token name="NUMBEROF_LESS"><![CDATA[4]]></token>
 	<token name="NUMBEROF_LESSEQUAL"><![CDATA[0]]></token>
 	<token name="NUMBEROF_LIMINTFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_LIMITFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_LINEARSOLVEFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_LITERAL"><![CDATA[241]]></token>
+	<token name="NUMBEROF_LITERAL"><![CDATA[244]]></token>
 	<token name="NUMBEROF_LOG10FUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_LOG2FUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_LOGFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_MAJOR"><![CDATA[0]]></token>
 	<token name="NUMBEROF_MAJORADJOINTFUNCTION"><![CDATA[8]]></token>
 	<token name="NUMBEROF_MAXFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_MIN"><![CDATA[12]]></token>
+	<token name="NUMBEROF_MIN"><![CDATA[18]]></token>
 	<token name="NUMBEROF_MINFUNCTION"><![CDATA[0]]></token>
-	<token name="NUMBEROF_MODULO"><![CDATA[3]]></token>
-	<token name="NUMBEROF_MUL"><![CDATA[28]]></token>
+	<token name="NUMBEROF_MODULO"><![CDATA[9]]></token>
+	<token name="NUMBEROF_MUL"><![CDATA[31]]></token>
 	<token name="NUMBEROF_MULTIPLYCOLUMNSFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_MULTIPLYHOMOGENEOUSFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_MULTIPLYROWSFUNCTION"><![CDATA[0]]></token>
@@ -5281,7 +5524,7 @@ code
 	<token name="NUMBEROF_NOTEQUAL"><![CDATA[0]]></token>
 	<token name="NUMBEROF_OR"><![CDATA[0]]></token>
 	<token name="NUMBEROF_PARAMETER"><![CDATA[19]]></token>
-	<token name="NUMBEROF_PLUS"><![CDATA[8]]></token>
+	<token name="NUMBEROF_PLUS"><![CDATA[20]]></token>
 	<token name="NUMBEROF_PORT"><![CDATA[84]]></token>
 	<token name="NUMBEROF_PORTVARIABLE"><![CDATA[90]]></token>
 	<token name="NUMBEROF_POWER"><![CDATA[0]]></token>
@@ -5336,7 +5579,7 @@ code
 	<token name="NUMBEROF_TRUNCFUNCTION"><![CDATA[0]]></token>
 	<token name="NUMBEROF_TYPEPARAMETER"><![CDATA[0]]></token>
 	<token name="NUMBEROF_UNNAMED"><![CDATA[53]]></token>
-	<token name="NUMBEROF_VARIABLE"><![CDATA[45]]></token>
+	<token name="NUMBEROF_VARIABLE"><![CDATA[54]]></token>
 	<token name="NUMBEROF_WARNSTATEMENT"><![CDATA[0]]></token>
 	<token name="NUMBEROF_WHILESTATEMENT"><![CDATA[0]]></token>
 	<token name="NUMBEROF_XOR"><![CDATA[0]]></token>
@@ -5357,94 +5600,112 @@ code
 	<token name="NUMBER_PARAMETERS"><![CDATA[64]]></token>
 	<token name="NUMBER_STATES"><![CDATA[11]]></token>
 	<token name="NUMBER_UNNAMED"><![CDATA[528]]></token>
-	<token name="NUMBER_VARIABLES"><![CDATA[612]]></token>
+	<token name="NUMBER_VARIABLES"><![CDATA[621]]></token>
 	<token name="OUTPUT2_EQUATIONS"><![CDATA[
-	/* EnergyEncodingArm\inputMessage = input_energy_arm; */
-	XXMatrixMov (&M[54], &M[71]);
-
 	/* EnergyEncodingBase\inputMessage = input_energy_base; */
-	XXMatrixMov (&M[56], &M[75]);
-
-	/* StateMux\arm_angles = angles_measured; */
-	XXMatrixMov (&M[65], &M[77]);
+	XXMatrixMov (&M[56], &M[72]);
 
 	/* EnergyEncodingSpring\inputMessage = input_energy_spring; */
-	XXMatrixMov (&M[58], &M[78]);
+	XXMatrixMov (&M[58], &M[77]);
+
+	/* StateMux\arm_angles = angles_measured; */
+	XXMatrixMov (&M[65], &M[79]);
+
+	/* EnergyEncodingArm\inputMessage = input_energy_arm; */
+	XXMatrixMov (&M[54], &M[80]);
 
 	/* TF\tip_e = W_tooltip_00; */
 	XXMatrixMov (&M[68], &M[81]);
 
-	/* new_discrete_rate = EnergyEncodingArm\inputMessage[2]; */
-	R[8] = M[54].mat[1];
-
-		/* EnergyEncodingArm\counter = (EnergyEncodingArm\counter + 1) mod EnergyEncodingArm\roundUp; */
-		P[51] = XXIntegerModulo ((P[51] + 1.0), P[50]);
-
-		/* if (EnergyEncodingArm\inputMessage[2] == new_discrete_state) */
-		if (M[54].mat[1] == s[8])
+		/* if (EnergyEncodingArm\inputMessage[1] + 0.1 * EnergyEncodingArm\roundUp) < EnergyEncodingArm\inputSum */
+		if ((M[54].mat[0] + 0.1 * P[50]) < V[443])
 		{
-			/* EnergyEncodingArm\inputEnergy = 0; */
-			V[440] = 0.0;
+			/* EnergyEncodingArm\inputDiff = (EnergyEncodingArm\roundUp + EnergyEncodingArm\inputMessage[1]) - EnergyEncodingArm\inputSum; */
+			V[444] = (P[50] + M[54].mat[0]) - V[443];
 		}
 		else
 		{
-			/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputMessage[1]; */
-			V[440] = M[54].mat[0];
+			/* EnergyEncodingArm\inputDiff = EnergyEncodingArm\inputMessage[1] - EnergyEncodingArm\inputSum; */
+			V[444] = M[54].mat[0] - V[443];
 		}
 
-		/* EnergyEncodingArm\outputMessage[1] = PassivityLayer\SETP1\outputPackage; */
-		M[55].mat[0] = V[501];
+		/* EnergyEncodingArm\inputSum = (EnergyEncodingArm\inputSum + EnergyEncodingArm\inputDiff) mod EnergyEncodingArm\roundUp; */
+		V[443] = XXIntegerModulo ((V[443] + V[444]), P[50]);
 
-		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\counter; */
-		M[55].mat[1] = P[51];
+		/* EnergyEncodingArm\inputEnergy = EnergyEncodingArm\inputDiff; */
+		V[440] = V[444];
 
-	/* new_discrete_rate = EnergyEncodingBase\inputMessage[2]; */
-	R[9] = M[56].mat[1];
+		/* EnergyEncodingArm\outputCount = (EnergyEncodingArm\outputCount_previous + 1) mod EnergyEncodingArm\MaxCounter; */
+		R[8] = XXIntegerModulo ((s[8] + 1.0), P[51]);
 
-		/* EnergyEncodingBase\counter = (EnergyEncodingBase\counter + 1) mod EnergyEncodingBase\roundUp; */
-		P[53] = XXIntegerModulo ((P[53] + 1.0), P[52]);
+		/* EnergyEncodingArm\outputSum = (EnergyEncodingArm\outputSum + PassivityLayer\SETP1\outputPackage) mod EnergyEncodingArm\roundUp; */
+		V[445] = XXIntegerModulo ((V[445] + V[510]), P[50]);
 
-		/* if (EnergyEncodingBase\inputMessage[2] == new_discrete_state) */
-		if (M[56].mat[1] == s[9])
+		/* EnergyEncodingArm\outputMessage[1] = EnergyEncodingArm\outputSum; */
+		M[55].mat[0] = V[445];
+
+		/* EnergyEncodingArm\outputMessage[2] = EnergyEncodingArm\outputCount; */
+		M[55].mat[1] = R[8];
+
+		/* if (EnergyEncodingBase\inputMessage[1] + 0.1 * EnergyEncodingBase\roundUp) < EnergyEncodingBase\inputSum */
+		if ((M[56].mat[0] + 0.1 * P[52]) < V[451])
 		{
-			/* EnergyEncodingBase\inputEnergy = 0; */
-			V[445] = 0.0;
+			/* EnergyEncodingBase\inputDiff = (EnergyEncodingBase\roundUp + EnergyEncodingBase\inputMessage[1]) - EnergyEncodingBase\inputSum; */
+			V[452] = (P[52] + M[56].mat[0]) - V[451];
 		}
 		else
 		{
-			/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputMessage[1]; */
-			V[445] = M[56].mat[0];
+			/* EnergyEncodingBase\inputDiff = EnergyEncodingBase\inputMessage[1] - EnergyEncodingBase\inputSum; */
+			V[452] = M[56].mat[0] - V[451];
 		}
 
-		/* EnergyEncodingBase\outputMessage[1] = PassivityLayer\SETP2\outputPackage; */
-		M[57].mat[0] = V[503];
+		/* EnergyEncodingBase\inputSum = (EnergyEncodingBase\inputSum + EnergyEncodingBase\inputDiff) mod EnergyEncodingBase\roundUp; */
+		V[451] = XXIntegerModulo ((V[451] + V[452]), P[52]);
 
-		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\counter; */
-		M[57].mat[1] = P[53];
+		/* EnergyEncodingBase\inputEnergy = EnergyEncodingBase\inputDiff; */
+		V[448] = V[452];
 
-	/* new_discrete_rate = EnergyEncodingSpring\inputMessage[2]; */
-	R[10] = M[58].mat[1];
+		/* EnergyEncodingBase\outputCount = (EnergyEncodingBase\outputCount_previous + 1) mod EnergyEncodingBase\MaxCounter; */
+		R[9] = XXIntegerModulo ((s[9] + 1.0), P[53]);
 
-		/* EnergyEncodingSpring\counter = (EnergyEncodingSpring\counter + 1) mod EnergyEncodingSpring\roundUp; */
-		P[55] = XXIntegerModulo ((P[55] + 1.0), P[54]);
+		/* EnergyEncodingBase\outputSum = (EnergyEncodingBase\outputSum + PassivityLayer\SETP2\outputPackage) mod EnergyEncodingBase\roundUp; */
+		V[453] = XXIntegerModulo ((V[453] + V[512]), P[52]);
 
-		/* if (EnergyEncodingSpring\inputMessage[2] == new_discrete_state) */
-		if (M[58].mat[1] == s[10])
+		/* EnergyEncodingBase\outputMessage[1] = EnergyEncodingBase\outputSum; */
+		M[57].mat[0] = V[453];
+
+		/* EnergyEncodingBase\outputMessage[2] = EnergyEncodingBase\outputCount; */
+		M[57].mat[1] = R[9];
+
+		/* if (EnergyEncodingSpring\inputMessage[1] + 0.1 * EnergyEncodingSpring\roundUp) < EnergyEncodingSpring\inputSum */
+		if ((M[58].mat[0] + 0.1 * P[54]) < V[459])
 		{
-			/* EnergyEncodingSpring\inputEnergy = 0; */
-			V[450] = 0.0;
+			/* EnergyEncodingSpring\inputDiff = (EnergyEncodingSpring\roundUp + EnergyEncodingSpring\inputMessage[1]) - EnergyEncodingSpring\inputSum; */
+			V[460] = (P[54] + M[58].mat[0]) - V[459];
 		}
 		else
 		{
-			/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputMessage[1]; */
-			V[450] = M[58].mat[0];
+			/* EnergyEncodingSpring\inputDiff = EnergyEncodingSpring\inputMessage[1] - EnergyEncodingSpring\inputSum; */
+			V[460] = M[58].mat[0] - V[459];
 		}
 
-		/* EnergyEncodingSpring\outputMessage[1] = PassivityLayer\SETP3\outputPackage; */
-		M[59].mat[0] = V[505];
+		/* EnergyEncodingSpring\inputSum = (EnergyEncodingSpring\inputSum + EnergyEncodingSpring\inputDiff) mod EnergyEncodingSpring\roundUp; */
+		V[459] = XXIntegerModulo ((V[459] + V[460]), P[54]);
 
-		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\counter; */
-		M[59].mat[1] = P[55];
+		/* EnergyEncodingSpring\inputEnergy = EnergyEncodingSpring\inputDiff; */
+		V[456] = V[460];
+
+		/* EnergyEncodingSpring\outputCount = (EnergyEncodingSpring\outputCount_previous + 1) mod EnergyEncodingSpring\MaxCounter; */
+		R[10] = XXIntegerModulo ((s[10] + 1.0), P[55]);
+
+		/* EnergyEncodingSpring\outputSum = (EnergyEncodingSpring\outputSum + PassivityLayer\SETP3\outputPackage) mod EnergyEncodingSpring\roundUp; */
+		V[461] = XXIntegerModulo ((V[461] + V[514]), P[54]);
+
+		/* EnergyEncodingSpring\outputMessage[1] = EnergyEncodingSpring\outputSum; */
+		M[59].mat[0] = V[461];
+
+		/* EnergyEncodingSpring\outputMessage[2] = EnergyEncodingSpring\outputCount; */
+		M[59].mat[1] = R[10];
 
 		/* HToAngles\H_vp_base = HToAngles\H_vp_0; */
 		XXMatrixMov (&M[62], &M[60]);
@@ -5460,27 +5721,27 @@ code
 		M[103].mat[7] = M[62].mat[9];
 		M[103].mat[8] = M[62].mat[10];
 		M[102].mat[0] = XXMatrixTrace (&M[103]);
-		V[488] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
+		V[497] = (XXMatrixTrace (&M[103]) - 1.0) / 2.0;
 
 		/* if (HToAngles\aldo < -1) */
-		if (V[488] < -1.0)
+		if (V[497] < -1.0)
 		{
 			/* HToAngles\aldo = -1; */
-			V[488] = -1.0;
+			V[497] = -1.0;
 		}
 
 		/* if (HToAngles\aldo > 1) */
-		if (V[488] > 1.0)
+		if (V[497] > 1.0)
 		{
 			/* HToAngles\aldo = 1; */
-			V[488] = 1.0;
+			V[497] = 1.0;
 		}
 
 		/* HToAngles\theta = arccos (HToAngles\aldo); */
-		V[489] = acos (V[488]);
+		V[498] = acos (V[497]);
 
 		/* if (HToAngles\theta == 0) */
-		if (V[489] == 0.0)
+		if (V[498] == 0.0)
 		{
 			/* HToAngles\norm_omega = 0; */
 			XXMatrixScalarMov (&M[63], 0.0);
@@ -5491,11 +5752,11 @@ code
 			M[106].mat[0] = M[62].mat[9] - M[62].mat[6];
 			M[106].mat[1] = M[62].mat[2] - M[62].mat[8];
 			M[106].mat[2] = M[62].mat[4] - M[62].mat[1];
-			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[489]))), &M[106]);
+			XXScalarMatrixMul (&M[63], (1.0 / (2.0 * sin (V[498]))), &M[106]);
 		}
 
 		/* HToAngles\omega = HToAngles\theta * HToAngles\norm_omega; */
-		XXScalarMatrixMul (&M[64], V[489], &M[63]);
+		XXScalarMatrixMul (&M[64], V[498], &M[63]);
 
 		/* HToAngles\pose[1] = HToAngles\omega[3]; */
 		M[61].mat[0] = M[64].mat[2];
@@ -5514,30 +5775,30 @@ code
 	M[66].mat[7] = M[65].mat[4];
 
 	/* output_energy_arm = EnergyEncodingArm\outputMessage; */
-	XXMatrixMov (&M[74], &M[55]);
-
-	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
-	XXMatrixMov (&M[76], &M[59]);
+	XXMatrixMov (&M[71], &M[55]);
 
 	/* output_energy_base = EnergyEncodingBase\outputMessage; */
-	XXMatrixMov (&M[80], &M[57]);
+	XXMatrixMov (&M[73], &M[57]);
 
-		/* PassivityLayer\EnegyTank1\EnergyState = PassivityLayer\EnegyTank1\EnergyState + PassivityLayer\PlusMinus1\output; */
-		V[497] = V[497] + V[499];
+	/* output_energy_spring = EnergyEncodingSpring\outputMessage; */
+	XXMatrixMov (&M[78], &M[59]);
 
-		/* PassivityLayer\EnegyTank1\energyState = PassivityLayer\EnegyTank1\EnergyState; */
-		V[496] = V[497];
+		/* PassivityLayer\EnergyTankBlock\EnergyState = PassivityLayer\EnergyTankBlock\EnergyState + PassivityLayer\PlusMinus1\output; */
+		V[506] = V[506] + V[508];
+
+		/* PassivityLayer\EnergyTankBlock\energyState = PassivityLayer\EnergyTankBlock\EnergyState; */
+		V[505] = V[506];
 
 	/* StateMux\measured_angles[1:3] = HToAngles\pose; */
 	M[66].mat[0] = M[61].mat[0];
 	M[66].mat[1] = M[61].mat[1];
 	M[66].mat[2] = M[61].mat[2];
 
+	/* EnergyTank = PassivityLayer\EnergyTankBlock\energyState; */
+	V[564] = V[505];
+
 	/* DiscreteDifferential\input = StateMux\measured_angles; */
 	XXMatrixMov (&M[83], &M[66]);
-
-	/* EnergyTank = PassivityLayer\EnegyTank1\energyState; */
-	V[597] = V[496];
 
 	/* CalculateJ\Rz = [cos (StateMux\measured_angles[1]), -sin (StateMux\measured_angles[1]), 0; sin (StateMux\measured_angles[1]), cos (StateMux\measured_angles[1]), 0; 0, 0, 1]; */
 	M[48].mat[0] = cos (M[66].mat[0]);
@@ -5746,11 +6007,11 @@ code
 	XXMatrixScalarDiv (&M[128], &M[129], step_size);
 	XXMatrixAdd (&M[51], &M[128], &M[53]);
 
-	/* PassivityLayer\Gain\output = PassivityLayer\EnegyTank1\energyState / 3; */
-	V[498] = V[496] / 3.0;
+	/* PassivityLayer\Gain\output = PassivityLayer\EnergyTankBlock\energyState / 3; */
+	V[507] = V[505] / 3.0;
 
 	/* H_tooltip_0 = CalculateJ\Htip0; */
-	XXMatrixMov (&M[79], &M[1]);
+	XXMatrixMov (&M[82], &M[1]);
 
 	/* TF\joints_e = transpose (CalculateJ\controllableJ) * TF\tip_e; */
 	XXMatrixTranspose (&M[130], &M[0]);
@@ -5760,61 +6021,61 @@ code
 	XXMatrixMul (&M[69], &M[0], &M[51]);
 
 		/* if PassivityLayer\SETP1\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[58] > V[498])
+		if (P[58] > V[507])
 		{
 			/* PassivityLayer\SETP1\outputPackage = 0; */
-			V[501] = 0.0;
+			V[510] = 0.0;
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy; */
-			V[500] = V[440];
+			V[509] = V[440];
 		}
 		else
 		{
 			/* PassivityLayer\SETP1\outputPackage = -(PassivityLayer\SETP1\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP1\SendoutPercent; */
-			V[501] = -(P[58] - V[498]) * P[59];
+			V[510] = -(P[58] - V[507]) * P[59];
 
 			/* PassivityLayer\SETP1\energyQuanta = EnergyEncodingArm\inputEnergy - PassivityLayer\SETP1\outputPackage; */
-			V[500] = V[440] - V[501];
+			V[509] = V[440] - V[510];
 		}
 
 		/* if PassivityLayer\SETP2\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[60] > V[498])
+		if (P[60] > V[507])
 		{
 			/* PassivityLayer\SETP2\outputPackage = 0; */
-			V[503] = 0.0;
+			V[512] = 0.0;
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy; */
-			V[502] = V[445];
+			V[511] = V[448];
 		}
 		else
 		{
 			/* PassivityLayer\SETP2\outputPackage = -(PassivityLayer\SETP2\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP2\SendoutPercent; */
-			V[503] = -(P[60] - V[498]) * P[61];
+			V[512] = -(P[60] - V[507]) * P[61];
 
 			/* PassivityLayer\SETP2\energyQuanta = EnergyEncodingBase\inputEnergy - PassivityLayer\SETP2\outputPackage; */
-			V[502] = V[445] - V[503];
+			V[511] = V[448] - V[512];
 		}
 
 		/* if PassivityLayer\SETP3\CommunicationTreshold > PassivityLayer\Gain\output */
-		if (P[62] > V[498])
+		if (P[62] > V[507])
 		{
 			/* PassivityLayer\SETP3\outputPackage = 0; */
-			V[505] = 0.0;
+			V[514] = 0.0;
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy; */
-			V[504] = V[450];
+			V[513] = V[456];
 		}
 		else
 		{
 			/* PassivityLayer\SETP3\outputPackage = -(PassivityLayer\SETP3\CommunicationTreshold - PassivityLayer\Gain\output) * PassivityLayer\SETP3\SendoutPercent; */
-			V[505] = -(P[62] - V[498]) * P[63];
+			V[514] = -(P[62] - V[507]) * P[63];
 
 			/* PassivityLayer\SETP3\energyQuanta = EnergyEncodingSpring\inputEnergy - PassivityLayer\SETP3\outputPackage; */
-			V[504] = V[450] - V[505];
+			V[513] = V[456] - V[514];
 		}
 
 	/* T_tooltip_00 = TF\tip_f; */
-	XXMatrixMov (&M[82], &M[69]);
+	XXMatrixMov (&M[74], &M[69]);
 
 	/* CmdDemux\W_base_00 = [0; 0; TF\joints_e[1]; TF\joints_e[2]; TF\joints_e[3]; 0]; */
 	M[50].mat[0] = 0.0;
@@ -5832,16 +6093,16 @@ code
 	M[49].mat[4] = M[67].mat[7];
 
 	/* torques_cmd = CmdDemux\arm_torque; */
-	XXMatrixMov (&M[72], &M[49]);
+	XXMatrixMov (&M[75], &M[49]);
 
 	/* W_base_00 = CmdDemux\W_base_00; */
-	XXMatrixMov (&M[73], &M[50]);
+	XXMatrixMov (&M[76], &M[50]);
 
 	/* HToAngles\H_vp_0 = H_base_0; */
 	XXMatrixMov (&M[60], &M[70]);
 
 	/* PassivityLayer\PlusMinus1\output = (PassivityLayer\SETP3\energyQuanta + PassivityLayer\SETP2\energyQuanta) + PassivityLayer\SETP1\energyQuanta; */
-	V[499] = (V[504] + V[502]) + V[500];
+	V[508] = (V[513] + V[511]) + V[509];
 
 	/* AntiBug\aldo = EnergyEncodingArm\inputEnergy + TF\tip_f[1]; */
 	V[0] = V[440] + M[69].mat[0];
@@ -5850,7 +6111,7 @@ code
 	XXMatrixMov (&M[60], &M[70]);
 
 	/* PassivityLayer\PlusMinus1\output = (PassivityLayer\SETP3\energyQuanta + PassivityLayer\SETP2\energyQuanta) + PassivityLayer\SETP1\energyQuanta; */
-	V[499] = (V[504] + V[502]) + V[500];
+	V[508] = (V[513] + V[511]) + V[509];
 
 	/* AntiBug\aldo = EnergyEncodingArm\inputEnergy + TF\tip_f[1]; */
 	V[0] = V[440] + M[69].mat[0];
@@ -5896,7 +6157,18 @@ code
 	"W_base_00[5]",
 	"W_base_00[6]"
 ]]></token>
-	<token name="OUTPUT_NAMES2"><![CDATA[	"torques_cmd[1]",
+	<token name="OUTPUT_NAMES2"><![CDATA[	"EnergyTank",
+	"output_energy_arm[1]",
+	"output_energy_arm[2]",
+	"output_energy_base[1]",
+	"output_energy_base[2]",
+	"T_tooltip_00[1]",
+	"T_tooltip_00[2]",
+	"T_tooltip_00[3]",
+	"T_tooltip_00[4]",
+	"T_tooltip_00[5]",
+	"T_tooltip_00[6]",
+	"torques_cmd[1]",
 	"torques_cmd[2]",
 	"torques_cmd[3]",
 	"torques_cmd[4]",
@@ -5907,8 +6179,6 @@ code
 	"W_base_00[4]",
 	"W_base_00[5]",
 	"W_base_00[6]",
-	"output_energy_arm[1]",
-	"output_energy_arm[2]",
 	"output_energy_spring[1]",
 	"output_energy_spring[2]",
 	"H_tooltip_0[1,1]",
@@ -5926,16 +6196,7 @@ code
 	"H_tooltip_0[4,1]",
 	"H_tooltip_0[4,2]",
 	"H_tooltip_0[4,3]",
-	"H_tooltip_0[4,4]",
-	"EnergyTank",
-	"output_energy_base[1]",
-	"output_energy_base[2]",
-	"T_tooltip_00[1]",
-	"T_tooltip_00[2]",
-	"T_tooltip_00[3]",
-	"T_tooltip_00[4]",
-	"T_tooltip_00[5]",
-	"T_tooltip_00[6]"
+	"H_tooltip_0[4,4]"
 ]]></token>
 	<token name="OUTPUT_NAMES3"><![CDATA[EnergyTank
 H_tooltip_0[1,1]
@@ -6038,12 +6299,12 @@ W_base_00[6]
 	"DiscreteDifferential\\initial[7]",
 	"DiscreteDifferential\\initial[8]",
 	"EnergyEncodingArm\\roundUp",
-	"EnergyEncodingArm\\counter",
+	"EnergyEncodingArm\\MaxCounter",
 	"EnergyEncodingBase\\roundUp",
-	"EnergyEncodingBase\\counter",
+	"EnergyEncodingBase\\MaxCounter",
 	"EnergyEncodingSpring\\roundUp",
-	"EnergyEncodingSpring\\counter",
-	"PassivityLayer\\EnegyTank1\\InitialEnegyState",
+	"EnergyEncodingSpring\\MaxCounter",
+	"PassivityLayer\\EnergyTankBlock\\InitialEnergyState",
 	"PassivityLayer\\Gain\\K",
 	"PassivityLayer\\SETP1\\CommunicationTreshold",
 	"PassivityLayer\\SETP1\\SendoutPercent",
@@ -6103,12 +6364,12 @@ W_base_00[6]
 	"DiscreteDifferential_initial[7]",
 	"DiscreteDifferential_initial[8]",
 	"EnergyEncodingArm_roundUp",
-	"EnergyEncodingArm_counter",
+	"EnergyEncodingArm_MaxCounter",
 	"EnergyEncodingBase_roundUp",
-	"EnergyEncodingBase_counter",
+	"EnergyEncodingBase_MaxCounter",
 	"EnergyEncodingSpring_roundUp",
-	"EnergyEncodingSpring_counter",
-	"PassivityLayer_EnegyTank1_InitialEnegyState",
+	"EnergyEncodingSpring_MaxCounter",
+	"PassivityLayer_EnergyTankBlock_InitialEnergyState",
 	"PassivityLayer_Gain_K",
 	"PassivityLayer_SETP1_CommunicationTreshold",
 	"PassivityLayer_SETP1_SendoutPercent",
@@ -6168,12 +6429,12 @@ DiscreteDifferential\initial[6]
 DiscreteDifferential\initial[7]
 DiscreteDifferential\initial[8]
 EnergyEncodingArm\roundUp
-EnergyEncodingArm\counter
+EnergyEncodingArm\MaxCounter
 EnergyEncodingBase\roundUp
-EnergyEncodingBase\counter
+EnergyEncodingBase\MaxCounter
 EnergyEncodingSpring\roundUp
-EnergyEncodingSpring\counter
-PassivityLayer\EnegyTank1\InitialEnegyState
+EnergyEncodingSpring\MaxCounter
+PassivityLayer\EnergyTankBlock\InitialEnergyState
 PassivityLayer\Gain\K
 PassivityLayer\SETP1\CommunicationTreshold
 PassivityLayer\SETP1\SendoutPercent
@@ -6253,11 +6514,11 @@ J
 0.0
 0.0
 1000.0
-348.0
+100.0
 1000.0
-348.0
+100.0
 1000.0
-348.0
+100.0
 1.0
 3.0
 0.0
@@ -6275,9 +6536,9 @@ J
 	"DiscreteDifferential\\input[6]",
 	"DiscreteDifferential\\input[7]",
 	"DiscreteDifferential\\input[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm\\outputCount",
+	"EnergyEncodingBase\\outputCount",
+	"EnergyEncodingSpring\\outputCount"
 ]]></token>
 	<token name="RATE_NAMES2"><![CDATA[	"DiscreteDifferential_input[1]",
 	"DiscreteDifferential_input[2]",
@@ -6287,9 +6548,9 @@ J
 	"DiscreteDifferential_input[6]",
 	"DiscreteDifferential_input[7]",
 	"DiscreteDifferential_input[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm_outputCount",
+	"EnergyEncodingBase_outputCount",
+	"EnergyEncodingSpring_outputCount"
 ]]></token>
 	<token name="RATE_NAMES3"><![CDATA[DiscreteDifferential\input[1]
 DiscreteDifferential\input[2]
@@ -6299,9 +6560,9 @@ DiscreteDifferential\input[5]
 DiscreteDifferential\input[6]
 DiscreteDifferential\input[7]
 DiscreteDifferential\input[8]
-
-
-
+EnergyEncodingArm\outputCount
+EnergyEncodingBase\outputCount
+EnergyEncodingSpring\outputCount
 ]]></token>
 	<token name="RATE_UNITS"><![CDATA[
 
@@ -6330,8 +6591,8 @@ DiscreteDifferential\input[8]
 	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
 The block parameters are:<br><blockquote></blockquote>
 Generated at:<br>
-<blockquote><b>date:  </b>October 15, 2012<br>
-<b>time:  </b>11:25:06 am<br></blockquote>
+<blockquote><b>date:  </b>November 2, 2012<br>
+<b>time:  </b>9:43:30 am<br></blockquote>
 From the following 20-sim model:<br>
 <blockquote><b>submodel:  </b>YouBotKinematics<br>
 <b>model:  </b>motion_stack<br>
@@ -6582,8 +6843,8 @@ Using the following 20-sim license:<br>
 	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
 The block parameters are:<br><blockquote></blockquote>
 Generated at:<br>
-<blockquote><b>date:  </b>October 15, 2012<br>
-<b>time:  </b>11:25:06 am<br></blockquote>
+<blockquote><b>date:  </b>November 2, 2012<br>
+<b>time:  </b>9:43:30 am<br></blockquote>
 From the following 20-sim model:<br>
 <blockquote><b>submodel:  </b>YouBotKinematics<br>
 <b>model:  </b>motion_stack<br>
@@ -6824,9 +7085,9 @@ text (1107.1,548,'YouBotKinematics','hor','center')"
 	"DiscreteDifferential\\input_previous[6]",
 	"DiscreteDifferential\\input_previous[7]",
 	"DiscreteDifferential\\input_previous[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm\\outputCount_previous",
+	"EnergyEncodingBase\\outputCount_previous",
+	"EnergyEncodingSpring\\outputCount_previous"
 ]]></token>
 	<token name="STATE_NAMES2"><![CDATA[	"DiscreteDifferential_input_previous[1]",
 	"DiscreteDifferential_input_previous[2]",
@@ -6836,9 +7097,9 @@ text (1107.1,548,'YouBotKinematics','hor','center')"
 	"DiscreteDifferential_input_previous[6]",
 	"DiscreteDifferential_input_previous[7]",
 	"DiscreteDifferential_input_previous[8]",
-	"",
-	"",
-	""
+	"EnergyEncodingArm_outputCount_previous",
+	"EnergyEncodingBase_outputCount_previous",
+	"EnergyEncodingSpring_outputCount_previous"
 ]]></token>
 	<token name="STATE_NAMES3"><![CDATA[DiscreteDifferential\input_previous[1]
 DiscreteDifferential\input_previous[2]
@@ -6848,9 +7109,9 @@ DiscreteDifferential\input_previous[5]
 DiscreteDifferential\input_previous[6]
 DiscreteDifferential\input_previous[7]
 DiscreteDifferential\input_previous[8]
-
-
-
+EnergyEncodingArm\outputCount_previous
+EnergyEncodingBase\outputCount_previous
+EnergyEncodingSpring\outputCount_previous
 ]]></token>
 	<token name="STATE_UNITS"><![CDATA[
 
@@ -7447,16 +7708,25 @@ DiscreteDifferential\input_previous[8]
 	"EnergyEncodingArm\\inputEnergy",
 	"EnergyEncodingArm\\outputMessage[1]",
 	"EnergyEncodingArm\\outputMessage[2]",
+	"EnergyEncodingArm\\inputSum",
+	"EnergyEncodingArm\\inputDiff",
+	"EnergyEncodingArm\\outputSum",
 	"EnergyEncodingBase\\inputMessage[1]",
 	"EnergyEncodingBase\\inputMessage[2]",
 	"EnergyEncodingBase\\inputEnergy",
 	"EnergyEncodingBase\\outputMessage[1]",
 	"EnergyEncodingBase\\outputMessage[2]",
+	"EnergyEncodingBase\\inputSum",
+	"EnergyEncodingBase\\inputDiff",
+	"EnergyEncodingBase\\outputSum",
 	"EnergyEncodingSpring\\inputMessage[1]",
 	"EnergyEncodingSpring\\inputMessage[2]",
 	"EnergyEncodingSpring\\inputEnergy",
 	"EnergyEncodingSpring\\outputMessage[1]",
 	"EnergyEncodingSpring\\outputMessage[2]",
+	"EnergyEncodingSpring\\inputSum",
+	"EnergyEncodingSpring\\inputDiff",
+	"EnergyEncodingSpring\\outputSum",
 	"HToAngles\\H_vp_0[1,1]",
 	"HToAngles\\H_vp_0[1,2]",
 	"HToAngles\\H_vp_0[1,3]",
@@ -7500,8 +7770,8 @@ DiscreteDifferential\input_previous[8]
 	"HToAngles\\omega[1]",
 	"HToAngles\\omega[2]",
 	"HToAngles\\omega[3]",
-	"PassivityLayer\\EnegyTank1\\energyState",
-	"PassivityLayer\\EnegyTank1\\EnergyState",
+	"PassivityLayer\\EnergyTankBlock\\energyState",
+	"PassivityLayer\\EnergyTankBlock\\EnergyState",
 	"PassivityLayer\\Gain\\output",
 	"PassivityLayer\\PlusMinus1\\output",
 	"PassivityLayer\\SETP1\\energyQuanta",
@@ -7559,8 +7829,19 @@ DiscreteDifferential\input_previous[8]
 	"H_base_0[4,2]",
 	"H_base_0[4,3]",
 	"H_base_0[4,4]",
-	"input_energy_arm[1]",
-	"input_energy_arm[2]",
+	"EnergyTank",
+	"output_energy_arm[1]",
+	"output_energy_arm[2]",
+	"input_energy_base[1]",
+	"input_energy_base[2]",
+	"output_energy_base[1]",
+	"output_energy_base[2]",
+	"T_tooltip_00[1]",
+	"T_tooltip_00[2]",
+	"T_tooltip_00[3]",
+	"T_tooltip_00[4]",
+	"T_tooltip_00[5]",
+	"T_tooltip_00[6]",
 	"torques_cmd[1]",
 	"torques_cmd[2]",
 	"torques_cmd[3]",
@@ -7572,10 +7853,8 @@ DiscreteDifferential\input_previous[8]
 	"W_base_00[4]",
 	"W_base_00[5]",
 	"W_base_00[6]",
-	"output_energy_arm[1]",
-	"output_energy_arm[2]",
-	"input_energy_base[1]",
-	"input_energy_base[2]",
+	"input_energy_spring[1]",
+	"input_energy_spring[2]",
 	"output_energy_spring[1]",
 	"output_energy_spring[2]",
 	"angles_measured[1]",
@@ -7583,8 +7862,14 @@ DiscreteDifferential\input_previous[8]
 	"angles_measured[3]",
 	"angles_measured[4]",
 	"angles_measured[5]",
-	"input_energy_spring[1]",
-	"input_energy_spring[2]",
+	"input_energy_arm[1]",
+	"input_energy_arm[2]",
+	"W_tooltip_00[1]",
+	"W_tooltip_00[2]",
+	"W_tooltip_00[3]",
+	"W_tooltip_00[4]",
+	"W_tooltip_00[5]",
+	"W_tooltip_00[6]",
 	"H_tooltip_0[1,1]",
 	"H_tooltip_0[1,2]",
 	"H_tooltip_0[1,3]",
@@ -7600,22 +7885,7 @@ DiscreteDifferential\input_previous[8]
 	"H_tooltip_0[4,1]",
 	"H_tooltip_0[4,2]",
 	"H_tooltip_0[4,3]",
-	"H_tooltip_0[4,4]",
-	"EnergyTank",
-	"output_energy_base[1]",
-	"output_energy_base[2]",
-	"W_tooltip_00[1]",
-	"W_tooltip_00[2]",
-	"W_tooltip_00[3]",
-	"W_tooltip_00[4]",
-	"W_tooltip_00[5]",
-	"W_tooltip_00[6]",
-	"T_tooltip_00[1]",
-	"T_tooltip_00[2]",
-	"T_tooltip_00[3]",
-	"T_tooltip_00[4]",
-	"T_tooltip_00[5]",
-	"T_tooltip_00[6]"
+	"H_tooltip_0[4,4]"
 ]]></token>
 	<token name="VARIABLE_NAMES2"><![CDATA[	"AntiBug_aldo",
 	"CalculateJ_controllableJ[1,1]",
@@ -8060,16 +8330,25 @@ DiscreteDifferential\input_previous[8]
 	"EnergyEncodingArm_inputEnergy",
 	"EnergyEncodingArm_outputMessage[1]",
 	"EnergyEncodingArm_outputMessage[2]",
+	"EnergyEncodingArm_inputSum",
+	"EnergyEncodingArm_inputDiff",
+	"EnergyEncodingArm_outputSum",
 	"EnergyEncodingBase_inputMessage[1]",
 	"EnergyEncodingBase_inputMessage[2]",
 	"EnergyEncodingBase_inputEnergy",
 	"EnergyEncodingBase_outputMessage[1]",
 	"EnergyEncodingBase_outputMessage[2]",
+	"EnergyEncodingBase_inputSum",
+	"EnergyEncodingBase_inputDiff",
+	"EnergyEncodingBase_outputSum",
 	"EnergyEncodingSpring_inputMessage[1]",
 	"EnergyEncodingSpring_inputMessage[2]",
 	"EnergyEncodingSpring_inputEnergy",
 	"EnergyEncodingSpring_outputMessage[1]",
 	"EnergyEncodingSpring_outputMessage[2]",
+	"EnergyEncodingSpring_inputSum",
+	"EnergyEncodingSpring_inputDiff",
+	"EnergyEncodingSpring_outputSum",
 	"HToAngles_H_vp_0[1,1]",
 	"HToAngles_H_vp_0[1,2]",
 	"HToAngles_H_vp_0[1,3]",
@@ -8113,8 +8392,8 @@ DiscreteDifferential\input_previous[8]
 	"HToAngles_omega[1]",
 	"HToAngles_omega[2]",
 	"HToAngles_omega[3]",
-	"PassivityLayer_EnegyTank1_energyState",
-	"PassivityLayer_EnegyTank1_EnergyState",
+	"PassivityLayer_EnergyTankBlock_energyState",
+	"PassivityLayer_EnergyTankBlock_EnergyState",
 	"PassivityLayer_Gain_output",
 	"PassivityLayer_PlusMinus1_output",
 	"PassivityLayer_SETP1_energyQuanta",
@@ -8172,8 +8451,19 @@ DiscreteDifferential\input_previous[8]
 	"H_base_0[4,2]",
 	"H_base_0[4,3]",
 	"H_base_0[4,4]",
-	"input_energy_arm[1]",
-	"input_energy_arm[2]",
+	"EnergyTank",
+	"output_energy_arm[1]",
+	"output_energy_arm[2]",
+	"input_energy_base[1]",
+	"input_energy_base[2]",
+	"output_energy_base[1]",
+	"output_energy_base[2]",
+	"T_tooltip_00[1]",
+	"T_tooltip_00[2]",
+	"T_tooltip_00[3]",
+	"T_tooltip_00[4]",
+	"T_tooltip_00[5]",
+	"T_tooltip_00[6]",
 	"torques_cmd[1]",
 	"torques_cmd[2]",
 	"torques_cmd[3]",
@@ -8185,10 +8475,8 @@ DiscreteDifferential\input_previous[8]
 	"W_base_00[4]",
 	"W_base_00[5]",
 	"W_base_00[6]",
-	"output_energy_arm[1]",
-	"output_energy_arm[2]",
-	"input_energy_base[1]",
-	"input_energy_base[2]",
+	"input_energy_spring[1]",
+	"input_energy_spring[2]",
 	"output_energy_spring[1]",
 	"output_energy_spring[2]",
 	"angles_measured[1]",
@@ -8196,8 +8484,14 @@ DiscreteDifferential\input_previous[8]
 	"angles_measured[3]",
 	"angles_measured[4]",
 	"angles_measured[5]",
-	"input_energy_spring[1]",
-	"input_energy_spring[2]",
+	"input_energy_arm[1]",
+	"input_energy_arm[2]",
+	"W_tooltip_00[1]",
+	"W_tooltip_00[2]",
+	"W_tooltip_00[3]",
+	"W_tooltip_00[4]",
+	"W_tooltip_00[5]",
+	"W_tooltip_00[6]",
 	"H_tooltip_0[1,1]",
 	"H_tooltip_0[1,2]",
 	"H_tooltip_0[1,3]",
@@ -8213,22 +8507,7 @@ DiscreteDifferential\input_previous[8]
 	"H_tooltip_0[4,1]",
 	"H_tooltip_0[4,2]",
 	"H_tooltip_0[4,3]",
-	"H_tooltip_0[4,4]",
-	"EnergyTank",
-	"output_energy_base[1]",
-	"output_energy_base[2]",
-	"W_tooltip_00[1]",
-	"W_tooltip_00[2]",
-	"W_tooltip_00[3]",
-	"W_tooltip_00[4]",
-	"W_tooltip_00[5]",
-	"W_tooltip_00[6]",
-	"T_tooltip_00[1]",
-	"T_tooltip_00[2]",
-	"T_tooltip_00[3]",
-	"T_tooltip_00[4]",
-	"T_tooltip_00[5]",
-	"T_tooltip_00[6]"
+	"H_tooltip_0[4,4]"
 ]]></token>
 	<token name="VARIABLE_NAMES3"><![CDATA[AntiBug\aldo
 CalculateJ\controllableJ[1,1]
@@ -8673,16 +8952,25 @@ EnergyEncodingArm\inputMessage[2]
 EnergyEncodingArm\inputEnergy
 EnergyEncodingArm\outputMessage[1]
 EnergyEncodingArm\outputMessage[2]
+EnergyEncodingArm\inputSum
+EnergyEncodingArm\inputDiff
+EnergyEncodingArm\outputSum
 EnergyEncodingBase\inputMessage[1]
 EnergyEncodingBase\inputMessage[2]
 EnergyEncodingBase\inputEnergy
 EnergyEncodingBase\outputMessage[1]
 EnergyEncodingBase\outputMessage[2]
+EnergyEncodingBase\inputSum
+EnergyEncodingBase\inputDiff
+EnergyEncodingBase\outputSum
 EnergyEncodingSpring\inputMessage[1]
 EnergyEncodingSpring\inputMessage[2]
 EnergyEncodingSpring\inputEnergy
 EnergyEncodingSpring\outputMessage[1]
 EnergyEncodingSpring\outputMessage[2]
+EnergyEncodingSpring\inputSum
+EnergyEncodingSpring\inputDiff
+EnergyEncodingSpring\outputSum
 HToAngles\H_vp_0[1,1]
 HToAngles\H_vp_0[1,2]
 HToAngles\H_vp_0[1,3]
@@ -8726,8 +9014,8 @@ HToAngles\norm_omega[3]
 HToAngles\omega[1]
 HToAngles\omega[2]
 HToAngles\omega[3]
-PassivityLayer\EnegyTank1\energyState
-PassivityLayer\EnegyTank1\EnergyState
+PassivityLayer\EnergyTankBlock\energyState
+PassivityLayer\EnergyTankBlock\EnergyState
 PassivityLayer\Gain\output
 PassivityLayer\PlusMinus1\output
 PassivityLayer\SETP1\energyQuanta
@@ -8785,8 +9073,19 @@ H_base_0[4,1]
 H_base_0[4,2]
 H_base_0[4,3]
 H_base_0[4,4]
-input_energy_arm[1]
-input_energy_arm[2]
+EnergyTank
+output_energy_arm[1]
+output_energy_arm[2]
+input_energy_base[1]
+input_energy_base[2]
+output_energy_base[1]
+output_energy_base[2]
+T_tooltip_00[1]
+T_tooltip_00[2]
+T_tooltip_00[3]
+T_tooltip_00[4]
+T_tooltip_00[5]
+T_tooltip_00[6]
 torques_cmd[1]
 torques_cmd[2]
 torques_cmd[3]
@@ -8798,10 +9097,8 @@ W_base_00[3]
 W_base_00[4]
 W_base_00[5]
 W_base_00[6]
-output_energy_arm[1]
-output_energy_arm[2]
-input_energy_base[1]
-input_energy_base[2]
+input_energy_spring[1]
+input_energy_spring[2]
 output_energy_spring[1]
 output_energy_spring[2]
 angles_measured[1]
@@ -8809,8 +9106,14 @@ angles_measured[2]
 angles_measured[3]
 angles_measured[4]
 angles_measured[5]
-input_energy_spring[1]
-input_energy_spring[2]
+input_energy_arm[1]
+input_energy_arm[2]
+W_tooltip_00[1]
+W_tooltip_00[2]
+W_tooltip_00[3]
+W_tooltip_00[4]
+W_tooltip_00[5]
+W_tooltip_00[6]
 H_tooltip_0[1,1]
 H_tooltip_0[1,2]
 H_tooltip_0[1,3]
@@ -8827,64 +9130,58 @@ H_tooltip_0[4,1]
 H_tooltip_0[4,2]
 H_tooltip_0[4,3]
 H_tooltip_0[4,4]
-EnergyTank
-output_energy_base[1]
-output_energy_base[2]
-W_tooltip_00[1]
-W_tooltip_00[2]
-W_tooltip_00[3]
-W_tooltip_00[4]
-W_tooltip_00[5]
-W_tooltip_00[6]
-T_tooltip_00[1]
-T_tooltip_00[2]
-T_tooltip_00[3]
-T_tooltip_00[4]
-T_tooltip_00[5]
-T_tooltip_00[6]
 ]]></token>
-	<token name="VARIABLE_TO_OUTPUT_EQUATIONS"><![CDATA[	y[0] = 	V[597];		/* EnergyTank */
-	y[1] = 	V[581];		/* H_tooltip_0 */
-	y[2] = 	V[582];
-	y[3] = 	V[583];
-	y[4] = 	V[584];
-	y[5] = 	V[585];
-	y[6] = 	V[586];
-	y[7] = 	V[587];
-	y[8] = 	V[588];
-	y[9] = 	V[589];
-	y[10] = 	V[590];
-	y[11] = 	V[591];
-	y[12] = 	V[592];
-	y[13] = 	V[593];
-	y[14] = 	V[594];
-	y[15] = 	V[595];
-	y[16] = 	V[596];
-	y[17] = 	V[568];		/* output_energy_arm */
-	y[18] = 	V[569];
-	y[19] = 	V[598];		/* output_energy_base */
-	y[20] = 	V[599];
-	y[21] = 	V[572];		/* output_energy_spring */
-	y[22] = 	V[573];
-	y[23] = 	V[557];		/* torques_cmd */
-	y[24] = 	V[558];
-	y[25] = 	V[559];
-	y[26] = 	V[560];
-	y[27] = 	V[561];
-	y[28] = 	V[606];		/* T_tooltip_00 */
-	y[29] = 	V[607];
-	y[30] = 	V[608];
-	y[31] = 	V[609];
-	y[32] = 	V[610];
-	y[33] = 	V[611];
-	y[34] = 	V[562];		/* W_base_00 */
-	y[35] = 	V[563];
-	y[36] = 	V[564];
-	y[37] = 	V[565];
-	y[38] = 	V[566];
-	y[39] = 	V[567];
+	<token name="VARIABLE_TO_OUTPUT_EQUATIONS"><![CDATA[	y[0] = 	V[564];		/* EnergyTank */
+	y[1] = 	V[605];		/* H_tooltip_0 */
+	y[2] = 	V[606];
+	y[3] = 	V[607];
+	y[4] = 	V[608];
+	y[5] = 	V[609];
+	y[6] = 	V[610];
+	y[7] = 	V[611];
+	y[8] = 	V[612];
+	y[9] = 	V[613];
+	y[10] = 	V[614];
+	y[11] = 	V[615];
+	y[12] = 	V[616];
+	y[13] = 	V[617];
+	y[14] = 	V[618];
+	y[15] = 	V[619];
+	y[16] = 	V[620];
+	y[17] = 	V[565];		/* output_energy_arm */
+	y[18] = 	V[566];
+	y[19] = 	V[569];		/* output_energy_base */
+	y[20] = 	V[570];
+	y[21] = 	V[590];		/* output_energy_spring */
+	y[22] = 	V[591];
+	y[23] = 	V[577];		/* torques_cmd */
+	y[24] = 	V[578];
+	y[25] = 	V[579];
+	y[26] = 	V[580];
+	y[27] = 	V[581];
+	y[28] = 	V[571];		/* T_tooltip_00 */
+	y[29] = 	V[572];
+	y[30] = 	V[573];
+	y[31] = 	V[574];
+	y[32] = 	V[575];
+	y[33] = 	V[576];
+	y[34] = 	V[582];		/* W_base_00 */
+	y[35] = 	V[583];
+	y[36] = 	V[584];
+	y[37] = 	V[585];
+	y[38] = 	V[586];
+	y[39] = 	V[587];
 ]]></token>
 	<token name="VARIABLE_UNITS"><![CDATA[
+
+
+
+
+
+
+
+
+
 
 
 

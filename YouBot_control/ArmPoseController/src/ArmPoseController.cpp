@@ -5,8 +5,8 @@
  *  subm:  ArmPoseController
  *  model: motion_stack
  *  expmt: motion_stack
- *  date:  October 15, 2012
- *  time:  11:24:17 am
+ *  date:  November 2, 2012
+ *  time:  9:43:41 am
  *  user:  Campuslicentie
  *  from:  Universiteit Twente
  *  build: 4.1.4.1

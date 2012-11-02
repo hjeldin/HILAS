@@ -18,6 +18,9 @@ runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
 print.ln("Starting BRSU/controller.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/controller.ops")
 
+print.ln("Starting BRSU/passivity_layer_config.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/passivity_layer_config.ops")
+
 print.ln("Starting BRSU/cmd_vel.ops");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/cmd_vel.ops")
 
@@ -58,8 +61,8 @@ driver.Base.clearControllerTimeouts;
 #executive.setJointAngles(executive.JointSpaceSetpoint);
 #executive.jointspaceControlMode;
 
-print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/haptic slave connections.ops");
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/haptic_slave_connections.ops")
+#print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/haptic slave connections.ops");
+#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/haptic_slave_connections.ops")
 
 print.ln("Started...");
 
