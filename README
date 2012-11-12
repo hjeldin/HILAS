@@ -11,6 +11,8 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 * ROS (electric) installed and setup (www.ros.org)
  - Use Ubuntu packages, ATLEAST: 
    sudo apt-get install ros-electric-desktop
+* rosinstall, if not already installed: 
+ - sudo apt-get install python-rosinstall
 * orocos_toolchain_ros (corresponding to electric) installed and setup. 
  - Use Ubuntu packages: 
    sudo apt-get install ros-electric-orocos-toolchain ros-electric-rtt-ros-integration ros-electric-rtt-ros-comm ros-electric-rtt-common-msgs ros-electric-rtt-geometry
