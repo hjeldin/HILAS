@@ -11,7 +11,7 @@ namespace YouBot
 {
 
 static const unsigned int SIZE_CART_STIFFNESS=9;
-static const double BASIC_CART_STIFFNESS[]={50,50,50,0,0,0,0,0,0};
+static const double BASIC_CART_STIFFNESS[]={40,40,40,0,0,0,0,0,0};
 
 Master_executive::Master_executive(const string& name) : TaskContext(name)
 {
@@ -36,7 +36,7 @@ Master_executive::Master_executive(const string& name) : TaskContext(name)
 	m_EnergyState1.data.resize(1, 0.0);
 	EnergyQuanta.setDataSample(m_EnergyQuanta);
 
-	m_quota = 1000;
+	m_quota = 100;
 	m_submit_quota.data = false;
 	m_submit_quota_prev.data = false;
 
