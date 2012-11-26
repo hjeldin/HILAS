@@ -1,26 +1,16 @@
-import("SimpleEnergySupply")
-loadComponent("SimpleEnergySupply","motion_stack::SimpleEnergySupply")
-
-var ConnPolicy cp_rt;
-cp_rt.type = DATA;
-cp_rt.lock_policy = LOCK_FREE;
-connect("YouBotKinematics.output_energy_spring", "SimpleEnergySupply.input_energy",cp_rt);
-connect("YouBotKinematics.input_energy_spring","SimpleEnergySupply.output_energy", cp_rt);
-SimpleEnergySupply.configure
-SimpleEnergySupply.setPeriod(0.002)
-SimpleEnergySupply.start
 // following paramters are guess, these should properly estimated and put into the model
 ArmPoseController.PassivityLayer.PassiveZOH.PassivityLayerActive[0]=1
 BasePoseController.PassivityLayer.PassiveZOH.PassivityLayerActive[0]=1
 ArmPoseController.PassivityLayer.SETP.CommunicationTreshold[0]=2
 BasePoseController.PassivityLayer.SETP.CommunicationTreshold[0]=2
-SimpleEnergySupply.EnergyTankBlock.supply[0]=50; // Two thirds of arm unfold
+
 // max velocity enrgy tank dependent 
 ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[0]=5; //mass the arm
 ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[1]=5; //mass the arm
 ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[2]=2; //mass the arm
 ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[3]=1; //mass the arm
 ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[4]=0.5; //mass the arm
+
 // max force energy tank dependent 
 ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[0]=10;
 ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[1]=10;

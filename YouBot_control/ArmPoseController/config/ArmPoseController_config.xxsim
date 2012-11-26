@@ -10847,7 +10847,7 @@
 			<name>PassivityLayer\EnergyTankBlock\InitialEnegyState</name>
 			<kind>parameter</kind>
 			<type>real</type>
-			<value>10.0</value>
+			<value>1000.0</value>
 			<physical>
 				<unit>
 					<name>J</name>

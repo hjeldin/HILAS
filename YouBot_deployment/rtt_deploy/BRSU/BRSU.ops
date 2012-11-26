@@ -15,17 +15,20 @@ setActivity("controlloop_scheduler", 0.002, HighestPriority, ORO_SCHED_RT);
 print.ln("Starting generic/driver.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
 
-print.ln("Starting BRSU/controller.ops")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/controller.ops")
+print.ln("Starting generic/controller.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/controller.ops")
 
-print.ln("Starting BRSU/passivity_layer_config.ops")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/passivity_layer_config.ops")
+print.ln("Starting generic/passivity_layer_config.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/passivity_layer_config.ops")
+
+print.ln("Starting BRSU/simple_energy_supply.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/simple_energy_supply.ops")
 
 print.ln("Starting BRSU/cmd_vel.ops");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/cmd_vel.ops")
 
-print.ln("Starting BRSU/executive.ops")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/executive.ops")
+print.ln("Starting generic/executive.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/executive.ops")
 
 print.ln("Starting BRSU/diagnostics.ops")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/diagnostics.ops")
@@ -36,14 +39,11 @@ runScript( rospack.find("raw_arm_bridge_ros_orocos") + "/orocos/deploy/arm_bridg
 print.ln("Starting republishing to rviz")
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/youbot_state_republisher.ops")
 
-#print.ln("Starting joystick_to_geometry_Twist/slave.ops")
-#runScript( rospack.find("joystick_to_geometry_Twist") + "/slave.ops")
-
 print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/laser.ops");
 runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/laser.ops")
 
-print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/tracing.ops")
-runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/tracing.ops")
+#print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/tracing.ops")
+#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/tracing.ops")
 
 print.ln("Starting control loop");
 controlloop_scheduler.configure;
@@ -60,9 +60,6 @@ driver.Base.clearControllerTimeouts;
 #executive.setJointStiffness(executive.JointSpaceStiffness);
 #executive.setJointAngles(executive.JointSpaceSetpoint);
 #executive.jointspaceControlMode;
-
-#print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/haptic slave connections.ops");
-#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/haptic_slave_connections.ops")
 
 print.ln("Started...");
 

@@ -1,0 +1,16 @@
+import("SimpleEnergySupply")
+loadComponent("SimpleEnergySupply","motion_stack::SimpleEnergySupply")
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+connect("YouBotKinematics.output_energy_spring", "SimpleEnergySupply.input_energy",cp_rt);
+connect("YouBotKinematics.input_energy_spring","SimpleEnergySupply.output_energy", cp_rt);
+
+SimpleEnergySupply.configure
+SimpleEnergySupply.setPeriod(0.002)
+
+SimpleEnergySupply.EnergyTankBlock.supply[0]=50; // Two thirds of arm unfold
+
+SimpleEnergySupply.start
+
