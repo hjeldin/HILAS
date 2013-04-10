@@ -56,6 +56,14 @@ print.ln("Waiting for unfold (4 seconds).")
 executive.sleep(4)
 
 executive.cartesianControl
+var float64[] stiff = float64[](9, 0.0)
+stiff[0] = 500
+stiff[1] = 500
+stiff[2] = 500
+stiff[3] = 30
+stiff[4] = 30
+stiff[5] = 30
+executive.setCartesianStiffness(stiff)
 executive.execute
 
 print.ln("Slave started...")
