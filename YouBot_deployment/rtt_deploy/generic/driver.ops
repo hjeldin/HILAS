@@ -20,10 +20,6 @@ setActivity("event_logger", 0.1, LowestPriority, ORO_SCHED_OTHER);
 #
 # Configure
 #
-# Watchdog 
-# Adjust comments to enable/disable Wifi-watchdog.
-#
-driver.noWatchdog;
 driver.configure;
 event_logger.configure
 
@@ -39,13 +35,6 @@ cp_events.type = BUFFER;
 cp_events.lock_policy = LOCK_FREE;
 cp_events.size = 20;
 
-//var ConnPolicy cp_wd;
-//cp_wd.transport = 3;
-//cp_wd.type = BUFFER;
-//cp_wd.size=1;
-//cp_wd.lock_policy = LOCK_FREE;
-//cp_wd.name_id = "/watchdog/keepalive";
-
 #
 # Connect peers
 #
@@ -53,9 +42,6 @@ cp_events.size = 20;
 connectPeers("driver", "event_logger");
 connect("driver.Arm1.events", "event_logger.events", cp_events);
 connect("driver.Base.events", "event_logger.events", cp_events);
-
-# ROS
-//stream("driver.WatchdogService.watchdog_msg", cp_wd);
 
 # 
 # Start running

@@ -16,7 +16,6 @@
   <depend package="rtt_motion_control_msgs"/>
   <depend package="rtt_nav_msgs"/>
   <depend package="rtt_geometry_msgs"/>
-  <depend package="rtt_watchdog_msgs"/>
   <depend package="tf"/>
 </package>
 

@@ -3,7 +3,6 @@
 #include "YouBotArmService.hpp"
 #include "YouBotHelpers.hpp"
 #include "YouBotGripperService.hpp"
-#include "WatchdogService.hpp"
 
 #include <youbot/ProtocolDefinitions.hpp>
 #include <youbot/EthercatMaster.hpp>
@@ -27,15 +26,13 @@ namespace YouBot
 //	unsigned int non_errors = ::MOTOR_HALTED | ::PWM_MODE_ACTIVE | ::VELOCITY_MODE | ::POSITION_MODE | ::TORQUE_MODE | ::POSITION_REACHED | ::INITIALIZED;
 
 	YouBotOODL::YouBotOODL(const string& name) :
-	    TaskContext(name, PreOperational), m_communication_errors(0), m_use_watchdog(true)
+	    TaskContext(name, PreOperational), m_communication_errors(0)
 	{
 		youbot::Logger::logginLevel = youbot::fatal;
 		RTT::Logger* ins = RTT::Logger::Instance();
 		ins->setLogLevel(RTT::Logger::Info);
 
 		m_max_communication_errors = 100;
-
-		this->addOperation("noWatchdog",&YouBotOODL::noWatchdog,this);
 	}
 
 	YouBotOODL::~YouBotOODL() {}
@@ -120,18 +117,6 @@ namespace YouBot
 			log(Info) << "Detected youbot arm, loading Arm2 service" << endlog();
 		}
 
-    // Watchdog
-		if(m_use_watchdog)
-		{
-      this->provides()->addService(Service::shared_ptr( new WatchdogService("WatchdogService",this) ) );
-      update_ops.push_back(this->provides("WatchdogService")->getOperation("update"));
-      calibrate_ops.push_back(this->provides("WatchdogService")->getOperation("calibrate"));
-      start_ops.push_back(this->provides("WatchdogService")->getOperation("start"));
-      stop_ops.push_back(this->provides("WatchdogService")->getOperation("stop"));
-      cleanup_ops.push_back(this->provides("WatchdogService")->getOperation("cleanup"));
-      log(Info) << "Added WatchdogService service" << endlog();
-		}
-
 		Seconds period = this->getPeriod();
 		if(period < 0.001)
 		{
@@ -172,16 +157,6 @@ namespace YouBot
 		{
 			return TaskContext::configureHook();
 		}
-	}
-
-	bool YouBotOODL::noWatchdog()
-	{
-	  if(!TaskContext::isConfigured())
-	  {
-	    m_use_watchdog = false;
-	    return true;
-	  }
-	  return false;
 	}
 
 	bool YouBotOODL::startHook()

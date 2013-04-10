@@ -40,20 +40,38 @@ rosmake youbot-stack generic_components
 == USAGE (example) ==
 1) roscd YouBot_deployment/rtt_deploy
 2) Adjust the run.sh to have the proper ROS_PACKAGE_PATH
-3) sudo ./run.sh deploy.ops
-Note: Almost every package contains a separate deploy.ops (Orocos deployment script), which can be used as an example.
+3) sudo ./run.sh <USE_CASE>/deploy.ops
 
 == DOCUMENTATION == 
-http://www.best-of-robotics.org/3rd_researchcamp/CodeGenerationForRTT
+* Y. Brodskiy, J.F. Broenink, S.S. Stramigioli and R.J.W.Wilterdink. Collection of methods for achieving Robust Autonomy. Technical Report D62, The BRICS Project (Grant Agreement Number: 231940), available from http://www.best-of-robotics.org, January 2011.
+* Y. Brodskiy, D. Dresscher, S. Stramigioli, J.F. Broenink, and C. Yalcin. Design principles, implementation guidelines, evaluation criteria, and use case implementation for robust autonomy. Technical Report D61, The BRICS Project (Grant Agreement Number: 231940), available from http://www.best-of-robotics.org/, January 2011.
+* Outdated: http://www.best-of-robotics.org/3rd_researchcamp/CodeGenerationForRTT
+Note, D62 describes three use cases implemented with the youbot-stack.
 
-The following external packages/stacks are used:
+=== Components/nodes in this repository ===
+* motion_stack - contains the motion stack prototype described in D62
+* YouBot_OODL - component wrapper for the BRSU youBot driver
+* YouBot_executive - facilitates using the motion stack
+* YouBot_deployment/rtt_deploy - contains the deployment scripts for running the use cases.
+* YouBot_adapters - adapters specially created for the youBot
+
+Use case specific components:
+* YouBot_monitors - monitoring component designed for RC3
+* Master_executive - facilitates the master side of the tele-operation use case
+* rtt_brics_actuator - component for the BRSU RoboCup@Work use case
+* arm_bridge_ros_orocos - component for the BRSU RoboCup@Work use case
+
+=== External packages/stacks ===
  - youbot_driver - BRICS youBot OODL (Bohn-Rhine-Sieg)
  - motion_control stack - message types (KU Leuven)
  - fbsched - function block scheduler (KU Leuven)
  - rFSM - Orocos Lua FSM (KU Leuven)
- - youbot_applications - YouBot_configurator component (Locomotec)
 
 == MAJOR UPDATE LOG ==
+10/04/2013 Clean up for BRICS project ending.
 14/05/2012 Changed the install procedure and the required youbot_driver version. Please redo the installation as described above.
 01/05/2012 Updated YouBot_OODL port naming to match KUL youbot_master_rtt ports. To update: git pull; rosmake --pre-clean YouBot_OODL; Afterwards: update your scripts.
 12/12/2011 Cleaned stack, i.e. moved foreign includes/directories into external folder. To update: git submodule init; git submodule update; rm -rf ./rFSM ./soem; rosmake --pre-clean; Note: You might have to update the external/youbot_applications and youbot_driver yourself (cd external/youbot_applications; git checkout master; git pull; cd joint_configurator; make clean)
+
+= ACKNOWLEDGEMENTS =
+The research leading to these results has received funding from the European Community's Seventh Framework Programme (FP7/2007-2013) under grant agreement no. FP7-ICT-231940-BRICS (Best Practice in Robotics).

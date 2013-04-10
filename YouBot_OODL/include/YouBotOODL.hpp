@@ -36,8 +36,6 @@ namespace YouBot
 			virtual void stopHook();
 			virtual void cleanupHook();
 
-			bool noWatchdog();
-
 		private:
       vector<OperationCaller<bool(void)> > calibrate_ops;
       vector<OperationCaller<bool(void)> > start_ops;
@@ -48,8 +46,6 @@ namespace YouBot
       youbot::EthercatMasterInterface* m_ec_master;
       unsigned int m_communication_errors;
       unsigned int m_max_communication_errors;
-
-      bool m_use_watchdog;
 
       RTT::os::TimeService::ticks timestamp;
       RTT::Seconds ca;
