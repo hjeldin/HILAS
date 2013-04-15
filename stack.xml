@@ -5,7 +5,7 @@
 
   </description>
   <author>Yury Brodskiy & Robert Wilterdink</author>
-  <license>TBD</license>
+  <license>LGPLv3</license>
   <review status="unreviewed" notes=""/>
   <url></url>
   <depend stack="rtt_ros_integration" />

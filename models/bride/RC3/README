@@ -1,0 +1,11 @@
+Created with BRIDE version 02-Aug-2012 (commit: 76c06e6d3356ba78e1aea27decd1272a39630c06) + my.patch
+
+= INSTALL =
+See https://git.ce.utwente.nl//20sim/blob/refs/heads/master:/eclipse/nl.utwente.ram.xxsim.transform.xml.to.rtt/README
+
+= USAGE = 
+1) Copy the models to a C++ project and open with RTT diagram editor.
+Note, the code generation feature is currently not expressive enough, therefore the deployment models have been created manually.
+
+= Documentation = 
+This can be found in EU FP7 BRICS deliverable D6.2
