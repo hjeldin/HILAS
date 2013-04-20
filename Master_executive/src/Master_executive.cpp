@@ -3,7 +3,6 @@
 #include <boost/thread/thread.hpp>
 #include <math.h>
 
-using namespace Orocos;
 using namespace RTT;
 using namespace std;
 

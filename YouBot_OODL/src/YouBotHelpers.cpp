@@ -136,9 +136,9 @@ namespace YouBot
 	//      statusMessages.push_back(errorMessage + "got inizialization problem");
 	//    }
 
-		if (cd & PWM_MODE_ACTIVE) {
-		  errors << "PWM_MODE_ACTIVE ";
-		}
+//		if (cd & PWM_MODE_ACTIVE) {
+//		  errors << "PWM_MODE_ACTIVE ";
+//		}
 
 		if (cd & VELOCITY_MODE) {
 		  errors << "VELOCITY_MODE ";

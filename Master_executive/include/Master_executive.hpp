@@ -3,14 +3,15 @@
 /* OROCOS include files */
 #include <rtt/TaskContext.hpp>
 #include <ocl/Component.hpp>
+#include <rtt/OutputPort.hpp>
+#include <rtt/InputPort.hpp>
 #include <string>
-#include <vector>
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/Bool.h>
 
 namespace YouBot
 {
-	typedef std_msgs::Float64MultiArray flat_matrix_t;
+        typedef std_msgs::Float64MultiArray flat_matrix_t;
 
 	class Master_executive: public RTT::TaskContext
 	{
