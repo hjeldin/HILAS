@@ -70,17 +70,15 @@
 /* OROCOS include files */
 #include <rtt/TaskContext.hpp>
 #include <ocl/Component.hpp>
+#include <rtt/Port.hpp>
 #include <string>
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/Bool.h>
 #include <motion_control_msgs/JointPositions.h>
 
-#include <list>
-
 #include <YouBotTypes.hpp>
 
 #include "ExecutiveTypes.hpp"
-#include "ConnectionMapping.hpp"
 
 namespace YouBot
 {

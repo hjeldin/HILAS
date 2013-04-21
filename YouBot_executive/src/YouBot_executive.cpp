@@ -66,7 +66,6 @@
  *      Author: Yury Brodskiy
  */
 #include "YouBot_executive.h"
-#include "ConnectionMapping.hpp"
 
 #include <tf/transform_broadcaster.h>
 #include "ExecutiveHelpers.hpp"
@@ -74,7 +73,6 @@
 
 #include <math.h>
 
-using namespace Orocos;
 using namespace RTT;
 using namespace std;
 
