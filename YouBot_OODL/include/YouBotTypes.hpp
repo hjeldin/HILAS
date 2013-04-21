@@ -61,6 +61,8 @@
 
 #pragma once
 
+#include <stddef.h>
+
 namespace YouBot
 {
 	enum arm_settings {NR_OF_ARM_SLAVES=5};

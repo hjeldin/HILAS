@@ -64,8 +64,7 @@
 /* OROCOS include files */
 #include <rtt/TaskContext.hpp>
 #include <ocl/Component.hpp>
-#include <rtt/OutputPort.hpp>
-#include <rtt/InputPort.hpp>
+#include <rtt/Port.hpp>
 #include <string>
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/Bool.h>

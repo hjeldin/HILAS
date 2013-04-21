@@ -89,7 +89,6 @@
 #include <ros/package.h>
 //#include <rtt/Logger.hpp>
 
-using namespace Orocos;
 using namespace RTT;
 using namespace std;
 
