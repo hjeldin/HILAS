@@ -6,7 +6,7 @@
 
 import("rtt_rosnode");
 import("fbsched");
-require("ros_integration")
+#require("ros_integration")
 require("print")
 
 import("ut_phantom_omni");
@@ -39,7 +39,7 @@ scheduler.setPeriod(0.001);
 print.ln("load phantom");
 loadComponent("phantom","PhantomOmni");
 phantom.configure;
-print.ln("configure phantom");
+print.ln("phantom loaded and running?");
 //correction for Raffi's phantom 
 phantom.zero_position_angles=array(0.1, 1.4, 3.69, 3.02, 4.71239, 3.14159);
 loadComponent("joystick", "joystick_to_geometry_Twist");

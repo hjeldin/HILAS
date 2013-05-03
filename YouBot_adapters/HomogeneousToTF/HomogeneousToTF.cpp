@@ -71,7 +71,7 @@ void toTransformMatrix(const std::vector<double> & tf, tf::Transform& trans) {
         btMatrix3x3 rotMatrix(tf[0], tf[1], tf[2],
                         tf[4], tf[5], tf[6],
                         tf[8], tf[9], tf[10]);
-        tf::Quaternion quat;
+        btQuaternion quat;
         rotMatrix.getRotation(quat);
         trans.setRotation(quat);
 
