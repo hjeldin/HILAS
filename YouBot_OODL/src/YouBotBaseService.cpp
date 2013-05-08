@@ -430,7 +430,7 @@ namespace YouBot
       }
     } catch (std::exception& e)
     {
-      log(Error) << e.what();
+      log(Error) << e.what() << endlog();
       m_base = NULL;
       this->getOwner()->error();
       return false;

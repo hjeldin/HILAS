@@ -5,7 +5,6 @@
 import("rtt_rosnode");
 import("fbsched");
 import("EventLogger");
-require("ros_integration")
 require("print")
 
 print.ln("Starting the FBScheduler");

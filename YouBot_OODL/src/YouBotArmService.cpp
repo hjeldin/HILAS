@@ -346,6 +346,7 @@ namespace YouBot
       }
 
       m_manipulator->doJointCommutation();
+
       m_manipulator->calibrateManipulator();
 
       for (unsigned int i = 0; i < NR_OF_ARM_SLAVES; ++i)
@@ -413,7 +414,7 @@ namespace YouBot
 
     } catch (std::exception& e)
     {
-      log(Error) << e.what();
+      log(Error) << e.what() << endlog();
       m_manipulator = NULL;
       this->getOwner()->error();
       return false;
