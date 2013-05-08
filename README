@@ -5,7 +5,7 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 ==INSTALLATION==
 
 ===Prerequisites===
-* youBot firmware 1.48
+* youBot firmware 1.48 & youbot_driver v0.96
 * Ubuntu, preferably 12.04
  - libcap2: sudo apt-get install libcap2-bin
 * ROS (fuerte) installed and setup (www.ros.org)
