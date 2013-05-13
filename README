@@ -5,27 +5,26 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 ==INSTALLATION==
 
 ===Prerequisites===
-* youBot firmware 1.48
-* Ubuntu, preferably 10.10 or 10.04
+* youBot firmware 1.48 & youbot_driver v0.96
+* Ubuntu, preferably 12.04
  - libcap2: sudo apt-get install libcap2-bin
-* ROS (electric) installed and setup (www.ros.org)
- - Use Ubuntu packages, ATLEAST: 
-   sudo apt-get install ros-electric-desktop
-* rosinstall, if not already installed: 
- - sudo apt-get install python-rosinstall
-* orocos_toolchain_ros (corresponding to electric) installed and setup. 
+* ROS (fuerte) installed and setup (www.ros.org)
+ - Use Ubuntu packages, atleast: 
+   sudo apt-get install ros-fuerte-desktop
+* rosinstall & rosdep, if not already installed: 
+ - sudo apt-get install python-rosinstall python-rosdep
+* orocos_toolchain_ros (corresponding to fuerte) installed and setup. 
  - Use Ubuntu packages: 
-   sudo apt-get install ros-electric-orocos-toolchain ros-electric-rtt-ros-integration ros-electric-rtt-ros-comm ros-electric-rtt-common-msgs ros-electric-rtt-geometry
+   sudo apt-get install ros-fuerte-orocos-* ros-fuerte-rtt-*
 
 === Install procedure ===
 1) Clone the UTwente youbot-stack & generic Orocos components:
 git clone https://git.ce.utwente.nl/youbot-stack
 git clone https://git.ce.utwente.nl/generic_components 
-cd generic_components; git checkout devel; git pull origin devel
 
 2) Install the external stack/package dependencies:
 2a) Replace DEV by your install folder
-rosinstall ~/DEV youbot-stack.rosinstall /opt/ros/electric
+rosinstall ~/DEV youbot-stack.rosinstall /opt/ros/fuerte
 rosdep install motion_control
 rosdep install fbsched
 rosdep install rFSM
@@ -68,6 +67,7 @@ Use case specific components:
  - rFSM - Orocos Lua FSM (KU Leuven)
 
 == MAJOR UPDATE LOG ==
+06/05/2013 ROS fuerte upgrade. Please clean every package and rebuild with fuerte installed.
 10/04/2013 Clean up for BRICS project ending.
 14/05/2012 Changed the install procedure and the required youbot_driver version. Please redo the installation as described above.
 01/05/2012 Updated YouBot_OODL port naming to match KUL youbot_master_rtt ports. To update: git pull; rosmake --pre-clean YouBot_OODL; Afterwards: update your scripts.

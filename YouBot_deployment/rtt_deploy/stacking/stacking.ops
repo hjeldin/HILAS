@@ -3,7 +3,6 @@
 #
 
 import("rtt_rosnode");
-require("ros_integration")
 require("print")
 
 //print.ln("Start YouBot_configurator")

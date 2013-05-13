@@ -202,7 +202,7 @@ namespace YouBot
           << m_gripper_limits.max_position << endlog();
     } catch (std::exception& e)
     {
-      log(Error) << e.what();
+      log(Error) << e.what() << endlog();
       return false;
     }
 
