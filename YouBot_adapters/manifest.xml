@@ -16,6 +16,7 @@
   <depend package="rtt_motion_control_msgs"/>
   <depend package="YouBot_OODL"/>
   <depend package="tf" />
+  <depend package="rtt_nav_msgs"/>
 
 </package>
 

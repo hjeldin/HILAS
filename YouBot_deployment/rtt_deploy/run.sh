@@ -1,5 +1,9 @@
 #!/bin/bash
 
+source /opt/ros/fuerte/setup.bash
+source /opt/ros/fuerte/stacks/orocos_toolchain/env.sh
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/k12/youbot
+
 #export ROS_MASTER_URI=http://youbot-dev:11311
 export ROS_MASTER_URI=http://localhost:11311
 

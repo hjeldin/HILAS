@@ -31,11 +31,15 @@ rosdep install rFSM
 rosdep install youbot_driver
 rosmake motion_control fbsched rFSM youbot_driver
 
+Now, type 'source /home/k12/youbot/orocos_stacks/setup.bash' to set up your environment.
+Add that to the bottom of your ~/.bashrc to set it up every time.
+
+
 3) Adjust the ROS_PACKAGE_PATH to find all packages and stacks.
 
 4) Build the UTwente youbot-stack
 rosmake youbot-stack generic_components
-
+roscd
 == USAGE (example) ==
 1) roscd YouBot_deployment/rtt_deploy
 2) Adjust the run.sh to have the proper ROS_PACKAGE_PATH

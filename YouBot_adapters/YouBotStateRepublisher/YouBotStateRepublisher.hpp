@@ -65,8 +65,12 @@
 
 #include <sensor_msgs/typekit/Types.h>
 #include <geometry_msgs/typekit/Types.h>
+#include <nav_msgs/typekit/Types.h>
+#include <std_msgs/typekit/Types.h>
 #include <ocl/Component.hpp>
 #include <std_msgs/Float64MultiArray.h>
+#include <nav_msgs/Odometry.h>
+
 
 namespace YouBot
 {
@@ -97,6 +101,7 @@ namespace YouBot
 
     InputPort<sensor_msgs::JointState> arm_state;
     InputPort<sensor_msgs::JointState> base_state;
+    
     sensor_msgs::JointState m_arm_state;
     sensor_msgs::JointState m_base_state;
 
@@ -108,6 +113,14 @@ namespace YouBot
   //	InputPort<flat_matrix_t> odometry;
 
     OutputPort<sensor_msgs::JointState> youbot_state;
+    
+    // 15 10 2013
+    OutputPort<nav_msgs::Odometry> odometry_state;
+    InputPort<nav_msgs::Odometry> oodl_odometry_state;
+    
+    nav_msgs::Odometry m_odometry_state;
+    nav_msgs::Odometry m_oodl_odometry_state;
+            
     sensor_msgs::JointState m_youbot_state;
     // Republishing energy states to make an event when energy in the tanks drop below zeros
     InputPort<std_msgs::Float64MultiArray> arm_energy_tank;
