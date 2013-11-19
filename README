@@ -18,8 +18,7 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
    sudo apt-get install ros-fuerte-orocos-* ros-fuerte-rtt-*
 
 === Install procedure ===
-1) Clone the UTwente youbot-stack & generic Orocos components:
-git clone https://git.ce.utwente.nl/youbot-stack
+1) Clone the generic Orocos components:
 git clone https://git.ce.utwente.nl/generic_components 
 
 2) Install the external stack/package dependencies:
