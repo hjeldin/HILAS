@@ -21,10 +21,14 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 1) Clone the UTwente youbot-stack & generic Orocos components:
 git clone https://git.ce.utwente.nl/youbot-stack
 git clone https://git.ce.utwente.nl/generic_components 
+git clone git@bitbucket.org:marcoruzzenente/motioncontrol.git (ruzze's version of motion_control)
 
 2) Install the external stack/package dependencies:
 2a) Replace DEV by your install folder
 rosinstall ~/DEV youbot-stack.rosinstall /opt/ros/fuerte
+
+2b) Remove motion_control of generic_components repository & compile ruzze's version 
+rm motion_control -rf
 rosdep install motion_control
 rosdep install fbsched
 rosdep install rFSM
