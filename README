@@ -20,7 +20,7 @@ The University of Twente (www.utwente.nl) is not liable for any damage arising d
 === Install procedure ===
 1) Clone the generic Orocos components:
 git clone https://git.ce.utwente.nl/generic_components 
-git clone git@bitbucket.org:marcoruzzenente/motioncontrol.git (ruzze's version of motion_control)
+git clone git@bitbucket.org:marcoruzzenente/motioncontrol.git motion_control (ruzze's version of motion_control)
 
 2) Install the external stack/package dependencies:
 2a) Replace DEV by your install folder
