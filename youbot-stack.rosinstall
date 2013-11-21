@@ -14,11 +14,6 @@
     version: v0.96 
 
 - git:
-    local-name: motion_control
-    uri: http://git.mech.kuleuven.be/robotics/motion_control.git
-    version: devel
-
-- git:
     local-name: youbot-ros-pkg
     uri: https://github.com/b-it-bots/youbot-ros-pkg.git
     version: master
