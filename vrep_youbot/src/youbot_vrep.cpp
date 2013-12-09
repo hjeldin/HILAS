@@ -61,18 +61,18 @@
 #define TF_ODOM_FRAME_ID  "odom"
 #define TF_ODOM_CHILD_FRAME_ID "base_footprint"
 
-#define TOPIC_LASERSCAN_READ "/vrep/RangeFinderData"
+#define TOPIC_LASERSCAN_READ "/vrep/rangeFinderData"
 /* NUMERI A CASO */
-#define output_frame_id_ 1
-#define angle_min_ 0
-#define angle_max_ M_PI
+#define output_frame_id_ "/base_laser_front_link"
+#define angle_min_ -M_PI/2
+#define angle_max_ M_PI/2
 #define angle_increment_ 0.03
 #define scan_time_ 0.01
 #define range_min_ 0.05
-#define range_max_ 2
+#define range_max_ 5
 #define max_height_ 0.5 
-#define min_height_ 0.25
-#define range_min_sq_ 1
+#define min_height_ 0
+#define range_min_sq_ 0
 /* FINE NUMERI A CASO */
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
@@ -384,11 +384,15 @@ void infoCallback(const vrep_common::VrepInfo::ConstPtr& info)
   pubJointStates.publish(msg_map);
 }*/
 
-void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud::ConstPtr& cloud)
+void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud2::ConstPtr& input)
 {
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::fromROSMsg (*input, cloud);
+
     //sensor_msgs::LaserScan output(new sensor_msgs::LaserScan());
-    output.header = cloud->header;
+    output.header = cloud.header;
     output.header.frame_id = output_frame_id_; // Set output frame. Point clouds come from "optical" frame, scans come from corresponding mount frame
+    output.header.stamp = ros::Time::now();
     output.angle_min = angle_min_;
     output.angle_max = angle_max_;
     output.angle_increment = angle_increment_;
@@ -398,13 +402,15 @@ void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud::ConstPtr& cloud
     output.range_max = range_max_;
 
     uint32_t ranges_size = std::ceil((output.angle_max - output.angle_min) / output.angle_increment);
+    //std::cout << "[DEBUG] ranges_size: " << std::endl;
+
     output.ranges.assign(ranges_size, output.range_max + 1.0);
 
-    for (size_t i = 0; i < cloud->points.size(); ++i)
+    for (size_t i = 0; i < cloud.points.size(); ++i)
     {
-      const float &x = cloud->points[i].x;
-      const float &y = cloud->points[i].y;
-      const float &z = cloud->points[i].z;
+      const float &x = cloud.points[i].x;
+      const float &y = cloud.points[i].y;
+      const float &z = cloud.points[i].z;
 
       if ( std::isnan(x) || std::isnan(y) || std::isnan(z) )
       {
@@ -412,19 +418,20 @@ void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud::ConstPtr& cloud
         continue;
       }
 
-      if (-y > max_height_ || -y < min_height_)
+      
+      /*if (-y > max_height_ || -y < min_height_)
       {
         //NODELET_DEBUG("rejected for height %f not in range (%f, %f)\n", x, min_height_, max_height_);
         continue;
-      }
+      }*/
 
-      double range_sq = z*z+x*x;
+      double range_sq = x*x + y*y;
       if (range_sq < range_min_sq_) {
         //NODELET_DEBUG("rejected for range %f below minimum value %f. Point: (%f, %f, %f)", range_sq, range_min_sq_, x, y, z);
         continue;
       }
 
-      double angle = -atan2(x, z);
+      double angle = atan2(y, x);
       if (angle < output.angle_min || angle > output.angle_max)
       {
         //NODELET_DEBUG("rejected for angle %f not in range (%f, %f)\n", angle, output->angle_min, output->angle_max);
@@ -435,8 +442,8 @@ void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud::ConstPtr& cloud
 
       if (output.ranges[index] * output.ranges[index] > range_sq)
         output.ranges[index] = sqrt(range_sq);
-      }
-
+      
+    }
     laserScan.publish(output);
 }
 
@@ -518,7 +525,7 @@ int main(int argc,char* argv[])
   ros::Subscriber subReadTwist = node.subscribe<geometry_msgs::TwistStamped>(TOPIC_TWIST_READ, 1, readTwistCallback);
 
   // Ros Subscriber LaserScan (sensor)
-  ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud>(TOPIC_LASERSCAN_READ,1,pointCloud2LaserScanCallback);
+  ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud2>(TOPIC_LASERSCAN_READ,1,pointCloud2LaserScanCallback);
 
   // Ros Publisher JointStates remapped
   pubJointStates=node.advertise<sensor_msgs::JointState>("/joint_states",10);
@@ -526,7 +533,7 @@ int main(int argc,char* argv[])
   // Ros Publisher Odom
   pubOdom = node.advertise<nav_msgs::Odometry>("/odom",10);
 
-  laserScan = node.advertise<sensor_msgs::LaserScan>("/scan",10);
+  laserScan = node.advertise<sensor_msgs::LaserScan>("/base_scan",10);
 
   client_cmdPos = node.serviceClient<vrep_common::simRosSetJointTargetPosition>("/vrep/simRosSetJointTargetPosition");
 
