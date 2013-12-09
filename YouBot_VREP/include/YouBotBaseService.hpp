@@ -44,6 +44,22 @@ class YouBotBaseService: public Service
 
     OutputPort<std::string> events;
 
+    /* Acquire Data
+       HW -> read from YuoBot_OODL
+       SIM -> read from VREP
+    */
+
+    InputPort<sensor_msgs::JointState> in_joint_state;
+    InputPort<nav_msgs::Odometry> in_odometry_state;
+
+    /* Port for send data to VREP */
+    OutputPort<motion_control_msgs::JointVelocities> out_joint_velocity_command;
+    OutputPort<motion_control_msgs::JointPositions> out_joint_position_command;
+    OutputPort<motion_control_msgs::JointEfforts> out_joint_effort_command;
+
+    OutputPort<geometry_msgs::Twist> out_cmd_twist;
+
+
   private:
     void setupComponentInterface();
 
@@ -64,6 +80,12 @@ class YouBotBaseService: public Service
     motion_control_msgs::JointVelocities m_joint_velocity_command;
     motion_control_msgs::JointPositions m_joint_position_command;
     motion_control_msgs::JointEfforts m_joint_effort_command;
+
+    /** DUMMY motion_control_msgs **/
+    motion_control_msgs::JointVelocities m_out_joint_velocity_command;
+    motion_control_msgs::JointPositions m_out_joint_position_command;
+    motion_control_msgs::JointEfforts m_out_joint_effort_command;
+
     geometry_msgs::Twist m_cmd_twist;
 
     sensor_msgs::JointState m_joint_state;

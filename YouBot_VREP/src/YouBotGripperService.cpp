@@ -31,6 +31,7 @@ namespace YouBot
 
     this->addPort("gripper_cmd_position", gripper_cmd_position).doc(
         "Command the gripper position");
+    this->addPort("out_gripper_cmd_position", out_gripper_cmd_position).doc("Send cmd gripper to VREP");
 
     this->addOperation("start", &YouBotGripperService::start, this);
     this->addOperation("update", &YouBotGripperService::update, this);
@@ -65,6 +66,7 @@ namespace YouBot
     if (gripper_cmd_position.read(m_gripper_cmd_position) == NewData) //setData has SLEEP_MILLISECOND :-(
     {
         //@todo send cmd to VREP
+        out_gripper_cmd_position.write(m_gripper_cmd_position);
     }
   }
 

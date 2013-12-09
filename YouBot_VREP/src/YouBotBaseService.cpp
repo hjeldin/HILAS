@@ -90,6 +90,14 @@ namespace YouBot
 
     this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
 
+    this->addPort("in_joint_state", in_joint_state).doc("Joint states from HW or SIM"); this->addPort("in_odometry_state", in_odometry_state).doc("Joint states from simulated robot");
+
+    this->addPort("out_joint_position_command", out_joint_position_command ).doc("Base positions to simulated robot");
+    this->addPort("out_joint_velocity_command", out_joint_velocity_command).doc("Base velocities to simulated robot");
+    this->addPort("out_joint_effort_command", out_joint_effort_command).doc("Base torques to simulated robot");
+    this->addPort("in_odometry_state", in_odometry_state).doc("Base odometry from HW or SIM");
+    this->addPort("out_cmd_twist", out_cmd_twist).doc("Base twist to simulated robot");
+
     // Events - Pre-allocate port memory for outputs
     m_events.reserve(max_event_length);
     events.setDataSample(m_events);
@@ -172,6 +180,7 @@ namespace YouBot
     //     * si::radian_per_second;
 
     //@todo VREP setTwist command (no need to split in longitudinal,transversal, angular velocity)
+    out_cmd_twist.write(m_cmd_twist);
 
     //m_base->setBaseVelocity(longitudinalVelocity, transversalVelocity,
     //    angularVelocity);
@@ -179,6 +188,16 @@ namespace YouBot
 
   void YouBotBaseService::setJointSetpoints()
   {
+
+    m_out_joint_position_command.names.resize(0);
+    m_out_joint_position_command.positions.resize(0);
+
+    m_out_joint_velocity_command.names.resize(0);
+    m_out_joint_velocity_command.velocities.resize(0);
+
+    m_out_joint_effort_command.names.resize(0);
+    m_out_joint_effort_command.efforts.resize(0);
+
     joint_position_command.read(m_joint_position_command);
     joint_velocity_command.read(m_joint_velocity_command);
     joint_effort_command.read(m_joint_effort_command);
@@ -189,6 +208,8 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
+        m_out_joint_position_command.names.push_back(m_joint_position_command.names[joint_nr]);
+        m_out_joint_position_command.positions.push_back(m_joint_position_command.positions[joint_nr]);
        // m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
        //     * si::radian;
         //m_joints[joint_nr]->setData(m_tmp_joint_position_command);
@@ -196,6 +217,8 @@ namespace YouBot
       }
       case (ANGULAR_VELOCITY):
       {
+        m_out_joint_velocity_command.names.push_back(m_joint_velocity_command.names[joint_nr]);
+        m_out_joint_velocity_command.velocities.push_back(m_joint_velocity_command.velocities[joint_nr]);
        // m_tmp_joint_velocity_command.angularVelocity =
        //     m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
         //m_joints[joint_nr]->setData(m_tmp_joint_velocity_command);
@@ -203,6 +226,8 @@ namespace YouBot
       }
       case (TORQUE):
       {
+        m_out_joint_effort_command.names.push_back(m_joint_effort_command.names[joint_nr]);
+        m_out_joint_effort_command.efforts.push_back(m_joint_effort_command.efforts[joint_nr]);
       //  m_tmp_joint_effort_command.torque = m_joint_effort_command.efforts[joint_nr]
       //      * si::newton_meter;
         //m_joints[joint_nr]->setData(m_tmp_joint_effort_command);
@@ -210,6 +235,8 @@ namespace YouBot
       }
       case (MOTOR_STOP):
       {
+        m_out_joint_velocity_command.names.push_back(std::string("arm_joint_" + joint_nr));
+        m_out_joint_velocity_command.velocities.push_back(0);
         //m_joints[joint_nr]->stopJoint();
         break;
       }
@@ -228,30 +255,36 @@ namespace YouBot
       }
       }
     }
+
+    out_joint_position_command.write(m_out_joint_position_command);
+    out_joint_velocity_command.write(m_out_joint_velocity_command);
+    out_joint_effort_command.write(m_out_joint_effort_command);
   }
 
   void YouBotBaseService::readJointStates()
   {
-    m_joint_state.header.stamp = ros::Time::now();
+    // m_joint_state.header.stamp = ros::Time::now();
 
     // YouBot -> OutputPort
     // JointSensedAngle joint_angle;
     // JointSensedVelocity joint_velocity;
     // JointSensedTorque joint_torque;
 
-    for (int i = 0; i < NR_OF_BASE_SLAVES; ++i)
-    {
-      //@todo Read from VREP joint_states of base
+    // for (int i = 0; i < NR_OF_BASE_SLAVES; ++i)
+    // {
 
-      // m_joints[i]->getData(joint_angle);
-      // m_joint_state.position[i] = joint_angle.angle.value();
+    //   m_joints[i]->getData(joint_angle);
+    //   m_joint_state.position[i] = joint_angle.angle.value();
 
-      // m_joints[i]->getData(joint_velocity);
-      // m_joint_state.velocity[i] = joint_velocity.angularVelocity.value();
+    //   m_joints[i]->getData(joint_velocity);
+    //   m_joint_state.velocity[i] = joint_velocity.angularVelocity.value();
 
-      // m_joints[i]->getData(joint_torque);
-      // m_joint_state.effort[i] = joint_torque.torque.value();
-    }
+    //   m_joints[i]->getData(joint_torque);
+    //   m_joint_state.effort[i] = joint_torque.torque.value();
+    // }
+    
+    //@todo Read from VREP joint_states of base
+    in_joint_state.read(m_joint_state);
 
     joint_state.write(m_joint_state);
   }
@@ -289,6 +322,8 @@ namespace YouBot
     //     orientation.value());
 
     //@todo readOdometry from VREP 
+
+    in_odometry_state.read(m_odometry_state);
 
     odometry_state.write(m_odometry_state);
   }

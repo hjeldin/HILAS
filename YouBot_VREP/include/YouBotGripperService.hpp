@@ -45,6 +45,9 @@ namespace YouBot
     protected:
       // Gripper
       InputPort<motion_control_msgs::JointPositions> gripper_cmd_position;
+
+      // Send data to VREP
+      OutputPort<motion_control_msgs::JointPositions> out_gripper_cmd_position;
   //			OutputPort<sensor_msgs::JointState> gripper_state;
 
     private:
