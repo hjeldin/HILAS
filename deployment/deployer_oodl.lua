@@ -7,15 +7,16 @@ require "kdlutils"
 require "complete"
 require "readline"
 
-require "definitions"
 require "connection"
 
 --coroutine.create(udp_server)
+rttlib.color = true
 
+-- Enum definition
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
-rttlib.color = true
-run_status = HW
+-- Deployer setup
+run_status = BOTH
 deployer_type = LUA_DEPLOYER
 
 -- Lua deployer
@@ -98,6 +99,8 @@ if run_status == SIM then
 	vrep_base_op_clear = vrep_base_serv:getOperation("clearControllerTimeouts")
 	vrep_base_op_stat = vrep_base_serv:getOperation("displayMotorStatuses")
 
+	require "definitions"
+
 	-- ROS simulated robot streaming
 	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm1/joint_states"))
 	depl:stream("YouBot_VREP.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
@@ -131,158 +134,59 @@ elseif run_status == HW then
 	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
 	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
 
+	require "definitions"
+
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
 
 -- SIM+HW MODE
 elseif run_status == BOTH then
 
-end
+	rtt.logl('Info', "Youbot VREP configure.")
+	youbot_vrep:configure()
 
--- Functions defintion
-function armSetCtrlModes(stype,k)
+	vrep_arm_serv = youbot_vrep:provides("Arm1")
+	vrep_base_serv = youbot_vrep:provides("Base")
+	vrep_grip_serv = youbot_vrep:provides("Gripper1")
 
-	if stype == VREP then
-		serv = vrep_arm_serv
-	elseif stype == OODL then
-		serv = oodl_arm_serv
-	end
+	vrep_arm_op_clear = vrep_arm_serv:getOperation("clearControllerTimeouts")
+	vrep_arm_op_stat = vrep_arm_serv:getOperation("displayMotorStatuses")
 
-	mode_op = serv:getOperation("setControlModesAll")
-	mode_op(k)
-end
+	vrep_base_op_clear = vrep_base_serv:getOperation("clearControllerTimeouts")
+	vrep_base_op_stat = vrep_base_serv:getOperation("displayMotorStatuses")
 
-function armSetTor(stype,a,b,c,d,e)
+	-- ROS simulated robot streaming
+	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm1/joint_states"))
+	depl:stream("YouBot_VREP.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
+	depl:stream("YouBot_VREP.Base.in_odometry_state",rtt.provides("ros"):topic("/odom"))
 
-	if stype == VREP then
-		serv = vrep_arm_serv
-	elseif stype == OODL then
-		serv = oodl_arm_serv
-	end
+	depl:stream("YouBot_VREP.Arm1.out_joint_position_command",rtt.provides("ros"):topic("/arm_1/arm_controller/position_command"))
+	depl:stream("YouBot_VREP.Arm1.out_joint_velocity_command",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
+	depl:stream("YouBot_VREP.Arm1.out_joint_effort_command",rtt.provides("ros"):topic("/arm_1/arm_controller/force_command"))
+	depl:stream("YouBot_VREP.Base.out_joint_position_command",rtt.provides("ros"):topic("/base/base_controller/position_command"))
+	depl:stream("YouBot_VREP.Base.out_joint_velocity_command",rtt.provides("ros"):topic("/base/base_controller/velocity_command"))
+	depl:stream("YouBot_VREP.Base.out_joint_effort_command",rtt.provides("ros"):topic("/base/base_controller/force_command"))
+	depl:stream("YouBot_VREP.Base.out_cmd_twist",rtt.provides("ros"):topic("/cmd_vel"))
+	depl:stream("YouBot_VREP.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic("/arm_1/gripper_controller/position_command"))
 
-	port = rttlib.port_clone_conn(serv:getPort("joint_effort_command"))	
-	tor = rtt.Variable("motion_control_msgs.JointEfforts")
-	tor.efforts:fromtab{a,b,c,d,e}
-	tor.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
-	port:write(tor)
-	print("Send tor")
-	print(tor)
-end
+	rtt.logl('Info', "Youbot OODL configure.")
+	youbot_oodl:configure()
 
-function armSetVel(stype,a,b,c,d,e)
+	oodl_arm_serv = youbot_oodl:provides("Arm1")
+	oodl_base_serv = youbot_oodl:provides("Base")
+	oodl_grip_serv = youbot_oodl:provides("Gripper1")
 
-	if stype == VREP then
-		serv = vrep_arm_serv
-	elseif stype == OODL then
-		serv = oodl_arm_serv
-	end	
+	oodl_arm_op_clear = oodl_arm_serv:getOperation("clearControllerTimeouts")
+	oodl_arm_op_stat = oodl_arm_serv:getOperation("displayMotorStatuses")
 
-	port = rttlib.port_clone_conn(serv:getPort("joint_velocity_command"))	
-	vel = rtt.Variable("motion_control_msgs.JointVelocities")
-	vel.velocities:fromtab{a,b,c,d,e}
-	vel.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
-	port:write(vel)
-	print("Send vel")
-	print(vel)
-end
+	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
+	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
 
-function armSetPos(stype,a,b,c,d,e)
+	require "definitions"
 
-	if stype == VREP then
-		serv = vrep_arm_serv
-	elseif stype == OODL then
-		serv = oodl_arm_serv
-	end
+	rtt.logl('Info', "Youbot OODL start.")
+	youbot_oodl:start()
 
-	port = rttlib.port_clone_conn(serv:getPort("joint_position_command"))	
-	pos = rtt.Variable("motion_control_msgs.JointPositions")
-	pos.positions:fromtab{a,b,c,d,e}
-	pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
-	port:write(pos)
-	print("Send pose")
-	print(pos)
-end
-
-function baseSetCtrlModes(stype,k)
-
-	if stype == VREP then
-		serv = vrep_base_serv
-	elseif stype == OODL then
-		serv = oodl_base_serv
-	end
-
-	mode_op = serv:getOperation("setControlModesAll")
-	mode_op(k)
-end
-
-function baseSetTwist(stype,a,b,c)
-
-	if stype == VREP then
-		serv = vrep_base_serv
-	elseif stype == OODL then
-		serv = oodl_base_serv
-	end
-
-	port = rttlib.port_clone_conn(serv:getPort("cmd_twist"))	
-	twist = rtt.Variable("geometry_msgs.Twist")
-	twist.linear.x = a
-	twist.linear.y = b
-	twist.linear.z = 0.0
-	twist.angular.x = 0.0
-	twist.angular.y = 0.0
-	twist.angular.z = c
-	port:write(twist)
-	print("Send twist")
-	print(twist)
-end
-
-function baseSetTor(stype,a,b,c,d)
-
-	if stype == VREP then
-		serv = vrep_base_serv
-	elseif stype == OODL then
-		serv = oodl_base_serv
-	end
-
-	port = rttlib.port_clone_conn(serv:getPort("joint_effort_command"))	
-	tor = rtt.Variable("motion_control_msgs.JointEfforts")
-	tor.efforts:fromtab{a,b,c,d}
-	tor.names:fromtab{"wheel_joint_fl","wheel_joint_fr","wheel_joint_bl","wheel_joint_br"}
-	port:write(tor)
-	print("Send tor")
-	print(tor)
-end
-
-function baseSetVel(stype,a,b,c,d)
-
-	if stype == VREP then
-		serv = vrep_base_serv
-	elseif stype == OODL then
-		serv = oodl_base_serv
-	end
-
-	port = rttlib.port_clone_conn(serv:getPort("joint_velocity_command"))	
-	vel = rtt.Variable("motion_control_msgs.JointVelocities")
-	vel.velocities:fromtab{a,b,c,d}
-	vel.names:fromtab{"wheel_joint_fl","wheel_joint_fr","wheel_joint_bl","wheel_joint_br"}
-	port:write(vel)
-	print("Send vel")
-	print(vel)
-end
-
-function baseSetPos(stype,a,b,c,d)
-
-	if stype == VREP then
-		serv = vrep_base_serv
-	elseif stype == OODL then
-		serv = oodl_base_serv
-	end
-
-	port = rttlib.port_clone_conn(serv:getPort("joint_position_command"))	
-	pos = rtt.Variable("motion_control_msgs.JointPositions")
-	pos.positions:fromtab{a,b,c,d}
-	pos.names:fromtab{"wheel_joint_fl","wheel_joint_fr","wheel_joint_bl","wheel_joint_br"}
-	port:write(pos)
-	print("Send pose")
-	print(pos)
+	rtt.logl('Info', "Youbot VREP start.")
+	youbot_vrep:start()
 end

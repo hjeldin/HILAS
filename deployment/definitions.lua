@@ -1,11 +1,9 @@
-local SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
-
 -- Functions defintion
-function armSetCtrlModes(type,k)
+function armSetCtrlModes(stype,k)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_arm_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_arm_serv
 	end
 
@@ -13,11 +11,11 @@ function armSetCtrlModes(type,k)
 	mode_op(k)
 end
 
-function armSetTor(type,a,b,c,d,e)
+function armSetTor(stype,a,b,c,d,e)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_arm_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_arm_serv
 	end
 
@@ -30,11 +28,11 @@ function armSetTor(type,a,b,c,d,e)
 	print(tor)
 end
 
-function armSetVel(type,a,b,c,d,e)
+function armSetVel(stype,a,b,c,d,e)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_arm_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_arm_serv
 	end	
 
@@ -47,11 +45,11 @@ function armSetVel(type,a,b,c,d,e)
 	print(vel)
 end
 
-function armSetPos(type,a,b,c,d,e)
+function armSetPos(stype,a,b,c,d,e)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_arm_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_arm_serv
 	end
 
@@ -64,11 +62,11 @@ function armSetPos(type,a,b,c,d,e)
 	print(pos)
 end
 
-function baseSetCtrlModes(type,k)
+function baseSetCtrlModes(stype,k)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_base_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_base_serv
 	end
 
@@ -76,11 +74,11 @@ function baseSetCtrlModes(type,k)
 	mode_op(k)
 end
 
-function baseSetTwist(type,a,b,c)
+function baseSetTwist(stype,a,b,c)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_base_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_base_serv
 	end
 
@@ -97,11 +95,11 @@ function baseSetTwist(type,a,b,c)
 	print(twist)
 end
 
-function baseSetTor(type,a,b,c,d)
+function baseSetTor(stype,a,b,c,d)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_base_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_base_serv
 	end
 
@@ -114,11 +112,11 @@ function baseSetTor(type,a,b,c,d)
 	print(tor)
 end
 
-function baseSetVel(type,a,b,c,d)
+function baseSetVel(stype,a,b,c,d)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_base_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_base_serv
 	end
 
@@ -131,11 +129,11 @@ function baseSetVel(type,a,b,c,d)
 	print(vel)
 end
 
-function baseSetPos(type,a,b,c,d)
+function baseSetPos(stype,a,b,c,d)
 
-	if type == VREP then
+	if stype == VREP then
 		serv = vrep_base_serv
-	elseif type == OODL then
+	elseif stype == OODL then
 		serv = oodl_base_serv
 	end
 
