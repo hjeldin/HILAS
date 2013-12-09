@@ -58,6 +58,9 @@
 #define TOPIC_TORQUE_COMMAND    "/arm_1/arm_controller/force_command"
 #define TOPIC_TWIST_COMMAND   "/cmd_vel"
 #define TOPIC_TWIST_READ  "/vrep/twist"
+#define TOPIC_ALL_JOINT_STATE "/joint_states"
+#define TOPIC_ARM_JOINT_STATE "/vrep/arm_1/joint_states"
+#define TOPIC_BASE_JOINT_STATE "/vrep/base/joint_states"
 #define TF_ODOM_FRAME_ID  "odom"
 #define TF_ODOM_CHILD_FRAME_ID "base_footprint"
 
@@ -103,7 +106,8 @@ int youbot_handle;
 //Ros Publisher for JointStates remapped
 ros::Publisher pubJointStates;
 ros::Publisher pubOdom;
-
+ros::Publisher pubArmJointState;
+ros::Publisher pubBaseJointState;
 ros::Publisher laserScan;
 
 ros::ServiceClient client_cmdPos;
@@ -122,7 +126,12 @@ vrep_common::simRosGetObjectPose srv_GetObjectPose;
 nav_msgs::Odometry odometry;
 geometry_msgs::TransformStamped odometryTransform;
 
+// Laser data
 sensor_msgs::LaserScan output;
+
+// Orocos Component  Interface for JointStates
+sensor_msgs::JointState arm_joint_state;
+sensor_msgs::JointState base_joint_state;
 
 // Command arm_joint position callback
 void cmdPosArmJointCallback(const motion_control_msgs::JointPositions::ConstPtr& msg) 
@@ -447,6 +456,65 @@ void pointCloud2LaserScanCallback(const sensor_msgs::PointCloud2::ConstPtr& inpu
     laserScan.publish(output);
 }
 
+void allJointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
+{
+
+  /** BASE JOINTS **/
+  // wheel_joint_br
+  base_joint_state.header.stamp =   ros::Time::now();
+  base_joint_state.name[0] = msg->name[0];
+  base_joint_state.position[0] = msg->position[0];
+  base_joint_state.velocity[0] = msg->velocity[0];
+  base_joint_state.effort[0] = msg->effort[0];
+  //wheel_joint_bl
+  base_joint_state.name[1] = msg->name[2];
+  base_joint_state.position[1] = msg->position[2];
+  base_joint_state.velocity[1] = msg->velocity[2];
+  base_joint_state.effort[1] = msg->effort[2];
+  //wheel_joint_fl
+  base_joint_state.name[2] = msg->name[5];
+  base_joint_state.position[2] = msg->position[5];
+  base_joint_state.velocity[2] = msg->velocity[5];
+  base_joint_state.effort[2] = msg->effort[5];
+  //wheel_joint_fr
+  base_joint_state.name[3] = msg->name[7];
+  base_joint_state.position[3] = msg->position[7];
+  base_joint_state.velocity[3] = msg->velocity[7];
+  base_joint_state.effort[3] = msg->effort[7];
+
+  /** ARM JOINTS **/
+  //arm_joint_1
+  arm_joint_state.header.stamp =  ros::Time::now();
+  arm_joint_state.name[0] = msg->name[9];
+  arm_joint_state.position[0] = msg->position[9];
+  arm_joint_state.velocity[0] = msg->velocity[9];
+  arm_joint_state.effort[0] = msg->effort[9];
+  //arm_joint_2  
+  arm_joint_state.name[1] = msg->name[10];
+  arm_joint_state.position[1] = msg->position[10];
+  arm_joint_state.velocity[1] = msg->velocity[10];
+  arm_joint_state.effort[1] = msg->effort[10];
+  //arm_joint_3
+  arm_joint_state.name[2] = msg->name[11];
+  arm_joint_state.position[2] = msg->position[11];
+  arm_joint_state.velocity[2] = msg->velocity[11];
+  arm_joint_state.effort[2] = msg->effort[11];  
+  //arm_joint_4
+  arm_joint_state.name[3] = msg->name[12];
+  arm_joint_state.position[3] = msg->position[12];
+  arm_joint_state.velocity[3] = msg->velocity[12];
+  arm_joint_state.effort[3] = msg->effort[12];
+  //arm_joint_5
+  arm_joint_state.name[4] = msg->name[13];
+  arm_joint_state.position[4] = msg->position[13];
+  arm_joint_state.velocity[4] = msg->velocity[13];
+  arm_joint_state.effort[4] = msg->effort[13];
+
+  pubArmJointState.publish(arm_joint_state);
+  pubBaseJointState.publish(base_joint_state);
+
+}
+
 
 int main(int argc,char* argv[])
 {
@@ -503,6 +571,16 @@ int main(int argc,char* argv[])
   kinematicConfig.wheelRadius = dummy * meter;
   youBotBaseKinematic.setConfiguration(kinematicConfig);
 
+  //Initialize array (OROCOS INTERFACE)                   NUM_ARM_JOINTS - 2 -> no gripper in arm_joint_states for orocos!!
+  arm_joint_state.name.resize(NUM_ARM_JOINTS - 2);
+  arm_joint_state.position.resize(NUM_ARM_JOINTS - 2);
+  arm_joint_state.velocity.resize(NUM_ARM_JOINTS - 2);
+  arm_joint_state.effort.resize(NUM_ARM_JOINTS - 2);
+  base_joint_state.name.resize(NUM_BASE_JOINTS);
+  base_joint_state.position.resize(NUM_BASE_JOINTS);
+  base_joint_state.velocity.resize(NUM_BASE_JOINTS);
+  base_joint_state.effort.resize(NUM_BASE_JOINTS);
+
   // Ros Subscriber VREP-INFO SIM
   ros::Subscriber subInfo=node.subscribe("/vrep/info",1,infoCallback);
 
@@ -528,7 +606,23 @@ int main(int argc,char* argv[])
   ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud2>(TOPIC_LASERSCAN_READ,1,pointCloud2LaserScanCallback);
 
   // Ros Publisher JointStates remapped
-  pubJointStates=node.advertise<sensor_msgs::JointState>("/joint_states",10);
+  //pubJointStates=node.advertise<sensor_msgs::JointState>("/joint_states",10);
+
+
+  /* OROCOS COMPONENT INTERFACE */
+  /* @ orocos-side, we need two topic for robot joint_states -> ARM
+                                                             -> BASE */
+
+  /* Ros Subscriber JointStates from SIM*/
+  ros::Subscriber subJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_ALL_JOINT_STATE, 1, allJointStateCallback);
+
+  /* Ros Publisher JointStates remapped for Orocos */
+  /* ARM */
+  pubArmJointState = node.advertise<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE, 10);
+  /* BASE */
+  pubBaseJointState = node.advertise<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE, 10);
+
+
 
   // Ros Publisher Odom
   pubOdom = node.advertise<nav_msgs::Odometry>("/odom",10);
