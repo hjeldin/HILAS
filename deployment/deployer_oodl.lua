@@ -83,8 +83,8 @@ print("Starting control loop")
 controlloop_scheduler:configure()
 controlloop_scheduler:start()
 
--- SIM MODE
-if run_status == SIM then
+-- Definition setup functions
+function simulation_setup()
 
 	rtt.logl('Info', "Youbot VREP configure.")
 	youbot_vrep:configure()
@@ -102,7 +102,7 @@ if run_status == SIM then
 	require "definitions"
 
 	-- ROS simulated robot streaming
-	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm1/joint_states"))
+	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm_1/joint_states"))
 	depl:stream("YouBot_VREP.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
 	depl:stream("YouBot_VREP.Base.in_odometry_state",rtt.provides("ros"):topic("/odom"))
 
@@ -114,75 +114,47 @@ if run_status == SIM then
 	depl:stream("YouBot_VREP.Base.out_joint_effort_command",rtt.provides("ros"):topic("/base/base_controller/force_command"))
 	depl:stream("YouBot_VREP.Base.out_cmd_twist",rtt.provides("ros"):topic("/cmd_vel"))
 	depl:stream("YouBot_VREP.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic("/arm_1/gripper_controller/position_command"))
+
+end
+
+function oodl_setup()
+
+	rtt.logl('Info', "Youbot OODL configure.")
+	youbot_oodl:configure()
+
+	oodl_arm_serv = youbot_oodl:provides("Arm1")
+	oodl_base_serv = youbot_oodl:provides("Base")
+	oodl_grip_serv = youbot_oodl:provides("Gripper1")
+
+	oodl_arm_op_clear = oodl_arm_serv:getOperation("clearControllerTimeouts")
+	oodl_arm_op_stat = oodl_arm_serv:getOperation("displayMotorStatuses")
+
+	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
+	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
+
+	require "definitions"
+
+end
+
+-- Mode setup
+if run_status == SIM then
+
+	simulation_setup()
 
 	rtt.logl('Info', "Youbot VREP start.")
 	youbot_vrep:start()
 
--- HW MODE
 elseif run_status == HW then
-	
-	rtt.logl('Info', "Youbot OODL configure.")
-	youbot_oodl:configure()
 
-	oodl_arm_serv = youbot_oodl:provides("Arm1")
-	oodl_base_serv = youbot_oodl:provides("Base")
-	oodl_grip_serv = youbot_oodl:provides("Gripper1")
-
-	oodl_arm_op_clear = oodl_arm_serv:getOperation("clearControllerTimeouts")
-	oodl_arm_op_stat = oodl_arm_serv:getOperation("displayMotorStatuses")
-
-	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
-	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
-
-	require "definitions"
+	oodl_setup()
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
 
--- SIM+HW MODE
 elseif run_status == BOTH then
 
-	rtt.logl('Info', "Youbot VREP configure.")
-	youbot_vrep:configure()
-
-	vrep_arm_serv = youbot_vrep:provides("Arm1")
-	vrep_base_serv = youbot_vrep:provides("Base")
-	vrep_grip_serv = youbot_vrep:provides("Gripper1")
-
-	vrep_arm_op_clear = vrep_arm_serv:getOperation("clearControllerTimeouts")
-	vrep_arm_op_stat = vrep_arm_serv:getOperation("displayMotorStatuses")
-
-	vrep_base_op_clear = vrep_base_serv:getOperation("clearControllerTimeouts")
-	vrep_base_op_stat = vrep_base_serv:getOperation("displayMotorStatuses")
-
-	-- ROS simulated robot streaming
-	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm1/joint_states"))
-	depl:stream("YouBot_VREP.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
-	depl:stream("YouBot_VREP.Base.in_odometry_state",rtt.provides("ros"):topic("/odom"))
-
-	depl:stream("YouBot_VREP.Arm1.out_joint_position_command",rtt.provides("ros"):topic("/arm_1/arm_controller/position_command"))
-	depl:stream("YouBot_VREP.Arm1.out_joint_velocity_command",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
-	depl:stream("YouBot_VREP.Arm1.out_joint_effort_command",rtt.provides("ros"):topic("/arm_1/arm_controller/force_command"))
-	depl:stream("YouBot_VREP.Base.out_joint_position_command",rtt.provides("ros"):topic("/base/base_controller/position_command"))
-	depl:stream("YouBot_VREP.Base.out_joint_velocity_command",rtt.provides("ros"):topic("/base/base_controller/velocity_command"))
-	depl:stream("YouBot_VREP.Base.out_joint_effort_command",rtt.provides("ros"):topic("/base/base_controller/force_command"))
-	depl:stream("YouBot_VREP.Base.out_cmd_twist",rtt.provides("ros"):topic("/cmd_vel"))
-	depl:stream("YouBot_VREP.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic("/arm_1/gripper_controller/position_command"))
-
-	rtt.logl('Info', "Youbot OODL configure.")
-	youbot_oodl:configure()
-
-	oodl_arm_serv = youbot_oodl:provides("Arm1")
-	oodl_base_serv = youbot_oodl:provides("Base")
-	oodl_grip_serv = youbot_oodl:provides("Gripper1")
-
-	oodl_arm_op_clear = oodl_arm_serv:getOperation("clearControllerTimeouts")
-	oodl_arm_op_stat = oodl_arm_serv:getOperation("displayMotorStatuses")
-
-	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
-	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
-
-	require "definitions"
+	simulation_setup()
+	oodl_setup()
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()

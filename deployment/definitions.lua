@@ -1,4 +1,4 @@
--- Functions defintion
+-- Test functions defintion
 function armSetCtrlModes(stype,k)
 
 	if stype == VREP then
@@ -12,6 +12,8 @@ function armSetCtrlModes(stype,k)
 end
 
 function armSetTor(stype,a,b,c,d,e)
+
+	armSetCtrlModes(stype,3)
 
 	if stype == VREP then
 		serv = vrep_arm_serv
@@ -30,6 +32,8 @@ end
 
 function armSetVel(stype,a,b,c,d,e)
 
+	armSetCtrlModes(stype,2)
+
 	if stype == VREP then
 		serv = vrep_arm_serv
 	elseif stype == OODL then
@@ -46,6 +50,8 @@ function armSetVel(stype,a,b,c,d,e)
 end
 
 function armSetPos(stype,a,b,c,d,e)
+
+	armSetCtrlModes(stype,1)
 
 	if stype == VREP then
 		serv = vrep_arm_serv
@@ -76,6 +82,8 @@ end
 
 function baseSetTwist(stype,a,b,c)
 
+	baseSetCtrlModes(stype,5)
+
 	if stype == VREP then
 		serv = vrep_base_serv
 	elseif stype == OODL then
@@ -97,6 +105,8 @@ end
 
 function baseSetTor(stype,a,b,c,d)
 
+	baseSetCtrlModes(stype,3)
+
 	if stype == VREP then
 		serv = vrep_base_serv
 	elseif stype == OODL then
@@ -114,6 +124,8 @@ end
 
 function baseSetVel(stype,a,b,c,d)
 
+	baseSetCtrlModes(stype,2)
+
 	if stype == VREP then
 		serv = vrep_base_serv
 	elseif stype == OODL then
@@ -130,6 +142,8 @@ function baseSetVel(stype,a,b,c,d)
 end
 
 function baseSetPos(stype,a,b,c,d)
+
+	baseSetCtrlModes(stype,1)
 
 	if stype == VREP then
 		serv = vrep_base_serv
