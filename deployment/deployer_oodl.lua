@@ -15,7 +15,7 @@ require "connection"
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
 rttlib.color = true
-run_status = SIM
+run_status = HW
 deployer_type = LUA_DEPLOYER
 
 -- Lua deployer

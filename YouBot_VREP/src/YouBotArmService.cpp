@@ -257,9 +257,9 @@ namespace YouBot
     m_out_joint_effort_command.efforts.resize(0);
 
     // InputPort -> YouBot
-    joint_position_command.read(m_joint_position_command);
-    joint_velocity_command.read(m_joint_velocity_command);
-    joint_effort_command.read(m_joint_effort_command);
+    FlowStatus f = joint_position_command.read(m_joint_position_command);
+    FlowStatus f1 = joint_velocity_command.read(m_joint_velocity_command);
+    FlowStatus f2 = joint_effort_command.read(m_joint_effort_command);
 
     // Update joint setpoints
     for (unsigned int joint_nr = 0; joint_nr < NR_OF_ARM_SLAVES; ++joint_nr)
@@ -270,6 +270,8 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
+		if(f != NewData) break;
+
         m_out_joint_position_command.names.push_back(m_joint_position_command.names[joint_nr]);
         m_out_joint_position_command.positions.push_back(m_joint_position_command.positions[joint_nr]);
         //m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
@@ -289,6 +291,8 @@ namespace YouBot
       }
       case (ANGULAR_VELOCITY):
       {
+		if(f1 != NewData) break;
+
         m_out_joint_velocity_command.names.push_back(m_joint_velocity_command.names[joint_nr]);
         m_out_joint_velocity_command.velocities.push_back(m_joint_velocity_command.velocities[joint_nr]);
         // m_tmp_joint_cmd_velocity.angularVelocity =
@@ -298,6 +302,8 @@ namespace YouBot
       }
       case (TORQUE):
       {
+		if(f2 != NewData) break;
+
         m_out_joint_effort_command.names.push_back(m_joint_effort_command.names[joint_nr]);
         m_out_joint_effort_command.efforts.push_back(m_joint_effort_command.efforts[joint_nr]);
         // m_tmp_joint_cmd_torque.torque = m_joint_effort_command.efforts[joint_nr]
@@ -319,6 +325,13 @@ namespace YouBot
       }
       }
     }
+
+	if(f == NewData)
+		out_joint_position_command.write(m_out_joint_position_command);
+	if(f1 == NewData)
+		out_joint_velocity_command.write(m_out_joint_velocity_command);
+	if(f2 == NewData)
+		out_joint_effort_command.write(m_out_joint_effort_command);
   }
 
   void YouBotArmService::checkMotorStatuses()

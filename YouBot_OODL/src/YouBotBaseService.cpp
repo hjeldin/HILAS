@@ -162,6 +162,8 @@ namespace YouBot
     this->addOperation("stop", &YouBotBaseService::stop, this);
     this->addOperation("cleanup", &YouBotBaseService::cleanup, this);
 
+	this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll,
+		this, OwnThread).doc("Control modes can be set individually.");
     this->addOperation("setControlModes", &YouBotBaseService::setControlModes,
         this, OwnThread);
     this->addOperation("getControlModes", &YouBotBaseService::getControlModes,
@@ -176,6 +178,14 @@ namespace YouBot
   void YouBotBaseService::getControlModes(vector<ctrl_modes>& all)
   {
     all = m_joint_ctrl_modes;
+  }
+
+  void YouBotBaseService::setControlModesAll(int mode)
+  {
+	for(int i=0;i<NR_OF_BASE_SLAVES;++i)
+	{
+		m_joint_ctrl_modes[i] = static_cast<ctrl_modes>(mode);
+	}
   }
 
   void YouBotBaseService::setControlModes(vector<ctrl_modes>& all)
