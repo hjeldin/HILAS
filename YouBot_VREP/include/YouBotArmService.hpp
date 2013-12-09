@@ -31,6 +31,7 @@ class YouBotArmService: public Service
         unsigned int min_slave_nr);
     virtual ~YouBotArmService();
 
+    void setControlModesAll(int mode);
     void setControlModes(vector<ctrl_modes>& all);
     void getControlModes(vector<ctrl_modes>& all);
 
@@ -73,7 +74,6 @@ class YouBotArmService: public Service
     void readJointStates();
     void updateJointSetpoints();
     void checkMotorStatuses();
-
     motion_control_msgs::JointPositions m_joint_position_command;
     motion_control_msgs::JointVelocities m_joint_velocity_command;
     motion_control_msgs::JointEfforts m_joint_effort_command;

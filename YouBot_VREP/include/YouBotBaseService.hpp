@@ -25,6 +25,7 @@ class YouBotBaseService: public Service
         unsigned int min_slave_nr);
     virtual ~YouBotBaseService();
 
+    void setControlModesAll(int mode);
     void setControlModes(vector<ctrl_modes>& all);
     void getControlModes(vector<ctrl_modes>& all);
 

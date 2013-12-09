@@ -91,11 +91,12 @@ namespace YouBot
     this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
 
     this->addPort("in_joint_state", in_joint_state).doc("Joint states from HW or SIM"); this->addPort("in_odometry_state", in_odometry_state).doc("Joint states from simulated robot");
+    this->addPort("in_odometry_state", in_odometry_state).doc("Base odometry from HW or SIM");
 
     this->addPort("out_joint_position_command", out_joint_position_command ).doc("Base positions to simulated robot");
     this->addPort("out_joint_velocity_command", out_joint_velocity_command).doc("Base velocities to simulated robot");
     this->addPort("out_joint_effort_command", out_joint_effort_command).doc("Base torques to simulated robot");
-    this->addPort("in_odometry_state", in_odometry_state).doc("Base odometry from HW or SIM");
+
     this->addPort("out_cmd_twist", out_cmd_twist).doc("Base twist to simulated robot");
 
     // Events - Pre-allocate port memory for outputs
@@ -109,6 +110,8 @@ namespace YouBot
     this->addOperation("stop", &YouBotBaseService::stop, this);
     this->addOperation("cleanup", &YouBotBaseService::cleanup, this);
 
+	this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll,
+		this, OwnThread).doc("Control modes can be set individually.");
     this->addOperation("setControlModes", &YouBotBaseService::setControlModes,
         this, OwnThread);
     this->addOperation("getControlModes", &YouBotBaseService::getControlModes,
@@ -123,6 +126,14 @@ namespace YouBot
   void YouBotBaseService::getControlModes(vector<ctrl_modes>& all)
   {
     all = m_joint_ctrl_modes;
+  }
+
+  void YouBotBaseService::setControlModesAll(int mode)
+  {
+	for(int i=0;i<NR_OF_BASE_SLAVES;++i)
+	{
+		m_joint_ctrl_modes[i] = static_cast<ctrl_modes>(mode);
+	}
   }
 
   void YouBotBaseService::setControlModes(vector<ctrl_modes>& all)

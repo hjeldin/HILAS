@@ -35,7 +35,7 @@ namespace YouBot
 	bool YouBotVREP::configureHook()
 	{
 		// MUST BE THE FIRST ONE TO CALL getInstance!!!
-		unsigned int nr_slaves = 0;
+		unsigned int nr_slaves = 9;
 
 		//@todo getNumSlaves from VREP (manage multi-robot scenario)
 

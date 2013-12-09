@@ -130,6 +130,8 @@ namespace YouBot
     this->addPort("joint_effort_command", joint_effort_command).doc(
         "Command joint torques");
 
+	this->addPort("in_joint_state",in_joint_state).doc("Input joint states");
+
     this->addPort("out_joint_position_command", out_joint_position_command ).doc("Arm positions to simulated robot");
     this->addPort("out_joint_velocity_command", out_joint_velocity_command).doc("Arm velocities to simulated robot");
     this->addPort("out_joint_effort_command", out_joint_effort_command).doc("Arm torques to simulated robot");
@@ -145,6 +147,8 @@ namespace YouBot
     this->addOperation("stop", &YouBotArmService::stop, this);
     this->addOperation("cleanup", &YouBotArmService::cleanup, this);
 
+	this->addOperation("setControlModesAll", &YouBotArmService::setControlModesAll,
+		this, OwnThread).doc("Control modes can be set individually.");
     this->addOperation("setControlModes", &YouBotArmService::setControlModes,
         this, OwnThread).doc("Control modes can be set individually.");
     this->addOperation("getControlModes", &YouBotArmService::getControlModes,
@@ -158,6 +162,14 @@ namespace YouBot
   void YouBotArmService::setControlModes(vector<ctrl_modes>& all)
   {
     m_joint_ctrl_modes = all;
+  }
+
+  void YouBotArmService::setControlModesAll(int mode)
+  {
+	for(int i=0;i<NR_OF_ARM_SLAVES;++i)
+	{
+		m_joint_ctrl_modes[i] = static_cast<ctrl_modes>(mode);
+	}
   }
 
   void YouBotArmService::getControlModes(vector<ctrl_modes>& all)
