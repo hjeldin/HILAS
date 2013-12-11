@@ -67,8 +67,8 @@
 #define TF_ODOM_CHILD_FRAME_ID "base_footprint"
 #define TOPIC_LASERSCAN_READ "/vrep/rangeFinderData"
 /* VISUALIZATION MODE */
-//#define TOPIC_BASE_JOINT_STATE_FROM_HW "/vrep/hw_rx/base/joint_state"
-//#define TOPIC_ARM_JOINT_STATE_FROM_HW "/vrep/hw_rx/arm_1/joint_state"
+#define TOPIC_BASE_JOINT_STATE_FROM_HW "/vrep/hw_rx/base/joint_state"
+#define TOPIC_ARM_JOINT_STATE_FROM_HW "/vrep/hw_rx/arm_1/joint_state"
 #define TOPIC_ODOM_STATE_FROM_HW "/vrep/hw_rx/odom"
 #define TOPIC_POSE_STATE_TO_VREP "/vrep/hw_rx/pose"
 
@@ -532,11 +532,10 @@ void allJointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
 
 void armJointStateFromHWCallback(const sensor_msgs::JointState::ConstPtr& msg)
 {
-  std::cout << "[DEBUG] armJointStateFromHW " << std::endl;
   int index;
   static int FORCE_POSITION = 0;
   srv_ArmSetJointState.request.handles.resize(0);
-  srv_ArmSetJointState.request.setModes.assign(5,FORCE_POSITION);  
+  srv_ArmSetJointState.request.setModes.assign(msg->position.size(),FORCE_POSITION);  
   srv_ArmSetJointState.request.values.resize(0);
 
   for(unsigned int i=0; i < msg->position.size(); ++i)
@@ -546,6 +545,8 @@ void armJointStateFromHWCallback(const sensor_msgs::JointState::ConstPtr& msg)
 
     srv_ArmSetJointState.request.handles.push_back(arm_joint_handles[index]);
     srv_ArmSetJointState.request.values.push_back(msg->position[i]);
+
+    //std::cout << "[DEBUG] armJointStateFromHW: RX arm_joint_" << index << " handles " << arm_joint_handles[index] << "position " <<  msg->position[i] << std::endl;
   }
 
   client_setJointState.call(srv_ArmSetJointState);
@@ -559,16 +560,37 @@ void baseJointStateFromHWCallback(const sensor_msgs::JointState::ConstPtr& msg)
   int index;
   static int FORCE_POSITION = 0;
   srv_BaseSetJointState.request.handles.resize(0);
-  srv_BaseSetJointState.request.setModes.assign(5,FORCE_POSITION);  
+  srv_BaseSetJointState.request.setModes.assign(msg->position.size(),FORCE_POSITION);  
   srv_BaseSetJointState.request.values.resize(0);
 
   for(unsigned int i=0; i < msg->position.size(); ++i)
   {
-    index = msg->name.at(i).find_last_of('_');
-    index = atoi(msg->name.at(i).substr(index+1).c_str()) - 1; 
+    if(msg->name[i] == "wheel_joint_fl")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[0]); 
+         srv_BaseSetJointState.request.values.push_back(msg->position[i]);
+    }
 
-    srv_BaseSetJointState.request.handles.push_back(arm_joint_handles[index]);
-    srv_BaseSetJointState.request.values.push_back(msg->position[i]);
+    if(msg->name[i] == "wheel_joint_fr")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[1]); 
+         srv_BaseSetJointState.request.values.push_back(-msg->position[i]);
+    }
+
+    if(msg->name[i] == "wheel_joint_bl")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[2]); 
+         srv_BaseSetJointState.request.values.push_back(msg->position[i]);
+    }
+
+    if(msg->name[i] == "wheel_joint_br")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[3]); 
+         srv_BaseSetJointState.request.values.push_back(-msg->position[i]);
+    }    
+
+    //std::cout << "[DEBUG] baseJointStateFromHW: RX base_joint:" << msg->name[i] << " handles " << srv_BaseSetJointState.request.handles[i] << "position " <<  msg->position[i] << std::endl;
+
   }
 
   client_setJointState.call(srv_BaseSetJointState);
@@ -735,11 +757,11 @@ int main(int argc,char* argv[])
   /* VREP Services for Visualization Mode 
      - set joint states & odometry acquire from Youbot HW
   */
-  // client_setObjectPose = node.serviceClient<vrep_common::simRosSetObjectPose>("/vrep/simRosSetObjectPose");
-  // client_setJointState = node.serviceClient<vrep_common::simRosSetJointState>("/vrep/simRosSetJointState");
+  client_setObjectPose = node.serviceClient<vrep_common::simRosSetObjectPose>("/vrep/simRosSetObjectPose");
+  client_setJointState = node.serviceClient<vrep_common::simRosSetJointState>("/vrep/simRosSetJointState");
 
-  // ros::Subscriber subArmJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE_FROM_HW, 1, armJointStateFromHWCallback);
-  // ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 1, baseJointStateFromHWCallback);
+  ros::Subscriber subArmJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE_FROM_HW, 1, armJointStateFromHWCallback);
+  ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 1, baseJointStateFromHWCallback);
   ros::Subscriber subOdometryFromHW = node.subscribe<nav_msgs::Odometry>(TOPIC_ODOM_STATE_FROM_HW, 1, odomStateFromHWCallback);
 
   pubVisualizationMode = node.advertise<std_msgs::Int32>(TOPIC_RESET_DYNAMIC,1);
