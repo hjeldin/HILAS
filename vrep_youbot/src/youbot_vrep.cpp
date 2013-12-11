@@ -583,12 +583,29 @@ void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
 
   pose.pose.position.x = msg->pose.pose.position.x;
   pose.pose.position.y = msg->pose.pose.position.y;
-  pose.pose.position.z = msg->pose.pose.position.z;
+  pose.pose.position.z = msg->pose.pose.position.z + 0.095;
 
-  pose.pose.orientation.x = msg->pose.pose.orientation.x;
-  pose.pose.orientation.y = msg->pose.pose.orientation.y;
-  pose.pose.orientation.z = msg->pose.pose.orientation.z;
-  pose.pose.orientation.w = msg->pose.pose.orientation.w;
+  KDL::Rotation orient =  KDL::Rotation::Quaternion(msg->pose.pose.orientation.x, 
+                                                    msg->pose.pose.orientation.y,
+                                                    msg->pose.pose.orientation.z,
+                                                    msg->pose.pose.orientation.w);
+
+  //Work with odom ros
+  //KDL::Rotation rotation = KDL::Rotation::RPY(0, 0, -M_PI/2);
+
+  KDL::Rotation rotation = KDL::Rotation::RPY(0, -M_PI/2, M_PI);
+
+  orient = orient * rotation;
+
+  double x,y,z,w;
+  //double roll, pitch, yaw;
+  orient.GetQuaternion(x, y, z, w);
+  //orient.GetRPY(roll, pitch, yaw);
+
+  pose.pose.orientation.x = x;
+  pose.pose.orientation.y = y;
+  pose.pose.orientation.z = z;
+  pose.pose.orientation.w = w;
 
   pubGeometryPoseToVrep.publish(pose);
 }
