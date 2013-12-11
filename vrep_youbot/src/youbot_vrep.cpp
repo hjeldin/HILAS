@@ -38,6 +38,8 @@
 #include "vrep_common/simRosSetJointTargetVelocity.h"
 #include "vrep_common/simRosSetObjectIntParameter.h"
 #include "vrep_common/simRosGetObjectPose.h"
+#include "vrep_common/simRosSetObjectPose.h"
+#include "vrep_common/simRosSetJointState.h"
 
 #include "pcl/point_cloud.h"
 #include "pcl_ros/point_cloud.h"
@@ -63,9 +65,16 @@
 #define TOPIC_BASE_JOINT_STATE "/vrep/base/joint_states"
 #define TF_ODOM_FRAME_ID  "odom"
 #define TF_ODOM_CHILD_FRAME_ID "base_footprint"
-
 #define TOPIC_LASERSCAN_READ "/vrep/rangeFinderData"
-/* NUMERI A CASO */
+/* VISUALIZATION MODE */
+#define TOPIC_BASE_JOINT_STATE_FROM_HW "/vrep/hw_rx/base/joint_state"
+#define TOPIC_ARM_JOINT_STATE_FROM_HW "/vrep/hw_rx/arm_1/joint_state"
+#define TOPIC_ODOM_STATE_FROM_HW "/vrep/hw_rx/odom"
+#define TOPIC_POSE_STATE_TO_VREP "/vrep/hw_rx/pose"
+
+#define TOPIC_RESET_DYNAMIC "/vrep/visMode"
+
+// SIM LASER PARAMETER
 #define output_frame_id_ "/base_laser_front_link"
 #define angle_min_ -M_PI/2
 #define angle_max_ M_PI/2
@@ -109,18 +118,24 @@ ros::Publisher pubOdom;
 ros::Publisher pubArmJointState;
 ros::Publisher pubBaseJointState;
 ros::Publisher laserScan;
+ros::Publisher pubVisualizationMode;
+ros::Publisher pubGeometryPoseToVrep;
 
 ros::ServiceClient client_cmdPos;
 ros::ServiceClient client_cmdVel;
 ros::ServiceClient client_jointMode;
 ros::ServiceClient client_readObjectPose;
+ros::ServiceClient client_setObjectPose;
+ros::ServiceClient client_setJointState;
 
 // Global service objects
 vrep_common::simRosSetJointTargetPosition srv_SetJointTargetPosition;
 vrep_common::simRosSetJointTargetVelocity srv_SetJointTargetVelocity;
 vrep_common::simRosSetObjectIntParameter srv_SetObjectIntParameter;
 vrep_common::simRosGetObjectPose srv_GetObjectPose;
-
+vrep_common::simRosSetObjectPose srv_SetObjectPose;
+vrep_common::simRosSetJointState srv_ArmSetJointState;
+vrep_common::simRosSetJointState srv_BaseSetJointState;
 
 //Odom state 
 nav_msgs::Odometry odometry;
@@ -515,6 +530,109 @@ void allJointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
 
 }
 
+void armJointStateFromHWCallback(const sensor_msgs::JointState::ConstPtr& msg)
+{
+  int index;
+  static int FORCE_POSITION = 0;
+  srv_ArmSetJointState.request.handles.resize(0);
+  srv_ArmSetJointState.request.setModes.assign(msg->position.size(),FORCE_POSITION);  
+  srv_ArmSetJointState.request.values.resize(0);
+
+  for(unsigned int i=0; i < msg->position.size(); ++i)
+  {
+    index = msg->name.at(i).find_last_of('_');
+    index = atoi(msg->name.at(i).substr(index+1).c_str()) - 1; 
+
+    srv_ArmSetJointState.request.handles.push_back(arm_joint_handles[index]);
+    srv_ArmSetJointState.request.values.push_back(msg->position[i]);
+
+    //std::cout << "[DEBUG] armJointStateFromHW: RX arm_joint_" << index << " handles " << arm_joint_handles[index] << "position " <<  msg->position[i] << std::endl;
+  }
+
+  client_setJointState.call(srv_ArmSetJointState);
+
+  if(srv_ArmSetJointState.response.result == -1)
+    std::cout << "[VISUALIZATION_MODE][ERROR][ARM] SetJointState error!" << std::endl;
+}
+
+void baseJointStateFromHWCallback(const sensor_msgs::JointState::ConstPtr& msg)
+{
+  int index;
+  static int FORCE_POSITION = 0;
+  srv_BaseSetJointState.request.handles.resize(0);
+  srv_BaseSetJointState.request.setModes.assign(msg->position.size(),FORCE_POSITION);  
+  srv_BaseSetJointState.request.values.resize(0);
+
+  for(unsigned int i=0; i < msg->position.size(); ++i)
+  {
+    if(msg->name[i] == "wheel_joint_fl")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[0]); 
+         srv_BaseSetJointState.request.values.push_back(msg->position[i]);
+    }
+
+    if(msg->name[i] == "wheel_joint_fr")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[1]); 
+         srv_BaseSetJointState.request.values.push_back(-msg->position[i]);
+    }
+
+    if(msg->name[i] == "wheel_joint_bl")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[2]); 
+         srv_BaseSetJointState.request.values.push_back(msg->position[i]);
+    }
+
+    if(msg->name[i] == "wheel_joint_br")
+    {
+         srv_BaseSetJointState.request.handles.push_back(base_joint_handles[3]); 
+         srv_BaseSetJointState.request.values.push_back(-msg->position[i]);
+    }    
+
+    //std::cout << "[DEBUG] baseJointStateFromHW: RX base_joint:" << msg->name[i] << " handles " << srv_BaseSetJointState.request.handles[i] << "position " <<  msg->position[i] << std::endl;
+
+  }
+
+  client_setJointState.call(srv_BaseSetJointState);
+
+  if(srv_BaseSetJointState.response.result == -1)
+    std::cout << "[VISUALIZATION_MODE][ERROR][BASE] SetJointState error!" << std::endl;
+}
+
+void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
+{
+  static geometry_msgs::PoseStamped pose;
+
+  pose.pose.position.x = msg->pose.pose.position.x;
+  pose.pose.position.y = msg->pose.pose.position.y;
+  pose.pose.position.z = msg->pose.pose.position.z + 0.095;
+
+  KDL::Rotation orient =  KDL::Rotation::Quaternion(msg->pose.pose.orientation.x, 
+                                                    msg->pose.pose.orientation.y,
+                                                    msg->pose.pose.orientation.z,
+                                                    msg->pose.pose.orientation.w);
+
+  //Work with odom ros
+  //KDL::Rotation rotation = KDL::Rotation::RPY(0, 0, -M_PI/2);
+
+  KDL::Rotation rotation = KDL::Rotation::RPY(0, -M_PI/2, M_PI);
+
+  orient = orient * rotation;
+
+  double x,y,z,w;
+  //double roll, pitch, yaw;
+  orient.GetQuaternion(x, y, z, w);
+  //orient.GetRPY(roll, pitch, yaw);
+
+  pose.pose.orientation.x = x;
+  pose.pose.orientation.y = y;
+  pose.pose.orientation.z = z;
+  pose.pose.orientation.w = w;
+
+  pubGeometryPoseToVrep.publish(pose);
+}
+
+
 
 int main(int argc,char* argv[])
 {
@@ -623,7 +741,6 @@ int main(int argc,char* argv[])
   pubBaseJointState = node.advertise<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE, 10);
 
 
-
   // Ros Publisher Odom
   pubOdom = node.advertise<nav_msgs::Odometry>("/odom",10);
 
@@ -636,6 +753,20 @@ int main(int argc,char* argv[])
   client_jointMode = node.serviceClient<vrep_common::simRosSetObjectIntParameter>("/vrep/simRosSetObjectIntParameter");
 
   client_readObjectPose = node.serviceClient<vrep_common::simRosGetObjectPose>("/vrep/simRosGetObjectPose");
+
+  /* VREP Services for Visualization Mode 
+     - set joint states & odometry acquire from Youbot HW
+  */
+  client_setObjectPose = node.serviceClient<vrep_common::simRosSetObjectPose>("/vrep/simRosSetObjectPose");
+  client_setJointState = node.serviceClient<vrep_common::simRosSetJointState>("/vrep/simRosSetJointState");
+
+  ros::Subscriber subArmJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE_FROM_HW, 1, armJointStateFromHWCallback);
+  ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 1, baseJointStateFromHWCallback);
+  ros::Subscriber subOdometryFromHW = node.subscribe<nav_msgs::Odometry>(TOPIC_ODOM_STATE_FROM_HW, 1, odomStateFromHWCallback);
+
+  pubVisualizationMode = node.advertise<std_msgs::Int32>(TOPIC_RESET_DYNAMIC,1);
+
+  pubGeometryPoseToVrep = node.advertise<geometry_msgs::PoseStamped>(TOPIC_POSE_STATE_TO_VREP,1);
 
   /*ros::ServiceClient client_enablePublisher=node.serviceClient<vrep_common::simRosEnablePublisher>("/vrep/simRosEnablePublisher");
   vrep_common::simRosEnablePublisher srv_enablePublisher;
