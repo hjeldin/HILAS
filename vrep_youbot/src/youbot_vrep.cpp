@@ -289,7 +289,8 @@ void readTwistCallback(const geometry_msgs::TwistStamped::ConstPtr& msg)
                                                     srv_GetObjectPose.response.pose.pose.orientation.z,
                                                     srv_GetObjectPose.response.pose.pose.orientation.w);
 
-    KDL::Rotation rotation = KDL::Rotation::RPY(0,0,M_PI/2);
+    //KDL::Rotation rotation = KDL::Rotation::RPY(0,0,M_PI/2);
+    KDL::Rotation rotation = KDL::Rotation::RPY(0, -M_PI/2, M_PI);
 
     orient = orient * rotation;
 

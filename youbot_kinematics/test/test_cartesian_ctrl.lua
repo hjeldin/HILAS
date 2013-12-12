@@ -27,7 +27,7 @@ kine:provides("rosparam"):refreshProperty("robot_description",false,false)
 kine=depl:getPeer("kine")
 control=depl:getPeer("controller")
 K = control:getProperty("K")
-local gain = 0.1
+local gain = 0.02
 K:fromtab{gain,gain,gain,gain,gain,gain}
 print(K)
 
@@ -60,6 +60,7 @@ kine:setPeriod(0.005)
 kine:configure()
 control:configure()
 kine:start()
+control:start()
 
 desiredPosPort = rttlib.port_clone_conn(control:getPort("CartesianDesiredPosition"))
 print("Configure JointSpaceWeights")
@@ -69,9 +70,11 @@ js_weight:resize(8)
 js_weight:fromtab{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
 js_weight_port:write(js_weight)
 fs, startPos = control:getPort("CartesianSensorPosition"):read()
+print("Start Position of Controller")
+print(startPos)
 desiredPosPort:write(startPos)
 print("Init Cartesian Controller")
-control:start()
+--control:start()
 
 function setK(gain)
   control:stop()
