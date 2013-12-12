@@ -47,6 +47,7 @@ class YouBot_queue : public RTT::TaskContext{
     void stopHook();
     void cleanupHook();
 
+    void my_push_front(const queue_item& q);
     void setQueueMode(bool mode);
   
   protected:
@@ -89,5 +90,8 @@ class YouBot_queue : public RTT::TaskContext{
   private:
   	bool isinloading;
   	std::deque<queue_item> queue;
+
+    uint64_t my_time;
+    uint64_t time_of_the_last;
 };
 #endif

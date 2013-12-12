@@ -1,0 +1,10 @@
+import("YouBot_queue")
+
+loadComponent("queue","YouBot_queue")
+setActivity("queue", 0.002, HighestPriority, ORO_SCHED_RT);
+
+stream("queue.ros_arm_joint_position_command", ros.topic("/test_queue/pos"))
+stream("queue.out_arm_joint_position_command",ros.topic("/test_queue/pos_out"))
+
+queue.configure;
+queue.start;

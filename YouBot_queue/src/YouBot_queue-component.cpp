@@ -5,6 +5,7 @@
 YouBot_queue::YouBot_queue(std::string const& name) : TaskContext(name)
 {
 	isinloading = true;
+	time_of_the_last = 0;
 
     this->addOperation("setIsInLoading", &YouBot_queue::setQueueMode, this);
 
@@ -32,7 +33,20 @@ YouBot_queue::YouBot_queue(std::string const& name) : TaskContext(name)
 
 void YouBot_queue::setQueueMode(bool mode)
 {
+	if(!mode)
+	{
+		my_time = ros::Time::now().toNSec();
+	}
+
 	isinloading = mode;
+}
+
+void YouBot_queue::my_push_front(const queue_item& q)
+{
+	if(queue.size() == 0)
+		time_of_the_last = q.timestamp;
+
+	queue.push_front(q);
 }
 
 bool YouBot_queue::configureHook()
@@ -52,61 +66,61 @@ void YouBot_queue::updateHook()
 		if(ros_arm_joint_position_command.read(ros_arm_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(ros_arm_joint_position_command_data,timestamp));
+			my_push_front(queue_item(ros_arm_joint_position_command_data,timestamp));
 		}
 		
 		if(ros_arm_joint_velocity_command.read(ros_arm_joint_velocity_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(ros_arm_joint_velocity_command_data,timestamp));
+			my_push_front(queue_item(ros_arm_joint_velocity_command_data,timestamp));
 		}
 		
 		if(ros_arm_joint_effort_command.read(ros_arm_joint_effort_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(ros_arm_joint_effort_command_data,timestamp));		
+			my_push_front(queue_item(ros_arm_joint_effort_command_data,timestamp));		
 		}
 
 		if(ros_base_cmd_twist.read(ros_base_cmd_twist_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(ros_base_cmd_twist_data,timestamp));		
+			my_push_front(queue_item(ros_base_cmd_twist_data,timestamp));		
 		}
 
 		if(ros_gripper_joint_position_command.read(ros_gripper_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(ros_gripper_joint_position_command_data,3,timestamp));		
+			my_push_front(queue_item(ros_gripper_joint_position_command_data,3,timestamp));		
 		}
 
 		if(orocos_arm_joint_position_command.read(orocos_arm_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(orocos_arm_joint_position_command_data,timestamp));		
+			my_push_front(queue_item(orocos_arm_joint_position_command_data,timestamp));		
 		}
 
 		if(orocos_arm_joint_velocity_command.read(orocos_arm_joint_velocity_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(orocos_arm_joint_velocity_command_data,timestamp));		
+			my_push_front(queue_item(orocos_arm_joint_velocity_command_data,timestamp));		
 		}
 
 		if(orocos_arm_joint_effort_command.read(orocos_arm_joint_effort_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(orocos_arm_joint_effort_command_data,timestamp));		
+			my_push_front(queue_item(orocos_arm_joint_effort_command_data,timestamp));		
 		}
 
 		if(orocos_base_cmd_twist.read(orocos_base_cmd_twist_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(orocos_base_cmd_twist_data,timestamp));		
+			my_push_front(queue_item(orocos_base_cmd_twist_data,timestamp));		
 		}
 
 		if(orocos_gripper_joint_position_command.read(orocos_gripper_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			queue.push_back(queue_item(orocos_gripper_joint_position_command_data,3,timestamp));	
+			my_push_front(queue_item(orocos_gripper_joint_position_command_data,3,timestamp));	
 		}
 	}
 	else
@@ -116,33 +130,40 @@ void YouBot_queue::updateHook()
 			return;
 		}
 
-		struct queue_item tmp = queue.back();
-		queue.pop_back();
+		uint64_t now = ros::Time::now().toNSec();
+		struct queue_item tmp_now = queue.back();		
+		uint64_t delta = tmp_now.timestamp - time_of_the_last;
 
-		switch(tmp.mode_index)
+		if((now - my_time) >= delta)
 		{
-			case 0:
-				out_arm_joint_position_command.write(tmp.arm_pos);
-				break;
+			switch(tmp_now.mode_index)
+			{
+				case 0:
+					out_arm_joint_position_command.write(tmp_now.arm_pos);
+					break;
 
-			case 1:
-				out_arm_joint_velocity_command.write(tmp.arm_vel);
-				break;
+				case 1:
+					out_arm_joint_velocity_command.write(tmp_now.arm_vel);
+					break;
 
-			case 2:
-				out_arm_joint_effort_command.write(tmp.arm_eff);			
-				break;			
+				case 2:
+					out_arm_joint_effort_command.write(tmp_now.arm_eff);			
+					break;			
 
-			case 3:
-				out_base_cmd_twist.write(tmp.base_twist);
-				break;			
+				case 3:
+					out_base_cmd_twist.write(tmp_now.base_twist);
+					break;			
 
-			case 4:
-				out_gripper_joint_position_command.write(tmp.gripper_pos);			
-				break;
+				case 4:
+					out_gripper_joint_position_command.write(tmp_now.gripper_pos);			
+					break;
 
-			default:
-				break;
+				default:
+					break;
+			}
+			my_time = now;
+			time_of_the_last = tmp_now.timestamp;
+			queue.pop_back();		
 		}
 	}
 }

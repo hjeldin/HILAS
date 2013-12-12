@@ -39,5 +39,5 @@ export PATH="$PATH:`rosstack find orocos_toolchain`/install/bin"
 #gdb deployer-gnulinux
 
 #gdb rttlua-gnulinux
-rosrun ocl rttlua-gnulinux -i $1
-#rosrun ocl deployer-gnulinux -s $1
+#rosrun ocl rttlua-gnulinux -i $1
+rosrun ocl deployer-gnulinux -s $1
