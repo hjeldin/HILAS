@@ -12,4 +12,3 @@ orocos_component(YouBot_executive ${YOUBOT_EXECUTIVE_FILES} ${COMMON_INCLUDE_DIR
 TARGET_LINK_LIBRARIES(YouBot_executive ${YOUBOT_EXECUTIVE_libs})
 
 set_target_properties(YouBot_executive PROPERTIES COMPILE_FLAGS "-Wall")
-

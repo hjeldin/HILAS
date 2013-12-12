@@ -7,8 +7,6 @@ require "kdlutils"
 require "complete"
 require "readline"
 
-require "connection"
-
 --coroutine.create(udp_server)
 rttlib.color = true
 
@@ -16,7 +14,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
 -- Deployer setup
-run_status = BOTH
+run_status = SIM
 deployer_type = LUA_DEPLOYER
 
 -- Lua deployer
@@ -49,8 +47,6 @@ end
 
 -- Import component
 depl:import("fbsched")
-depl:import("YouBot_VREP")
-depl:import("YouBot_OODL")
 depl:import("kdl_typekit")
 depl:import("rtt_sensor_msgs")
 depl:import("rtt_std_msgs")
@@ -59,20 +55,27 @@ depl:import("rtt_nav_msgs")
 depl:import("rtt_motion_control_msgs")
 depl:import("rtt_rosnode")
 
+depl:import("YouBot_VREP")
+depl:import("YouBot_OODL")
+depl:import("YouBot_controller")
+
 -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
 depl:loadComponent("YouBot_OODL", "YouBot::YouBotOODL")
 depl:loadComponent("YouBot_VREP", "YouBot::YouBotVREP") 
+depl:loadComponent("YouBot_CONTROLLER", "YouBot_controller")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
 youbot_vrep = depl:getPeer("YouBot_VREP")
 youbot_oodl = depl:getPeer("YouBot_OODL")
+youbot_ctrl = depl:getPeer("YouBot_CONTROLLER")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_VREP")
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_OODL")
+depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CONTROLLER")
 
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
@@ -138,6 +141,9 @@ end
 
 -- Mode setup
 if run_status == SIM then
+
+	youbot_ctrl:configure()
+	youbot_ctrl:start()
 
 	simulation_setup()
 
