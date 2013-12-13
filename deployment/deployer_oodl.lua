@@ -17,6 +17,16 @@ SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 run_status = SIM
 deployer_type = LUA_DEPLOYER
 
+TOPIC_ARM_POSITION_COMMAND = "/arm_1/arm_controller/position_command"
+TOPIC_ARM_VELOCITY_COMMAND = "/arm_1/arm_controller/velocity_command"
+TOPIC_ARM_EFFORT_COMMAND = "/arm_1/arm_controller/torque_command"
+TOPIC_BASE_TWIST_COMMAND = "/cmd_vel"
+TOPIC_BASE_ODOM_STATE = "/odom"
+TOPIC_GRIPPER_POSITION_COMMAND = "/arm_1/gripper_controller/position_command"
+VREP_TOPIC_ARM_JOINT_STATES_RX = "/vrep/hw_rx/arm_1/joint_state"
+VREP_TOPIC_BASE_JOINT_STATES_RX = "/vrep/hw_rx/base/joint_state"
+VREP_TOPIC_ODOM_STATE_RX = "/vrep/hw_rx/odom"
+
 -- Lua deployer
 if deployer_type == LUA_DEPLOYER then
 
@@ -104,20 +114,39 @@ function simulation_setup()
 
 	require "definitions"
 
+end
+
+function connect_vrep_ros_streams()
 	-- ROS simulated robot streaming
 	depl:stream("YouBot_VREP.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm_1/joint_states"))
 	depl:stream("YouBot_VREP.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
 	depl:stream("YouBot_VREP.Base.in_odometry_state",rtt.provides("ros"):topic("/odom"))
 
-	depl:stream("YouBot_VREP.Arm1.out_joint_position_command",rtt.provides("ros"):topic("/arm_1/arm_controller/position_command"))
-	depl:stream("YouBot_VREP.Arm1.out_joint_velocity_command",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
-	depl:stream("YouBot_VREP.Arm1.out_joint_effort_command",rtt.provides("ros"):topic("/arm_1/arm_controller/force_command"))
+	depl:stream("YouBot_VREP.Arm1.out_joint_position_command",rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+	depl:stream("YouBot_VREP.Arm1.out_joint_velocity_command",rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
+	depl:stream("YouBot_VREP.Arm1.out_joint_effort_command",rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
 	depl:stream("YouBot_VREP.Base.out_joint_position_command",rtt.provides("ros"):topic("/base/base_controller/position_command"))
 	depl:stream("YouBot_VREP.Base.out_joint_velocity_command",rtt.provides("ros"):topic("/base/base_controller/velocity_command"))
 	depl:stream("YouBot_VREP.Base.out_joint_effort_command",rtt.provides("ros"):topic("/base/base_controller/force_command"))
-	depl:stream("YouBot_VREP.Base.out_cmd_twist",rtt.provides("ros"):topic("/cmd_vel"))
-	depl:stream("YouBot_VREP.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic("/arm_1/gripper_controller/position_command"))
+	depl:stream("YouBot_VREP.Base.out_cmd_twist",rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
+	depl:stream("YouBot_VREP.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+end
 
+function disconnect_vrep_ros_streams() 
+	--ARM 
+	vrep_arm_serv:getPort("in_joint_state"):disconnect()
+	vrep_arm_serv:getPort("out_joint_position_command"):disconnect()
+	vrep_arm_serv:getPort("out_joint_velocity_command"):disconnect()
+	vrep_arm_serv:getPort("out_joint_effort_command"):disconnect()
+	--BASE
+	vrep_base_serv:getPort("out_joint_position_command"):disconnect()
+	vrep_base_serv:getPort("out_joint_velocity_command"):disconnect()
+	vrep_base_serv:getPort("out_joint_effort_command"):disconnect()
+	vrep_base_serv:getPort("out_cmd_twist"):disconnect()
+	vrep_base_serv:getPort("in_joint_state"):disconnect()
+	vrep_base_serv:getPort("in_odometry_state"):disconnect()
+	--GRIPPER
+	vrep_grip_serv:getPort("out_gripper_cmd_position"):disconnect()
 end
 
 function oodl_setup()
@@ -138,6 +167,60 @@ function oodl_setup()
 	require "definitions"
 
 end
+
+function connect_oodl_ros_streams()
+	--##### ROS streams ######
+	--ARM command 
+	depl:stream("YouBot_OODL.Arm1.joint_position_command",rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+	depl:stream("YouBot_OODL.Arm1.joint_velocity_command",rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
+	depl:stream("YouBot_OODL.Arm1.joint_effort_command",rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
+	
+	--Base command
+	depl:stream("YouBot_OODL.Base.cmd_twist",rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
+	--Odometry state
+	depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(TOPIC_BASE_ODOM_STATE))
+
+	--Gripper command
+	depl:stream("YouBot_OODL.Gripper1.gripper_position_command",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+
+	--VREP streams (VISUALIZATION_MODE)
+    depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(VREP_TOPIC_ODOM_STATE_RX))
+    depl:stream("YouBot_OODL.Base.joint_state",rtt.provides("ros"):topic(VREP_TOPIC_BASE_JOINT_STATES_RX))
+    depl:stream("YouBot_OODL.Arm1.joint_state",rtt.provides("ros"):topic(VREP_TOPIC_ARM_JOINT_STATES_RX))
+
+	--#### END ROS streams ######
+end
+
+function disconnect_oodl_ros_streams() 
+	--ARM
+	oodl_arm_serv:getPort("joint_position_command"):disconnect()
+	oodl_arm_serv:getPort("joint_velocity_command"):disconnect()
+	oodl_arm_serv:getPort("joint_effort_command"):disconnect()
+	oodl_arm_serv:getPort("joint_state"):disconnect()
+	--BASE
+	oodl_base_serv:getPort("cmd_twist"):disconnect()
+	oodl_base_serv:getPort("odometry_state"):disconnect()
+	oodl_base_serv:getPorT("joint_state"):disconnect()
+	--GRIPPER
+	oodl_grip_serv:getPort("gripper_position_command"):disconnect()
+end
+
+function switch_to(mode)
+
+	if mode == SIM then
+		--disconnect HW ports and streams
+		disconnect_oodl_ros_streams()
+		--connect SIM ports and streams
+		connect_vrep_ros_streams()
+
+	elseif mode == HW then
+		--disconnect SIM ports and streams
+		disconnect_vrep_ros_streams()
+		--connect HW ports and streams
+		connect_oodl_ros_streams()
+	end
+end
+
 
 -- Mode setup
 if run_status == SIM then

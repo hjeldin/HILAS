@@ -3,6 +3,8 @@ require "rfsm_rtt"
 require "rttros"
 require "kdlpp"
 require "kdlutils"
+require "complete"
+require "readline"
 
 --ya_file = rttros.find_rospack("youbot_driver_rtt") .. "/lua/youbot_test.lua"
 --dofile(ya_file)
