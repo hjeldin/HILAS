@@ -1,0 +1,27 @@
+<launch>
+  <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find your_pkg)/map/map.yaml" >
+    <param name="frame_id" value="/map" />
+  </node> -->
+  <!-- No namespace here as we will share this description. 
+       Access with slash at the beginning -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find youbot_description)/robots/youbot.urdf.xacro'"/>
+
+
+  <!-- BEGIN Youbot 1-->
+  <group ns="youbot1">
+    <param name="tf_prefix" value="youbot1_tf" />
+    <include file="$(find vrep_youbot)/launch/one_youbot.launch" >
+      <!-- <arg name="init_pose" value="-x 1 -y 1 -z 0" /> -->
+      <arg name="robot_name"  value="Youbot1" />
+    </include>
+  </group>
+
+  <!-- BEGIN Youbot 2-->
+  <group ns="youbot2">
+    <param name="tf_prefix" value="youbot2_tf" />
+    <include file="$(find vrep_youbot)/launch/one_youbot.launch" >
+      <!-- <arg name="init_pose" value="-x -1 -y 1 -z 0" /> -->
+      <arg name="robot_name"  value="Youbo2t" />
+    </include>
+  </group>
+</launch>
