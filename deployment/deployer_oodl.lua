@@ -14,7 +14,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
 -- Deployer setup
-run_status = SIM
+run_status = BOTH
 deployer_type = LUA_DEPLOYER
 
 TOPIC_ARM_POSITION_COMMAND = "/arm_1/arm_controller/position_command"
@@ -181,7 +181,7 @@ function connect_oodl_ros_streams()
 	depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(TOPIC_BASE_ODOM_STATE))
 
 	--Gripper command
-	depl:stream("YouBot_OODL.Gripper1.gripper_position_command",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+	depl:stream("YouBot_OODL.Gripper1.gripper_cmd_position",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
 
 	--VREP streams (VISUALIZATION_MODE)
     depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(VREP_TOPIC_ODOM_STATE_RX))
@@ -200,9 +200,9 @@ function disconnect_oodl_ros_streams()
 	--BASE
 	oodl_base_serv:getPort("cmd_twist"):disconnect()
 	oodl_base_serv:getPort("odometry_state"):disconnect()
-	oodl_base_serv:getPorT("joint_state"):disconnect()
+	oodl_base_serv:getPort("joint_state"):disconnect()
 	--GRIPPER
-	oodl_grip_serv:getPort("gripper_position_command"):disconnect()
+	oodl_grip_serv:getPort("gripper_cmd_position"):disconnect()
 end
 
 function switch_to(mode)

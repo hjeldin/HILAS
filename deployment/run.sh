@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export YOUR_WORKSPACE="/home/nicolapiccinelli/Workspace"
+export YOUR_WORKSPACE="/home/youbot/DEV/"
 
 source /opt/ros/fuerte/setup.bash
 source /opt/ros/fuerte/stacks/orocos_toolchain/env.sh
@@ -39,5 +39,5 @@ export PATH="$PATH:`rosstack find orocos_toolchain`/install/bin"
 #gdb deployer-gnulinux
 
 #gdb rttlua-gnulinux
-#rosrun ocl rttlua-gnulinux -i $1
-rosrun ocl deployer-gnulinux -s $1
+rosrun ocl rttlua-gnulinux -i $1
+#rosrun ocl deployer-gnulinux -s $1
