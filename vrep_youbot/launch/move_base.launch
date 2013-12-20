@@ -24,6 +24,7 @@
         <rosparam file="$(find youbot_navigation_local)/config/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find youbot_navigation_common)/config/base_local_planner_params.yaml" command="load" />
 
-        <remap from="map" to="/map" />
+        <!-- <remap from="map" to="/map" /> -->
+        <!-- <remap from="base_scan" to="/youbot1/base_scan" /> -->
     </node>
 </launch>

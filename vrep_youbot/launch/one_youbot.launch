@@ -1,10 +1,6 @@
 <launch>
     <arg name="robot_name"/>
-    <arg name="init_pose"/>
+    <arg name="tf_prefix"/>
     <!-- Robot state publisher -->
     <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen"/>
-    <!-- Static transform for navigation_stack -->
-    <node pkg="tf" type="static_transform_publisher" name="laser_link" args="0 0 0 0 0 0 /base_laser_front_link /laser 10" />
-    <!--  Navigation Local Youbot -->
-    <include file="$(find vrep_youbot)/launch/move_base.launch" />
 </launch>
