@@ -12,22 +12,16 @@
     <param name="tf_prefix" value="youbot1_tf" />
     <include file="$(find vrep_youbot)/launch/one_youbot.launch" >
       <!-- <arg name="init_pose" value="-x 1 -y 1 -z 0" /> -->
-      <arg name="robot_name"  value="Youbot1" />
+      <!-- <arg name="robot_name"  value="Youbot1" /> -->
     </include>
     <!-- Static transform for navigation_stack -->
     <node pkg="tf" type="static_transform_publisher" name="laser_link" args="0 0 0 0 0 0 /youbot1_tf/base_laser_front_link /youbot1_tf/laser 10" />
     <!--  Navigation Local Youbot -->
-    <include file="$(find vrep_youbot)/launch/move_base.launch" /> 
-    <remap from="base_scan" to="dioporco" />
+    <include file="$(find vrep_youbot)/launch/move_base.launch">
+      <arg name="robot_name" value="youbot1"/>
+    </include>
   </group>
 
   <!-- BEGIN Youbot 2-->
-  <!-- <group ns="youbot2">
-    <param name="tf_prefix" value="youbot2_tf" />
-    <include file="$(find vrep_youbot)/launch/one_youbot.launch" >
-      
-      <arg name="robot_name"  value="Youbot2" />
-    <node pkg="tf" type="static_transform_publisher" name="laser_link" args="0 0 0 0 0 0 /youbot2_tf/base_laser_front_link /youbot2_tf/laser 10" />
-    </include>
-  </group> -->
+
 </launch> 
