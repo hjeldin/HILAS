@@ -48,7 +48,7 @@
 
 
 // General define:
-#define NUM_ARGS 13
+#define NUM_ARGS 14
 #define NUM_ARM_JOINTS 7
 #define NUM_BASE_JOINTS 4 // Rolling + caster joints ???
 #define NUM_JOINTS 16
@@ -66,6 +66,9 @@
 #define TF_ODOM_FRAME_ID  "odom"
 #define TF_ODOM_CHILD_FRAME_ID "base_footprint"
 #define TOPIC_LASERSCAN_READ "/vrep/rangeFinderData"
+//This topic advertise all joint_states in the scenario (all joints of one or more robot)
+//We need to catch only the desired joints
+#define TOPIC_RAW_JOINT_STATES "/vrep/handleall/joint_states"
 /* VISUALIZATION MODE */
 #define TOPIC_BASE_JOINT_STATE_FROM_HW "/vrep/hw_rx/base/joint_state"
 #define TOPIC_ARM_JOINT_STATE_FROM_HW "/vrep/hw_rx/arm_1/joint_state"
@@ -114,6 +117,7 @@ int youbot_handle;
 
 //Ros Publisher for JointStates remapped
 ros::Publisher pubJointStates;
+
 ros::Publisher pubOdom;
 ros::Publisher pubArmJointState;
 ros::Publisher pubBaseJointState;
@@ -149,6 +153,7 @@ sensor_msgs::JointState arm_joint_state;
 sensor_msgs::JointState base_joint_state;
 
 std::string robot_name;
+uint robot_index;
 
 // Command arm_joint position callback
 void cmdPosArmJointCallback(const motion_control_msgs::JointPositions::ConstPtr& msg) 
@@ -635,6 +640,77 @@ void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
   pubGeometryPoseToVrep.publish(pose);
 }
 
+void rawJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg)
+{
+  sensor_msgs::JointState msg_map;
+  msg_map.name.resize(16);
+  msg_map.position.resize(16);
+  msg_map.velocity.resize(16);
+  msg_map.effort.resize(16);
+  std::string jn;
+  uint tmp_index = 0;
+  for(int i=0; i < NUM_JOINTS; i++) 
+  { 
+    switch(i)
+    { 
+      case 0:
+      jn = "wheel_joint_br";
+      break;
+      case 1:
+      jn = "caster_joint_br";
+      break;
+      case 2:
+      jn = "wheel_joint_bl";
+      break;
+      case 3:
+      jn = "caster_joint_bl";
+      break;
+      case 4:
+      jn = "suspension_joint";
+      break;
+      case 5: 
+      jn = "wheel_joint_fl";
+      break;
+      case 6:
+      jn = "caster_joint_fl";
+      break;
+      case 7:
+      jn = "wheel_joint_fr";
+      break;
+      case 8:
+      jn = "caster_joint_fr";
+      break;
+      case 9:
+      jn = "arm_joint_1";
+      break;
+      case 10:
+      jn = "arm_joint_2";
+      break;
+      case 11:
+      jn = "arm_joint_3";
+      break;
+      case 12:
+      jn = "arm_joint_4";
+      break;
+      case 13:
+      jn = "arm_joint_5";
+      break;
+      case 14:
+      jn = "gripper_finger_joint_l";
+      break;
+      case 15:
+      jn = "gripper_finger_joint_r";
+      break;
+    }
+    tmp_index = i + (NUM_JOINTS * robot_index);
+    msg_map.header.stamp = ros::Time::now();
+    msg_map.name.at(i) = jn; 
+    msg_map.position.at(i) = msg->position.at((16* robot_index));
+    msg_map.velocity.at(i) = msg->velocity.at((16* robot_index));
+    msg_map.effort.at(i) = msg->effort.at((16* robot_index));
+  }
+  pubJointStates.publish(msg_map); 
+}
 
 
 int main(int argc,char* argv[])
@@ -653,7 +729,10 @@ int main(int argc,char* argv[])
 
     robot_name = argv[2 + NUM_BASE_JOINTS + NUM_ARM_JOINTS + 1];
 
-    std::cout << "Youbot [NAME]=" << robot_name << " [HANDLE]=" << youbot_handle << std::endl;
+    /** index for catch the right joint_states **/
+    robot_index = atoi(argv[2 + NUM_BASE_JOINTS + NUM_ARM_JOINTS + 2]);
+
+    std::cout << "Youbot [NAME]=" << robot_name << " [HANDLE]=" << youbot_handle  << "[INDEX] " << robot_index << std::endl;
   }
   else
   {
@@ -728,8 +807,11 @@ int main(int argc,char* argv[])
   // Ros Subscriber LaserScan (sensor)
   ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud2>(robot_name + TOPIC_LASERSCAN_READ,1,pointCloud2LaserScanCallback);
 
+
+  // Ros Subscriber RAW_VREP Jointstates
+  ros::Subscriber rawJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_RAW_JOINT_STATES, 1, rawJointStatesCallback);
   // Ros Publisher JointStates remapped
-  //pubJointStates=node.advertise<sensor_msgs::JointState>("/joint_states",10);
+  pubJointStates=node.advertise<sensor_msgs::JointState>(robot_name + TOPIC_ALL_JOINT_STATE,1);
 
 
   /* OROCOS COMPONENT INTERFACE */
