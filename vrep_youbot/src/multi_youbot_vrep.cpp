@@ -48,10 +48,10 @@
 
 
 // General define:
-#define NUM_ARGS 14
+#define NUM_ARGS 14 
 #define NUM_ARM_JOINTS 7
 #define NUM_BASE_JOINTS 4 // Rolling + caster joints ???
-#define NUM_JOINTS 16
+#define NUM_JOINTS 17
 
 // ROS define:
 #define TOPIC_ARM_JOINT_POSITION_COMMAND  "/arm_1/arm_controller/position_command"
@@ -643,16 +643,74 @@ void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
 void rawJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg)
 {
   sensor_msgs::JointState msg_map;
-  msg_map.name.resize(16);
-  msg_map.position.resize(16);
-  msg_map.velocity.resize(16);
-  msg_map.effort.resize(16);
+  msg_map.name.resize(NUM_JOINTS);
+  msg_map.position.resize(NUM_JOINTS);
+  msg_map.velocity.resize(NUM_JOINTS);
+  msg_map.effort.resize(NUM_JOINTS);
   std::string jn;
   uint tmp_index = 0;
   for(int i=0; i < NUM_JOINTS; i++) 
   { 
-    switch(i)
-    { 
+    if(robot_index == 0) {
+
+      switch(i)
+      { 
+        case 0:
+        jn = "wheel_joint_br";
+        break;
+        case 1:
+        jn = "caster_joint_br";
+        break;
+        case 2:
+        jn = "wheel_joint_bl";
+        break;
+        case 3:
+        jn = "caster_joint_bl";
+        break;
+        case 4:
+        jn = "suspension_joint";
+        break;
+        case 5: 
+        jn = "wheel_joint_fl";
+        break;
+        case 6:
+        jn = "caster_joint_fl";
+        break;
+        case 7:
+        jn = "wheel_joint_fr";
+        break;
+        case 8:
+        jn = "caster_joint_fr";
+        break;
+        case 9:
+        jn = "arm_joint_1";
+        break;
+        case 10:
+        jn = "arm_joint_2";
+        break;
+        case 11:
+        jn = "arm_joint_3";
+        break;
+        case 12:
+        jn = "arm_joint_4";
+        break;
+        case 13:
+        jn = "arm_joint_5";
+        break;
+        case 14:
+        jn = "gripper_finger_joint_r";
+        break;
+        case 15:
+        jn = "gripper_finger_joint_l";
+        break;
+        case 16:
+        jn = "Hokuyo_joint";
+        break;
+      }
+    } else if(robot_index == 1) 
+    {
+     switch(i)
+     { 
       case 0:
       jn = "wheel_joint_br";
       break;
@@ -681,34 +739,39 @@ void rawJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg)
       jn = "caster_joint_fr";
       break;
       case 9:
-      jn = "arm_joint_1";
+      jn = "Hokuyo_joint";
       break;
       case 10:
-      jn = "arm_joint_2";
+      jn = "arm_joint_1";
       break;
       case 11:
-      jn = "arm_joint_3";
+      jn = "arm_joint_2";
       break;
       case 12:
-      jn = "arm_joint_4";
+      jn = "arm_joint_3";
       break;
       case 13:
-      jn = "arm_joint_5";
+      jn = "arm_joint_4";
       break;
       case 14:
-      jn = "gripper_finger_joint_l";
+      jn = "arm_joint_5";
       break;
       case 15:
       jn = "gripper_finger_joint_r";
       break;
+      case 16:
+      jn = "gripper_finger_joint_l";
+      break;
     }
-    tmp_index = i + (NUM_JOINTS * robot_index);
-    msg_map.header.stamp = ros::Time::now();
-    msg_map.name.at(i) = jn; 
-    msg_map.position.at(i) = msg->position.at((16* robot_index));
-    msg_map.velocity.at(i) = msg->velocity.at((16* robot_index));
-    msg_map.effort.at(i) = msg->effort.at((16* robot_index));
   }
+
+  tmp_index = i + (NUM_JOINTS * robot_index); 
+  msg_map.header.stamp = ros::Time::now();
+  msg_map.name.at(i) = jn; 
+  msg_map.position.at(i) = msg->position.at(tmp_index);
+  msg_map.velocity.at(i) = msg->velocity.at(tmp_index);
+  msg_map.effort.at(i) = msg->effort.at(tmp_index);
+}
   pubJointStates.publish(msg_map); 
 }
 
