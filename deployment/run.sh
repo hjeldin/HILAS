@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export YOUR_WORKSPACE="/home/youbot/DEV/"
+export YOUR_WORKSPACE="/home/nicolapiccinelli/Workspace/"
 
 source /opt/ros/fuerte/setup.bash
 source /opt/ros/fuerte/stacks/orocos_toolchain/env.sh
