@@ -7,23 +7,23 @@ is_running = true
 
 buffer = []
 s = UDPSocket.new
-s.bind(nil, 22223)
+s.bind("0.0.0.0", 22223)
 
 stdin, stdout, stderr, wait_thr = Open3.popen3('sudo bash run.sh deployer_oodl.lua')
 pid = wait_thr[:pid]
 
 t_out = Thread.new(stdout) do
-	stdout.each_line { |line| puts "OUT:" + line }
+	stdout.each_line { |line| puts "[DEPL OUT:] " + line }
 end
 
 t_err = Thread.new(stderr) do
-	stderr.each_line { |line| puts "ERR:" + line }
+	stderr.each_line { |line| puts "[DEPL ERR:] " + line }
 end
 
 while is_running do
-	text, sender = s.recvfrom(16)
+	text, sender = s.recvfrom(1024)
 
-	if(text == "exit_cmd")
+	if(text.chomp == "exit_cmd")
 		is_running = false
 	else
 		stdin.puts text

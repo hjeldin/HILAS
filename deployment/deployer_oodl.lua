@@ -14,7 +14,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
 -- Deployer setup
-run_status = SIM
+run_status = HW
 deployer_type = LUA_DEPLOYER
 
 TOPIC_ARM_POSITION_COMMAND = "/arm_1/arm_controller/position_command"
@@ -67,25 +67,37 @@ depl:import("rtt_rosnode")
 
 depl:import("YouBot_VREP")
 depl:import("YouBot_OODL")
--- depl:import("YouBot_controller")
+depl:import("YouBot_queue")
+
+depl:import("youbot_kinematics")
+depl:import("cartesian_motion_control")
 
 -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
 depl:loadComponent("YouBot_OODL", "YouBot::YouBotOODL")
 depl:loadComponent("YouBot_VREP", "YouBot::YouBotVREP") 
--- depl:loadComponent("YouBot_CONTROLLER", "YouBot_controller")
+depl:loadComponent("YouBot_QUEUE", "YouBot_queue")
+
+depl:loadComponent("YouBot_KINE", "Youbot_kinematics")	
+depl:loadComponent("YouBot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
 youbot_vrep = depl:getPeer("YouBot_VREP")
 youbot_oodl = depl:getPeer("YouBot_OODL")
--- youbot_ctrl = depl:getPeer("YouBot_CONTROLLER")
+youbot_queue = depl:getPeer("YouBot_QUEUE")
+
+youbot_kine = depl:getPeer("YouBot_KINE")
+youbot_ctrl_cartesian = depl:getPeer("YouBot_CTRL_CARTESIAN")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_VREP")
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_OODL")
--- depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CONTROLLER")
+depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_QUEUE")
+
+depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_KINE")
+depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CTRL_CARTESIAN")
 
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
@@ -113,6 +125,60 @@ function simulation_setup()
 	vrep_base_op_stat = vrep_base_serv:getOperation("displayMotorStatuses")
 
 	require "definitions"
+
+end
+
+function queue_setup()
+
+	youbot_queue:configure()
+	youbot_queue:start()
+	queue_op_is_loading = youbot_queue:getOperation("setIsInLoading")
+
+end
+
+function cartesian_controller_setup()
+
+	depl:connect("YouBot_KINE.EEPose","YouBot_CTRL_CARTESIAN.CartesianSensorPosition",cp)
+	depl:connect("YouBot_KINE.EETwistRTT","YouBot_CTRL_CARTESIAN.CartesianOutputVelocity",cp)
+
+	depl:loadService("YouBot_KINE","rosparam")
+
+	youbot_kine:provides("rosparam"):refreshProperty("robot_description",false,false)
+	K = youbot_ctrl_cartesian:getProperty("K")
+	local gain = 0.1
+	K:fromtab{gain,gain,gain,gain,gain,gain}
+	--print(K)
+
+	depl:stream("YouBot_KINE.EEPose",rtt.provides("ros"):topic("/youbot/EEPose"))
+	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
+	--depl:stream("YouBot_KINE.JointState",rtt.provides("ros"):topic("/joint_states"))
+	--depl:stream("YouBot_KINE.JointVelocities",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
+	--depl:stream("YouBot_KINE.BaseTwist",rtt.provides("ros"):topic("/cmd_vel"))
+	--depl:stream("kine.BaseOdom",rtt.provides("ros"):topic("/odom"))
+	--print("ROS topic enable")
+
+end
+
+function cartesian_controller_start()
+
+	youbot_kine:configure()
+	youbot_ctrl_cartesian:configure()
+	youbot_kine:start()
+	youbot_ctrl_cartesian:start()
+
+	desiredPosPort = rttlib.port_clone_conn(youbot_ctrl_cartesian:getPort("CartesianDesiredPosition"))
+	--print("Configure JointSpaceWeights")
+	js_weight_port = rttlib.port_clone_conn(youbot_kine:getPort("JointSpaceWeights"))
+	js_weight = rtt.Variable("float64[]")
+	js_weight:resize(8)
+	js_weight:fromtab{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
+	js_weight_port:write(js_weight)
+	fs, startPos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
+	print("Start Position of Controller")
+	print(startPos)
+	desiredPosPort:write(startPos)
+	--print("Init Cartesian Controller")
+	--control:start()
 
 end
 
@@ -213,11 +279,22 @@ function switch_to(mode)
 		--connect SIM ports and streams
 		connect_vrep_ros_streams()
 
+		--queue_op_is_loading:send(true)
+
+		--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+		--depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_VEL_POSITION_COMMAND))
+		--depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND)
+		--depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND)
+		--depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+		--depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/test_queue/planner"))
+		--depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/test_queue/cartesian"))
+
 	elseif mode == HW then
 		--disconnect SIM ports and streams
 		disconnect_vrep_ros_streams()
 		--connect HW ports and streams
 		connect_oodl_ros_streams()
+
 	end
 end
 
@@ -236,9 +313,22 @@ if run_status == SIM then
 elseif run_status == HW then
 
 	oodl_setup()
+	queue_setup()
+	cartesian_controller_setup()
+
+	--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+	--depl:connect("YouBot_OODL.Arm1.joint_position_command","YouBot_QUEUE.out_arm_joint_position_command",cp)
+
+	depl:connect("YouBot_KINE.JointState","YouBot_OODL.Arm1.joint_state",cp)
+	depl:connect("YouBot_KINE.JointVelocities","YouBot_OODL.Arm1.joint_velocity_command",cp)
+	depl:connect("YouBot_KINE.BaseTwist","YouBot_OODL.Base.cmd_twist",cp)
+	depl:connect("YouBot_KINE.BaseOdom","YouBot_OODL.Base.odometry_state",cp)
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
+
+	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
+	--cartesian_controller_start()
 
 elseif run_status == BOTH then
 

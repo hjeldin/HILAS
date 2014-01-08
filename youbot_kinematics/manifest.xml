@@ -13,7 +13,7 @@
     <depend package="rtt_nav_msgs" />
     <depend package="rtt_motion_control_msgs" />
     <depend package="rtt_rosnode" />
-    <depend package="youbot_description" />
+    <!-- <depend package="youbot_description" /> -->
     <depend package="kdl_parser" />
     <depend package="tf_conversions" />   
 </package>

@@ -93,8 +93,8 @@ bool Youbot_kinematics::startHook(){
 	port_joint_state.read(m_joint_state);
         //Leave out the base for now, start from 3
 	for(unsigned int i=3;i<m_jnt_array.q.rows();i++){
-		m_jnt_array.q(i)=m_joint_state.position[6+i];
-		m_jnt_array.qdot(i)=m_joint_state.velocity[6+i];
+		m_jnt_array.q(i)=m_joint_state.position[i-3];
+		m_jnt_array.qdot(i)=m_joint_state.velocity[i-3];
 	}
 
 	jnt_to_pose_solver_->JntToCart(m_jnt_array,m_frame_vel);
@@ -147,8 +147,8 @@ void Youbot_kinematics::updateHook(){
 	if(port_joint_state.read(m_joint_state)==NewData){
             //Leave out the base for now, start from 3
 		for(unsigned int i=3;i<m_jnt_array.q.rows();i++){
-			m_jnt_array.q(i)=m_joint_state.position[6+i];
-			m_jnt_array.qdot(i)=m_joint_state.velocity[6+i];
+			m_jnt_array.q(i)=m_joint_state.position[i-3];
+			m_jnt_array.qdot(i)=m_joint_state.velocity[i-3];
 		}
 		update_pose=true;
 	}

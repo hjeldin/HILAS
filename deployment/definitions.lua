@@ -159,3 +159,42 @@ function baseSetPos(stype,a,b,c,d)
 	print("Send pose")
 	print(pos)
 end
+
+function vel_startup()
+
+	oodl_arm_op_clear()
+	oodl_base_op_clear()
+	armSetCtrlModes(OODL,2)
+	baseSetCtrlModes(OODL,5)
+	connect_oodl_ros_streams()
+	cartesian_controller_start()
+
+end
+
+-- CARTESIAN CONTROLLER FUNCTIONS -- 
+
+function setK(gain)
+  youbot_ctrl_cartesian:stop()
+  K:fromtab{gain,gain,gain,gain,gain,gain}
+  youbot_ctrl_cartesian:configure()
+  youbot_ctrl_cartesian:start()
+  print(K)
+end
+
+function move(dx, dy, dz)
+  fs, startPos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
+  startPos.position.x = startPos.position.x + dx
+  startPos.position.y = startPos.position.y + dy
+  startPos.position.z = startPos.position.z + dz
+  -- startPos.orientation.x = 0.7071067811865476;
+  -- startPos.orientation.y = 0;
+  -- startPos.orientation.z = 0;
+  -- startPos.orientation.w = -0.7071067811865476;
+  desiredPosPort:write(startPos)
+  print("New setpoint EE")
+end
+
+function readSensPos()
+  fs, pos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()	
+  print(pos)
+end
