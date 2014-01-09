@@ -136,6 +136,54 @@ function queue_setup()
 
 end
 
+function queue_input_disconnect()
+
+	youbot_queue:getPort("out_arm_joint_position_command"):disconnect()
+	youbot_queue:getPort("out_arm_joint_velocity_command"):disconnect()
+	youbot_queue:getPort("out_arm_joint_effort_command"):disconnect()
+	youbot_queue:getPort("out_base_cmd_twist"):disconnect()
+	youbot_queue:getPort("out_gripper_joint_position_command"):disconnect()
+	youbot_queue:getPort("out_ros_planner_command"):disconnect()
+	youbot_queue:getPort("out_ros_cartesian_command"):disconnect()
+
+end
+
+function queue_input_connect()
+
+	depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+	depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_VEL_POSITION_COMMAND))
+	depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND)
+	depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND)
+	depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+	depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal"))
+	depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/youbot/desired_ee"))
+
+end
+
+function queue_output_disconnect()
+
+	youbot_queue:getPort("ros_arm_joint_position_command"):disconnect()
+	youbot_queue:getPort("ros_arm_joint_velocity_command"):disconnect()
+	youbot_queue:getPort("ros_arm_joint_effort_command"):disconnect()
+	youbot_queue:getPort("ros_base_cmd_twist"):disconnect()
+	youbot_queue:getPort("ros_gripper_joint_position_command"):disconnect()
+	youbot_queue:getPort("ros_planner_command"):disconnect()
+	youbot_queue:getPort("ros_cartesian_command"):disconnect()
+
+end
+
+function queue_output_connect()
+
+	depl:stream("YouBot_QUEUE.out_arm_joint_position_command","YouBot_OODL.Arm1.joint_position_command", cp)
+	depl:stream("YouBot_QUEUE.out_arm_joint_velocity_command","YouBot_OODL.Arm1.joint_velocity_command", cp)
+	depl:stream("YouBot_QUEUE.out_arm_joint_effort_command", "YouBot_OODL.Arm1.joint_effort_command", cp)
+	depl:stream("YouBot_QUEUE.out_base_cmd_twist", "YouBot_OODL.Base.cmd_twist", cp)
+	depl:stream("YouBot_QUEUE.out_gripper_joint_position_command", "YouBot_OODL.Gripper1.gripper_cmd_position", cp)
+	depl:stream("YouBot_QUEUE.out_ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal")) -- PLANNER DA INSERIRE
+	depl:stream("YouBot_QUEUE.out_ros_cartesian_command", "YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+
+end
+
 function cartesian_controller_setup()
 
 	depl:connect("YouBot_KINE.EEPose","YouBot_CTRL_CARTESIAN.CartesianSensorPosition",cp)
@@ -147,16 +195,9 @@ function cartesian_controller_setup()
 	K = youbot_ctrl_cartesian:getProperty("K")
 	local gain = 0.1
 	K:fromtab{gain,gain,gain,gain,gain,gain}
-	--print(K)
 
 	depl:stream("YouBot_KINE.EEPose",rtt.provides("ros"):topic("/youbot/EEPose"))
-	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
-	--depl:stream("YouBot_KINE.JointState",rtt.provides("ros"):topic("/joint_states"))
-	--depl:stream("YouBot_KINE.JointVelocities",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
-	--depl:stream("YouBot_KINE.BaseTwist",rtt.provides("ros"):topic("/cmd_vel"))
-	--depl:stream("kine.BaseOdom",rtt.provides("ros"):topic("/odom"))
-	--print("ROS topic enable")
-
+	cartesian_goal_connect()
 end
 
 function cartesian_controller_start()
@@ -177,8 +218,37 @@ function cartesian_controller_start()
 	print("Start Position of Controller")
 	print(startPos)
 	desiredPosPort:write(startPos)
-	--print("Init Cartesian Controller")
-	--control:start()
+
+end
+
+function cartesian_goal_connect()
+
+	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
+
+end
+
+function cartesian_goal_disconnect()
+
+	youbot_ctrl_cartesian:getPort("CartesianDesiredPosition"):disconnect()
+
+end
+
+
+function cartesian_input_from_vrep()
+
+	depl:stream("YouBot_KINE.JointState",rtt.provides("ros"):topic("/joint_states"))
+	depl:stream("YouBot_KINE.JointVelocities",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
+	depl:stream("YouBot_KINE.BaseTwist",rtt.provides("ros"):topic("/cmd_vel"))
+	depl:stream("kine.BaseOdom",rtt.provides("ros"):topic("/odom"))
+
+end
+
+function cartesian_input_from_oodl()
+
+	depl:connect("YouBot_KINE.JointState","YouBot_OODL.Arm1.joint_state",cp)
+	depl:connect("YouBot_KINE.JointVelocities","YouBot_OODL.Arm1.joint_velocity_command",cp)
+	depl:connect("YouBot_KINE.BaseTwist","YouBot_OODL.Base.cmd_twist",cp)
+	depl:connect("YouBot_KINE.BaseOdom","YouBot_OODL.Base.odometry_state",cp)
 
 end
 
@@ -278,23 +348,27 @@ function switch_to(mode)
 		disconnect_oodl_ros_streams()
 		--connect SIM ports and streams
 		connect_vrep_ros_streams()
-
-		--queue_op_is_loading:send(true)
-
-		--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-		--depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_VEL_POSITION_COMMAND))
-		--depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND)
-		--depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND)
-		--depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
-		--depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/test_queue/planner"))
-		--depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/test_queue/cartesian"))
+		--connect queue ports and streams
+		queue_output_disconnect()
+		queue_input_connect()
+		--connect cartesian ports and streams
+		cartesian_input_from_vrep()
+		--activate queue recording
+		queue_op_is_loading:send(true)
 
 	elseif mode == HW then
 		--disconnect SIM ports and streams
 		disconnect_vrep_ros_streams()
 		--connect HW ports and streams
 		connect_oodl_ros_streams()
-
+		--connect queue ports and streams
+		queue_input_disconnect()
+		cartesian_goal_disconnect()
+		queue_output_connect()
+		--connect cartesian ports and streams
+		cartesian_input_from_oodl()
+		--activate queue downloading
+		queue_op_is_loading:send(false)
 	end
 end
 
@@ -302,42 +376,42 @@ end
 -- Mode setup
 if run_status == SIM then
 
-	--youbot_ctrl:configure()
-	--youbot_ctrl:start()
-
 	simulation_setup()
+	cartesian_controller_setup()
+	cartesian_input_from_vrep()
 
 	rtt.logl('Info', "Youbot VREP start.")
 	youbot_vrep:start()
 
+	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
+	cartesian_controller_start()
+
 elseif run_status == HW then
 
 	oodl_setup()
-	queue_setup()
 	cartesian_controller_setup()
-
-	--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	--depl:connect("YouBot_OODL.Arm1.joint_position_command","YouBot_QUEUE.out_arm_joint_position_command",cp)
-
-	depl:connect("YouBot_KINE.JointState","YouBot_OODL.Arm1.joint_state",cp)
-	depl:connect("YouBot_KINE.JointVelocities","YouBot_OODL.Arm1.joint_velocity_command",cp)
-	depl:connect("YouBot_KINE.BaseTwist","YouBot_OODL.Base.cmd_twist",cp)
-	depl:connect("YouBot_KINE.BaseOdom","YouBot_OODL.Base.odometry_state",cp)
+	cartesian_input_from_oodl()
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
-	--cartesian_controller_start()
+	cartesian_controller_start()
 
 elseif run_status == BOTH then
 
 	simulation_setup()
 	oodl_setup()
+	cartesian_controller_setup()
+	cartesian_input_from_oodl()
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
 
 	rtt.logl('Info', "Youbot VREP start.")
 	youbot_vrep:start()
+
+	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
+	cartesian_controller_start()
+
 end
