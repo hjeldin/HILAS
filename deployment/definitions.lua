@@ -162,11 +162,8 @@ end
 
 function vel_startup()
 
-	oodl_arm_op_clear()
-	oodl_base_op_clear()
 	armSetCtrlModes(OODL,2)
 	baseSetCtrlModes(OODL,5)
-	connect_oodl_ros_streams()
 	cartesian_controller_start()
 
 end

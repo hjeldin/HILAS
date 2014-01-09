@@ -14,7 +14,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL = 0, 1, 2, 3, 4, 5 ,6
 
 -- Deployer setup
-run_status = HW
+run_status = BOTH
 deployer_type = LUA_DEPLOYER
 
 TOPIC_ARM_POSITION_COMMAND = "/arm_1/arm_controller/position_command"
@@ -81,6 +81,8 @@ depl:loadComponent("YouBot_QUEUE", "YouBot_queue")
 depl:loadComponent("YouBot_KINE", "Youbot_kinematics")	
 depl:loadComponent("YouBot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
 
+depl:loadComponent("VREP_VISMODE", "OCL::LuaComponent")
+
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
 youbot_vrep = depl:getPeer("YouBot_VREP")
@@ -89,6 +91,8 @@ youbot_queue = depl:getPeer("YouBot_QUEUE")
 
 youbot_kine = depl:getPeer("YouBot_KINE")
 youbot_ctrl_cartesian = depl:getPeer("YouBot_CTRL_CARTESIAN")
+
+vrep_vismode = depl:getPeer("VREP_VISMODE")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
@@ -99,6 +103,8 @@ depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_QUEUE")
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_KINE")
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CTRL_CARTESIAN")
 
+vrep_vismode:exec_file("visualMode.lua")
+
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
 cp.type = rtt.globals.DATA   -- type data
@@ -107,6 +113,20 @@ cp.type = rtt.globals.DATA   -- type data
 print("Starting control loop")
 controlloop_scheduler:configure()
 controlloop_scheduler:start()
+
+vrep_vismode:configure()
+vrep_vismode:start()
+
+depl:stream("VREP_VISMODE.visMode", rtt.provides("ros"):topic("/vrep/vis_mode"))
+
+function vrep_visual_mode(a)
+
+	visModePort = vrep_vismode:getPort("visMode")
+	x = rtt.Variable("/std_msgs/Int32")
+	x.data = a
+	visModePort:write(x)
+
+end
 
 -- Definition setup functions
 function simulation_setup()
@@ -151,9 +171,9 @@ end
 function queue_input_connect()
 
 	depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_VEL_POSITION_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND)
-	depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND)
+	depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
+	depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
+	depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
 	depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
 	depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal"))
 	depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/youbot/desired_ee"))
@@ -174,13 +194,13 @@ end
 
 function queue_output_connect()
 
-	depl:stream("YouBot_QUEUE.out_arm_joint_position_command","YouBot_OODL.Arm1.joint_position_command", cp)
-	depl:stream("YouBot_QUEUE.out_arm_joint_velocity_command","YouBot_OODL.Arm1.joint_velocity_command", cp)
-	depl:stream("YouBot_QUEUE.out_arm_joint_effort_command", "YouBot_OODL.Arm1.joint_effort_command", cp)
-	depl:stream("YouBot_QUEUE.out_base_cmd_twist", "YouBot_OODL.Base.cmd_twist", cp)
-	depl:stream("YouBot_QUEUE.out_gripper_joint_position_command", "YouBot_OODL.Gripper1.gripper_cmd_position", cp)
+	depl:connect("YouBot_QUEUE.out_arm_joint_position_command","YouBot_OODL.Arm1.joint_position_command", cp)
+	depl:connect("YouBot_QUEUE.out_arm_joint_velocity_command","YouBot_OODL.Arm1.joint_velocity_command", cp)
+	depl:connect("YouBot_QUEUE.out_arm_joint_effort_command", "YouBot_OODL.Arm1.joint_effort_command", cp)
+	depl:connect("YouBot_QUEUE.out_base_cmd_twist", "YouBot_OODL.Base.cmd_twist", cp)
+	depl:connect("YouBot_QUEUE.out_gripper_joint_position_command", "YouBot_OODL.Gripper1.gripper_cmd_position", cp)
 	depl:stream("YouBot_QUEUE.out_ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal")) -- PLANNER DA INSERIRE
-	depl:stream("YouBot_QUEUE.out_ros_cartesian_command", "YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+	depl:connect("YouBot_QUEUE.out_ros_cartesian_command", "YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
 
 end
 
@@ -239,7 +259,7 @@ function cartesian_input_from_vrep()
 	depl:stream("YouBot_KINE.JointState",rtt.provides("ros"):topic("/joint_states"))
 	depl:stream("YouBot_KINE.JointVelocities",rtt.provides("ros"):topic("/arm_1/arm_controller/velocity_command"))
 	depl:stream("YouBot_KINE.BaseTwist",rtt.provides("ros"):topic("/cmd_vel"))
-	depl:stream("kine.BaseOdom",rtt.provides("ros"):topic("/odom"))
+	depl:stream("YouBot_KINE.BaseOdom",rtt.provides("ros"):topic("/odom"))
 
 end
 
@@ -344,6 +364,8 @@ end
 function switch_to(mode)
 
 	if mode == SIM then
+		-- visualization mode deactivated
+		vrep_visual_mode(0)
 		--disconnect HW ports and streams
 		disconnect_oodl_ros_streams()
 		--connect SIM ports and streams
@@ -357,6 +379,8 @@ function switch_to(mode)
 		queue_op_is_loading:send(true)
 
 	elseif mode == HW then
+		-- visualization mode activated
+		vrep_visual_mode(1)
 		--disconnect SIM ports and streams
 		disconnect_vrep_ros_streams()
 		--connect HW ports and streams
@@ -372,10 +396,11 @@ function switch_to(mode)
 	end
 end
 
-
 -- Mode setup
 if run_status == SIM then
-
+	-- visualization mode deactivated
+	vrep_visual_mode(0)
+	
 	simulation_setup()
 	cartesian_controller_setup()
 	cartesian_input_from_vrep()
@@ -387,6 +412,8 @@ if run_status == SIM then
 	cartesian_controller_start()
 
 elseif run_status == HW then
+	-- visualization mode activated
+	vrep_visual_mode(1)
 
 	oodl_setup()
 	cartesian_controller_setup()
@@ -394,24 +421,33 @@ elseif run_status == HW then
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
+	oodl_arm_op_clear()
+	oodl_base_op_clear()
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
 	cartesian_controller_start()
 
 elseif run_status == BOTH then
+	-- visualization mode activated
+	vrep_visual_mode(1)
 
 	simulation_setup()
 	oodl_setup()
+	queue_setup()
 	cartesian_controller_setup()
 	cartesian_input_from_oodl()
 
+	connect_oodl_ros_streams()
+
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
+	oodl_arm_op_clear()
+	oodl_base_op_clear()
 
 	rtt.logl('Info', "Youbot VREP start.")
 	youbot_vrep:start()
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
-	cartesian_controller_start()
+	--cartesian_controller_start()
 
 end
