@@ -93,7 +93,7 @@ typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
 
 // Configure path youbot-driver
-#define CFG_YOUBOT_BASE "/home/youbot/youbot_driver/config/"
+#define CFG_YOUBOT_BASE "/home/altair/youbot_driver/config/"
 
 // V-REP define:
 // - IP -> IntParameter (service Set/GetObjectIntParameter)
