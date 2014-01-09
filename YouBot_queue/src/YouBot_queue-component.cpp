@@ -8,7 +8,10 @@ YouBot_queue::YouBot_queue(std::string const& name) : TaskContext(name)
 	from_planner_goal_data = true;
 	time_of_the_last = 0;
 
+	isEmpty = true;
+
     this->addOperation("setIsInLoading", &YouBot_queue::setQueueMode, this);
+	this->addProperty("isEmpty",isEmpty);
 
     //this->addPort("from_hw_odom", from_hw_odom).doc("Odometry status from HW");
     this->addPort("from_planner_goal", from_planner_goal).doc("Planner status from HW");    

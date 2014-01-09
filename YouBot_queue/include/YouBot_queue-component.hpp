@@ -79,6 +79,9 @@ class YouBot_queue : public RTT::TaskContext{
     geometry_msgs::Pose from_cartesian_status_data;
     bool from_planner_goal_data;
 
+    /* Property */
+    bool isEmpty;
+
     /* Command from ROS */
     InputPort<motion_control_msgs::JointPositions> ros_arm_joint_position_command;
     InputPort<motion_control_msgs::JointVelocities> ros_arm_joint_velocity_command;
