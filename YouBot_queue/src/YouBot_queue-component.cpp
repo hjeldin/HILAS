@@ -61,7 +61,6 @@ void YouBot_queue::my_push_front(const queue_item& q)
 	if(queue.size() == 0)
 	{
 		time_of_the_last = q.timestamp;
-		last_command_submitted = q;
 	}
 	queue.push_front(q);
 }
@@ -73,6 +72,9 @@ double getDist(geometry_msgs::Point p1, geometry_msgs::Point p2)
 
 bool YouBot_queue::lastCartesianPoseIsReached()
 {
+	if(last_command_submitted.mode_index == -1)
+		return false;
+
     KDL::Rotation last_cmd_orient =  KDL::Rotation::Quaternion(
     												last_command_submitted.cartesian.orientation.x,
     												last_command_submitted.cartesian.orientation.y,
@@ -92,6 +94,10 @@ bool YouBot_queue::lastCartesianPoseIsReached()
 	diff_orient.GetRPY(diff_roll,diff_pitch,diff_yaw);
 	diff_dist = getDist(last_command_submitted.cartesian.position,from_cartesian_status_data.position);
 
+	ofstream f("ditino.log");
+	f << "Distance: " << diff_dist << "Orientation: " << diff_roll << " " << diff_pitch << " " << diff_yaw;
+	f.close();
+
 	if(diff_dist <= POS_DISTANCE && diff_roll <= ORIENT_OFFSET && diff_pitch <= ORIENT_OFFSET && diff_yaw <= ORIENT_OFFSET)
 		return true;
 	else
@@ -110,78 +116,93 @@ bool YouBot_queue::startHook()
 
 void YouBot_queue::updateHook()
 {
+
+	isEmpty = queue.empty();
+
 	if(isinloading)
 	{
 		if(ros_arm_joint_position_command.read(ros_arm_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(ros_arm_joint_position_command_data,timestamp));
+			std::cout << "Pos in\n";
 		}
 		
 		if(ros_arm_joint_velocity_command.read(ros_arm_joint_velocity_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(ros_arm_joint_velocity_command_data,timestamp));
+			std::cout << "Vel in\n";
 		}
 		
 		if(ros_arm_joint_effort_command.read(ros_arm_joint_effort_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			my_push_front(queue_item(ros_arm_joint_effort_command_data,timestamp));		
+			my_push_front(queue_item(ros_arm_joint_effort_command_data,timestamp));	
+			std::cout << "Eff in\n";
 		}
 
 		if(ros_base_cmd_twist.read(ros_base_cmd_twist_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(ros_base_cmd_twist_data,timestamp));		
+			std::cout << "Twist in\n";
 		}
 
 		if(ros_gripper_joint_position_command.read(ros_gripper_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(ros_gripper_joint_position_command_data,0,timestamp));		
+			std::cout << "Grip in\n";
 		}
 
 		if(ros_planner_command.read(ros_planner_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
-			my_push_front(queue_item(ros_planner_command_data,timestamp));		
+			my_push_front(queue_item(ros_planner_command_data,timestamp));	
+			std::cout << "Planner in\n";	
 		}
 
 		if(ros_cartesian_command.read(ros_cartesian_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(ros_cartesian_command_data,timestamp));		
+			std::cout << "Cart in\n";
 		}
 
 		if(orocos_arm_joint_position_command.read(orocos_arm_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(orocos_arm_joint_position_command_data,timestamp));		
+			std::cout << "Pos oroc in\n";
 		}
 
 		if(orocos_arm_joint_velocity_command.read(orocos_arm_joint_velocity_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(orocos_arm_joint_velocity_command_data,timestamp));		
+			std::cout << "Vel oroc in\n";
 		}
 
 		if(orocos_arm_joint_effort_command.read(orocos_arm_joint_effort_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(orocos_arm_joint_effort_command_data,timestamp));		
+			std::cout << "Eff oroc in\n";
 		}
 
 		if(orocos_base_cmd_twist.read(orocos_base_cmd_twist_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(orocos_base_cmd_twist_data,timestamp));		
+			std::cout << "Twist oroc in\n";
 		}
 
 		if(orocos_gripper_joint_position_command.read(orocos_gripper_joint_position_command_data) == NewData)
 		{
 			uint64_t timestamp = ros::Time::now().toNSec();
 			my_push_front(queue_item(orocos_gripper_joint_position_command_data,3,timestamp));	
+			std::cout << "Grip oroc in\n";
 		}
 	}
 	else
@@ -228,35 +249,44 @@ void YouBot_queue::updateHook()
 			{
 				case 0:
 					out_arm_joint_position_command.write(tmp_now.arm_pos);
+					std::cout << "Pos out\n";
 					break;
 
 				case 1:
 					out_arm_joint_velocity_command.write(tmp_now.arm_vel);
+					std::cout << "Vel out\n";
 					break;
 
 				case 2:
 					out_arm_joint_effort_command.write(tmp_now.arm_eff);			
+					std::cout << "Eff out\n";
 					break;			
 
 				case 3:
 					out_gripper_joint_position_command.write(tmp_now.gripper_pos);				
+					std::cout << "Grip out\n";
 					break;			
 
 				case 4:
 					out_base_cmd_twist.write(tmp_now.base_twist);			
+					std::cout << "Twist out\n";
 					break;
 
 				case 5:
 					out_ros_planner_command.write(tmp_now.planner);
+					std::cout << "Planner out\n";
 					break;
 
 				case 6:
 					out_ros_cartesian_command.write(tmp_now.cartesian);
+					std::cout << "Cart out\n";
 					break;
 
 				default:
 					break;
 			}
+
+			last_command_submitted = tmp_now;
 
 			my_time = now;
 			time_of_the_last = tmp_now.timestamp;

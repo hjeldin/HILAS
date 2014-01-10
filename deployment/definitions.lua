@@ -7,7 +7,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 3, 4, 5 ,6, 7, 8
 
 -- Deployer setup
-run_status = SIM
+run_status = BOTH
 deployer_type = LUA_DEPLOYER
 communication_type = DEBUG
 
@@ -59,10 +59,11 @@ function queue_setup()
 	youbot_queue:configure()
 	youbot_queue:start()
 	queue_op_is_loading = youbot_queue:getOperation("setIsInLoading")
-
+	-- TEST --
+	depl:stream("YouBot_QUEUE.out_ros_cartesian_command", rtt.provides("ros"):topic("/cart_debug"))
 end
 
-function queue_input_disconnect()
+function queue_output_disconnect()
 
 	youbot_queue:getPort("out_arm_joint_position_command"):disconnect()
 	youbot_queue:getPort("out_arm_joint_velocity_command"):disconnect()
@@ -76,17 +77,18 @@ end
 
 function queue_input_connect()
 
-	depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+	--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
+	--depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
+	--depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
+	--depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
+	--depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
 	depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal"))
-	depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/youbot/desired_ee"))
+	depl:connect("YouBot_QUEUE.ros_cartesian_command","MOVE_OUT.moveOut", cp)
+	--depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/youbot/desired_ee"))
 
 end
 
-function queue_output_disconnect()
+function queue_input_disconnect()
 
 	youbot_queue:getPort("ros_arm_joint_position_command"):disconnect()
 	youbot_queue:getPort("ros_arm_joint_velocity_command"):disconnect()
@@ -107,6 +109,9 @@ function queue_output_connect()
 	depl:connect("YouBot_QUEUE.out_gripper_joint_position_command", "YouBot_OODL.Gripper1.gripper_cmd_position", cp)
 	depl:stream("YouBot_QUEUE.out_ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal")) -- PLANNER DA INSERIRE
 	depl:connect("YouBot_QUEUE.out_ros_cartesian_command", "YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+	depl:connect("YouBot_QUEUE.from_cartesian_status", "YouBot_KINE.EEPose", cp)
+	
+	--depl:stream("YouBot_QUEUE.out_ros_cartesian_command", rtt.provides("ros"):topic("/cart_debug"))
 
 end
 
@@ -132,6 +137,8 @@ function cartesian_controller_start()
 	youbot_ctrl_cartesian:configure()
 	youbot_kine:start()
 	youbot_ctrl_cartesian:start()
+
+	depl:connect("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", "MOVE_OUT.moveOut", cp)
 
 	desiredPosPort = rttlib.port_clone_conn(youbot_ctrl_cartesian:getPort("CartesianDesiredPosition"))
 	--print("Configure JointSpaceWeights")
@@ -267,9 +274,59 @@ function disconnect_oodl_ros_streams()
 	oodl_grip_serv:getPort("gripper_cmd_position"):disconnect()
 end
 
-function block_youbot_position()
+function block_youbot_position(mode)
 
+	if mode == OODL then
 
+		-- ARM --
+		armSetCtrlModes(OODL,1)
+
+		local fs, j_states_pos = youbot_kine:getPort("JointState"):read()
+
+		local pos_port_cmd = rttlib.port_clone_conn(oodl_arm_serv:getPort("joint_position_command"))
+		local j_cmd_pos = rtt.Variable("motion_control_msgs.JointPositions")
+
+		j_cmd_pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
+		j_cmd_pos.positions:fromtab{j_states_pos.position[0],j_states_pos.position[1],j_states_pos.position[2],j_states_pos.position[3],j_states_pos.position[4]}
+
+		pos_port_cmd:write(j_cmd_pos)
+		print("Send blocking pose arm")
+		print(j_cmd_pos)
+
+		-- BASE --
+		local j_cmd_twist = rtt.Variable("geometry_msgs.Twist")
+		local twist_base_port_cmd = rttlib.port_clone_conn(oodl_base_serv:getPort("cmd_twist"))
+		
+		twist_base_port_cmd:write(j_cmd_twist)
+		print("Send blocking pose base")
+		print(j_cmd_twist)
+
+	elseif mode == VREP then
+
+		-- ARM --
+		armSetCtrlModes(VREP,1)
+
+		local fs, j_states_pos = youbot_kine:getPort("JointState"):read()
+
+		local pos_port_cmd = rttlib.port_clone_conn(vrep_arm_serv:getPort("joint_position_command"))
+		local j_cmd_pos = rtt.Variable("motion_control_msgs.JointPositions")
+
+		j_cmd_pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
+		j_cmd_pos.positions:fromtab{j_states_pos.position[0],j_states_pos.position[1],j_states_pos.position[2],j_states_pos.position[3],j_states_pos.position[4]}
+
+		pos_port_cmd:write(j_cmd_pos)
+		print("Send blocking pose arm")
+		print(j_cmd_pos)
+
+		-- BASE --
+		local j_cmd_twist = rtt.Variable("geometry_msgs.Twist")
+		local twist_base_port_cmd = rttlib.port_clone_conn(vrep_base_serv:getPort("cmd_twist"))
+		
+		twist_base_port_cmd:write(j_cmd_twist)
+		print("Send blocking pose base")
+		print(j_cmd_twist)
+
+	end		
 
 end
 
@@ -277,7 +334,7 @@ function switch_to(mode)
 
 	if mode == SIM then
 		--blocking youbot on the last position
-		block_youbot_position()
+		block_youbot_position(OODL)
 		--visualization mode deactivated
 		vrep_visual_mode(0)
 		--disconnect HW ports and streams
@@ -293,6 +350,8 @@ function switch_to(mode)
 		queue_op_is_loading:send(true)
 
 	elseif mode == HW then
+		--set ARM control mode -> VEL --
+		armSetCtrlModes(OODL,2)
 		--visualization mode activated
 		vrep_visual_mode(1)
 		--disconnect SIM ports and streams
@@ -500,7 +559,9 @@ function move(dx, dy, dz)
   -- startPos.orientation.y = 0;
   -- startPos.orientation.z = 0;
   -- startPos.orientation.w = -0.7071067811865476;
-  desiredPosPort:write(startPos)
+  --desiredPosPort:write(startPos)
+  port = move_out:getPort("moveOut")
+  port:write(startPos)
   print("New setpoint EE")
 end
 

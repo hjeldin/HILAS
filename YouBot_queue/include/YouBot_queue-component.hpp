@@ -17,7 +17,7 @@
 #include <motion_control_msgs/typekit/Types.h>
 #include <geometry_msgs/typekit/Types.h>
 
-#define POS_DISTANCE 0.5
+#define POS_DISTANCE 0.01
 #define ORIENT_OFFSET 0.5
 
 using namespace RTT;
@@ -39,7 +39,7 @@ struct queue_item
 	int mode_index;
 	uint64_t timestamp;
 
-    queue_item(){}
+    queue_item(){ mode_index = -1; }
 	queue_item(
 		motion_control_msgs::JointPositions ap ,motion_control_msgs::JointVelocities av,
 		motion_control_msgs::JointEfforts ae, motion_control_msgs::JointPositions gp,
