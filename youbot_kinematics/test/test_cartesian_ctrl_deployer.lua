@@ -1,5 +1,4 @@
 require "rttlib"
-require "rfsm_rtt"
 require "rttros"
 
 --ya_file = rttros.find_rospack("youbot_driver_rtt") .. "/lua/youbot_test.lua"
