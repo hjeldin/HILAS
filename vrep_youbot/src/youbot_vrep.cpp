@@ -46,6 +46,11 @@
 #include "pcl/point_types.h"
 #include "pcl/ros/conversions.h"
 
+// TF
+#include <tf/transform_listener.h>
+
+// Interactive Markers
+#include "interactive_marker.hpp"
 
 // General define:
 #define NUM_ARGS 13
@@ -120,6 +125,7 @@ ros::Publisher pubBaseJointState;
 ros::Publisher laserScan;
 ros::Publisher pubVisualizationMode;
 ros::Publisher pubGeometryPoseToVrep;
+ros::Publisher pubEEPoseMarker;
 
 ros::ServiceClient client_cmdPos;
 ros::ServiceClient client_cmdVel;
@@ -633,8 +639,6 @@ void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
   pubGeometryPoseToVrep.publish(pose);
 }
 
-
-
 int main(int argc,char* argv[])
 {
 
@@ -776,9 +780,53 @@ int main(int argc,char* argv[])
   srv_enablePublisher.request.streamCmd=simros_strmcmd_get_joint_state; // the requested publisher type
   srv_enablePublisher.request.auxInt1=all_joints_handle; // some additional information the publisher needs */
 
+  ros::spinOnce();
+
+  //Interactive Markers Setup
+  server.reset( new interactive_markers::InteractiveMarkerServer("basic_controls","",false) );
+  ros::Duration(0.1).sleep();
+  // Get EE Pose
+  tf::StampedTransform tf_odom2EE;
+  geometry_msgs::Pose poseEE;
+  tf::TransformListener tf_listener;
+  try
+  {
+    tf_listener.waitForTransform("/base_link", "/gripper_palm_link", ros::Time(0), ros::Duration(10.0) );
+    tf_listener.lookupTransform("/base_link", "/gripper_palm_link",  ros::Time(0), tf_odom2EE);
+
+    //double roll, pitch, yaw;
+    tf::Quaternion q = tf_odom2EE.getRotation();
+    tf::Vector3 v = tf_odom2EE.getOrigin();
+    poseEE.position.x = v.getX();
+    poseEE.position.y = v.getY();
+    poseEE.position.z = v.getZ() + 0.095;
+
+    std::cout << v.getX() << " " << v.getY() << " " << v.getZ() << std::endl;
+
+    poseEE.orientation.x = q.getX();
+    poseEE.orientation.y = q.getY();
+    poseEE.orientation.z = q.getZ();
+    poseEE.orientation.w = q.getW();
+  }
+  catch (tf::TransformException ex)
+  {
+    ROS_ERROR("%s",ex.what());
+  }
+  make6DofMarker( false , "poseEE",  "/odom",  poseEE);
+  server->applyChanges();
+
+  visualization_msgs::InteractiveMarker eePose_marker;
+  pubEEPoseMarker = node.advertise<geometry_msgs::Pose>("/interactiveEEPose",1);
+
   while(ros::ok() && simulationRunning)
   {
       ros::spinOnce();
+
+      //Read interactive marker EEpose 
+      server->get("poseEE", eePose_marker);
+      pubEEPoseMarker.publish(eePose_marker.pose);
       usleep(5000);
   }        
+
+  server.reset();
 }

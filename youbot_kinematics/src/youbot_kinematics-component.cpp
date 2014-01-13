@@ -168,6 +168,14 @@ void Youbot_kinematics::updateHook(){
 	std::stringstream jointName;	
 	int ret = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
 	if (ret>=0){
+		for(unsigned int i=0; i < 3; i++)
+		{
+			if(m_jnt_array.qdot(i) > 0.2)
+				m_jnt_array.qdot(i) = 0.2;
+
+			if(m_jnt_array.qdot(i) < -0.2)
+				m_jnt_array.qdot(i) = -0.2;			
+		}
 		m_base_twist.linear.x=m_jnt_array.qdot(0);
 		m_base_twist.linear.y=m_jnt_array.qdot(1);
 		m_base_twist.angular.z=m_jnt_array.qdot(2);
