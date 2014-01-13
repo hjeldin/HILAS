@@ -64,6 +64,7 @@ depl:loadComponent("YouBot_CTRL_CARTESIAN", "MotionControl::CartesianControllerP
 
 depl:loadComponent("VREP_VISMODE", "OCL::LuaComponent")
 depl:loadComponent("MOVE_OUT", "OCL::LuaComponent")
+depl:loadComponent("SUPERVISOR", "OCL::LuaComponent")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
@@ -76,6 +77,7 @@ youbot_ctrl_cartesian = depl:getPeer("YouBot_CTRL_CARTESIAN")
 
 vrep_vismode = depl:getPeer("VREP_VISMODE")
 move_out = depl:getPeer("MOVE_OUT")
+supervisor = depl:getPeer("SUPERVISOR")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
@@ -88,6 +90,7 @@ depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CTRL_CARTESIAN")
 
 vrep_vismode:exec_file("visualMode.lua")
 move_out:exec_file("move.lua")
+supervisor:exec_file("supervisor.lua")
 
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
@@ -103,6 +106,9 @@ vrep_vismode:start()
 
 move_out:configure()
 move_out:start()
+
+supervisor:configure()
+supervisor:start()
 
 depl:stream("VREP_VISMODE.visMode", rtt.provides("ros"):topic("/vrep/vis_mode"))
 

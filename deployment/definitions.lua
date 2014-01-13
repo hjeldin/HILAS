@@ -1,6 +1,9 @@
 
 -- GLOBAL DEFINITIONS --
 
+CARTESIAN_GAIN_VREP = 0.02
+CARTESIAN_GAIN_OODL = 0.2
+
 rttlib.color = true
 
 -- Enum definition
@@ -31,6 +34,14 @@ function vrep_visual_mode(a)
 	x = rtt.Variable("/std_msgs/Int32")
 	x.data = a
 	visModePort:write(x)
+
+end
+
+function vel_startup()
+
+	armSetCtrlModes(OODL,2)
+	baseSetCtrlModes(OODL,5)
+	cartesian_controller_start()
 
 end
 
@@ -333,6 +344,8 @@ end
 function switch_to(mode)
 
 	if mode == SIM then
+		--set gain cartesian controller
+		setK(CARTESIAN_GAIN_VREP)
 		--blocking youbot on the last position
 		block_youbot_position(OODL)
 		--visualization mode deactivated
@@ -350,6 +363,8 @@ function switch_to(mode)
 		queue_op_is_loading:send(true)
 
 	elseif mode == HW then
+		--set gain cartesian controller
+		setK(CARTESIAN_GAIN_OODL)
 		--set ARM control mode -> VEL --
 		armSetCtrlModes(OODL,2)
 		--visualization mode activated
@@ -360,7 +375,7 @@ function switch_to(mode)
 		connect_oodl_ros_streams()
 		--connect queue ports and streams
 		queue_input_disconnect()
-		cartesian_goal_disconnect()
+		--cartesian_goal_disconnect()
 		queue_output_connect()
 		--connect cartesian ports and streams
 		cartesian_input_from_oodl()
@@ -532,12 +547,21 @@ function baseSetPos(stype,a,b,c,d)
 	print(pos)
 end
 
-function vel_startup()
+function gripSetStat(stype,a)
 
-	armSetCtrlModes(OODL,2)
-	baseSetCtrlModes(OODL,5)
-	cartesian_controller_start()
+	if stype == VREP then
+		serv = vrep_grip_serv
+	elseif stype == OODL then
+		serv = oodl_grip_serv
+	end
 
+	port = rttlib.port_clone_conn(serv:getPort("gripper_cmd_position"))	
+	pos = rtt.Variable("motion_control_msgs.JointPositions")
+	pos.positions:fromtab{a}
+	pos.names:fromtab{"gripper_pos"}
+	port:write(pos)
+	print("Send pose")
+	print(pos)
 end
 
 -- CARTESIAN CONTROLLER FUNCTIONS -- 
