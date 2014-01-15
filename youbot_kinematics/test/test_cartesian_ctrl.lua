@@ -41,7 +41,7 @@ depl:stream("kine.EEPose",cp)
 cp.name_id="/youbot/desired_ee"
 depl:stream("controller.CartesianDesiredPosition",cp)
 
-cp.name_id="/joint_states"
+cp.name_id="/vrep/arm_1/joint_states"
 depl:stream("kine.JointState",cp)
 
 cp.name_id="/arm_1/arm_controller/velocity_command"

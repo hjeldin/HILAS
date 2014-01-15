@@ -5,6 +5,7 @@
 #include <kdl/frames_io.hpp>
 #include <kdl/kinfam_io.hpp>
 #include <iostream>
+#include <math.h>
 
 using namespace KDL;
 using namespace RTT; 
@@ -29,10 +30,16 @@ Youbot_kinematics::Youbot_kinematics(std::string const& name) : TaskContext(name
   m_joint_state.velocity.resize(5);
   m_joint_state.effort.resize(5);
 
+  joints_min_limits.assign(5,0);
+  joints_max_limits.assign(5,0);
+
   m_joint_velocities.names.assign(5, "arm_joint");
   m_joint_velocities.velocities.assign(5,0.0);
+
   m_w_js.assign(8,1.0);
   m_w_ts.assign(6,1);
+
+  joints_norm.assign(5,0);
 
   port_joint_velocities.write(m_joint_velocities);
   port_base_twist.write(m_ee_twist);
@@ -73,17 +80,34 @@ bool Youbot_kinematics::configureHook(){
 
 	pose_to_jnt_solver_->setLambda(0.5);
 	SetToZero(m_jnt_array);
-	m_Mq.setIdentity();
-	m_My.setIdentity();
+	
+	m_Mq_identity.setIdentity();
+	m_My_identity.setIdentity();
+
+	m_Mq_jlc.setIdentity();
+	m_Mq_jlc.setIdentity();
+
 	SetToZero(m_twist);
-	pose_to_jnt_solver_->setWeightJS(m_Mq);
-	pose_to_jnt_solver_->setWeightTS(m_My);
+	pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
+	pose_to_jnt_solver_->setWeightTS(m_My_identity);
   	
 	m_joint_velocities.names[0] = "arm_joint_1";
 	m_joint_velocities.names[1] = "arm_joint_2";
 	m_joint_velocities.names[2] = "arm_joint_3";
 	m_joint_velocities.names[3] = "arm_joint_4";
 	m_joint_velocities.names[4] = "arm_joint_5";
+
+	joints_min_limits[0] = 0.01;
+	joints_min_limits[1] = 0.01;
+	joints_min_limits[2] = -5.0215;
+	joints_min_limits[3] = 0.022;
+	joints_min_limits[4] = 0.11073;
+
+	joints_max_limits[0] = 5.8343;
+	joints_max_limits[1] = 2.61538;
+	joints_max_limits[2] = -0.0157;
+	joints_max_limits[3] = 3.42577;
+	joints_max_limits[4] = 5.63595;
 
   	std::cout << "|YoubotKinematics| configured !" <<std::endl;
   	return true;
@@ -110,19 +134,19 @@ bool Youbot_kinematics::startHook(){
 
 void Youbot_kinematics::updateHook(){
 	if(port_w_ts.read(m_w_ts)==NewData){
-		if((int)m_w_ts.size()==m_My.rows()){
-			for(unsigned int i=0;i<m_My.rows();i++)
-				m_My(i,i)=m_w_ts[i];
-			pose_to_jnt_solver_->setWeightTS(m_My);
+		if((int)m_w_ts.size()==m_My_identity.rows()){
+			for(unsigned int i=0;i<m_My_identity.rows();i++)
+				m_My_identity(i,i)=m_w_ts[i];
+			pose_to_jnt_solver_->setWeightTS(m_My_identity);
 		}
 		else
 			log(Error)<<"Data on "<<port_w_ts.getName()<<" has the wrong size."<<endlog();
 	}
 	if(port_w_js.read(m_w_js)==NewData){
-		if((int)m_w_js.size()==m_Mq.rows()){
-			for(unsigned int i=0;i<m_Mq.rows();i++)
-				m_Mq(i,i)=m_w_js[i];
-			pose_to_jnt_solver_->setWeightJS(m_Mq);
+		if((int)m_w_js.size()==m_Mq_identity.rows()){
+			for(unsigned int i=0;i<m_Mq_identity.rows();i++)
+				m_Mq_identity(i,i)=m_w_js[i];
+			pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
 		}
 		else
 			log(Error)<<"Data on "<<port_w_js.getName()<<" has the wrong size."<<endlog();
@@ -146,9 +170,16 @@ void Youbot_kinematics::updateHook(){
 
 	if(port_joint_state.read(m_joint_state)==NewData){
             //Leave out the base for now, start from 3
-		for(unsigned int i=3;i<m_jnt_array.q.rows();i++){
+		for(unsigned int i=3;i<m_jnt_array.q.rows();i++)
+		{
 			m_jnt_array.q(i)=m_joint_state.position[i-3];
 			m_jnt_array.qdot(i)=m_joint_state.velocity[i-3];
+
+			//Set joint space weighting matrix --> Joint space limits control
+			joints_norm[i-3] = (((m_jnt_array.q(i) - joints_min_limits[i-3]) / (joints_max_limits[i-3] - joints_min_limits[i-3])) * 2) -1;
+			//m_Mq_jlc(i,i) = 1 - pow(m_Mq_jlc(i,i),4);
+			//std::cout << "joint_state[" << i-2 << "].position =" << m_jnt_array.q(i) << std::endl;
+			//std::cout << "joints_norm(" << i << "," << i << ")=" << joints_norm[i-3] << std::endl;
 		}
 		update_pose=true;
 	}
@@ -167,7 +198,43 @@ void Youbot_kinematics::updateHook(){
 	port_ee_twist_rtt.read(m_twist);
 	std::stringstream jointName;	
 	int ret = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
+
+	if(ret >= 0) {
+		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
+		{
+			if(joints_norm[i-3] < -0.9 && m_jnt_array.qdot(i) < 0) //joint status: min_limit & counter-clockwise movement
+			{
+				m_Mq_jlc(i,i) = 1 - pow(joints_norm[i-3],4);
+			}
+
+			if(joints_norm[i-3] < -0.9 && m_jnt_array.qdot(i) > 0) //joint status: min_limit & clockwise movement
+			{
+				//std::cout << "[ARM JOINT " << i-2 << " norm: " << joints_norm[i-3] << "] joint status: min_limit & clockwise movement" << std::endl;
+				//joints_norm[i-3] = -1;
+				m_Mq_jlc(i,i) = 1;
+			}
+
+			if(joints_norm[i-3] > 0.9 && m_jnt_array.qdot(i) > 0) //joint status: max_limit & clockwise movement
+			{
+				m_Mq_jlc(i,i) = 1 - pow(joints_norm[i-3],4);
+			}
+
+			if(joints_norm[i-3] > 0.9 && m_jnt_array.qdot(i) < 0) //joint status: max_limit & counter-clockwise movement
+			{
+				//std::cout << "[ARM JOINT " << i-2 << " norm: " << joints_norm[i-3] << "] joint status: max_limit & counter-clockwise movement" << std::endl;
+				m_Mq_jlc(i,i) = 1;
+			}
+
+		}
+	}
+
+	//std::cout << "---------------------------------------" << std::endl;
+
+	pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
+	ret = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
+
 	if (ret>=0){
+		// BASE
 		for(unsigned int i=0; i < 3; i++)
 		{
 			if(m_jnt_array.qdot(i) > 0.2)
@@ -179,11 +246,14 @@ void Youbot_kinematics::updateHook(){
 		m_base_twist.linear.x=m_jnt_array.qdot(0);
 		m_base_twist.linear.y=m_jnt_array.qdot(1);
 		m_base_twist.angular.z=m_jnt_array.qdot(2);
+
+		// ARM
 		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
 		{
 			//jointName.str("");
 			//jointName << "arm_joint_" << (i-2);
 			//m_joint_velocities.names[i-3]= jointName.str();
+
 			if(m_jnt_array.qdot(i) > 0.3)
 				m_jnt_array.qdot(i) = 0.3;
 
@@ -191,12 +261,15 @@ void Youbot_kinematics::updateHook(){
 				m_jnt_array.qdot(i) = -0.3;
 
 			m_joint_velocities.velocities[i-3]= m_jnt_array.qdot(i);
+			//std::cout << "[ARM JOINT " << i-2 << " velocity " << m_joint_velocities.velocities[i-3] << std::endl;
 		}
 	}
 	else{
+		// BASE
 		m_base_twist.linear.x=0;
 		m_base_twist.linear.y=0;
 		m_base_twist.angular.z=0;
+		// ARM
 		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
 		{
 			//jointName.str("");
@@ -206,6 +279,10 @@ void Youbot_kinematics::updateHook(){
 		}
 		log(Error)<<"Could not calculate IVK: " << ret <<endlog();
 	}
+
+	//Reset weight joint space
+	pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
+
 	port_joint_velocities.write(m_joint_velocities);
 	port_base_twist.write(m_base_twist);
 }

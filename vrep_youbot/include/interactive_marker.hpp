@@ -64,8 +64,6 @@ Marker makeBox( InteractiveMarker &msg, geometry_msgs::Pose pose)
 
   marker.pose = pose;
 
-  std::cout << "SONQUI " << pose.position.x << std::endl;
-
   return marker;
 }
 

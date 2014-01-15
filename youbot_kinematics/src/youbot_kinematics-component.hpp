@@ -58,12 +58,25 @@ private:
     KDL::FrameVel m_frame_vel;
     KDL::Twist m_twist;
     KDL::Chain m_chain;
-    Eigen::Matrix<double,8,8> m_Mq;
-    Eigen::Matrix<double,6,6> m_My;
+
+    /** Joint Space Weighting matrix -> identity **/
+    Eigen::Matrix<double,8,8> m_Mq_identity;
+    Eigen::Matrix<double,6,6> m_My_identity;
+
+    /** Joint Space Weighting matrix -> joint limit control **/
+    Eigen::Matrix<double,8,8> m_Mq_jlc;
+    Eigen::Matrix<double,6,6> m_My_jlc;
+
+    /** Norm Joints **/
+    std::vector<double> joints_norm;
 
     boost::shared_ptr<KDL::ChainFkSolverVel_recursive> jnt_to_pose_solver_;
     boost::shared_ptr<KDL::ChainIkSolverVel_wdls> pose_to_jnt_solver_;
     //boost::shared_ptr<KDL::ChainJntToJacSolver> jnt_to_jac_solver_;
+
+    /** Joints limits **/
+    std::vector<double> joints_min_limits;
+    std::vector<double> joints_max_limits;
 
 };
 #endif
