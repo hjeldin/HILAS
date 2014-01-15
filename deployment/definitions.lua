@@ -139,7 +139,7 @@ function cartesian_controller_setup()
 	K:fromtab{gain,gain,gain,gain,gain,gain}
 
 	depl:stream("YouBot_KINE.EEPose",rtt.provides("ros"):topic("/youbot/EEPose"))
-	--cartesian_goal_connect()
+	cartesian_goal_connect()
 end
 
 function cartesian_controller_start()
@@ -167,7 +167,8 @@ end
 
 function cartesian_goal_connect()
 
-	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
+	--depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
+	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/interactiveEEPose"))
 
 end
 
