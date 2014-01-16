@@ -34,11 +34,15 @@ K:fromtab{gain,gain,gain,gain,gain,gain}
 print(K)
 
 cp = rtt.Variable("ConnPolicy")
+cp.type = 2
+cp.size = 100
+cp.init = true
+cp.lock_policy = 0
 cp.transport=3
 cp.name_id= "/youbot/EEPose"
 depl:stream("kine.EEPose",cp)
 
-cp.name_id="/youbot/desired_ee"
+cp.name_id="/interactiveEEPose"
 depl:stream("controller.CartesianDesiredPosition",cp)
 
 cp.name_id="/vrep/arm_1/joint_states"
@@ -56,8 +60,8 @@ depl:stream("kine.BaseOdom",cp)
 
 print("ROS topic enable")
 
-control:setPeriod(0.005)
-kine:setPeriod(0.005)
+control:setPeriod(0.002)
+kine:setPeriod(0.002)
 
 kine:configure()
 control:configure()

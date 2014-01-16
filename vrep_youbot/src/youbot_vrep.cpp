@@ -708,25 +708,25 @@ int main(int argc,char* argv[])
   ros::Subscriber subInfo=node.subscribe("/vrep/info",1,infoCallback);
 
   // Ros Subscriber Command Arm Joint Position 
-  ros::Subscriber subCmdPos = node.subscribe<motion_control_msgs::JointPositions>(TOPIC_ARM_JOINT_POSITION_COMMAND, 10, cmdPosArmJointCallback);
+  ros::Subscriber subCmdPos = node.subscribe<motion_control_msgs::JointPositions>(TOPIC_ARM_JOINT_POSITION_COMMAND, 1, cmdPosArmJointCallback);
 
   // Ros Subscriber Command Gripper Position
-  ros::Subscriber subCmdGripperPos = node.subscribe<motion_control_msgs::JointPositions>(TOPIC_GRIPPER_POSITION_COMMAND, 10, cmdPosGripperCallback);
+  ros::Subscriber subCmdGripperPos = node.subscribe<motion_control_msgs::JointPositions>(TOPIC_GRIPPER_POSITION_COMMAND, 1, cmdPosGripperCallback);
 
   // Ros Subscriber Command Arm Velocity
-  ros::Subscriber subCmdVel = node.subscribe<motion_control_msgs::JointVelocities>(TOPIC_VELOCITY_COMMAND, 10, cmdVelCallback);
+  ros::Subscriber subCmdVel = node.subscribe<motion_control_msgs::JointVelocities>(TOPIC_VELOCITY_COMMAND, 1, cmdVelCallback);
 
   // Ros Subscriber Command Arm Torque
-  ros::Subscriber subCmdForce = node.subscribe<motion_control_msgs::JointEfforts>(TOPIC_TORQUE_COMMAND, 10, cmdForceCallback);
+  ros::Subscriber subCmdForce = node.subscribe<motion_control_msgs::JointEfforts>(TOPIC_TORQUE_COMMAND, 1, cmdForceCallback);
 
   // Ros Subscriber Command Base Twist
-  ros::Subscriber subCmdTwist = node.subscribe<geometry_msgs::Twist>(TOPIC_TWIST_COMMAND, 10, cmdTwistCallback);
+  ros::Subscriber subCmdTwist = node.subscribe<geometry_msgs::Twist>(TOPIC_TWIST_COMMAND, 1, cmdTwistCallback);
 
   // Ros Subscriber Twist (odom part)
-  ros::Subscriber subReadTwist = node.subscribe<geometry_msgs::TwistStamped>(TOPIC_TWIST_READ, 10, readTwistCallback);
+  ros::Subscriber subReadTwist = node.subscribe<geometry_msgs::TwistStamped>(TOPIC_TWIST_READ, 1, readTwistCallback);
 
   // Ros Subscriber LaserScan (sensor)
-  ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud2>(TOPIC_LASERSCAN_READ,1000,pointCloud2LaserScanCallback);
+  ros::Subscriber laserscanPointCloud = node.subscribe<sensor_msgs::PointCloud2>(TOPIC_LASERSCAN_READ,1,pointCloud2LaserScanCallback);
 
   // Ros Publisher JointStates remapped
   //pubJointStates=node.advertise<sensor_msgs::JointState>("/joint_states",10);
@@ -737,7 +737,7 @@ int main(int argc,char* argv[])
                                                              -> BASE */
 
   /* Ros Subscriber JointStates from SIM*/
-  ros::Subscriber subJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_ALL_JOINT_STATE, 10, allJointStateCallback);
+  ros::Subscriber subJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_ALL_JOINT_STATE, 1, allJointStateCallback);
 
   /* Ros Publisher JointStates remapped for Orocos */
   /* ARM */
@@ -765,9 +765,9 @@ int main(int argc,char* argv[])
   client_setObjectPose = node.serviceClient<vrep_common::simRosSetObjectPose>("/vrep/simRosSetObjectPose");
   client_setJointState = node.serviceClient<vrep_common::simRosSetJointState>("/vrep/simRosSetJointState");
 
-  ros::Subscriber subArmJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE_FROM_HW, 10, armJointStateFromHWCallback);
-  ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 10, baseJointStateFromHWCallback);
-  ros::Subscriber subOdometryFromHW = node.subscribe<nav_msgs::Odometry>(TOPIC_ODOM_STATE_FROM_HW, 10, odomStateFromHWCallback);
+  ros::Subscriber subArmJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_ARM_JOINT_STATE_FROM_HW, 1, armJointStateFromHWCallback);
+  ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 1, baseJointStateFromHWCallback);
+  ros::Subscriber subOdometryFromHW = node.subscribe<nav_msgs::Odometry>(TOPIC_ODOM_STATE_FROM_HW, 1, odomStateFromHWCallback);
 
   pubVisualizationMode = node.advertise<std_msgs::Int32>(TOPIC_RESET_DYNAMIC,1);
 
@@ -779,8 +779,6 @@ int main(int argc,char* argv[])
   srv_enablePublisher.request.queueSize=1; // the requested publisher queue size (on V-REP side)
   srv_enablePublisher.request.streamCmd=simros_strmcmd_get_joint_state; // the requested publisher type
   srv_enablePublisher.request.auxInt1=all_joints_handle; // some additional information the publisher needs */
-
-  ros::spinOnce();
 
   //Interactive Markers Setup
   server.reset( new interactive_markers::InteractiveMarkerServer("basic_controls","",false) );
@@ -816,7 +814,8 @@ int main(int argc,char* argv[])
   server->applyChanges();
 
   visualization_msgs::InteractiveMarker eePose_marker;
-  pubEEPoseMarker = node.advertise<geometry_msgs::Pose>("/interactiveEEPose",1);
+  pubEEPoseMarker = node.advertise<geometry_msgs::Pose>("/interactiveEEPose",10);
+
 
   while(ros::ok() && simulationRunning)
   {
@@ -825,7 +824,7 @@ int main(int argc,char* argv[])
       //Read interactive marker EEpose 
       server->get("poseEE", eePose_marker);
       pubEEPoseMarker.publish(eePose_marker.pose);
-      usleep(500);
+      usleep(10000);
   }        
 
   server.reset();
