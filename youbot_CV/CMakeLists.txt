@@ -16,6 +16,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
+include_directories(${PROJECT_SOURCE_DIR}/../../../V-REP_PRO_EDU_V3_0_5c_64_Linux/programming)
+
 #find_package(VTK REQUIRED)
 #include(${VTK_USE_FILE})
 
@@ -30,7 +32,6 @@ rosbuild_add_executable(pointcloud_triangulate src/pointcloud_triangulate.cpp)
 rosbuild_add_executable(pointcloud_streamer src/pointcloud_streamer.cpp)
 #common commands for building c++ executables and libraries
 #rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
 #rosbuild_add_executable(example examples/example.cpp)
