@@ -31,6 +31,7 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		cameraSubscriber = nh->subscribe <sensor_msgs::PointCloud2> ("/camera/depth_registered/points",1,cloud_cb);
 	} else {
 		ROS_INFO("Stop pointcloud publishing");
+		queuedCloud = sensor_msgs::PointCloud2::Ptr(new sensor_msgs::PointCloud2());
 		cameraSubscriber.shutdown();
 	}
 }
