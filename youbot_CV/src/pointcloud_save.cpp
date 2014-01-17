@@ -89,7 +89,7 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		seg.setOptimizeCoefficients(true);
 		seg.setModelType(pcl::SACMODEL_PLANE);
 		seg.setMethodType(pcl::SAC_RANSAC);
-		seg.setDistanceThreshold(0.01);
+		seg.setDistanceThreshold(0.1);
 		seg.setInputCloud(accumCloud);
 		seg.segment(*inliers,*coefficients);
 
@@ -106,13 +106,15 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		extract.setNegative(false);
 		extract.filter(*planes);
 
+		//Remove planes from accumulation Point Cloud
+		extract.setNegative(true);
+		extract.filter(*accumCloud);
 
 		cameraSubscriber.shutdown();
+		pcl::io::savePCDFile("planes.pcd",*planes);
+		pcl::io::savePCDFile("test.pcd",*accumCloud);		
 		
 		pcdToMesh();
-		//repPlaceMesh();
-		pcl::io::savePCDFile("planes.pcd",*planes);
-		pcl::io::savePCDFile("test.pcd",*accumCloud);
 		std::cout << "Job complete" << std::endl;
 		exit(1);
 	}
@@ -139,6 +141,8 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	pcl::removeNaNFromPointCloud(*cloud,*cloud,v_nan);
 
 	//TODO: should subscribe to /tf, save previous /tf, subtract the two and transform each accumulated point cloud accordingly
+	//tf::StampedTransform st;
+	//tfListener->lookupTransform("/camera/tf","/tf",ros::Time::now(),st);
 
 	// Add acquired pointcloud
 	*accumCloud += *cloud;
@@ -149,6 +153,9 @@ int main(int argc, char ** argv)
 {
 	ros::init(argc,argv,"pcl_save");
 	nh = new ros::NodeHandle();
+	tfListener = new tf::TransformListener();
+
+
 	startAcquisition = nh->subscribe<std_msgs::Bool>("/camera/startAcquisition",1,acquisitionCamera);
 	ros::spin();
 	return 0;

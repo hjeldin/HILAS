@@ -2,6 +2,7 @@
 #define PCL_SAVE
 
 #include <ros/ros.h>
+#include <tf/transform_listener.h>
 #include <iostream>
 #include <sstream>
 #include <ctime>
@@ -39,6 +40,7 @@ time_t timer;
 int prevActivation = false;
 LIBRARY vrepLib;
 
+tf::TransformListener * tfListener;
 
 void vrepPlaceMesh();
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg);
