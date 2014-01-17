@@ -144,10 +144,10 @@ void Youbot_kinematics::updateHook(){
 			log(Error)<<"Data on "<<port_w_ts.getName()<<" has the wrong size."<<endlog();
 	}
 	if(port_w_js.read(m_w_js)==NewData){
-		if((int)m_w_js.size()==m_Mq_identity.rows()){
-			for(unsigned int i=0;i<m_Mq_identity.rows();i++)
-				m_Mq_identity(i,i)=m_w_js[i];
-			pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
+		if((int)m_w_js.size()==m_Mq_jlc.rows()){
+			for(unsigned int i=0;i<m_Mq_jlc.rows();i++)
+				m_Mq_jlc(i,i)=m_w_js[i];
+			pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
 		}
 		else
 			log(Error)<<"Data on "<<port_w_js.getName()<<" has the wrong size."<<endlog();
