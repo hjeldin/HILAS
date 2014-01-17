@@ -18,6 +18,8 @@
 #include <pcl/io/obj_io.h>
 #include <pcl/surface/gp3.h>
 
+#include "v_repLib.h"
+
 ros::NodeHandle *nh;
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr accumCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -25,6 +27,8 @@ ros::Subscriber cameraSubscriber;
 ros::Subscriber startAcquisition;
 ros::Publisher voxelizedPC;
 time_t timer;
+int prevActivation = false;
+LIBRARY vrepLib;
 
 void pcdToMesh()
 {
@@ -75,16 +79,27 @@ void pcdToMesh()
 
 void vrepPlaceMesh()
 {
-	simxStart();
+	vrepLib=loadVrepLibrary("/home/hjeldin/DEV/youbot-stack/youbot_CV/lib/libv_rep.so");
+	if(vrepLib == NULL)
+	{
+		std::cout << "WRONNNG" << std::endl;
+		exit(1);
+	}
+
+	int wat = getVrepProcAddresses(vrepLib);
+	if(wat == NULL)
+	{
+		std::cout << "dunno"<< std::endl;
+		exit(1);
+	}
 
     simFloat** vertices;
     simInt* verticesSizes;
     simInt** indices;
     simInt* indicesSizes;
     simChar** names;
-
     simInt elementCount=simImportMesh(0,"./mesh.obj",0,0.0001f,1.0f,&vertices,&verticesSizes,&indices,&indicesSizes,NULL,&names);
-
+    std::cout << "imported? " << elementCount << std::endl;
     if (elementCount>0)
     {
         const float grey[3]={0.5f,0.5f,0.5f};
@@ -112,9 +127,12 @@ void acquisitionCamera(const std_msgs::Bool msg)
 	if(msg.data == true)
 	{
 		cameraSubscriber = nh->subscribe <sensor_msgs::PointCloud2> ("/camera/voxelizedPC",1,cloud_cb);
+		prevActivation = true;
 	}
 	else
 	{
+		if(!prevActivation) return;
+		
 		timer = time(NULL);
 
 		sensor_msgs::PointCloud2::Ptr tmpcloud(new sensor_msgs::PointCloud2());
