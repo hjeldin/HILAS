@@ -1,39 +1,47 @@
-#include <ros/ros.h>
-#include <iostream>
-#include <sstream>
-#include <ctime>
-#include <sensor_msgs/PointCloud2.h>
-#include <std_msgs/Bool.h>
-#include <pcl/ros/conversions.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/filters/filter.h>
-#include <pcl/filters/voxel_grid.h>
+#include "pointcloud_save.h"
 
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/features/normal_3d_omp.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/io/obj_io.h>
-#include <pcl/surface/gp3.h>
-#include <dlfcn.h>
-#include "v_repLib.h"
+//FIXME: should be both vrep native and ros plugin.
+//it's basically a mess.
 
-LIBRARY vrepLib;
-ros::NodeHandle *nh;
-
-int main(int argc, char** argv)
+void vrepPlaceMesh()
 {
-	ros::init(argc,argv,"vreptest");
-	nh = new ros::NodeHandle();
 	vrepLib=loadVrepLibrary("/home/hjeldin/DEV/youbot-stack/youbot_CV/lib/libv_rep.so");
-
 	if(vrepLib == NULL)
 	{
-		std::cout << dlerror() << std::endl;
+		std::cout << "WRONNNG" << std::endl;
 		exit(1);
 	}
-	ros::spin();
-	return 0;
+
+	int wat = getVrepProcAddresses(vrepLib);
+	if(wat == NULL)
+	{
+		std::cout << "dunno"<< std::endl;
+		exit(1);
+	}
+
+    simFloat** vertices;
+    simInt* verticesSizes;
+    simInt** indices;
+    simInt* indicesSizes;
+    simChar** names;
+    simInt elementCount=simImportMesh(0,"./mesh.obj",0,0.0001f,1.0f,&vertices,&verticesSizes,&indices,&indicesSizes,NULL,&names);
+    std::cout << "imported? " << elementCount << std::endl;
+    if (elementCount>0)
+    {
+        const float grey[3]={0.5f,0.5f,0.5f};
+        for (int i=0;i<elementCount;i++)
+        {
+            simInt shapeHandle=simCreateMeshShape(2,20.0f*3.1415f/180.0f,vertices[i],verticesSizes[i],indices[i],indicesSizes[i],NULL);
+            simSetObjectName(shapeHandle,names[i]);
+            simSetShapeColor(shapeHandle,"",0,grey);
+            simReleaseBuffer(names[i]);
+            simReleaseBuffer((simChar*)indices[i]);
+            simReleaseBuffer((simChar*)vertices[i]);
+        }
+        simReleaseBuffer((simChar*)names);
+        simReleaseBuffer((simChar*)indicesSizes);
+        simReleaseBuffer((simChar*)indices);
+        simReleaseBuffer((simChar*)verticesSizes);
+        simReleaseBuffer((simChar*)vertices);
+    }	
 }

@@ -1,34 +1,4 @@
-#include <ros/ros.h>
-#include <iostream>
-#include <sstream>
-#include <ctime>
-#include <sensor_msgs/PointCloud2.h>
-#include <std_msgs/Bool.h>
-#include <pcl/ros/conversions.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/filters/filter.h>
-#include <pcl/filters/voxel_grid.h>
-
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/features/normal_3d_omp.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/io/obj_io.h>
-#include <pcl/surface/gp3.h>
-
-#include "v_repLib.h"
-
-ros::NodeHandle *nh;
-
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr accumCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
-ros::Subscriber cameraSubscriber;
-ros::Subscriber startAcquisition;
-ros::Publisher voxelizedPC;
-time_t timer;
-int prevActivation = false;
-LIBRARY vrepLib;
+#include "pointcloud_save.h"
 
 void pcdToMesh()
 {
@@ -77,51 +47,6 @@ void pcdToMesh()
 	std::cout << "Mesh saved" << std::endl;	
 }
 
-void vrepPlaceMesh()
-{
-	vrepLib=loadVrepLibrary("/home/hjeldin/DEV/youbot-stack/youbot_CV/lib/libv_rep.so");
-	if(vrepLib == NULL)
-	{
-		std::cout << "WRONNNG" << std::endl;
-		exit(1);
-	}
-
-	int wat = getVrepProcAddresses(vrepLib);
-	if(wat == NULL)
-	{
-		std::cout << "dunno"<< std::endl;
-		exit(1);
-	}
-
-    simFloat** vertices;
-    simInt* verticesSizes;
-    simInt** indices;
-    simInt* indicesSizes;
-    simChar** names;
-    simInt elementCount=simImportMesh(0,"./mesh.obj",0,0.0001f,1.0f,&vertices,&verticesSizes,&indices,&indicesSizes,NULL,&names);
-    std::cout << "imported? " << elementCount << std::endl;
-    if (elementCount>0)
-    {
-        const float grey[3]={0.5f,0.5f,0.5f};
-        for (int i=0;i<elementCount;i++)
-        {
-            simInt shapeHandle=simCreateMeshShape(2,20.0f*3.1415f/180.0f,vertices[i],verticesSizes[i],indices[i],indicesSizes[i],NULL);
-            simSetObjectName(shapeHandle,names[i]);
-            simSetShapeColor(shapeHandle,"",0,grey);
-            simReleaseBuffer(names[i]);
-            simReleaseBuffer((simChar*)indices[i]);
-            simReleaseBuffer((simChar*)vertices[i]);
-        }
-        simReleaseBuffer((simChar*)names);
-        simReleaseBuffer((simChar*)indicesSizes);
-        simReleaseBuffer((simChar*)indices);
-        simReleaseBuffer((simChar*)verticesSizes);
-        simReleaseBuffer((simChar*)vertices);
-    }	
-}
-
-void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg);
-
 void acquisitionCamera(const std_msgs::Bool msg)
 {
 	if(msg.data == true)
@@ -138,21 +63,58 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		sensor_msgs::PointCloud2::Ptr tmpcloud(new sensor_msgs::PointCloud2());
 		pcl::toROSMsg(*accumCloud, *tmpcloud);
 		
-		
-		pcl::VoxelGrid<sensor_msgs::PointCloud2> sor; 
-		sor.setInputCloud (tmpcloud);
-		sor.setLeafSize (0.01, 0.01, 0.01);
-		sor.filter (*tmpcloud);
+		ROS_INFO("Voxelizing and filtering outliers");
+		//Voxelization with 1cm resolution
+		pcl::VoxelGrid<sensor_msgs::PointCloud2> vox; 
+		vox.setInputCloud (tmpcloud);
+		vox.setLeafSize (0.01, 0.01, 0.01);
+		vox.filter (*tmpcloud);
 
 		pcl::fromROSMsg(*tmpcloud,*accumCloud);
+
+		//Statistical outlier removal
+		pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
+		sor.setInputCloud(accumCloud);
+		sor.setMeanK(50);
+		sor.setStddevMulThresh(1.0);
+		sor.filter(*accumCloud);
+
+
+		//Do we really need planar extraction? YES
+		// If we can get a plane, we could simply add a goddamned fucking plane to vrep instead of the whole pointcloud
+		pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
+		pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
+		ROS_INFO("Planes segmentation");
+		pcl::SACSegmentation<pcl::PointXYZRGB> seg;
+		seg.setOptimizeCoefficients(true);
+		seg.setModelType(pcl::SACMODEL_PLANE);
+		seg.setMethodType(pcl::SAC_RANSAC);
+		seg.setDistanceThreshold(0.01);
+		seg.setInputCloud(accumCloud);
+		seg.segment(*inliers,*coefficients);
+
+		if(inliers->indices.size()==0)
+		{
+			ROS_INFO("Could not estimate planar model.");
+			//exit(1)
+		}
+
+		pcl::ExtractIndices<pcl::PointXYZRGB> extract;
+		pcl::PointCloud<pcl::PointXYZRGB>::Ptr planes (new pcl::PointCloud<pcl::PointXYZRGB>);
+		extract.setInputCloud(accumCloud);
+		extract.setIndices(inliers);
+		extract.setNegative(false);
+		extract.filter(*planes);
+
 
 		cameraSubscriber.shutdown();
 		
 		pcdToMesh();
-		vrepPlaceMesh();
-
-		//pcl::io::savePCDFile("test.pcd",*accumCloud);
+		//repPlaceMesh();
+		pcl::io::savePCDFile("planes.pcd",*planes);
+		pcl::io::savePCDFile("test.pcd",*accumCloud);
 		std::cout << "Job complete" << std::endl;
+		exit(1);
 	}
 }
 
@@ -175,6 +137,8 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	// NaN points
 	std::vector<int> v_nan;
 	pcl::removeNaNFromPointCloud(*cloud,*cloud,v_nan);
+
+	//TODO: should subscribe to /tf, save previous /tf, subtract the two and transform each accumulated point cloud accordingly
 
 	// Add acquired pointcloud
 	*accumCloud += *cloud;

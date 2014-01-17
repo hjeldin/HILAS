@@ -26,7 +26,6 @@ include_directories(${PROJECT_SOURCE_DIR}/../../../V-REP_PRO_EDU_V3_0_5c_64_Linu
 #uncomment if you have defined services
 #rosbuild_gensrv()
 
-rosbuild_add_executable(rvrep_test src/testvrep.cpp src/v_repLib.cpp)
 rosbuild_add_executable(pointcloud_save src/pointcloud_save.cpp src/v_repLib.cpp)
 rosbuild_add_executable(pointcloud_triangulate src/pointcloud_triangulate.cpp)
 rosbuild_add_executable(pointcloud_streamer src/pointcloud_streamer.cpp)

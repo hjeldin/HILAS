@@ -13,10 +13,14 @@
 #include <pcl/filters/voxel_grid.h>
 
 ros::NodeHandle *nh;
-
+ros::Rate * loop_rate;
 ros::Subscriber cameraSubscriber;
 ros::Subscriber startAcquisition;
 ros::Publisher voxelizedPC;
+
+//define a queue cloud that will be published only when the rate says it
+sensor_msgs::PointCloud2::Ptr queuedCloud (new sensor_msgs::PointCloud2 ()); 
+
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg);
 
 void acquisitionCamera(const std_msgs::Bool msg)
@@ -43,17 +47,32 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	sor.setLeafSize (0.01, 0.01, 0.01);
 	sor.filter (*cloud_downsampled);
 
-	//Publish on specified topic
-	voxelizedPC.publish(*cloud_downsampled);
+	*queuedCloud = *cloud_downsampled;
+
 }
 
 int main(int argc, char ** argv)
 {
 	ros::init(argc,argv,"pcl_stream");
+
 	nh = new ros::NodeHandle();
+
+	loop_rate = new ros::Rate(1);
 
 	startAcquisition = nh->subscribe<std_msgs::Bool>("/camera/startAcquisition",1,acquisitionCamera);
 	voxelizedPC = nh->advertise<sensor_msgs::PointCloud2>("/camera/voxelizedPC", 5);
-	ros::spin();
+
+	while(ros::ok())
+	{
+
+		if(queuedCloud->data.size() > 0)
+		{
+			ROS_INFO("Published new pointcloud with required frequency");
+			voxelizedPC.publish(*queuedCloud);
+		}
+		loop_rate->sleep();
+		ros::spinOnce();
+	}
+
 	return 0;
 }
