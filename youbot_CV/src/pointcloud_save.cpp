@@ -1,5 +1,21 @@
 #include "pointcloud_save.h"
 
+
+
+void vrepPlaceMesh()
+{
+	ros::ServiceClient client = nh->serviceClient<vrep_common::simRosImportMesh>("/vrep/simRosImportMesh");
+    vrep_common::simRosImportMesh srv;
+    srv.request.fileFormat = 0;
+    srv.request.fileName = std::string("/home/hjeldin/DEV/youbot-stack/youbot_CV/bin/mesh.obj");
+    srv.request.options = 0;
+    srv.request.identicalVerticeTolerance = 0.0001f;
+    if (client.call(srv))
+    {
+        ROS_INFO("ahah ok");
+    }
+}
+
 void pcdToMesh()
 {
 	//normal estimation
@@ -43,6 +59,8 @@ void pcdToMesh()
 	gp3.reconstruct (triangles);
 
 	pcl::io::saveOBJFile ("mesh.obj", triangles);
+
+	vrepPlaceMesh();
 
 	std::cout << "Mesh saved" << std::endl;	
 }
