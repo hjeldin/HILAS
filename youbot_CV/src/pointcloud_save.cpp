@@ -71,18 +71,24 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		vox.filter (*tmpcloud);
 
 		pcl::fromROSMsg(*tmpcloud,*accumCloud);
-
+		pcl::io::savePCDFile("voxelized.pcd",*accumCloud);	
 		//Statistical outlier removal
 		pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
 		sor.setInputCloud(accumCloud);
 		sor.setMeanK(50);
 		sor.setStddevMulThresh(1.0);
 		sor.filter(*accumCloud);
+		pcl::io::savePCDFile("sor.pcd",*accumCloud);	
 
-
-		//Do we really need planar extraction? YES
+		// TODO: Do we really need planar extraction? YES
 		// If we can get a plane, we could simply add a goddamned fucking plane to vrep instead of the whole pointcloud
-		pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
+		// EDIT: actually, no, plane extraction is crappy with kinect sensors since depth extrapolation sucks.
+		// 		 so we should rely on triangulation and semplification using quadric error. That if, of course, 
+		//		 we can actually manage to grab meaningful pointclouds.
+		// SEE:  http://users.csc.calpoly.edu/~zwood/teaching/csc570/final06/jseeba/ or
+		//		 http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/08_Simplification.pdf
+
+		/*pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
 		pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
 		ROS_INFO("Planes segmentation");
 		pcl::SACSegmentation<pcl::PointXYZRGB> seg;
@@ -96,7 +102,6 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		if(inliers->indices.size()==0)
 		{
 			ROS_INFO("Could not estimate planar model.");
-			//exit(1)
 		}
 
 		pcl::ExtractIndices<pcl::PointXYZRGB> extract;
@@ -109,9 +114,10 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		//Remove planes from accumulation Point Cloud
 		extract.setNegative(true);
 		extract.filter(*accumCloud);
+		*/
 
 		cameraSubscriber.shutdown();
-		pcl::io::savePCDFile("planes.pcd",*planes);
+		//pcl::io::savePCDFile("planes.pcd",*planes);
 		pcl::io::savePCDFile("test.pcd",*accumCloud);		
 		
 		pcdToMesh();
