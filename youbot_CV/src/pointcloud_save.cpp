@@ -58,6 +58,10 @@ void pcdToMesh()
 	gp3.setSearchMethod (tree2);
 	gp3.reconstruct (triangles);
 
+	// Here we should call meshlabserver and wait till it returns
+
+	// Here we rotate the mesh to align to vrep's axis.
+
 	pcl::io::saveOBJFile ("mesh.obj", triangles);
 
 	vrepPlaceMesh();
@@ -164,10 +168,22 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	std::vector<int> v_nan;
 	pcl::removeNaNFromPointCloud(*cloud,*cloud,v_nan);
 
-	//TODO: should subscribe to /tf, save previous /tf, subtract the two and transform each accumulated point cloud accordingly
-	//tf::StampedTransform st;
-	//tfListener->lookupTransform("/camera/tf","/tf",ros::Time::now(),st);
 
+	pcl::PassThrough<pcl::PointXYZRGB> pass;
+	pass.setInputCloud (cloud);
+	pass.setFilterFieldName ("z");
+	// TODO: Limits will be set by messages
+	pass.setFilterLimits (0.0, 3.4);
+	//pass.setFilterLimitsNegative (true);
+	pass.filter (*cloud);
+
+	st = new tf::StampedTransform();
+	//TODO: should subscribe to /tf, save previous /tf, subtract the two and transform each accumulated point cloud accordingly
+	tfListener->lookupTransform("/arm_link_5","/base_link",ros::Time(),(*st));
+	Eigen::Matrix4f T; 
+	pcl_ros::transformAsMatrix ((*st), T); 
+	delete st;
+	pcl::transformPointCloud(*cloud,*cloud,T);
 	// Add acquired pointcloud
 	*accumCloud += *cloud;
 	std::cout << "Added frame to accumulation point cloud" << std::endl;
@@ -178,7 +194,6 @@ int main(int argc, char ** argv)
 	ros::init(argc,argv,"pcl_save");
 	nh = new ros::NodeHandle();
 	tfListener = new tf::TransformListener();
-
 
 	startAcquisition = nh->subscribe<std_msgs::Bool>("/camera/startAcquisition",1,acquisitionCamera);
 	ros::spin();
