@@ -1,7 +1,10 @@
 #include "pointcloud_save.h"
 
+pcl::PointCloud<pcl::PointXYZRGB> * prevCloud;
 
+std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> cloud_container;
 
+int pcdCounter = 0;
 void vrepPlaceMesh()
 {
 	ros::ServiceClient client = nh->serviceClient<vrep_common::simRosImportMesh>("/vrep/simRosImportMesh");
@@ -16,15 +19,47 @@ void vrepPlaceMesh()
     }
 }
 
+void alignPCLs()
+{
+
+	pcl::PointCloud<pcl::PointXYZRGB>::Ptr firstCloud = cloud_container[0];
+	// Add acquired pointcloud
+	pcl::PointCloud<pcl::PointXYZRGB>::Ptr totalCloud (new pcl::PointCloud<pcl::PointXYZRGB>);
+	for(std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr>::iterator it = cloud_container.begin(); it != cloud_container.end(); it++)
+	{
+		pcl::IterativeClosestPoint<pcl::PointXYZRGB, pcl::PointXYZRGB> icp;
+		pcl::PointCloud<pcl::PointXYZRGB>::Ptr _tmptr (firstCloud);
+
+		icp.setMaxCorrespondenceDistance (0.05);
+		icp.setMaximumIterations (50);
+		icp.setTransformationEpsilon (1e-8);		
+		icp.setEuclideanFitnessEpsilon (1);
+		icp.setInputCloud((*it));
+		icp.setInputTarget(_tmptr);
+		icp.align(*(*it));
+		std::cout << "has converged:" << icp.hasConverged() << " " << icp.getFitnessScore() << " " << std::endl;
+		if(icp.getFitnessScore() < 0.1f){
+	  		Eigen::Matrix4f T = icp.getFinalTransformation();
+	  		pcl::transformPointCloud(**it,**it,T);
+	  		*(*it) += *accumCloud;
+	  		*totalCloud += *(*it);
+	  	}
+	  	firstCloud = *(it);
+	}
+
+	*accumCloud = *totalCloud;
+
+	
+	//pcl::io::savePCDFile(ss.str().c_str(),*cloud);
+	//prevCloud = new pcl::PointCloud<pcl::PointXYZRGB>(*cloud);
+}
+
+
 void pcdToMesh()
 {
-	//normal estimation
-	pcl::NormalEstimation<pcl::PointXYZRGB,pcl::Normal> n;
 
 	//openMP normal estimation
 	pcl::NormalEstimationOMP<pcl::PointXYZRGB,pcl::Normal> ompn;
-
-	pcl::PointCloud<pcl::Normal>::Ptr normals ( new pcl::PointCloud<pcl::Normal> );
 	pcl::PointCloud<pcl::Normal>::Ptr normals_omp ( new pcl::PointCloud<pcl::Normal> );
 	pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>);
 
@@ -81,7 +116,7 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		if(!prevActivation) return;
 		
 		timer = time(NULL);
-
+		alignPCLs();
 		sensor_msgs::PointCloud2::Ptr tmpcloud(new sensor_msgs::PointCloud2());
 		pcl::toROSMsg(*accumCloud, *tmpcloud);
 		
@@ -93,50 +128,7 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		vox.filter (*tmpcloud);
 
 		pcl::fromROSMsg(*tmpcloud,*accumCloud);
-		pcl::io::savePCDFile("voxelized.pcd",*accumCloud);	
-		//Statistical outlier removal
-		pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
-		sor.setInputCloud(accumCloud);
-		sor.setMeanK(50);
-		sor.setStddevMulThresh(1.0);
-		sor.filter(*accumCloud);
-		pcl::io::savePCDFile("sor.pcd",*accumCloud);	
-
-		// TODO: Do we really need planar extraction? YES
-		// If we can get a plane, we could simply add a goddamned fucking plane to vrep instead of the whole pointcloud
-		// EDIT: actually, no, plane extraction is crappy with kinect sensors since depth extrapolation sucks.
-		// 		 so we should rely on triangulation and semplification using quadric error. That if, of course, 
-		//		 we can actually manage to grab meaningful pointclouds.
-		// SEE:  http://users.csc.calpoly.edu/~zwood/teaching/csc570/final06/jseeba/ or
-		//		 http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/08_Simplification.pdf
-
-		/*pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
-		pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
-		ROS_INFO("Planes segmentation");
-		pcl::SACSegmentation<pcl::PointXYZRGB> seg;
-		seg.setOptimizeCoefficients(true);
-		seg.setModelType(pcl::SACMODEL_PLANE);
-		seg.setMethodType(pcl::SAC_RANSAC);
-		seg.setDistanceThreshold(0.1);
-		seg.setInputCloud(accumCloud);
-		seg.segment(*inliers,*coefficients);
-
-		if(inliers->indices.size()==0)
-		{
-			ROS_INFO("Could not estimate planar model.");
-		}
-
-		pcl::ExtractIndices<pcl::PointXYZRGB> extract;
-		pcl::PointCloud<pcl::PointXYZRGB>::Ptr planes (new pcl::PointCloud<pcl::PointXYZRGB>);
-		extract.setInputCloud(accumCloud);
-		extract.setIndices(inliers);
-		extract.setNegative(false);
-		extract.filter(*planes);
-
-		//Remove planes from accumulation Point Cloud
-		extract.setNegative(true);
-		extract.filter(*accumCloud);
-		*/
+		pcl::io::savePCDFile("voxelized.pcd",*accumCloud);
 
 		cameraSubscriber.shutdown();
 		//pcl::io::savePCDFile("planes.pcd",*planes);
@@ -156,10 +148,10 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 
 	std::cout << (*cloud).size() << std::endl;
 	// Create the filtering object
-	pcl::VoxelGrid<sensor_msgs::PointCloud2> sor; 
-	sor.setInputCloud (msg);
-	sor.setLeafSize (0.01, 0.01, 0.01);
-	sor.filter (*cloud_downsampled);
+	pcl::VoxelGrid<sensor_msgs::PointCloud2> vox; 
+	vox.setInputCloud (msg);
+	vox.setLeafSize (0.01, 0.01, 0.01);
+	vox.filter (*cloud_downsampled);
 
 	pcl::fromROSMsg(*cloud_downsampled, *cloud);
 	std::cout << (*cloud).size() << std::endl;
@@ -173,19 +165,37 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	pass.setInputCloud (cloud);
 	pass.setFilterFieldName ("z");
 	// TODO: Limits will be set by messages
-	pass.setFilterLimits (0.0, 3.4);
+	pass.setFilterLimits (0.1, 4);
 	//pass.setFilterLimitsNegative (true);
 	pass.filter (*cloud);
+	
+	pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
+	sor.setInputCloud(cloud);
+	sor.setMeanK(50);
+	sor.setStddevMulThresh(1.0);
+	sor.filter(*cloud);
+	//pcl::io::savePCDFile("sor.pcd",*accumCloud);	
+
+	pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>);
+	pcl::MovingLeastSquares<pcl::PointXYZRGB, pcl::PointNormal> mls;
+	mls.setInputCloud (cloud);
+	mls.setPolynomialFit (true);
+	mls.setSearchMethod (tree);
+	mls.setSearchRadius (0.05); 
+	mls.reconstruct(*cloud);
 
 	st = new tf::StampedTransform();
-	//TODO: should subscribe to /tf, save previous /tf, subtract the two and transform each accumulated point cloud accordingly
-	tfListener->lookupTransform("/arm_link_5","/base_link",ros::Time(),(*st));
+	tfListener->lookupTransform("/base_link","/camera_rgb_optical_frame",ros::Time(),(*st));
 	Eigen::Matrix4f T; 
 	pcl_ros::transformAsMatrix ((*st), T); 
 	delete st;
 	pcl::transformPointCloud(*cloud,*cloud,T);
-	// Add acquired pointcloud
-	*accumCloud += *cloud;
+	cloud_container.push_back(cloud);
+
+	std::stringstream ss;
+	ss<< pcdCounter<<".pcd";
+	pcdCounter++;
+	pcl::io::savePCDFile(ss.str().c_str(),*cloud);
 	std::cout << "Added frame to accumulation point cloud" << std::endl;
 }
 

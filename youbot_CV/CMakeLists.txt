@@ -40,3 +40,4 @@ rosbuild_add_executable(pointcloud_streamer src/pointcloud_streamer.cpp)
 
 
 target_link_libraries(camera_calibrate ${OpenCV_LIBS})
+target_link_libraries(pointcloud_save pcl_filters)

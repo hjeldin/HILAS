@@ -32,6 +32,9 @@
 #include <pcl_ros/transforms.h> 
 #include <pcl/filters/passthrough.h>
 #include "vrep_common/simRosImportMesh.h"
+#include <pcl/filters/bilateral.h>
+#include <pcl/surface/mls.h>
+#include <pcl/registration/icp.h>
 
 ros::NodeHandle *nh;
 
