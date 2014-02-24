@@ -37,7 +37,7 @@ void alignPCLs()
 		icp.setInputCloud((*it));
 		icp.setInputTarget(_tmptr);
 		icp.align(*(*it));
-		std::cout << "has converged:" << icp.hasConverged() << " " << icp.getFitnessScore() << " " << std::endl;
+		ROS_DEBUG_STREAM("has converged:" << icp.hasConverged() << " " << icp.getFitnessScore());
 		if(icp.getFitnessScore() < 0.1f){
 	  		Eigen::Matrix4f T = icp.getFinalTransformation();
 	  		pcl::transformPointCloud(**it,**it,T);
@@ -48,10 +48,6 @@ void alignPCLs()
 	}
 
 	*accumCloud = *totalCloud;
-
-	
-	//pcl::io::savePCDFile(ss.str().c_str(),*cloud);
-	//prevCloud = new pcl::PointCloud<pcl::PointXYZRGB>(*cloud);
 }
 
 
@@ -67,9 +63,9 @@ void pcdToMesh()
 	ompn.setInputCloud(accumCloud);
 	ompn.setSearchMethod(tree);
 	ompn.setKSearch(20);
-	std::cout << "Starting normal estimation with openMP" << std::endl;
+	ROS_DEBUG("Starting normal estimation with openMP");
 	ompn.compute(*normals_omp);
-	std::cout << "Normals estimated" << std::endl;
+	ROS_DEBUG("Normals estimated");
 
 	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointXYZRGBNormal>);
 	pcl::concatenateFields(*accumCloud,*normals_omp,*cloud_normals);
@@ -101,7 +97,7 @@ void pcdToMesh()
 
 	vrepPlaceMesh();
 
-	std::cout << "Mesh saved" << std::endl;	
+	ROS_DEBUG("Mesh saved");
 }
 
 void acquisitionCamera(const std_msgs::Bool msg)
@@ -135,7 +131,7 @@ void acquisitionCamera(const std_msgs::Bool msg)
 		pcl::io::savePCDFile("test.pcd",*accumCloud);		
 		
 		pcdToMesh();
-		std::cout << "Job complete" << std::endl;
+		ROS_INFO("Job complete");
 		exit(1);
 	}
 }
@@ -146,7 +142,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	sensor_msgs::PointCloud2::Ptr cloud_downsampled (new sensor_msgs::PointCloud2 ()); 
 	pcl::fromROSMsg(*msg,*cloud);
 
-	std::cout << (*cloud).size() << std::endl;
+	ROS_INFO_STREAM("Received " << (*cloud).size()<< " points. Downsampling...");
 	// Create the filtering object
 	pcl::VoxelGrid<sensor_msgs::PointCloud2> vox; 
 	vox.setInputCloud (msg);
@@ -154,21 +150,25 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	vox.filter (*cloud_downsampled);
 
 	pcl::fromROSMsg(*cloud_downsampled, *cloud);
-	std::cout << (*cloud).size() << std::endl;
+	ROS_INFO_STREAM("to " << (*cloud).size()<< " points.");
 
 	// NaN points
 	std::vector<int> v_nan;
 	pcl::removeNaNFromPointCloud(*cloud,*cloud,v_nan);
 
-
+	//grab only points from y[0.1m,4m], z[0.1,4]
 	pcl::PassThrough<pcl::PointXYZRGB> pass;
 	pass.setInputCloud (cloud);
 	pass.setFilterFieldName ("z");
 	// TODO: Limits will be set by messages
-	pass.setFilterLimits (0.1, 4);
+	pass.setFilterLimits (0.1, 1.5);
 	//pass.setFilterLimitsNegative (true);
 	pass.filter (*cloud);
-	
+	//pass.setInputCloud(cloud);
+	//pass.setFilterFieldName("y");
+	//pass.setFilterLimits(0.0,4);
+	//pass.filter(*cloud);
+
 	pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
 	sor.setInputCloud(cloud);
 	sor.setMeanK(50);
@@ -185,8 +185,9 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	mls.reconstruct(*cloud);
 
 	st = new tf::StampedTransform();
-	tfListener->lookupTransform("/base_link","/camera_rgb_optical_frame",ros::Time(),(*st));
-	Eigen::Matrix4f T; 
+	tfListener->waitForTransform("/base_link", "/camera_depth_optical_frame",msg->header.stamp, ros::Duration(0.1));
+	tfListener->lookupTransform("/base_link","/camera_depth_optical_frame",msg->header.stamp,(*st));	
+	Eigen::Matrix4f T; 	
 	pcl_ros::transformAsMatrix ((*st), T); 
 	delete st;
 	pcl::transformPointCloud(*cloud,*cloud,T);
@@ -196,7 +197,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg)
 	ss<< pcdCounter<<".pcd";
 	pcdCounter++;
 	pcl::io::savePCDFile(ss.str().c_str(),*cloud);
-	std::cout << "Added frame to accumulation point cloud" << std::endl;
+	ROS_DEBUG("Added frame to accumulation point cloud");
 }
 
 int main(int argc, char ** argv)
@@ -204,7 +205,7 @@ int main(int argc, char ** argv)
 	ros::init(argc,argv,"pcl_save");
 	nh = new ros::NodeHandle();
 	tfListener = new tf::TransformListener();
-
+	ROS_INFO("Waiting for /camera/startAcquisition to be true");
 	startAcquisition = nh->subscribe<std_msgs::Bool>("/camera/startAcquisition",1,acquisitionCamera);
 	ros::spin();
 	return 0;
