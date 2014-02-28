@@ -52,6 +52,7 @@ depl:import("YouBot_queue")
 
 depl:import("youbot_kinematics")
 depl:import("cartesian_motion_control")
+depl:import("YouBot_adapters")
 
 -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
@@ -61,6 +62,7 @@ depl:loadComponent("YouBot_QUEUE", "YouBot_queue")
 
 depl:loadComponent("YouBot_KINE", "Youbot_kinematics")	
 depl:loadComponent("YouBot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
+depl:loadComponent("YouBotStateRepublisher", "YouBot::YouBotStateRepublisher")
 
 depl:loadComponent("VREP_VISMODE", "OCL::LuaComponent")
 depl:loadComponent("MOVE_OUT", "OCL::LuaComponent")
@@ -74,6 +76,7 @@ youbot_queue = depl:getPeer("YouBot_QUEUE")
 
 youbot_kine = depl:getPeer("YouBot_KINE")
 youbot_ctrl_cartesian = depl:getPeer("YouBot_CTRL_CARTESIAN")
+youbot_repub = depl:getPeer("YouBotStateRepublisher")
 
 vrep_vismode = depl:getPeer("VREP_VISMODE")
 move_out = depl:getPeer("MOVE_OUT")
@@ -87,6 +90,7 @@ depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_QUEUE")
 
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_KINE")
 depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CTRL_CARTESIAN")
+depl:setMasterSlaveActivity("controlloop_scheduler","YouBotStateRepublisher")
 
 vrep_vismode:exec_file("visualMode.lua")
 move_out:exec_file("move.lua")
@@ -133,14 +137,18 @@ elseif run_status == HW then
 	vrep_visual_mode(1)
 
 	oodl_setup()
+	youbot_repub:configure()
 
 	cartesian_controller_setup()
 	cartesian_input_from_oodl()
 
 	rtt.logl('Info', "Youbot OODL start.")
 	youbot_oodl:start()
+	youbot_republisher_oodl()
+	youbot_repub:start()
+
 	oodl_arm_op_clear()
-	oodl_base_op_clear()
+	oodl_base_op_clear()	
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
 	cartesian_controller_start()

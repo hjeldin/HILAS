@@ -10,7 +10,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 3, 4, 5 ,6, 7, 8
 
 -- Deployer setup
-run_status = BOTH
+run_status = HW
 deployer_type = LUA_DEPLOYER
 communication_type = DEBUG
 
@@ -195,6 +195,14 @@ function cartesian_input_from_oodl()
 	depl:connect("YouBot_KINE.BaseTwist","YouBot_OODL.Base.cmd_twist",cp)
 	depl:connect("YouBot_KINE.BaseOdom","YouBot_OODL.Base.odometry_state",cp)
 
+end
+
+function youbot_republisher_oodl()
+
+	depl:connect("YouBotStateRepublisher.arm_state","YouBot_OODL.Arm1.joint_state",cp)
+	depl:connect("YouBotStateRepublisher.base_state","YouBot_OODL.Base.joint_state",cp)
+	depl:stream("YouBotStateRepublisher.youbot_state",rtt.provides("ros"):topic("/joint_states"))
+	depl:stream("YouBotStateRepublisher.odometry_state",rtt.provides("ros"):topic("/odom"))
 end
 
 function connect_vrep_ros_streams()
