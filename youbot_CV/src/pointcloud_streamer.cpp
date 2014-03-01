@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
 
 	nh = new ros::NodeHandle();
 
-	loop_rate = new ros::Rate(1);
+	loop_rate = new ros::Rate(0.2);
 
 	startAcquisition = nh->subscribe<std_msgs::Bool>("/camera/startAcquisition",1,acquisitionCamera);
 	voxelizedPC = nh->advertise<sensor_msgs::PointCloud2>("/camera/voxelizedPC", 5);

@@ -28,6 +28,12 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/filters/extract_indices.h>
+#include <pcl_ros/transforms.h> 
+#include <pcl/filters/passthrough.h>
+#include "vrep_common/simRosImportMesh.h"
+#include <pcl/filters/bilateral.h>
+#include <pcl/surface/mls.h>
+#include <pcl/registration/icp.h>
 
 ros::NodeHandle *nh;
 
@@ -39,6 +45,7 @@ time_t timer;
 int prevActivation = false;
 
 tf::TransformListener * tfListener;
+tf::StampedTransform * st;
 
 void vrepPlaceMesh();
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& msg);

@@ -14,7 +14,9 @@
   <depend package="openni_launch"/>
   <depend package="pcl"/>  
   <depend package="pcl_ros"/>  
-
+  <depend package="vrep_common" />
+  <depend package="opencv2"/>
+  <depend package="cv_bridge" />
 </package>
 
 
