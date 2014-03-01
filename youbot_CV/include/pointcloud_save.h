@@ -22,7 +22,6 @@
 #include <pcl/io/obj_io.h>
 #include <pcl/surface/gp3.h>
 
-#include "v_repLib.h"
 #include <pcl/filters/statistical_outlier_removal.h>
 
 #include <pcl/sample_consensus/method_types.h>
@@ -38,7 +37,6 @@ ros::Subscriber startAcquisition;
 ros::Publisher voxelizedPC;
 time_t timer;
 int prevActivation = false;
-LIBRARY vrepLib;
 
 tf::TransformListener * tfListener;
 
