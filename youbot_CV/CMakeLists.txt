@@ -21,7 +21,7 @@ if(NOT OpenCV_DIR)
 endif(NOT OpenCV_DIR)
 FIND_PACKAGE(OpenCV REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR}/../../../V-REP_PRO_EDU_V3_0_5c_64_Linux/programming)
+include_directories(~/V-REP_PRO_EDU_V3_1_0c_64_Linux/programming)
 
 #find_package(VTK REQUIRED)
 #include(${VTK_USE_FILE})

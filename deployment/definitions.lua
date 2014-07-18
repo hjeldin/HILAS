@@ -10,7 +10,7 @@ rttlib.color = true
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 3, 4, 5 ,6, 7, 8
 
 -- Deployer setup
-run_status = HW
+run_status = SIM
 deployer_type = LUA_DEPLOYER
 communication_type = DEBUG
 
@@ -138,6 +138,9 @@ function cartesian_controller_setup()
 	local gain = 0.02
 	K:fromtab{gain,gain,gain,gain,gain,gain}
 
+        depl:stream("YouBot_KINE.JointSpaceWeights_ROS", rtt.provides("ros"):topic("/youbot/JointSpaceWeights"))
+        depl:stream("YouBot_KINE.TaskSpaceWeights_ROS", rtt.provides("ros"):topic("/youbot/TaskSpaceWeights"))
+
 	depl:stream("YouBot_KINE.EEPose",rtt.provides("ros"):topic("/youbot/EEPose"))
 	cartesian_goal_connect()
 end
@@ -167,8 +170,8 @@ end
 
 function cartesian_goal_connect()
 
-	--depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
-	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/interactiveEEPose"))
+        depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
+        --depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/interactiveEEPose"))
 
 end
 

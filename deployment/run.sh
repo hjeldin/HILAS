@@ -8,7 +8,8 @@ source $YOUR_WORKSPACE/setup.bash
 
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$YOUR_WORKSPACE
 
-export ROS_MASTER_URI=http://youbot-01:11311
+#export ROS_MASTER_URI=http://youbot-01:11311
+export ROS_MASTER_URI=http://altair-XPS-8500:11311
 export YOUBOT_PATH=$(rosstack find youbot-stack)
 
 export LUA_PATH="$LUA_PATH;`rospack find ocl`/lua/modules/?.lua"

@@ -40,6 +40,7 @@
 #include "vrep_common/simRosGetObjectPose.h"
 #include "vrep_common/simRosSetObjectPose.h"
 #include "vrep_common/simRosSetJointState.h"
+#include "vrep_common/simRosSetJointForce.h"
 
 #include "pcl/point_cloud.h"
 #include "pcl_ros/point_cloud.h"
@@ -68,8 +69,11 @@
 #define TOPIC_ALL_JOINT_STATE "/joint_states"
 #define TOPIC_ARM_JOINT_STATE "/vrep/arm_1/joint_states"
 #define TOPIC_BASE_JOINT_STATE "/vrep/base/joint_states"
-#define TF_ODOM_FRAME_ID  "odom"
-#define TF_ODOM_CHILD_FRAME_ID "base_footprint"
+//#define TF_ODOM_FRAME_ID  "odom"
+//define TF_ODOM_CHILD_FRAME_ID "base_footprint"
+#define TF_ODOM_FRAME_ID  "odom_groundtruth"
+#define TF_ODOM_CHILD_FRAME_ID "base_link_ground_truth"
+
 #define TOPIC_LASERSCAN_READ "/vrep/rangeFinderData"
 /* VISUALIZATION MODE */
 #define TOPIC_BASE_JOINT_STATE_FROM_HW "/vrep/hw_rx/base/joint_state"
@@ -77,7 +81,7 @@
 #define TOPIC_ODOM_STATE_FROM_HW "/vrep/hw_rx/odom"
 #define TOPIC_POSE_STATE_TO_VREP "/vrep/hw_rx/pose"
 
-#define TOPIC_RESET_DYNAMIC "/vrep/visMode"
+#define TOPIC_VIS_MODE "/vrep/vis_mode"
 
 // SIM LASER PARAMETER
 #define output_frame_id_ "/base_laser_front_link"
@@ -133,6 +137,7 @@ ros::ServiceClient client_jointMode;
 ros::ServiceClient client_readObjectPose;
 ros::ServiceClient client_setObjectPose;
 ros::ServiceClient client_setJointState;
+ros::ServiceClient client_cmdForce;
 
 // Global service objects
 vrep_common::simRosSetJointTargetPosition srv_SetJointTargetPosition;
@@ -142,6 +147,7 @@ vrep_common::simRosGetObjectPose srv_GetObjectPose;
 vrep_common::simRosSetObjectPose srv_SetObjectPose;
 vrep_common::simRosSetJointState srv_ArmSetJointState;
 vrep_common::simRosSetJointState srv_BaseSetJointState;
+vrep_common::simRosSetJointForce srv_SetJointForce;
 
 //Odom state 
 nav_msgs::Odometry odometry;
@@ -149,6 +155,9 @@ geometry_msgs::TransformStamped odometryTransform;
 
 // Laser data
 sensor_msgs::LaserScan output;
+
+//VIS MODE
+bool visMode;
 
 // Orocos Component  Interface for JointStates
 sensor_msgs::JointState arm_joint_state;
@@ -207,17 +216,32 @@ void cmdVelCallback(const motion_control_msgs::JointVelocities::ConstPtr& msg)
     index = msg->names.at(i).find_last_of('_');
     index = atoi(msg->names.at(i).substr(index+1).c_str()) - 1;
     
-    /** Switch to Control Position **/
+    /** Switch to Control Velocity **/
 
     srv_SetObjectIntParameter.request.handle = arm_joint_handles[index];
     srv_SetObjectIntParameter.request.parameter = VREP_JOINT_CONTROL_POSITION_IP;
     srv_SetObjectIntParameter.request.parameterValue = 0;
+
     client_jointMode.call(srv_SetObjectIntParameter);
 
-    /** Send velocity value **/
+    /** Send velocity srv_SetJointTargetVelocity **/
 
     srv_SetJointTargetVelocity.request.handle = arm_joint_handles[index];
     srv_SetJointTargetVelocity.request.targetVelocity = msg->velocities[i];
+
+    if(msg->velocities[i] == 0)
+    {
+      srv_SetJointForce.request.handle = arm_joint_handles[index];
+      srv_SetJointForce.request.forceOrTorque = 0;
+      client_cmdForce.call(srv_SetJointForce);
+    }
+    else
+    {
+      srv_SetJointForce.request.handle = arm_joint_handles[index];
+      srv_SetJointForce.request.forceOrTorque = 10;
+      client_cmdForce.call(srv_SetJointForce);
+    }
+
     client_cmdVel.call(srv_SetJointTargetVelocity);  
   }
 }
@@ -261,6 +285,8 @@ void cmdTwistCallback(const geometry_msgs::Twist::ConstPtr& msg)
 
 void readTwistCallback(const geometry_msgs::TwistStamped::ConstPtr& msg)
 {
+  if(visMode == false)
+  {
   // TF Broadcaster
   static tf::TransformBroadcaster br;
 
@@ -269,8 +295,8 @@ void readTwistCallback(const geometry_msgs::TwistStamped::ConstPtr& msg)
   client_readObjectPose.call(srv_GetObjectPose);
   if(srv_GetObjectPose.response.result)
   {
-    odometry.header.frame_id = "/odom";
-    odometry.child_frame_id = "/base_link";
+    odometry.header.frame_id = TF_ODOM_FRAME_ID; //"/odom";
+    odometry.child_frame_id = TF_ODOM_CHILD_FRAME_ID; //"/base_link";
     odometry.pose.pose.position.x = srv_GetObjectPose.response.pose.pose.position.x;
     odometry.pose.pose.position.y = srv_GetObjectPose.response.pose.pose.position.y;
     odometry.pose.pose.position.z = srv_GetObjectPose.response.pose.pose.position.z;
@@ -335,6 +361,7 @@ void readTwistCallback(const geometry_msgs::TwistStamped::ConstPtr& msg)
 
     pubOdom.publish(odometry);
     br.sendTransform(odometryTransform);   
+  }
   }
 }
 
@@ -635,8 +662,53 @@ void odomStateFromHWCallback(const nav_msgs::Odometry::ConstPtr& msg)
   pose.pose.orientation.y = y;
   pose.pose.orientation.z = z;
   pose.pose.orientation.w = w;
+  
 
-  pubGeometryPoseToVrep.publish(pose);
+  // tf::StampedTransform tf_map;
+  // geometry_msgs::Pose poseEE;
+  // tf::TransformListener tf_listener;
+
+  // try
+  // {
+  //   tf_listener.waitForTransform("/map", "/base_footprint", ros::Time(0), ros::Duration(0.1) );
+  //   tf_listener.lookupTransform("/map", "/base_footprint",  ros::Time(0), tf_map);
+  //   tf::Quaternion q = tf_map.getRotation();
+  //   tf::Vector3 v = tf_map.getOrigin(); 
+
+
+  // pose.pose.position.x = v.getX();
+  // pose.pose.position.y = v.getY();
+  // pose.pose.position.z = 0.095;
+  // pose.pose.orientation.x = q.getX();
+  // pose.pose.orientation.y = q.getY();
+  // pose.pose.orientation.w = q.getW();
+  // pose.pose.orientation.z = q.getZ();
+
+  // KDL::Rotation rotation = KDL::Rotation::RPY(0, -M_PI/2, M_PI);
+  // KDL::Rotation orient =  KDL::Rotation::Quaternion(pose.pose.orientation.x, 
+  //                                                    pose.pose.orientation.y,
+  //                                                    pose.pose.orientation.z,
+  //                                                    pose.pose.orientation.w);
+  // orient = orient * rotation;
+
+  // double x,y,z,w;
+  // orient.GetQuaternion(x, y, z, w);
+
+  // pose.pose.orientation.x = x;
+  // pose.pose.orientation.y = y;
+  // pose.pose.orientation.w = w;
+  // pose.pose.orientation.z = z;
+
+    pubGeometryPoseToVrep.publish(pose);
+  // } catch(std::exception e)
+  // {
+  //   ROS_INFO("vaffanculo! %s", e.what());
+  // }
+}
+
+void visModeCallback(const std_msgs::Int32::ConstPtr& msg)
+{
+  visMode = msg->data;
 }
 
 int main(int argc,char* argv[])
@@ -737,7 +809,7 @@ int main(int argc,char* argv[])
                                                              -> BASE */
 
   /* Ros Subscriber JointStates from SIM*/
-  ros::Subscriber subJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_ALL_JOINT_STATE, 1, allJointStateCallback);
+  ros::Subscriber subJointStates = node.subscribe<sensor_msgs::JointState>(TOPIC_ALL_JOINT_STATE, 10, allJointStateCallback);
 
   /* Ros Publisher JointStates remapped for Orocos */
   /* ARM */
@@ -747,7 +819,7 @@ int main(int argc,char* argv[])
 
 
   // Ros Publisher Odom
-  pubOdom = node.advertise<nav_msgs::Odometry>("/odom",1);
+  pubOdom = node.advertise<nav_msgs::Odometry>("/odom_gt",1);
 
   laserScan = node.advertise<sensor_msgs::LaserScan>("/base_scan",1);
 
@@ -759,6 +831,8 @@ int main(int argc,char* argv[])
 
   client_readObjectPose = node.serviceClient<vrep_common::simRosGetObjectPose>("/vrep/simRosGetObjectPose");
 
+    client_cmdForce = node.serviceClient<vrep_common::simRosSetJointForce>("/vrep/simRosSetJointForce");
+
   /* VREP Services for Visualization Mode 
      - set joint states & odometry acquire from Youbot HW
   */
@@ -769,7 +843,8 @@ int main(int argc,char* argv[])
   ros::Subscriber subBaseJointStatesFromHW = node.subscribe<sensor_msgs::JointState>(TOPIC_BASE_JOINT_STATE_FROM_HW, 1, baseJointStateFromHWCallback);
   ros::Subscriber subOdometryFromHW = node.subscribe<nav_msgs::Odometry>(TOPIC_ODOM_STATE_FROM_HW, 1, odomStateFromHWCallback);
 
-  pubVisualizationMode = node.advertise<std_msgs::Int32>(TOPIC_RESET_DYNAMIC,1);
+  //pubVisualizationMode = node.advertise<std_msgs::Int32>(TOPIC_RESET_DYNAMIC,1);
+  ros::Subscriber subVisMode = node.subscribe<std_msgs::Int32>(TOPIC_VIS_MODE,1, visModeCallback);
 
   pubGeometryPoseToVrep = node.advertise<geometry_msgs::PoseStamped>(TOPIC_POSE_STATE_TO_VREP,1);
 
