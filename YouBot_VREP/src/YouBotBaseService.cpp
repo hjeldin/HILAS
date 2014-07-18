@@ -90,8 +90,8 @@ namespace YouBot
 
     this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
 
-    this->addPort("in_joint_state", in_joint_state).doc("Joint states from HW or SIM"); this->addPort("in_odometry_state", in_odometry_state).doc("Joint states from simulated robot");
-    this->addPort("in_odometry_state", in_odometry_state).doc("Base odometry from HW or SIM");
+    this->addPort("in_joint_state", in_joint_state).doc("Joint states from HW or SIM");
+    this->addPort("in_odometry_state", in_odometry_state).doc("Joint states from simulated robot");
 
     this->addPort("out_joint_position_command", out_joint_position_command ).doc("Base positions to simulated robot");
     this->addPort("out_joint_velocity_command", out_joint_velocity_command).doc("Base velocities to simulated robot");

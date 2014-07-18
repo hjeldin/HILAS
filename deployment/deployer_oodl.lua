@@ -132,6 +132,8 @@ if run_status == SIM then
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
 	cartesian_controller_start()
 
+  vel_startup(VREP)
+
 elseif run_status == HW then
 	--visualization mode activated
 	vrep_visual_mode(1)
@@ -194,17 +196,163 @@ if communication_type == REMOTE then
 
     while running do
 
-        data, msg_or_ip, port_or_nil = udp:receivefrom()
+       data, msg_or_ip, port_or_nil = udp:receivefrom()
 
-        if data == "move_up" then
+       if data ~= nil then
+	 print(data)
+       end
 
-			move(0,0,0.2)
+       if data == "HW_ARM_MODE_POS" then
 
-        elseif msg_or_ip ~= 'timeout' then
+	    armSetCtrlModes(OODL, 1)
+      
+       end
 
-            error("Unknown network error: "..tostring(msg))
+       if data == "HW_ARM_MODE_VEL" then
 
-        end
+            armSetCtrlModes(OODL, 2)
+
+       end
+
+       if data == "HW_ARM_MODE_TOR" then
+
+            armSetCtrlModes(OODL, 3)
+
+       end
+
+       if data == "HW_ARM_MODE_STOP" then
+
+            armSetCtrlModes(OODL, 4)
+
+       end
+
+       if data == "VREP_ARM_MODE_POS" then
+
+            armSetCtrlModes(VREP, 1)
+
+       end
+
+       if data == "VREP_ARM_MODE_VEL" then
+
+            armSetCtrlModes(VREP, 2)
+
+       end
+
+       if data == "VREP_ARM_MODE_TOR" then
+
+            armSetCtrlModes(VREP, 3)
+
+       end
+
+       if data == "VREP_ARM_MODE_STOP" then
+
+            armSetCtrlModes(VREP, 4)
+
+       end
+
+       if data == "HW_BASE_MODE_POS" then
+
+            baseSetCtrlModes(OODL, 1)
+
+       end
+
+       if data == "HW_BASE_MODE_VEL" then
+
+            baseSetCtrlModes(OODL, 2)
+
+       end
+
+       if data == "HW_BASE_MODE_TOR" then
+
+            baseSetCtrlModes(OODL, 3)
+
+       end
+
+       if data == "HW_BASE_MODE_STOP" then
+
+            baseSetCtrlModes(OODL, 4)
+
+       end
+
+       if data == "HW_BASE_MODE_TWIST" then
+
+            baseSetCtrlModes(OODL, 5)
+
+       end
+
+       if data == "VREP_BASE_MODE_POS" then
+
+            baseSetCtrlModes(VREP, 1)
+
+       end
+
+       if data == "VREP_BASE_MODE_VEL" then
+
+            baseSetCtrlModes(VREP, 2)
+
+       end
+
+       if data == "VREP_BASE_MODE_TOR" then
+
+            baseSetCtrlModes(VREP, 3)
+
+       end
+
+       if data == "VREP_BASE_MODE_STOP" then
+
+            baseSetCtrlModes(VREP, 4)
+
+       end
+
+       if data == "VREP_BASE_MODE_TWIST" then
+
+            baseSetCtrlModes(VREP, 5)
+
+       end
+
+       if data == "CARTESIAN_START" then
+
+        youbot_ctrl_cartesian:configure()
+        youbot_kine:start()
+        youbot_ctrl_cartesian:start()         
+
+       end
+
+       if data == "CARTESIAN_STOP" then
+
+         cartesian_controller_stop()
+
+       end
+
+       if data == "DEPLOYER_EXIT" then
+
+	       os.exit()
+    
+       end
+
+       if data == "SWITCH_TO_HW" then
+
+         switch_to(HW)
+
+       end
+
+       if data == "SWITCH_TO_VREP" then
+
+         switch_to(SIM)
+
+       end
+
+      if data == "VREP_BLOCK_YOUBOT_POSITION" then
+
+        block_youbot_position(VREP)
+
+      end  
+
+      if data == "HW_BLOCK_YOUBOT_POSITION" then
+
+        block_youbot_position(OODL)
+
+      end
 
     end
 

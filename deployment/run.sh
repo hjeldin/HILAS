@@ -19,8 +19,11 @@ export LUA_PATH="$LUA_PATH;`rospack find rttlua_completion`/?.lua"
 #export LUA_PATH="$LUA_PATH;`rospack find youbot_master_rtt`/lua/?.lua"
 export LUA_PATH="$LUA_PATH;`rospack find kdl_lua`/lua/?.lua"
 export LUA_PATH="$LUA_PATH;`rosstack find youbot-stack`/deployment/?.lua"
+export LUA_PATH="$LUA_PATH;/usr/share/lua/5.1/?.lua"
 export LUA_CPATH="$LUA_CPATH;`rospack find rttlua_completion`/?.so"
+export LUA_CPATH="$LUA_CPATH;/usr/lib/x86_64-linux-gnu/lua/5.1/socket/core.so"
 export PATH="$PATH:`rosstack find orocos_toolchain`/install/bin"
+echo $LUA_PATH
 
 #export RTT_MOTION_CONTROL_MSGS_PATH=$(rospack find rtt_motion_control_msgs)/lib
 #export YOUBOT_ADAPTERS=$(rospack find YouBot_adapters)/lib/orocos
