@@ -7,7 +7,7 @@ std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr> cloud_container;
 int pcdCounter = 0;
 void vrepPlaceMesh()
 {
-	ros::ServiceClient client = nh->serviceClient<vrep_common::simRosImportMesh>("/vrep/simRosImportMesh");
+    /*ros::ServiceClient client = nh->serviceClient<vrep_common::simRosImportMesh>("/vrep/simRosImportMesh");
     vrep_common::simRosImportMesh srv;
     srv.request.fileFormat = 0;
     srv.request.fileName = std::string("/home/hjeldin/DEV/youbot-stack/youbot_CV/bin/mesh.obj");
@@ -16,7 +16,7 @@ void vrepPlaceMesh()
     if (client.call(srv))
     {
         ROS_INFO("ahah ok");
-    }
+    }*/
 }
 
 void alignPCLs()

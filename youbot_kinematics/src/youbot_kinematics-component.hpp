@@ -8,6 +8,7 @@
 #include <geometry_msgs/typekit/Types.h>
 #include <motion_control_msgs/typekit/Types.h>
 #include <nav_msgs/typekit/Types.h>
+#include <std_msgs/typekit/Types.h>
 
 #include <kdl/chain.hpp>
 #include <kdl/frames.hpp>
@@ -34,6 +35,7 @@ private:
     RTT::InputPort<geometry_msgs::Twist> port_ee_twist_ros;
     RTT::InputPort<KDL::Twist> port_ee_twist_rtt;
     RTT::InputPort<std::vector<double> > port_w_js, port_w_ts;
+    RTT::InputPort<std_msgs::Float32MultiArray> port_w_js_ros, port_w_ts_ros;
 
     /** Output Port **/
     RTT::OutputPort<motion_control_msgs::JointVelocities> port_joint_velocities;
@@ -52,6 +54,7 @@ private:
     geometry_msgs::Twist m_ee_twist, m_base_twist, m_ee_twist_msr;
     motion_control_msgs::JointVelocities m_joint_velocities;
     std::vector<double> m_w_js,m_w_ts;    
+    std_msgs::Float32MultiArray m_w_js_ros, m_w_ts_ros;     
 
     KDL::JntArrayVel m_jnt_array;
 
