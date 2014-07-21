@@ -1,0 +1,3 @@
+[submodule "generic_components"]
+	path = generic_components
+	url = https://git.ce.utwente.nl/generic_components
