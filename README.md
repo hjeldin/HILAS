@@ -18,7 +18,7 @@ Copy paste in terminal:
 
 ### Building instruction
 
-* `$ git clone git@bitbucket.org:hjeldin/isuka.git /path/to/ROS/workspace`
+* `$ git clone git@bitbucket.org:hjeldin/hilas.git /path/to/ROS/workspace`
 * `$ rosmake motion_control fbsched rFSM youbot_driver`
 * Download vrep (link in Dependencies section)
 * `$ cd vrep_ros/vrep_common`
