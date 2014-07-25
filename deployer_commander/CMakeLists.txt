@@ -22,11 +22,10 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_gensrv()
 
 #common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
+
+#rosbuild_add_library(${PROJECT_NAME} src/deployer_commander.cpp)
 #target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-rosbuild_add_executable(youbot_vrep src/youbot_vrep.cpp)
-rosbuild_add_executable(multi_youbot_vrep src/multi_youbot_vrep.cpp)
-rosbuild_add_executable(youbot_sim_odom src/youbot_sim_odom.cpp)
+rosbuild_add_boost_directories()
+rosbuild_add_executable(deployer_commander src/deployer_commander.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
+rosbuild_link_boost(deployer_commander thread system)

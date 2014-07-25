@@ -22,6 +22,8 @@ Youbot_kinematics::Youbot_kinematics(std::string const& name) : TaskContext(name
   this->addPort("BaseTwist",port_base_twist);
   this->addEventPort("JointSpaceWeights",port_w_js);
   this->addEventPort("TaskSpaceWeights",port_w_ts);
+  this->addPort("JointSpaceWeights_ROS", port_w_js_ros);
+  this->addPort("TaskSpaceWeights_ROS", port_w_ts_ros);
 
   this->addProperty("robot_description",prop_urdf_model);
 
@@ -143,6 +145,7 @@ void Youbot_kinematics::updateHook(){
 		else
 			log(Error)<<"Data on "<<port_w_ts.getName()<<" has the wrong size."<<endlog();
 	}
+
 	if(port_w_js.read(m_w_js)==NewData){
 		if((int)m_w_js.size()==m_Mq_jlc.rows()){
 			for(unsigned int i=0;i<m_Mq_jlc.rows();i++)
@@ -152,6 +155,34 @@ void Youbot_kinematics::updateHook(){
 		else
 			log(Error)<<"Data on "<<port_w_js.getName()<<" has the wrong size."<<endlog();
 	}
+
+	if(port_w_ts_ros.read(m_w_ts_ros)==NewData)
+	{
+      if(m_w_ts_ros.data.size() == m_My_identity.rows())
+      {
+      	for(unsigned int i=0; i < m_My_identity.rows(); i++)
+      		m_My_identity(i,i)=m_w_ts_ros.data[i];
+
+      	pose_to_jnt_solver_->setWeightTS(m_My_identity);
+      }
+      else 
+      	log(Error)<<"Data on "<<port_w_ts_ros.getName()<<" has the wrong size."<<endlog();
+	}
+
+	if(port_w_js_ros.read(m_w_js_ros)==NewData)
+	{
+	  if(m_w_js_ros.data.size() == m_Mq_jlc.rows())
+      {
+      	for(unsigned int i=0; i < m_Mq_jlc.rows(); i++)
+      		m_Mq_jlc(i,i)=m_w_js_ros.data[i];
+
+      	pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
+      }
+      else 
+      	log(Error)<<"Data on "<<port_w_js_ros.getName()<<" has the wrong size."<<endlog();  
+	}
+
+
 	bool update_pose=false;
 	if(port_odom.read(m_odom)==NewData){
 		m_jnt_array.q(0)=m_odom.pose.pose.position.x;

@@ -1,0 +1,18 @@
+[submodule "generic_components"]
+	path = generic_components
+	url = https://git.ce.utwente.nl/generic_components
+[submodule "motion_control"]
+	path = motion_control
+	url = git@bitbucket.org:marcoruzzenente/motioncontrol.git
+[submodule "rFSM"]
+	path = rFSM
+	url = https://github.com/kmarkus/rFSM.git
+[submodule "fbsched"]
+	path = fbsched
+	url = https://github.com/kmarkus/fbsched.git
+[submodule "youbot_driver"]
+	path = youbot_driver
+	url = https://github.com/youbot/youbot_driver.git
+[submodule "youbot-ros-pkg"]
+	path = youbot-ros-pkg
+	url = https://github.com/b-it-bots/youbot-ros-pkg.git

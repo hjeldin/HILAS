@@ -10,7 +10,7 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #set(ROS_BUILD_TYPE RelWithDebInfo)
 
 rosbuild_init()
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 #set the default path for built executables to the "bin" directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
@@ -21,7 +21,7 @@ if(NOT OpenCV_DIR)
 endif(NOT OpenCV_DIR)
 FIND_PACKAGE(OpenCV REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR}/../../../V-REP_PRO_EDU_V3_0_5c_64_Linux/programming)
+include_directories(~/V-REP_PRO_EDU_V3_1_0c_64_Linux/programming)
 
 #find_package(VTK REQUIRED)
 #include(${VTK_USE_FILE})
@@ -37,7 +37,7 @@ rosbuild_add_executable(pointcloud_save src/pointcloud_save.cpp src/v_repLib.cpp
 rosbuild_add_executable(camera_calibrate src/camera_calibrate.cpp)
 rosbuild_add_executable(pointcloud_triangulate src/pointcloud_triangulate.cpp)
 rosbuild_add_executable(pointcloud_streamer src/pointcloud_streamer.cpp)
-
+rosbuild_add_executable(map_builder src/map_builder.cpp)
 
 target_link_libraries(camera_calibrate ${OpenCV_LIBS})
 target_link_libraries(pointcloud_save pcl_filters)
