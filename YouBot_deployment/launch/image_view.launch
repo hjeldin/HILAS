@@ -1,4 +1,0 @@
-<launch>
-   <node name="cam1_view" pkg="image_view" type="image_view" args=" image:=cam1/image_raw compressed"/>
-   <node name="cam2_view" pkg="image_view" type="image_view" args=" image:=cam2/image_raw compressed"/>
-</launch>

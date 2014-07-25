@@ -1,6 +1,0 @@
-<launch>
-    <arg name="robot_name"/>
-    <arg name="tf_prefix"/>
-    <!-- Robot state publisher -->
-    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen"/>
-</launch>

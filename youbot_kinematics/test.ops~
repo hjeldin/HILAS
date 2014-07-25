@@ -1,7 +1,0 @@
-import("cartesian_motion_control")
-import("ocl")                
-require("print")               
-
-loadComponent("HMI1","OCL::HMIComponent") // create a new HMI component [4]
-loadComponent("Controller","MotionControl::CartesianControllerPos") // create a new controller
-loadComponent("Test1","TaskContext")      // creates an empty test component
