@@ -12,7 +12,7 @@ SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 
 -- Deployer setup
 run_status = SIM
 deployer_type = LUA_DEPLOYER
-communication_type = REMOTE
+communication_type = DEBUG
 
 running = true
 
