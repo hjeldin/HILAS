@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rtt:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rtt="http://rtt/1.0" name="DefaultDiagram">
+  <taskContext name="CartesianController" namespace="motion_stack" type="CartesianController">
+    <inputPort name="CartesianDamping" type="std::vector&lt;double>"/>
+    <inputPort name="T_tooltip_00" type="std::vector&lt;double>"/>
+    <inputPort name="Hvp0" type="std::vector&lt;double>"/>
+    <inputPort name="Htip0" type="std::vector&lt;double>"/>
+    <inputPort name="StiffnessCC" type="std::vector&lt;double>"/>
+    <inputPort name="HtipCC" type="std::vector&lt;double>"/>
+    <outputPort name="W_tooltip_00" type="std::vector&lt;double>"/>
+    <property name="Damping__K" type="double"/>
+  </taskContext>
+</rtt:Package>

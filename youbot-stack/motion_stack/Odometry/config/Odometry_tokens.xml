@@ -1,0 +1,2393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tokens>
+	<token name="MODEL_NAME"><![CDATA[motion_stack]]></token>
+	<token name="20SIM_DIR"><![CDATA[Z:\Applications\20-sim-4.1.app\Contents\Resources\opt\wine\drive_c\Program Files\20-sim 4.1]]></token>
+	<token name="SUBMODEL_NAME"><![CDATA[Odometry]]></token>
+	<token name="ALGLOOP_NAMES"><![CDATA[	NULL]]></token>
+	<token name="ALGLOOP_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="ALGLOOP_NAMES3"><![CDATA[]]></token>
+	<token name="ALGLOOP_UNITS"><![CDATA[]]></token>
+	<token name="ALIAS_EQUATIONS"><![CDATA[]]></token>
+	<token name="ALIAS_MATRIX_NAMES"><![CDATA[	NULL
+]]></token>
+	<token name="ALIAS_MATRIX_NAMES2"><![CDATA[	NULL
+]]></token>
+	<token name="ALIAS_MATRIX_NAMES3"><![CDATA[
+]]></token>
+	<token name="ALIAS_MATRIX_UNITS"><![CDATA[]]></token>
+	<token name="ALIAS_VARIABLE_INDICES"><![CDATA[	-1]]></token>
+	<token name="ALIAS_VARIABLE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="ALIAS_VARIABLE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="ALIAS_VARIABLE_NAMES3"><![CDATA[]]></token>
+	<token name="ALIAS_VARIABLE_UNITS"><![CDATA[]]></token>
+	<token name="COMPANY_NAME"><![CDATA[Universiteit Twente]]></token>
+	<token name="CONSTANT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="CONSTANT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="CONSTANT_NAMES3"><![CDATA[]]></token>
+	<token name="CONSTANT_UNITS"><![CDATA[]]></token>
+	<token name="CONSTANT_VALUES"><![CDATA[]]></token>
+	<token name="CONSTRAINT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="CONSTRAINT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="CONSTRAINT_NAMES3"><![CDATA[]]></token>
+	<token name="CONSTRAINT_UNITS"><![CDATA[]]></token>
+	<token name="DEPRATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="DEPRATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="DEPRATE_NAMES3"><![CDATA[]]></token>
+	<token name="DEPRATE_UNITS"><![CDATA[]]></token>
+	<token name="DEPSTATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="DEPSTATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="DEPSTATE_NAMES3"><![CDATA[]]></token>
+	<token name="DEPSTATE_UNITS"><![CDATA[]]></token>
+	<token name="DIRECT_FEEDTHROUGH"><![CDATA[XXTRUE]]></token>
+	<token name="DYNAMIC_EQUATIONS"><![CDATA[		/* omega = T_base_00[1:3] * sampletime; */
+		M[12].mat[0] = M[0].mat[0];
+		M[12].mat[1] = M[0].mat[1];
+		M[12].mat[2] = M[0].mat[2];
+		XXMatrixScalarMul (&M[5], &M[12], step_size);
+
+		/* v = T_base_00[4:6] * sampletime; */
+		M[13].mat[0] = M[0].mat[3];
+		M[13].mat[1] = M[0].mat[4];
+		M[13].mat[2] = M[0].mat[5];
+		XXMatrixScalarMul (&M[6], &M[13], step_size);
+
+		/* omega_norm = norm (omega); */
+		XXMatrixNorm (&V[69], &M[5]);
+
+		/* if (omega_norm == 0) */
+		if (V[69] == 0.0)
+		{
+			/* H = tilde (T_base_00) + eye (4); */
+			XXMatrixTilde (&M[15], &M[0]);
+			XXMatrixEye (&M[16]);
+			XXMatrixAdd (&M[8], &M[15], &M[16]);
+		}
+		else
+		{
+			/* omega_temp = omega / omega_norm; */
+			XXMatrixScalarDiv (&M[7], &M[5], V[69]);
+
+			/* R = (eye (3) + skew (omega_temp) * sin (omega_norm)) + (skew (omega_temp) * skew (omega_temp)) * (1 - cos (omega_norm)); */
+			XXMatrixEye (&M[19]);
+			XXMatrixSkew (&M[21], &M[7]);
+			XXMatrixScalarMul (&M[20], &M[21], sin (V[69]));
+			XXMatrixAdd (&M[18], &M[19], &M[20]);
+			XXMatrixSkew (&M[24], &M[7]);
+			XXMatrixSkew (&M[25], &M[7]);
+			XXMatrixMul (&M[23], &M[24], &M[25]);
+			XXMatrixScalarMul (&M[22], &M[23], (1.0 - cos (V[69])));
+			XXMatrixAdd (&M[4], &M[18], &M[22]);
+
+			/* H[1:3,1:3] = R; */
+			M[8].mat[0] = M[4].mat[0];
+			M[8].mat[1] = M[4].mat[1];
+			M[8].mat[2] = M[4].mat[2];
+			M[8].mat[4] = M[4].mat[3];
+			M[8].mat[5] = M[4].mat[4];
+			M[8].mat[6] = M[4].mat[5];
+			M[8].mat[8] = M[4].mat[6];
+			M[8].mat[9] = M[4].mat[7];
+			M[8].mat[10] = M[4].mat[8];
+
+			/* H[1:3,4] = ((eye (3) - R) * (skew (omega) * v) + (transpose (omega) * v) * omega) / omega_norm ^ 2; */
+			XXMatrixEye (&M[30]);
+			XXMatrixSub (&M[29], &M[30], &M[4]);
+			XXMatrixSkew (&M[32], &M[5]);
+			XXMatrixMul (&M[31], &M[32], &M[6]);
+			XXMatrixMul (&M[28], &M[29], &M[31]);
+			XXMatrixTranspose (&M[35], &M[5]);
+			XXScalarMatrixMatrixMul (M[34].mat, &M[35], &M[6]);
+			XXScalarMatrixMul (&M[33], M[34].mat[0], &M[5]);
+			XXMatrixAdd (&M[27], &M[28], &M[33]);
+			XXMatrixScalarDiv (&M[26], &M[27], (V[69] * V[69]));
+			M[8].mat[3] = M[26].mat[0];
+			M[8].mat[7] = M[26].mat[1];
+			M[8].mat[11] = M[26].mat[2];
+
+			/* H[4,4] = 1; */
+			M[8].mat[15] = 1.0;
+
+			/* H[4,1:3] = 0; */
+			M[8].mat[12] = 0.0;
+			M[8].mat[13] = 0.0;
+			M[8].mat[14] = 0.0;
+		}
+
+		/* aldo = H_base_odom * H; */
+		XXMatrixMul (&M[9], &M[3], &M[8]);
+
+		/* H_base_odom = aldo; */
+		XXMatrixMov (&M[3], &M[9]);
+
+		/* if H_odom_map[4,4] == 1 */
+		if (M[2].mat[15] == 1.0)
+		{
+			/* aldoH_odom_map = H_odom_map; */
+			XXMatrixMov (&M[10], &M[2]);
+		}
+
+		/* H_base_map = (aldoH_odom_map) * H_base_odom; */
+		XXMatrixMul (&M[1], &M[10], &M[3]);
+]]></token>
+	<token name="EXPERIMENT_NAME"><![CDATA[motion_stack]]></token>
+	<token name="EXPORT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="EXPORT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="EXPORT_NAMES3"><![CDATA[]]></token>
+	<token name="EXPORT_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_PARAMETER_NAMES3"><![CDATA[]]></token>
+	<token name="FAVORITE_PARAMETER_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_PARS_EQUATIONS"><![CDATA[]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="FAVORITE_VARIABLE_NAMES3"><![CDATA[]]></token>
+	<token name="FAVORITE_VARIABLE_UNITS"><![CDATA[]]></token>
+	<token name="FAVORITE_VARS_EQUATIONS"><![CDATA[]]></token>
+	<token name="FILE_NAME"><![CDATA[]]></token>
+	<token name="FINAL_EQUATIONS"><![CDATA[]]></token>
+	<token name="FINISH_TIME"><![CDATA[40.0]]></token>
+	<token name="GENERATION_BUILD"><![CDATA[4.1.4.1]]></token>
+	<token name="GENERATION_DATE"><![CDATA[November 1, 2012]]></token>
+	<token name="GENERATION_DIR"><![CDATA[c:\temp\Odometry]]></token>
+	<token name="GENERATION_TIME"><![CDATA[4:08:55 pm]]></token>
+	<token name="IMPORT_NAMES"><![CDATA[	NULL]]></token>
+	<token name="IMPORT_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="IMPORT_NAMES3"><![CDATA[]]></token>
+	<token name="IMPORT_UNITS"><![CDATA[]]></token>
+	<token name="INITIALIZE_ALIAS_MATRICES"><![CDATA[]]></token>
+	<token name="INITIALIZE_CONSTANTS"><![CDATA[]]></token>
+	<token name="INITIALIZE_FAVORITE_PARS"><![CDATA[]]></token>
+	<token name="INITIALIZE_FAVORITE_VARS"><![CDATA[]]></token>
+	<token name="INITIALIZE_INITIAL_VALUES"><![CDATA[]]></token>
+	<token name="INITIALIZE_INPUTS"><![CDATA[	u[0] = 0.0;		/* H_odom_map */
+	u[1] = 0.0;
+	u[2] = 0.0;
+	u[3] = 0.0;
+	u[4] = 0.0;
+	u[5] = 0.0;
+	u[6] = 0.0;
+	u[7] = 0.0;
+	u[8] = 0.0;
+	u[9] = 0.0;
+	u[10] = 0.0;
+	u[11] = 0.0;
+	u[12] = 0.0;
+	u[13] = 0.0;
+	u[14] = 0.0;
+	u[15] = 0.0;
+	u[16] = 0.0;		/* T_base_00 */
+	u[17] = 0.0;
+	u[18] = 0.0;
+	u[19] = 0.0;
+	u[20] = 0.0;
+	u[21] = 0.0;
+]]></token>
+	<token name="INITIALIZE_MATRICES"><![CDATA[	M[0].mat = &V[0];		/* T_base_00 */
+	M[0].rows = 6;
+	M[0].columns = 1;
+	M[1].mat = &V[6];		/* H_base_map */
+	M[1].rows = 4;
+	M[1].columns = 4;
+	M[2].mat = &V[22];		/* H_odom_map */
+	M[2].rows = 4;
+	M[2].columns = 4;
+	M[3].mat = &V[38];		/* H_base_odom */
+	M[3].rows = 4;
+	M[3].columns = 4;
+	M[4].mat = &V[54];		/* R */
+	M[4].rows = 3;
+	M[4].columns = 3;
+	M[5].mat = &V[63];		/* omega */
+	M[5].rows = 3;
+	M[5].columns = 1;
+	M[6].mat = &V[66];		/* v */
+	M[6].rows = 3;
+	M[6].columns = 1;
+	M[7].mat = &V[70];		/* omega_temp */
+	M[7].rows = 3;
+	M[7].columns = 1;
+	M[8].mat = &V[73];		/* H */
+	M[8].rows = 4;
+	M[8].columns = 4;
+	M[9].mat = &V[89];		/* aldo */
+	M[9].rows = 4;
+	M[9].columns = 4;
+	M[10].mat = &V[105];		/* aldoH_odom_map */
+	M[10].rows = 4;
+	M[10].columns = 4;
+	M[11].mat = &V[121];		/* H_base_baseprev */
+	M[11].rows = 4;
+	M[11].columns = 4;
+	M[12].mat = &U[0];		/* U1 */
+	M[12].rows = 3;
+	M[12].columns = 1;
+	M[13].mat = &U[3];		/* U2 */
+	M[13].rows = 3;
+	M[13].columns = 1;
+	M[14].mat = &U[6];		/* U3 */
+	M[14].rows = 1;
+	M[14].columns = 1;
+	M[15].mat = &U[7];		/* U4 */
+	M[15].rows = 4;
+	M[15].columns = 4;
+	M[16].mat = &U[23];		/* U5 */
+	M[16].rows = 4;
+	M[16].columns = 4;
+	M[17].mat = &U[39];		/* U6 */
+	M[17].rows = 1;
+	M[17].columns = 1;
+	M[18].mat = &U[40];		/* U7 */
+	M[18].rows = 3;
+	M[18].columns = 3;
+	M[19].mat = &U[49];		/* U8 */
+	M[19].rows = 3;
+	M[19].columns = 3;
+	M[20].mat = &U[58];		/* U9 */
+	M[20].rows = 3;
+	M[20].columns = 3;
+	M[21].mat = &U[67];		/* U10 */
+	M[21].rows = 3;
+	M[21].columns = 3;
+	M[22].mat = &U[76];		/* U11 */
+	M[22].rows = 3;
+	M[22].columns = 3;
+	M[23].mat = &U[85];		/* U12 */
+	M[23].rows = 3;
+	M[23].columns = 3;
+	M[24].mat = &U[94];		/* U13 */
+	M[24].rows = 3;
+	M[24].columns = 3;
+	M[25].mat = &U[103];		/* U14 */
+	M[25].rows = 3;
+	M[25].columns = 3;
+	M[26].mat = &U[112];		/* U15 */
+	M[26].rows = 3;
+	M[26].columns = 1;
+	M[27].mat = &U[115];		/* U16 */
+	M[27].rows = 3;
+	M[27].columns = 1;
+	M[28].mat = &U[118];		/* U17 */
+	M[28].rows = 3;
+	M[28].columns = 1;
+	M[29].mat = &U[121];		/* U18 */
+	M[29].rows = 3;
+	M[29].columns = 3;
+	M[30].mat = &U[130];		/* U19 */
+	M[30].rows = 3;
+	M[30].columns = 3;
+	M[31].mat = &U[139];		/* U20 */
+	M[31].rows = 3;
+	M[31].columns = 1;
+	M[32].mat = &U[142];		/* U21 */
+	M[32].rows = 3;
+	M[32].columns = 3;
+	M[33].mat = &U[151];		/* U22 */
+	M[33].rows = 3;
+	M[33].columns = 1;
+	M[34].mat = &U[154];		/* U23 */
+	M[34].rows = 1;
+	M[34].columns = 1;
+	M[35].mat = &U[155];		/* U24 */
+	M[35].rows = 1;
+	M[35].columns = 3;
+	M[36].mat = &U[158];		/* U25 */
+	M[36].rows = 1;
+	M[36].columns = 1;
+]]></token>
+	<token name="INITIALIZE_OUTPUTS"><![CDATA[	y[0] = 0.0;		/* H_base_map */
+	y[1] = 0.0;
+	y[2] = 0.0;
+	y[3] = 0.0;
+	y[4] = 0.0;
+	y[5] = 0.0;
+	y[6] = 0.0;
+	y[7] = 0.0;
+	y[8] = 0.0;
+	y[9] = 0.0;
+	y[10] = 0.0;
+	y[11] = 0.0;
+	y[12] = 0.0;
+	y[13] = 0.0;
+	y[14] = 0.0;
+	y[15] = 0.0;
+	y[16] = 0.0;		/* H_base_odom */
+	y[17] = 0.0;
+	y[18] = 0.0;
+	y[19] = 0.0;
+	y[20] = 0.0;
+	y[21] = 0.0;
+	y[22] = 0.0;
+	y[23] = 0.0;
+	y[24] = 0.0;
+	y[25] = 0.0;
+	y[26] = 0.0;
+	y[27] = 0.0;
+	y[28] = 0.0;
+	y[29] = 0.0;
+	y[30] = 0.0;
+	y[31] = 0.0;
+]]></token>
+	<token name="INITIALIZE_PARAMETERS"><![CDATA[]]></token>
+	<token name="INITIALIZE_STATES"><![CDATA[]]></token>
+	<token name="INITIAL_EQUATIONS"><![CDATA[		/* H_base_odom = eye (4); */
+		XXMatrixEye (&M[3]);
+
+		/* H = eye (4); */
+		XXMatrixEye (&M[8]);
+
+		/* aldo = eye (4); */
+		XXMatrixEye (&M[9]);
+
+		/* H_base_baseprev = eye (4); */
+		XXMatrixEye (&M[11]);
+
+		/* aldoH_odom_map = eye (4); */
+		XXMatrixEye (&M[10]);
+]]></token>
+	<token name="INITIAL_VALUE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="INITIAL_VALUE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="INITIAL_VALUE_NAMES3"><![CDATA[]]></token>
+	<token name="INITIAL_VALUE_UNITS"><![CDATA[]]></token>
+	<token name="INITIAL_VALUE_VALUES"><![CDATA[]]></token>
+	<token name="INPUT_EQUATIONS"><![CDATA[]]></token>
+	<token name="INPUT_NAMES"><![CDATA[	"H_odom_map[1,1]",
+	"H_odom_map[1,2]",
+	"H_odom_map[1,3]",
+	"H_odom_map[1,4]",
+	"H_odom_map[2,1]",
+	"H_odom_map[2,2]",
+	"H_odom_map[2,3]",
+	"H_odom_map[2,4]",
+	"H_odom_map[3,1]",
+	"H_odom_map[3,2]",
+	"H_odom_map[3,3]",
+	"H_odom_map[3,4]",
+	"H_odom_map[4,1]",
+	"H_odom_map[4,2]",
+	"H_odom_map[4,3]",
+	"H_odom_map[4,4]",
+	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]"
+]]></token>
+	<token name="INPUT_NAMES2"><![CDATA[	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"H_odom_map[1,1]",
+	"H_odom_map[1,2]",
+	"H_odom_map[1,3]",
+	"H_odom_map[1,4]",
+	"H_odom_map[2,1]",
+	"H_odom_map[2,2]",
+	"H_odom_map[2,3]",
+	"H_odom_map[2,4]",
+	"H_odom_map[3,1]",
+	"H_odom_map[3,2]",
+	"H_odom_map[3,3]",
+	"H_odom_map[3,4]",
+	"H_odom_map[4,1]",
+	"H_odom_map[4,2]",
+	"H_odom_map[4,3]",
+	"H_odom_map[4,4]"
+]]></token>
+	<token name="INPUT_NAMES3"><![CDATA[H_odom_map[1,1]
+H_odom_map[1,2]
+H_odom_map[1,3]
+H_odom_map[1,4]
+H_odom_map[2,1]
+H_odom_map[2,2]
+H_odom_map[2,3]
+H_odom_map[2,4]
+H_odom_map[3,1]
+H_odom_map[3,2]
+H_odom_map[3,3]
+H_odom_map[3,4]
+H_odom_map[4,1]
+H_odom_map[4,2]
+H_odom_map[4,3]
+H_odom_map[4,4]
+T_base_00[1]
+T_base_00[2]
+T_base_00[3]
+T_base_00[4]
+T_base_00[5]
+T_base_00[6]
+]]></token>
+	<token name="INPUT_TO_VARIABLE_EQUATIONS"><![CDATA[	V[22] = u[0];		/* H_odom_map */
+	V[23] = u[1];
+	V[24] = u[2];
+	V[25] = u[3];
+	V[26] = u[4];
+	V[27] = u[5];
+	V[28] = u[6];
+	V[29] = u[7];
+	V[30] = u[8];
+	V[31] = u[9];
+	V[32] = u[10];
+	V[33] = u[11];
+	V[34] = u[12];
+	V[35] = u[13];
+	V[36] = u[14];
+	V[37] = u[15];
+	V[0] = u[16];		/* T_base_00 */
+	V[1] = u[17];
+	V[2] = u[18];
+	V[3] = u[19];
+	V[4] = u[20];
+	V[5] = u[21];
+]]></token>
+	<token name="INPUT_UNITS"><![CDATA[
+
+]]></token>
+	<token name="INTEGRATION_METHOD_NAME"><![CDATA[Discrete]]></token>
+	<token name="MATRIX_NAMES"><![CDATA[	"T_base_00",
+	"H_base_map",
+	"H_odom_map",
+	"H_base_odom",
+	"R",
+	"omega",
+	"v",
+	"omega_temp",
+	"H",
+	"aldo",
+	"aldoH_odom_map",
+	"H_base_baseprev",
+	"U1",
+	"U2",
+	"U3",
+	"U4",
+	"U5",
+	"U6",
+	"U7",
+	"U8",
+	"U9",
+	"U10",
+	"U11",
+	"U12",
+	"U13",
+	"U14",
+	"U15",
+	"U16",
+	"U17",
+	"U18",
+	"U19",
+	"U20",
+	"U21",
+	"U22",
+	"U23",
+	"U24",
+	"U25"
+]]></token>
+	<token name="MATRIX_NAMES2"><![CDATA[	"T_base_00",
+	"H_base_map",
+	"H_odom_map",
+	"H_base_odom",
+	"R",
+	"omega",
+	"v",
+	"omega_temp",
+	"H",
+	"aldo",
+	"aldoH_odom_map",
+	"H_base_baseprev",
+	"U1",
+	"U2",
+	"U3",
+	"U4",
+	"U5",
+	"U6",
+	"U7",
+	"U8",
+	"U9",
+	"U10",
+	"U11",
+	"U12",
+	"U13",
+	"U14",
+	"U15",
+	"U16",
+	"U17",
+	"U18",
+	"U19",
+	"U20",
+	"U21",
+	"U22",
+	"U23",
+	"U24",
+	"U25"
+]]></token>
+	<token name="MATRIX_NAMES3"><![CDATA[T_base_00
+H_base_map
+H_odom_map
+H_base_odom
+R
+omega
+v
+omega_temp
+H
+aldo
+aldoH_odom_map
+H_base_baseprev
+U1
+U2
+U3
+U4
+U5
+U6
+U7
+U8
+U9
+U10
+U11
+U12
+U13
+U14
+U15
+U16
+U17
+U18
+U19
+U20
+U21
+U22
+U23
+U24
+U25
+]]></token>
+	<token name="MATRIX_UNITS"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></token>
+	<token name="MODEL_CONFIGURATION"><![CDATA[<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>Odometry</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;LibraryPath&gt;FiniteTwist.emx&lt;/LibraryPath&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;TimeStamp&gt;2012-6-20 16:17:43&lt;/TimeStamp&gt;
+ &lt;AllowLibraryUpdate&gt;False&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-11-01T16:08:08.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>4</revision>
+			<patch>1</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>T_base_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>H_base_map</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>H_odom_map</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>22</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>H_base_odom</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>38</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>R</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>54</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>63</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>v</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>66</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>omega_norm</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>69</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>omega_temp</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>70</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>H</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>20sim bug</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>aldoH_odom_map</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>safety</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>105</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>H_base_baseprev</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>121</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>2368</size>
+		<tables>
+			<table>
+				<name>V</name>
+				<size>1096</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>137</count>
+			</table>
+			<table>
+				<name>U</name>
+				<size>1272</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>159</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>]]></token>
+	<token name="MODEL_DESCRIPTION"><![CDATA[<Description>
+ <Version>4.1</Version>
+ <LibraryPath>FiniteTwist.emx</LibraryPath>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <TimeStamp>2012-6-20 16:17:43</TimeStamp>
+ <AllowLibraryUpdate>False</AllowLibraryUpdate>
+</Description>]]></token>
+	<token name="MODEL_FILE"><![CDATA[Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx]]></token>
+	<token name="MODEL_IS_DISCRETE"><![CDATA[XXTRUE]]></token>
+	<token name="NUMBEROF_ABSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ADJOINTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ALGEBRAICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ALGLOOPIN"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ALGLOOPOUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_AND"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ANTISYMMETRICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCCOSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCCOSHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCSINFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCSINHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCTANFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ARCTANHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ASSIGNMENT"><![CDATA[19]]></token>
+	<token name="NUMBEROF_ATAN2FUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_BACKDIVISION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CASESTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CEILFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CODESTATEMENT"><![CDATA[1]]></token>
+	<token name="NUMBEROF_COLUMNSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CONDITIONAL"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CONSTANT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CONSTRAINTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CONSTRAINTIN"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CONSTRAINTOUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_COSFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_COSHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_CROSSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DATAFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DDTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DEFAULTCASESTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DELAYFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DEPENDENTRATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DEPENDENTSTATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DEPENDENTSTATERATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DERIVATIVEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DETFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DIAGFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DISCRETERATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DISCRETESTATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DISCRETESTATERATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DISCRETETIME"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DISCRETETIMENODEWITHOUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DIV"><![CDATA[2]]></token>
+	<token name="NUMBEROF_DIVISION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DLLDYNAMICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DLLFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_DOMATLABSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EFFORTCAUSALITYSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ELEMENTDIV"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ELEMENTMUL"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ELEMENTPOWER"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ENERGYFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EQUAL"><![CDATA[2]]></token>
+	<token name="NUMBEROF_EQUALSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EQUATION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EVENTDOWNFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EVENTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EVENTUPFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXP10FUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXP2FUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDCAUSALITYFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDCOLLECTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDDIRECTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDFIRSTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDMULFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPANDEDSUMFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXPFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXTERNALINPUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EXTERNALOUTPUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_EYEFUNCTION"><![CDATA[8]]></token>
+	<token name="NUMBEROF_FALSE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FINALSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FINISHTIME"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FLOORFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FLOWCAUSALITYSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FORSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FREQUENCYEVENTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_FROMMATLABSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_GAUSSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_GREATER"><![CDATA[0]]></token>
+	<token name="NUMBEROF_GREATEREQUAL"><![CDATA[0]]></token>
+	<token name="NUMBEROF_HOLDFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_HOMOGENEOUSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_IFSTATEMENT"><![CDATA[2]]></token>
+	<token name="NUMBEROF_IMPULSEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INITIALFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INITIALSTATEMENT"><![CDATA[1]]></token>
+	<token name="NUMBEROF_INITIALVALUE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INNERFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INVERSEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_INVERSEHOMOGENEOUSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LESS"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LESSEQUAL"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LIMINTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LIMITFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LINEARSOLVEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LITERAL"><![CDATA[32]]></token>
+	<token name="NUMBEROF_LOG10FUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LOG2FUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_LOGFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MAJOR"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MAJORADJOINTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MAXFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MIN"><![CDATA[2]]></token>
+	<token name="NUMBEROF_MINFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MODULO"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MUL"><![CDATA[11]]></token>
+	<token name="NUMBEROF_MULTIPLYCOLUMNSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MULTIPLYHOMOGENEOUSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_MULTIPLYROWSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_NEXTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_NONLINEARFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_NORMFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_NORMINFFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_NOTEQUAL"><![CDATA[0]]></token>
+	<token name="NUMBEROF_OR"><![CDATA[0]]></token>
+	<token name="NUMBEROF_PARAMETER"><![CDATA[0]]></token>
+	<token name="NUMBEROF_PLUS"><![CDATA[4]]></token>
+	<token name="NUMBEROF_PORT"><![CDATA[4]]></token>
+	<token name="NUMBEROF_PORTVARIABLE"><![CDATA[4]]></token>
+	<token name="NUMBEROF_POWER"><![CDATA[1]]></token>
+	<token name="NUMBEROF_PREFIXMIN"><![CDATA[0]]></token>
+	<token name="NUMBEROF_PREFIXNOT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_PREFIXPLUS"><![CDATA[0]]></token>
+	<token name="NUMBEROF_PREVIOUSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RAMPFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RANDOM"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RANDOMFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_REPEATSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RESETFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RESINTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_RETURNSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ROUNDFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_ROWSFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SAMPLEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SAMPLETIME"><![CDATA[2]]></token>
+	<token name="NUMBEROF_SIGNFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SINFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_SINHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SKEWFUNCTION"><![CDATA[4]]></token>
+	<token name="NUMBEROF_SQRFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SQRTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STARTTIME"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STATERATE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STEPFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STEPSIZE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_STOPSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SUMFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SWITCHSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SYMMETRICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_SYSTEMVARIABLE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TABLEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TANFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TANHYPERBOLICFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TDELAYFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TILDEFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_TIME"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TIMEEVENTFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TIMENODEWITHOUT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TIMETRIGGERFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TOMATLABSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRACEFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRANSPOSEFUNCTION"><![CDATA[1]]></token>
+	<token name="NUMBEROF_TRIGGERDOWNFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRIGGERFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRIGGERUPFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRUE"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TRUNCFUNCTION"><![CDATA[0]]></token>
+	<token name="NUMBEROF_TYPEPARAMETER"><![CDATA[0]]></token>
+	<token name="NUMBEROF_UNNAMED"><![CDATA[27]]></token>
+	<token name="NUMBEROF_VARIABLE"><![CDATA[9]]></token>
+	<token name="NUMBEROF_WARNSTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_WHILESTATEMENT"><![CDATA[0]]></token>
+	<token name="NUMBEROF_XOR"><![CDATA[0]]></token>
+	<token name="NUMBER_ALGLOOPS"><![CDATA[0]]></token>
+	<token name="NUMBER_ALIAS_MATRICES"><![CDATA[0]]></token>
+	<token name="NUMBER_ALIAS_VARIABLES"><![CDATA[0]]></token>
+	<token name="NUMBER_CONSTANTS"><![CDATA[0]]></token>
+	<token name="NUMBER_CONSTRAINTS"><![CDATA[0]]></token>
+	<token name="NUMBER_DEPSTATES"><![CDATA[0]]></token>
+	<token name="NUMBER_EXPORTS"><![CDATA[0]]></token>
+	<token name="NUMBER_FAVORITE_PARAMETERS"><![CDATA[0]]></token>
+	<token name="NUMBER_FAVORITE_VARIABLES"><![CDATA[0]]></token>
+	<token name="NUMBER_IMPORTS"><![CDATA[0]]></token>
+	<token name="NUMBER_INITIAL_VALUES"><![CDATA[0]]></token>
+	<token name="NUMBER_INPUTS"><![CDATA[22]]></token>
+	<token name="NUMBER_MATRICES"><![CDATA[37]]></token>
+	<token name="NUMBER_OUTPUTS"><![CDATA[32]]></token>
+	<token name="NUMBER_PARAMETERS"><![CDATA[0]]></token>
+	<token name="NUMBER_STATES"><![CDATA[0]]></token>
+	<token name="NUMBER_UNNAMED"><![CDATA[159]]></token>
+	<token name="NUMBER_VARIABLES"><![CDATA[137]]></token>
+	<token name="OUTPUT2_EQUATIONS"><![CDATA[
+		/* omega = T_base_00[1:3] * sampletime; */
+		M[12].mat[0] = M[0].mat[0];
+		M[12].mat[1] = M[0].mat[1];
+		M[12].mat[2] = M[0].mat[2];
+		XXMatrixScalarMul (&M[5], &M[12], step_size);
+
+		/* v = T_base_00[4:6] * sampletime; */
+		M[13].mat[0] = M[0].mat[3];
+		M[13].mat[1] = M[0].mat[4];
+		M[13].mat[2] = M[0].mat[5];
+		XXMatrixScalarMul (&M[6], &M[13], step_size);
+
+		/* omega_norm = norm (omega); */
+		XXMatrixNorm (&V[69], &M[5]);
+
+		/* if (omega_norm == 0) */
+		if (V[69] == 0.0)
+		{
+			/* H = tilde (T_base_00) + eye (4); */
+			XXMatrixTilde (&M[15], &M[0]);
+			XXMatrixEye (&M[16]);
+			XXMatrixAdd (&M[8], &M[15], &M[16]);
+		}
+		else
+		{
+			/* omega_temp = omega / omega_norm; */
+			XXMatrixScalarDiv (&M[7], &M[5], V[69]);
+
+			/* R = (eye (3) + skew (omega_temp) * sin (omega_norm)) + (skew (omega_temp) * skew (omega_temp)) * (1 - cos (omega_norm)); */
+			XXMatrixEye (&M[19]);
+			XXMatrixSkew (&M[21], &M[7]);
+			XXMatrixScalarMul (&M[20], &M[21], sin (V[69]));
+			XXMatrixAdd (&M[18], &M[19], &M[20]);
+			XXMatrixSkew (&M[24], &M[7]);
+			XXMatrixSkew (&M[25], &M[7]);
+			XXMatrixMul (&M[23], &M[24], &M[25]);
+			XXMatrixScalarMul (&M[22], &M[23], (1.0 - cos (V[69])));
+			XXMatrixAdd (&M[4], &M[18], &M[22]);
+
+			/* H[1:3,1:3] = R; */
+			M[8].mat[0] = M[4].mat[0];
+			M[8].mat[1] = M[4].mat[1];
+			M[8].mat[2] = M[4].mat[2];
+			M[8].mat[4] = M[4].mat[3];
+			M[8].mat[5] = M[4].mat[4];
+			M[8].mat[6] = M[4].mat[5];
+			M[8].mat[8] = M[4].mat[6];
+			M[8].mat[9] = M[4].mat[7];
+			M[8].mat[10] = M[4].mat[8];
+
+			/* H[1:3,4] = ((eye (3) - R) * (skew (omega) * v) + (transpose (omega) * v) * omega) / omega_norm ^ 2; */
+			XXMatrixEye (&M[30]);
+			XXMatrixSub (&M[29], &M[30], &M[4]);
+			XXMatrixSkew (&M[32], &M[5]);
+			XXMatrixMul (&M[31], &M[32], &M[6]);
+			XXMatrixMul (&M[28], &M[29], &M[31]);
+			XXMatrixTranspose (&M[35], &M[5]);
+			XXScalarMatrixMatrixMul (M[34].mat, &M[35], &M[6]);
+			XXScalarMatrixMul (&M[33], M[34].mat[0], &M[5]);
+			XXMatrixAdd (&M[27], &M[28], &M[33]);
+			XXMatrixScalarDiv (&M[26], &M[27], (V[69] * V[69]));
+			M[8].mat[3] = M[26].mat[0];
+			M[8].mat[7] = M[26].mat[1];
+			M[8].mat[11] = M[26].mat[2];
+
+			/* H[4,4] = 1; */
+			M[8].mat[15] = 1.0;
+
+			/* H[4,1:3] = 0; */
+			M[8].mat[12] = 0.0;
+			M[8].mat[13] = 0.0;
+			M[8].mat[14] = 0.0;
+		}
+
+		/* aldo = H_base_odom * H; */
+		XXMatrixMul (&M[9], &M[3], &M[8]);
+
+		/* H_base_odom = aldo; */
+		XXMatrixMov (&M[3], &M[9]);
+
+		/* if H_odom_map[4,4] == 1 */
+		if (M[2].mat[15] == 1.0)
+		{
+			/* aldoH_odom_map = H_odom_map; */
+			XXMatrixMov (&M[10], &M[2]);
+		}
+
+		/* H_base_map = (aldoH_odom_map) * H_base_odom; */
+		XXMatrixMul (&M[1], &M[10], &M[3]);
+
+]]></token>
+	<token name="OUTPUT_EQUATIONS"><![CDATA[]]></token>
+	<token name="OUTPUT_NAMES"><![CDATA[	"H_base_map[1,1]",
+	"H_base_map[1,2]",
+	"H_base_map[1,3]",
+	"H_base_map[1,4]",
+	"H_base_map[2,1]",
+	"H_base_map[2,2]",
+	"H_base_map[2,3]",
+	"H_base_map[2,4]",
+	"H_base_map[3,1]",
+	"H_base_map[3,2]",
+	"H_base_map[3,3]",
+	"H_base_map[3,4]",
+	"H_base_map[4,1]",
+	"H_base_map[4,2]",
+	"H_base_map[4,3]",
+	"H_base_map[4,4]",
+	"H_base_odom[1,1]",
+	"H_base_odom[1,2]",
+	"H_base_odom[1,3]",
+	"H_base_odom[1,4]",
+	"H_base_odom[2,1]",
+	"H_base_odom[2,2]",
+	"H_base_odom[2,3]",
+	"H_base_odom[2,4]",
+	"H_base_odom[3,1]",
+	"H_base_odom[3,2]",
+	"H_base_odom[3,3]",
+	"H_base_odom[3,4]",
+	"H_base_odom[4,1]",
+	"H_base_odom[4,2]",
+	"H_base_odom[4,3]",
+	"H_base_odom[4,4]"
+]]></token>
+	<token name="OUTPUT_NAMES2"><![CDATA[	"H_base_map[1,1]",
+	"H_base_map[1,2]",
+	"H_base_map[1,3]",
+	"H_base_map[1,4]",
+	"H_base_map[2,1]",
+	"H_base_map[2,2]",
+	"H_base_map[2,3]",
+	"H_base_map[2,4]",
+	"H_base_map[3,1]",
+	"H_base_map[3,2]",
+	"H_base_map[3,3]",
+	"H_base_map[3,4]",
+	"H_base_map[4,1]",
+	"H_base_map[4,2]",
+	"H_base_map[4,3]",
+	"H_base_map[4,4]",
+	"H_base_odom[1,1]",
+	"H_base_odom[1,2]",
+	"H_base_odom[1,3]",
+	"H_base_odom[1,4]",
+	"H_base_odom[2,1]",
+	"H_base_odom[2,2]",
+	"H_base_odom[2,3]",
+	"H_base_odom[2,4]",
+	"H_base_odom[3,1]",
+	"H_base_odom[3,2]",
+	"H_base_odom[3,3]",
+	"H_base_odom[3,4]",
+	"H_base_odom[4,1]",
+	"H_base_odom[4,2]",
+	"H_base_odom[4,3]",
+	"H_base_odom[4,4]"
+]]></token>
+	<token name="OUTPUT_NAMES3"><![CDATA[H_base_map[1,1]
+H_base_map[1,2]
+H_base_map[1,3]
+H_base_map[1,4]
+H_base_map[2,1]
+H_base_map[2,2]
+H_base_map[2,3]
+H_base_map[2,4]
+H_base_map[3,1]
+H_base_map[3,2]
+H_base_map[3,3]
+H_base_map[3,4]
+H_base_map[4,1]
+H_base_map[4,2]
+H_base_map[4,3]
+H_base_map[4,4]
+H_base_odom[1,1]
+H_base_odom[1,2]
+H_base_odom[1,3]
+H_base_odom[1,4]
+H_base_odom[2,1]
+H_base_odom[2,2]
+H_base_odom[2,3]
+H_base_odom[2,4]
+H_base_odom[3,1]
+H_base_odom[3,2]
+H_base_odom[3,3]
+H_base_odom[3,4]
+H_base_odom[4,1]
+H_base_odom[4,2]
+H_base_odom[4,3]
+H_base_odom[4,4]
+]]></token>
+	<token name="OUTPUT_UNITS"><![CDATA[
+
+]]></token>
+	<token name="PARAMETER_NAMES"><![CDATA[	NULL]]></token>
+	<token name="PARAMETER_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="PARAMETER_NAMES3"><![CDATA[]]></token>
+	<token name="PARAMETER_UNITS"><![CDATA[]]></token>
+	<token name="PARAMETER_VALUES"><![CDATA[]]></token>
+	<token name="RATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="RATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="RATE_NAMES3"><![CDATA[]]></token>
+	<token name="RATE_UNITS"><![CDATA[]]></token>
+	<token name="SIMULINK_MODEL"><![CDATA[Model {
+  Name			  "motion_stack_"
+  System {
+    Name		    "motion_stack_"
+    Open		    on
+    Block {
+      BlockType		      SubSystem
+      Name		      "SubSystem"
+      Ports		      [2, 2]
+      Position		      [100, 100, 300, 160]
+      ShowPortLabels	      on
+	  MaskType		      "20-sim 4.1 S-Function block"
+	  MaskDescription	      "This block is generated by the 20-sim ANSI-C Code Generator. 
+
+* look under the mask to get information on the ports
+* press Help for more detailed information
+* the parameters of this block are:
+
+"
+	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
+The block parameters are:<br><blockquote></blockquote>
+Generated at:<br>
+<blockquote><b>date:  </b>November 1, 2012<br>
+<b>time:  </b>4:08:55 pm<br></blockquote>
+From the following 20-sim model:<br>
+<blockquote><b>submodel:  </b>Odometry<br>
+<b>model:  </b>motion_stack<br>
+<b>file:  </b>Z:\\Users\\yury\\workspaces\\20SimModels\\Devel\\motion_stack.emx<br>
+<b>experiment:  </b>Z:\\Users\\yury\\workspaces\\20SimModels\\Devel\\motion_stack.emx<br></blockquote>
+Using the following 20-sim license:<br>
+<blockquote><b>user:  </b>Campuslicentie<br>
+<b>from:  </b>Universiteit Twente<br>
+<b>build: </b>4.1.4.1<br></blockquote>"
+	  MaskPromptString	      ""
+	  MaskVariables	      ";"
+	  MaskDisplay		  ""
+	  MaskIconFrame		  off
+	  MaskValueString	      ""
+      System {
+        Name			"SubSystem"
+        Location		[478, 83, 978, 384]
+        Block {
+              BlockType		  Inport
+		  Name			  "H_odom_map"
+		  Position		  [40, 20, 60, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "T_base_00"
+		  Position		  [40, 60, 60, 80]
+		  Port			  "2"
+        }
+		Block {
+		  BlockType		  Mux
+		  Name			  "Mux"
+		  Ports			  [2, 1]
+		  Position		  [130, 30, 135, 70]
+		  Inputs		  "[16 6 ]"
+		  DisplayOption		  "bar"
+		}
+		Block {
+		  BlockType		  Demux
+		  Name			  "Demux"
+		  Ports			  [1, 2]
+		  Position		  [290, 30, 295, 70]
+		  Outputs		  "[16 16 ]"
+		  DisplayOption		  "bar"
+		  BusSelectionMode    off
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "S-Function"
+		  Ports			  [1, 1]
+		  Position		  [170, 30, 250, 70]
+		  FunctionName		  "motion_stack"
+		  Parameters	      ""
+		}
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_map"
+		  Position		  [380, 20, 400, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_odom"
+		  Position		  [380, 60, 400, 80]
+		  Port			  "2"
+        }
+		Line {
+		  SrcBlock		  "H_odom_map"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "T_base_00"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  2
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  1
+		  DstBlock		  "H_base_map"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  2
+		  DstBlock		  "H_base_odom"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Mux"
+		  SrcPort		  1
+		  DstBlock		  "S-Function"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "S-Function"
+		  SrcPort		  1
+		  DstBlock		  "Demux"
+		  DstPort		  1
+		}
+      }
+    }
+  }
+}
+]]></token>
+	<token name="SIMULINK_SUBMODEL"><![CDATA[Model {
+  Name			  "Odometry_"
+  System {
+    Name		    "Odometry_"
+    Open		    on
+    Block {
+      BlockType		      SubSystem
+      Name		      "Odometry"
+      Ports		      [2, 2]
+      Position		      [163, 178, 237, 222]
+
+      ShowPortLabels	      on
+	  MaskType		      "20-sim 4.1 S-Function block"
+	  MaskDescription	      "This block is generated by the 20-sim ANSI-C Code Generator. 
+
+* look under the mask to get information on the ports
+* press Help for more detailed information
+* the parameters of this block are:
+
+"
+	  MaskHelp	      "This block is generated by the 20-sim ANSI-C Code Generator<br>
+The block parameters are:<br><blockquote></blockquote>
+Generated at:<br>
+<blockquote><b>date:  </b>November 1, 2012<br>
+<b>time:  </b>4:08:55 pm<br></blockquote>
+From the following 20-sim model:<br>
+<blockquote><b>submodel:  </b>Odometry<br>
+<b>model:  </b>motion_stack<br>
+<b>file:  </b>Z:\\Users\\yury\\workspaces\\20SimModels\\Devel\\motion_stack.emx<br>
+<b>experiment:  </b>Z:\\Users\\yury\\workspaces\\20SimModels\\Devel\\motion_stack.emx<br></blockquote>
+Using the following 20-sim license:<br>
+<blockquote><b>user:  </b>Campuslicentie<br>
+<b>from:  </b>Universiteit Twente<br>
+<b>build: </b>4.1.4.1<br></blockquote>"
+	  MaskPromptString	      ""
+	  MaskVariables	      ";"
+	  MaskDisplay		  "patch ([1355 1429 1429 1355 1355 ], [690 690 734 734 690 ], [0.835307 0.835307 0.835307] )
+color ('black ')
+plot ([1355 1429 1429 1355 1355 ], [690 690 734 734 690 ])
+color ('black')
+text (1392,712,'Odometry','hor','center')"
+	  MaskIconFrame		  off
+	  MaskValueString	      ""
+      System {
+        Name			"Odometry"
+        Location		[478, 83, 978, 384]
+        Block {
+              BlockType		  Inport
+		  Name			  "H_odom_map"
+		  Position		  [40, 20, 60, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Inport
+		  Name			  "T_base_00"
+		  Position		  [40, 60, 60, 80]
+		  Port			  "2"
+        }
+		Block {
+		  BlockType		  Mux
+		  Name			  "Mux"
+		  Ports			  [2, 1]
+		  Position		  [130, 30, 135, 70]
+		  Inputs		  "[16 6 ]"
+		  DisplayOption		  "bar"
+		}
+		Block {
+		  BlockType		  Demux
+		  Name			  "Demux"
+		  Ports			  [1, 2]
+		  Position		  [290, 30, 295, 70]
+		  Outputs		  "[16 16 ]"
+		  DisplayOption		  "bar"
+		  BusSelectionMode    off
+		}
+		Block {
+		  BlockType		  "S-Function"
+		  Name			  "S-Function"
+		  Ports			  [1, 1]
+		  Position		  [170, 30, 250, 70]
+		  FunctionName		  "Odometry"
+		  Parameters	      ""
+		}
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_map"
+		  Position		  [380, 20, 400, 40]
+		  Port			  "1"
+        }
+        Block {
+              BlockType		  Outport
+		  Name			  "H_base_odom"
+		  Position		  [380, 60, 400, 80]
+		  Port			  "2"
+        }
+		Line {
+		  SrcBlock		  "H_odom_map"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "T_base_00"
+		  SrcPort		  1
+		  DstBlock		  "Mux"
+		  DstPort		  2
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  1
+		  DstBlock		  "H_base_map"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Demux"
+		  SrcPort		  2
+		  DstBlock		  "H_base_odom"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Mux"
+		  SrcPort		  1
+		  DstBlock		  "S-Function"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "S-Function"
+		  SrcPort		  1
+		  DstBlock		  "Demux"
+		  DstPort		  1
+		}
+      }
+    }
+  }
+}
+]]></token>
+	<token name="START_TIME"><![CDATA[0.0]]></token>
+	<token name="STATE_NAMES"><![CDATA[	NULL]]></token>
+	<token name="STATE_NAMES2"><![CDATA[	NULL]]></token>
+	<token name="STATE_NAMES3"><![CDATA[]]></token>
+	<token name="STATE_UNITS"><![CDATA[]]></token>
+	<token name="STATIC_EQUATIONS"><![CDATA[]]></token>
+	<token name="TIME_STEP_SIZE"><![CDATA[0.001]]></token>
+	<token name="USER_NAME"><![CDATA[Campuslicentie]]></token>
+	<token name="VARIABLE_NAMES"><![CDATA[	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"H_base_map[1,1]",
+	"H_base_map[1,2]",
+	"H_base_map[1,3]",
+	"H_base_map[1,4]",
+	"H_base_map[2,1]",
+	"H_base_map[2,2]",
+	"H_base_map[2,3]",
+	"H_base_map[2,4]",
+	"H_base_map[3,1]",
+	"H_base_map[3,2]",
+	"H_base_map[3,3]",
+	"H_base_map[3,4]",
+	"H_base_map[4,1]",
+	"H_base_map[4,2]",
+	"H_base_map[4,3]",
+	"H_base_map[4,4]",
+	"H_odom_map[1,1]",
+	"H_odom_map[1,2]",
+	"H_odom_map[1,3]",
+	"H_odom_map[1,4]",
+	"H_odom_map[2,1]",
+	"H_odom_map[2,2]",
+	"H_odom_map[2,3]",
+	"H_odom_map[2,4]",
+	"H_odom_map[3,1]",
+	"H_odom_map[3,2]",
+	"H_odom_map[3,3]",
+	"H_odom_map[3,4]",
+	"H_odom_map[4,1]",
+	"H_odom_map[4,2]",
+	"H_odom_map[4,3]",
+	"H_odom_map[4,4]",
+	"H_base_odom[1,1]",
+	"H_base_odom[1,2]",
+	"H_base_odom[1,3]",
+	"H_base_odom[1,4]",
+	"H_base_odom[2,1]",
+	"H_base_odom[2,2]",
+	"H_base_odom[2,3]",
+	"H_base_odom[2,4]",
+	"H_base_odom[3,1]",
+	"H_base_odom[3,2]",
+	"H_base_odom[3,3]",
+	"H_base_odom[3,4]",
+	"H_base_odom[4,1]",
+	"H_base_odom[4,2]",
+	"H_base_odom[4,3]",
+	"H_base_odom[4,4]",
+	"R[1,1]",
+	"R[1,2]",
+	"R[1,3]",
+	"R[2,1]",
+	"R[2,2]",
+	"R[2,3]",
+	"R[3,1]",
+	"R[3,2]",
+	"R[3,3]",
+	"omega[1]",
+	"omega[2]",
+	"omega[3]",
+	"v[1]",
+	"v[2]",
+	"v[3]",
+	"omega_norm",
+	"omega_temp[1]",
+	"omega_temp[2]",
+	"omega_temp[3]",
+	"H[1,1]",
+	"H[1,2]",
+	"H[1,3]",
+	"H[1,4]",
+	"H[2,1]",
+	"H[2,2]",
+	"H[2,3]",
+	"H[2,4]",
+	"H[3,1]",
+	"H[3,2]",
+	"H[3,3]",
+	"H[3,4]",
+	"H[4,1]",
+	"H[4,2]",
+	"H[4,3]",
+	"H[4,4]",
+	"aldo[1,1]",
+	"aldo[1,2]",
+	"aldo[1,3]",
+	"aldo[1,4]",
+	"aldo[2,1]",
+	"aldo[2,2]",
+	"aldo[2,3]",
+	"aldo[2,4]",
+	"aldo[3,1]",
+	"aldo[3,2]",
+	"aldo[3,3]",
+	"aldo[3,4]",
+	"aldo[4,1]",
+	"aldo[4,2]",
+	"aldo[4,3]",
+	"aldo[4,4]",
+	"aldoH_odom_map[1,1]",
+	"aldoH_odom_map[1,2]",
+	"aldoH_odom_map[1,3]",
+	"aldoH_odom_map[1,4]",
+	"aldoH_odom_map[2,1]",
+	"aldoH_odom_map[2,2]",
+	"aldoH_odom_map[2,3]",
+	"aldoH_odom_map[2,4]",
+	"aldoH_odom_map[3,1]",
+	"aldoH_odom_map[3,2]",
+	"aldoH_odom_map[3,3]",
+	"aldoH_odom_map[3,4]",
+	"aldoH_odom_map[4,1]",
+	"aldoH_odom_map[4,2]",
+	"aldoH_odom_map[4,3]",
+	"aldoH_odom_map[4,4]",
+	"H_base_baseprev[1,1]",
+	"H_base_baseprev[1,2]",
+	"H_base_baseprev[1,3]",
+	"H_base_baseprev[1,4]",
+	"H_base_baseprev[2,1]",
+	"H_base_baseprev[2,2]",
+	"H_base_baseprev[2,3]",
+	"H_base_baseprev[2,4]",
+	"H_base_baseprev[3,1]",
+	"H_base_baseprev[3,2]",
+	"H_base_baseprev[3,3]",
+	"H_base_baseprev[3,4]",
+	"H_base_baseprev[4,1]",
+	"H_base_baseprev[4,2]",
+	"H_base_baseprev[4,3]",
+	"H_base_baseprev[4,4]"
+]]></token>
+	<token name="VARIABLE_NAMES2"><![CDATA[	"T_base_00[1]",
+	"T_base_00[2]",
+	"T_base_00[3]",
+	"T_base_00[4]",
+	"T_base_00[5]",
+	"T_base_00[6]",
+	"H_base_map[1,1]",
+	"H_base_map[1,2]",
+	"H_base_map[1,3]",
+	"H_base_map[1,4]",
+	"H_base_map[2,1]",
+	"H_base_map[2,2]",
+	"H_base_map[2,3]",
+	"H_base_map[2,4]",
+	"H_base_map[3,1]",
+	"H_base_map[3,2]",
+	"H_base_map[3,3]",
+	"H_base_map[3,4]",
+	"H_base_map[4,1]",
+	"H_base_map[4,2]",
+	"H_base_map[4,3]",
+	"H_base_map[4,4]",
+	"H_odom_map[1,1]",
+	"H_odom_map[1,2]",
+	"H_odom_map[1,3]",
+	"H_odom_map[1,4]",
+	"H_odom_map[2,1]",
+	"H_odom_map[2,2]",
+	"H_odom_map[2,3]",
+	"H_odom_map[2,4]",
+	"H_odom_map[3,1]",
+	"H_odom_map[3,2]",
+	"H_odom_map[3,3]",
+	"H_odom_map[3,4]",
+	"H_odom_map[4,1]",
+	"H_odom_map[4,2]",
+	"H_odom_map[4,3]",
+	"H_odom_map[4,4]",
+	"H_base_odom[1,1]",
+	"H_base_odom[1,2]",
+	"H_base_odom[1,3]",
+	"H_base_odom[1,4]",
+	"H_base_odom[2,1]",
+	"H_base_odom[2,2]",
+	"H_base_odom[2,3]",
+	"H_base_odom[2,4]",
+	"H_base_odom[3,1]",
+	"H_base_odom[3,2]",
+	"H_base_odom[3,3]",
+	"H_base_odom[3,4]",
+	"H_base_odom[4,1]",
+	"H_base_odom[4,2]",
+	"H_base_odom[4,3]",
+	"H_base_odom[4,4]",
+	"R[1,1]",
+	"R[1,2]",
+	"R[1,3]",
+	"R[2,1]",
+	"R[2,2]",
+	"R[2,3]",
+	"R[3,1]",
+	"R[3,2]",
+	"R[3,3]",
+	"omega[1]",
+	"omega[2]",
+	"omega[3]",
+	"v[1]",
+	"v[2]",
+	"v[3]",
+	"omega_norm",
+	"omega_temp[1]",
+	"omega_temp[2]",
+	"omega_temp[3]",
+	"H[1,1]",
+	"H[1,2]",
+	"H[1,3]",
+	"H[1,4]",
+	"H[2,1]",
+	"H[2,2]",
+	"H[2,3]",
+	"H[2,4]",
+	"H[3,1]",
+	"H[3,2]",
+	"H[3,3]",
+	"H[3,4]",
+	"H[4,1]",
+	"H[4,2]",
+	"H[4,3]",
+	"H[4,4]",
+	"aldo[1,1]",
+	"aldo[1,2]",
+	"aldo[1,3]",
+	"aldo[1,4]",
+	"aldo[2,1]",
+	"aldo[2,2]",
+	"aldo[2,3]",
+	"aldo[2,4]",
+	"aldo[3,1]",
+	"aldo[3,2]",
+	"aldo[3,3]",
+	"aldo[3,4]",
+	"aldo[4,1]",
+	"aldo[4,2]",
+	"aldo[4,3]",
+	"aldo[4,4]",
+	"aldoH_odom_map[1,1]",
+	"aldoH_odom_map[1,2]",
+	"aldoH_odom_map[1,3]",
+	"aldoH_odom_map[1,4]",
+	"aldoH_odom_map[2,1]",
+	"aldoH_odom_map[2,2]",
+	"aldoH_odom_map[2,3]",
+	"aldoH_odom_map[2,4]",
+	"aldoH_odom_map[3,1]",
+	"aldoH_odom_map[3,2]",
+	"aldoH_odom_map[3,3]",
+	"aldoH_odom_map[3,4]",
+	"aldoH_odom_map[4,1]",
+	"aldoH_odom_map[4,2]",
+	"aldoH_odom_map[4,3]",
+	"aldoH_odom_map[4,4]",
+	"H_base_baseprev[1,1]",
+	"H_base_baseprev[1,2]",
+	"H_base_baseprev[1,3]",
+	"H_base_baseprev[1,4]",
+	"H_base_baseprev[2,1]",
+	"H_base_baseprev[2,2]",
+	"H_base_baseprev[2,3]",
+	"H_base_baseprev[2,4]",
+	"H_base_baseprev[3,1]",
+	"H_base_baseprev[3,2]",
+	"H_base_baseprev[3,3]",
+	"H_base_baseprev[3,4]",
+	"H_base_baseprev[4,1]",
+	"H_base_baseprev[4,2]",
+	"H_base_baseprev[4,3]",
+	"H_base_baseprev[4,4]"
+]]></token>
+	<token name="VARIABLE_NAMES3"><![CDATA[T_base_00[1]
+T_base_00[2]
+T_base_00[3]
+T_base_00[4]
+T_base_00[5]
+T_base_00[6]
+H_base_map[1,1]
+H_base_map[1,2]
+H_base_map[1,3]
+H_base_map[1,4]
+H_base_map[2,1]
+H_base_map[2,2]
+H_base_map[2,3]
+H_base_map[2,4]
+H_base_map[3,1]
+H_base_map[3,2]
+H_base_map[3,3]
+H_base_map[3,4]
+H_base_map[4,1]
+H_base_map[4,2]
+H_base_map[4,3]
+H_base_map[4,4]
+H_odom_map[1,1]
+H_odom_map[1,2]
+H_odom_map[1,3]
+H_odom_map[1,4]
+H_odom_map[2,1]
+H_odom_map[2,2]
+H_odom_map[2,3]
+H_odom_map[2,4]
+H_odom_map[3,1]
+H_odom_map[3,2]
+H_odom_map[3,3]
+H_odom_map[3,4]
+H_odom_map[4,1]
+H_odom_map[4,2]
+H_odom_map[4,3]
+H_odom_map[4,4]
+H_base_odom[1,1]
+H_base_odom[1,2]
+H_base_odom[1,3]
+H_base_odom[1,4]
+H_base_odom[2,1]
+H_base_odom[2,2]
+H_base_odom[2,3]
+H_base_odom[2,4]
+H_base_odom[3,1]
+H_base_odom[3,2]
+H_base_odom[3,3]
+H_base_odom[3,4]
+H_base_odom[4,1]
+H_base_odom[4,2]
+H_base_odom[4,3]
+H_base_odom[4,4]
+R[1,1]
+R[1,2]
+R[1,3]
+R[2,1]
+R[2,2]
+R[2,3]
+R[3,1]
+R[3,2]
+R[3,3]
+omega[1]
+omega[2]
+omega[3]
+v[1]
+v[2]
+v[3]
+omega_norm
+omega_temp[1]
+omega_temp[2]
+omega_temp[3]
+H[1,1]
+H[1,2]
+H[1,3]
+H[1,4]
+H[2,1]
+H[2,2]
+H[2,3]
+H[2,4]
+H[3,1]
+H[3,2]
+H[3,3]
+H[3,4]
+H[4,1]
+H[4,2]
+H[4,3]
+H[4,4]
+aldo[1,1]
+aldo[1,2]
+aldo[1,3]
+aldo[1,4]
+aldo[2,1]
+aldo[2,2]
+aldo[2,3]
+aldo[2,4]
+aldo[3,1]
+aldo[3,2]
+aldo[3,3]
+aldo[3,4]
+aldo[4,1]
+aldo[4,2]
+aldo[4,3]
+aldo[4,4]
+aldoH_odom_map[1,1]
+aldoH_odom_map[1,2]
+aldoH_odom_map[1,3]
+aldoH_odom_map[1,4]
+aldoH_odom_map[2,1]
+aldoH_odom_map[2,2]
+aldoH_odom_map[2,3]
+aldoH_odom_map[2,4]
+aldoH_odom_map[3,1]
+aldoH_odom_map[3,2]
+aldoH_odom_map[3,3]
+aldoH_odom_map[3,4]
+aldoH_odom_map[4,1]
+aldoH_odom_map[4,2]
+aldoH_odom_map[4,3]
+aldoH_odom_map[4,4]
+H_base_baseprev[1,1]
+H_base_baseprev[1,2]
+H_base_baseprev[1,3]
+H_base_baseprev[1,4]
+H_base_baseprev[2,1]
+H_base_baseprev[2,2]
+H_base_baseprev[2,3]
+H_base_baseprev[2,4]
+H_base_baseprev[3,1]
+H_base_baseprev[3,2]
+H_base_baseprev[3,3]
+H_base_baseprev[3,4]
+H_base_baseprev[4,1]
+H_base_baseprev[4,2]
+H_base_baseprev[4,3]
+H_base_baseprev[4,4]
+]]></token>
+	<token name="VARIABLE_TO_OUTPUT_EQUATIONS"><![CDATA[	y[0] = 	V[6];		/* H_base_map */
+	y[1] = 	V[7];
+	y[2] = 	V[8];
+	y[3] = 	V[9];
+	y[4] = 	V[10];
+	y[5] = 	V[11];
+	y[6] = 	V[12];
+	y[7] = 	V[13];
+	y[8] = 	V[14];
+	y[9] = 	V[15];
+	y[10] = 	V[16];
+	y[11] = 	V[17];
+	y[12] = 	V[18];
+	y[13] = 	V[19];
+	y[14] = 	V[20];
+	y[15] = 	V[21];
+	y[16] = 	V[38];		/* H_base_odom */
+	y[17] = 	V[39];
+	y[18] = 	V[40];
+	y[19] = 	V[41];
+	y[20] = 	V[42];
+	y[21] = 	V[43];
+	y[22] = 	V[44];
+	y[23] = 	V[45];
+	y[24] = 	V[46];
+	y[25] = 	V[47];
+	y[26] = 	V[48];
+	y[27] = 	V[49];
+	y[28] = 	V[50];
+	y[29] = 	V[51];
+	y[30] = 	V[52];
+	y[31] = 	V[53];
+]]></token>
+	<token name="VARIABLE_UNITS"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+]]></token>
+	<token name="WORK_ARRAY_SIZE"><![CDATA[0]]></token>
+	<token name="XX_ALG_IN_ARRAY_NAME"><![CDATA[A]]></token>
+	<token name="XX_ALG_OUT_ARRAY_NAME"><![CDATA[a]]></token>
+	<token name="XX_DEP_RATE_ARRAY_NAME"><![CDATA[r]]></token>
+	<token name="XX_DEP_STATE_ARRAY_NAME"><![CDATA[S]]></token>
+	<token name="XX_EXT_IN_ARRAY_NAME"><![CDATA[e]]></token>
+	<token name="XX_EXT_OUT_ARRAY_NAME"><![CDATA[E]]></token>
+	<token name="XX_FAVORITE_PARS_ARRAY_NAME"><![CDATA[F]]></token>
+	<token name="XX_FAVORITE_VARS_ARRAY_NAME"><![CDATA[f]]></token>
+	<token name="XX_INITIAL_VALUE_ARRAY_NAME"><![CDATA[I]]></token>
+	<token name="VARPREFIX"><![CDATA[]]></token>
+	<token name="FUNCTIONPREFIX"><![CDATA[XX]]></token>
+	<token name="XX_TIME"><![CDATA[time]]></token>
+	<token name="XX_INITIALIZE"><![CDATA[initialize]]></token>
+	<token name="XX_VARIABLE_ARRAY_NAME"><![CDATA[V]]></token>
+	<token name="XX_PARAMETER_ARRAY_NAME"><![CDATA[P]]></token>
+	<token name="XX_CONSTANT_ARRAY_NAME"><![CDATA[C]]></token>
+	<token name="XX_STATE_ARRAY_NAME"><![CDATA[s]]></token>
+	<token name="XX_RATE_ARRAY_NAME"><![CDATA[R]]></token>
+	<token name="XX_MATRIX_ARRAY_NAME"><![CDATA[M]]></token>
+	<token name="XX_UNNAMED_ARRAY_NAME"><![CDATA[U]]></token>
+	<token name="EVENT_DELTA"><![CDATA[1e-006]]></token>
+	<token name="FORMAJORVERSION"><![CDATA[4]]></token>
+	<token name="FORMINORVERSION"><![CDATA[0]]></token>
+	<token name="FORMAJORBUILD"><![CDATA[1]]></token>
+	<token name="FORMINORBUILD"><![CDATA[5]]></token>
+	<token name="MAJORVERSION"><![CDATA[4]]></token>
+	<token name="MINORVERSION"><![CDATA[1]]></token>
+	<token name="MAJORBUILD"><![CDATA[4]]></token>
+	<token name="MINORBUILD"><![CDATA[1]]></token>
+	<token name="TEMPLATENAME"><![CDATA[Orocos]]></token>
+	<token name="TEMPLATEDIR"><![CDATA[C:\Program Files\20-sim 4.1\Ccode\Orocos\.]]></token>
+	<token name="TEMPLATE_DIR"><![CDATA[C:\Program Files\20-sim 4.1\Ccode\Orocos\.]]></token>
+	<token name="TOKENNAMES"><![CDATA[MODEL_NAME
+20SIM_DIR
+SUBMODEL_NAME
+ALGLOOP_NAMES
+ALGLOOP_NAMES2
+ALGLOOP_NAMES3
+ALGLOOP_UNITS
+ALIAS_EQUATIONS
+ALIAS_MATRIX_NAMES
+ALIAS_MATRIX_NAMES2
+ALIAS_MATRIX_NAMES3
+ALIAS_MATRIX_UNITS
+ALIAS_VARIABLE_INDICES
+ALIAS_VARIABLE_NAMES
+ALIAS_VARIABLE_NAMES2
+ALIAS_VARIABLE_NAMES3
+ALIAS_VARIABLE_UNITS
+COMPANY_NAME
+CONSTANT_NAMES
+CONSTANT_NAMES2
+CONSTANT_NAMES3
+CONSTANT_UNITS
+CONSTANT_VALUES
+CONSTRAINT_NAMES
+CONSTRAINT_NAMES2
+CONSTRAINT_NAMES3
+CONSTRAINT_UNITS
+DEPRATE_NAMES
+DEPRATE_NAMES2
+DEPRATE_NAMES3
+DEPRATE_UNITS
+DEPSTATE_NAMES
+DEPSTATE_NAMES2
+DEPSTATE_NAMES3
+DEPSTATE_UNITS
+DIRECT_FEEDTHROUGH
+DYNAMIC_EQUATIONS
+EXPERIMENT_NAME
+EXPORT_NAMES
+EXPORT_NAMES2
+EXPORT_NAMES3
+EXPORT_UNITS
+FAVORITE_PARAMETER_NAMES
+FAVORITE_PARAMETER_NAMES2
+FAVORITE_PARAMETER_NAMES3
+FAVORITE_PARAMETER_UNITS
+FAVORITE_PARS_EQUATIONS
+FAVORITE_VARIABLE_NAMES
+FAVORITE_VARIABLE_NAMES2
+FAVORITE_VARIABLE_NAMES3
+FAVORITE_VARIABLE_UNITS
+FAVORITE_VARS_EQUATIONS
+FILE_NAME
+FINAL_EQUATIONS
+FINISH_TIME
+GENERATION_BUILD
+GENERATION_DATE
+GENERATION_DIR
+GENERATION_TIME
+IMPORT_NAMES
+IMPORT_NAMES2
+IMPORT_NAMES3
+IMPORT_UNITS
+INITIALIZE_ALIAS_MATRICES
+INITIALIZE_CONSTANTS
+INITIALIZE_FAVORITE_PARS
+INITIALIZE_FAVORITE_VARS
+INITIALIZE_INITIAL_VALUES
+INITIALIZE_INPUTS
+INITIALIZE_MATRICES
+INITIALIZE_OUTPUTS
+INITIALIZE_PARAMETERS
+INITIALIZE_STATES
+INITIAL_EQUATIONS
+INITIAL_VALUE_NAMES
+INITIAL_VALUE_NAMES2
+INITIAL_VALUE_NAMES3
+INITIAL_VALUE_UNITS
+INITIAL_VALUE_VALUES
+INPUT_EQUATIONS
+INPUT_NAMES
+INPUT_NAMES2
+INPUT_NAMES3
+INPUT_TO_VARIABLE_EQUATIONS
+INPUT_UNITS
+INTEGRATION_METHOD_NAME
+MATRIX_NAMES
+MATRIX_NAMES2
+MATRIX_NAMES3
+MATRIX_UNITS
+MODEL_CONFIGURATION
+MODEL_DESCRIPTION
+MODEL_FILE
+MODEL_IS_DISCRETE
+NUMBEROF_ABSFUNCTION
+NUMBEROF_ADJOINTFUNCTION
+NUMBEROF_ALGEBRAICFUNCTION
+NUMBEROF_ALGLOOPIN
+NUMBEROF_ALGLOOPOUT
+NUMBEROF_AND
+NUMBEROF_ANTISYMMETRICFUNCTION
+NUMBEROF_ARCCOSFUNCTION
+NUMBEROF_ARCCOSHYPERBOLICFUNCTION
+NUMBEROF_ARCSINFUNCTION
+NUMBEROF_ARCSINHYPERBOLICFUNCTION
+NUMBEROF_ARCTANFUNCTION
+NUMBEROF_ARCTANHYPERBOLICFUNCTION
+NUMBEROF_ASSIGNMENT
+NUMBEROF_ATAN2FUNCTION
+NUMBEROF_BACKDIVISION
+NUMBEROF_CASESTATEMENT
+NUMBEROF_CEILFUNCTION
+NUMBEROF_CODESTATEMENT
+NUMBEROF_COLUMNSFUNCTION
+NUMBEROF_CONDITIONAL
+NUMBEROF_CONSTANT
+NUMBEROF_CONSTRAINTFUNCTION
+NUMBEROF_CONSTRAINTIN
+NUMBEROF_CONSTRAINTOUT
+NUMBEROF_COSFUNCTION
+NUMBEROF_COSHYPERBOLICFUNCTION
+NUMBEROF_CROSSFUNCTION
+NUMBEROF_DATAFUNCTION
+NUMBEROF_DDTFUNCTION
+NUMBEROF_DEFAULTCASESTATEMENT
+NUMBEROF_DELAYFUNCTION
+NUMBEROF_DEPENDENTRATE
+NUMBEROF_DEPENDENTSTATE
+NUMBEROF_DEPENDENTSTATERATE
+NUMBEROF_DERIVATIVEFUNCTION
+NUMBEROF_DETFUNCTION
+NUMBEROF_DIAGFUNCTION
+NUMBEROF_DISCRETERATE
+NUMBEROF_DISCRETESTATE
+NUMBEROF_DISCRETESTATERATE
+NUMBEROF_DISCRETETIME
+NUMBEROF_DISCRETETIMENODEWITHOUT
+NUMBEROF_DIV
+NUMBEROF_DIVISION
+NUMBEROF_DLLDYNAMICFUNCTION
+NUMBEROF_DLLFUNCTION
+NUMBEROF_DOMATLABSTATEMENT
+NUMBEROF_EFFORTCAUSALITYSTATEMENT
+NUMBEROF_ELEMENTDIV
+NUMBEROF_ELEMENTMUL
+NUMBEROF_ELEMENTPOWER
+NUMBEROF_ENERGYFUNCTION
+NUMBEROF_EQUAL
+NUMBEROF_EQUALSTATEMENT
+NUMBEROF_EQUATION
+NUMBEROF_EVENTDOWNFUNCTION
+NUMBEROF_EVENTFUNCTION
+NUMBEROF_EVENTUPFUNCTION
+NUMBEROF_EXP10FUNCTION
+NUMBEROF_EXP2FUNCTION
+NUMBEROF_EXPANDEDCAUSALITYFUNCTION
+NUMBEROF_EXPANDEDCOLLECTFUNCTION
+NUMBEROF_EXPANDEDDIRECTFUNCTION
+NUMBEROF_EXPANDEDFIRSTFUNCTION
+NUMBEROF_EXPANDEDMULFUNCTION
+NUMBEROF_EXPANDEDSUMFUNCTION
+NUMBEROF_EXPFUNCTION
+NUMBEROF_EXTERNALINPUT
+NUMBEROF_EXTERNALOUTPUT
+NUMBEROF_EYEFUNCTION
+NUMBEROF_FALSE
+NUMBEROF_FINALSTATEMENT
+NUMBEROF_FINISHTIME
+NUMBEROF_FLOORFUNCTION
+NUMBEROF_FLOWCAUSALITYSTATEMENT
+NUMBEROF_FORSTATEMENT
+NUMBEROF_FREQUENCYEVENTFUNCTION
+NUMBEROF_FROMMATLABSTATEMENT
+NUMBEROF_GAUSSFUNCTION
+NUMBEROF_GREATER
+NUMBEROF_GREATEREQUAL
+NUMBEROF_HOLDFUNCTION
+NUMBEROF_HOMOGENEOUSFUNCTION
+NUMBEROF_IFSTATEMENT
+NUMBEROF_IMPULSEFUNCTION
+NUMBEROF_INITIALFUNCTION
+NUMBEROF_INITIALSTATEMENT
+NUMBEROF_INITIALVALUE
+NUMBEROF_INNERFUNCTION
+NUMBEROF_INTFUNCTION
+NUMBEROF_INVERSEFUNCTION
+NUMBEROF_INVERSEHOMOGENEOUSFUNCTION
+NUMBEROF_LESS
+NUMBEROF_LESSEQUAL
+NUMBEROF_LIMINTFUNCTION
+NUMBEROF_LIMITFUNCTION
+NUMBEROF_LINEARSOLVEFUNCTION
+NUMBEROF_LITERAL
+NUMBEROF_LOG10FUNCTION
+NUMBEROF_LOG2FUNCTION
+NUMBEROF_LOGFUNCTION
+NUMBEROF_MAJOR
+NUMBEROF_MAJORADJOINTFUNCTION
+NUMBEROF_MAXFUNCTION
+NUMBEROF_MIN
+NUMBEROF_MINFUNCTION
+NUMBEROF_MODULO
+NUMBEROF_MUL
+NUMBEROF_MULTIPLYCOLUMNSFUNCTION
+NUMBEROF_MULTIPLYHOMOGENEOUSFUNCTION
+NUMBEROF_MULTIPLYROWSFUNCTION
+NUMBEROF_NEXTFUNCTION
+NUMBEROF_NONLINEARFUNCTION
+NUMBEROF_NORMFUNCTION
+NUMBEROF_NORMINFFUNCTION
+NUMBEROF_NOTEQUAL
+NUMBEROF_OR
+NUMBEROF_PARAMETER
+NUMBEROF_PLUS
+NUMBEROF_PORT
+NUMBEROF_PORTVARIABLE
+NUMBEROF_POWER
+NUMBEROF_PREFIXMIN
+NUMBEROF_PREFIXNOT
+NUMBEROF_PREFIXPLUS
+NUMBEROF_PREVIOUSFUNCTION
+NUMBEROF_RAMPFUNCTION
+NUMBEROF_RANDOM
+NUMBEROF_RANDOMFUNCTION
+NUMBEROF_RATE
+NUMBEROF_REPEATSTATEMENT
+NUMBEROF_RESETFUNCTION
+NUMBEROF_RESINTFUNCTION
+NUMBEROF_RETURNSTATEMENT
+NUMBEROF_ROUNDFUNCTION
+NUMBEROF_ROWSFUNCTION
+NUMBEROF_SAMPLEFUNCTION
+NUMBEROF_SAMPLETIME
+NUMBEROF_SIGNFUNCTION
+NUMBEROF_SINFUNCTION
+NUMBEROF_SINHYPERBOLICFUNCTION
+NUMBEROF_SKEWFUNCTION
+NUMBEROF_SQRFUNCTION
+NUMBEROF_SQRTFUNCTION
+NUMBEROF_STARTTIME
+NUMBEROF_STATE
+NUMBEROF_STATERATE
+NUMBEROF_STEPFUNCTION
+NUMBEROF_STEPSIZE
+NUMBEROF_STOPSTATEMENT
+NUMBEROF_SUMFUNCTION
+NUMBEROF_SWITCHSTATEMENT
+NUMBEROF_SYMMETRICFUNCTION
+NUMBEROF_SYSTEMVARIABLE
+NUMBEROF_TABLEFUNCTION
+NUMBEROF_TANFUNCTION
+NUMBEROF_TANHYPERBOLICFUNCTION
+NUMBEROF_TDELAYFUNCTION
+NUMBEROF_TILDEFUNCTION
+NUMBEROF_TIME
+NUMBEROF_TIMEEVENTFUNCTION
+NUMBEROF_TIMENODEWITHOUT
+NUMBEROF_TIMETRIGGERFUNCTION
+NUMBEROF_TOMATLABSTATEMENT
+NUMBEROF_TRACEFUNCTION
+NUMBEROF_TRANSPOSEFUNCTION
+NUMBEROF_TRIGGERDOWNFUNCTION
+NUMBEROF_TRIGGERFUNCTION
+NUMBEROF_TRIGGERUPFUNCTION
+NUMBEROF_TRUE
+NUMBEROF_TRUNCFUNCTION
+NUMBEROF_TYPEPARAMETER
+NUMBEROF_UNNAMED
+NUMBEROF_VARIABLE
+NUMBEROF_WARNSTATEMENT
+NUMBEROF_WHILESTATEMENT
+NUMBEROF_XOR
+NUMBER_ALGLOOPS
+NUMBER_ALIAS_MATRICES
+NUMBER_ALIAS_VARIABLES
+NUMBER_CONSTANTS
+NUMBER_CONSTRAINTS
+NUMBER_DEPSTATES
+NUMBER_EXPORTS
+NUMBER_FAVORITE_PARAMETERS
+NUMBER_FAVORITE_VARIABLES
+NUMBER_IMPORTS
+NUMBER_INITIAL_VALUES
+NUMBER_INPUTS
+NUMBER_MATRICES
+NUMBER_OUTPUTS
+NUMBER_PARAMETERS
+NUMBER_STATES
+NUMBER_UNNAMED
+NUMBER_VARIABLES
+OUTPUT2_EQUATIONS
+OUTPUT_EQUATIONS
+OUTPUT_NAMES
+OUTPUT_NAMES2
+OUTPUT_NAMES3
+OUTPUT_UNITS
+PARAMETER_NAMES
+PARAMETER_NAMES2
+PARAMETER_NAMES3
+PARAMETER_UNITS
+PARAMETER_VALUES
+RATE_NAMES
+RATE_NAMES2
+RATE_NAMES3
+RATE_UNITS
+SIMULINK_MODEL
+SIMULINK_SUBMODEL
+START_TIME
+STATE_NAMES
+STATE_NAMES2
+STATE_NAMES3
+STATE_UNITS
+STATIC_EQUATIONS
+TIME_STEP_SIZE
+USER_NAME
+VARIABLE_NAMES
+VARIABLE_NAMES2
+VARIABLE_NAMES3
+VARIABLE_TO_OUTPUT_EQUATIONS
+VARIABLE_UNITS
+WORK_ARRAY_SIZE
+XX_ALG_IN_ARRAY_NAME
+XX_ALG_OUT_ARRAY_NAME
+XX_DEP_RATE_ARRAY_NAME
+XX_DEP_STATE_ARRAY_NAME
+XX_EXT_IN_ARRAY_NAME
+XX_EXT_OUT_ARRAY_NAME
+XX_FAVORITE_PARS_ARRAY_NAME
+XX_FAVORITE_VARS_ARRAY_NAME
+XX_INITIAL_VALUE_ARRAY_NAME
+VARPREFIX
+FUNCTIONPREFIX
+XX_TIME
+XX_INITIALIZE
+XX_VARIABLE_ARRAY_NAME
+XX_PARAMETER_ARRAY_NAME
+XX_CONSTANT_ARRAY_NAME
+XX_STATE_ARRAY_NAME
+XX_RATE_ARRAY_NAME
+XX_MATRIX_ARRAY_NAME
+XX_UNNAMED_ARRAY_NAME
+EVENT_DELTA
+FORMAJORVERSION
+FORMINORVERSION
+FORMAJORBUILD
+FORMINORBUILD
+MAJORVERSION
+MINORVERSION
+MAJORBUILD
+MINORBUILD
+TEMPLATENAME
+TEMPLATEDIR
+TEMPLATE_DIR
+]]></token>
+</tokens>
+
+

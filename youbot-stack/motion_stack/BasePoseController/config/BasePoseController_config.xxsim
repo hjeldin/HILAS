@@ -1,0 +1,3125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>BasePoseController</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-11-02T09:44:44.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>4</revision>
+			<patch>1</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>BasePositionController\dHToErrors\H_vp_0</name>
+			<aliasOf>BasePositionController\H_vp_0</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>45</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>BasePositionController\dHToErrors\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>BasePositionController\dHToErrors\angle_error</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>BasePositionController\dHToErrors\x_error</name>
+			<aliasOf>BasePositionController\PD_BaseX\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>BasePositionController\dHToErrors\y_error</name>
+			<aliasOf>BasePositionController\PD_BaseY\error</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>BasePositionController\dHToErrors\H_vp_base</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>BasePositionController\dHToErrors\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>temporal variable to resolve numerical round up errors</description>
+			<storage>
+				<name>V</name>
+				<index>16</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>BasePositionController\dHToErrors\theta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>angle of rotation</description>
+			<storage>
+				<name>V</name>
+				<index>17</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>BasePositionController\dHToErrors\norm_omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>normolized vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>18</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>BasePositionController\dHToErrors\omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>21</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>BasePositionController\ErrorsToW\torque_z</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>BasePositionController\ErrorsToW\force_x</name>
+			<aliasOf>BasePositionController\PD_BaseX\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>BasePositionController\ErrorsToW\force_y</name>
+			<aliasOf>BasePositionController\PD_BaseY\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="14">
+			<name>BasePositionController\ErrorsToW\W_base_base0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>24</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="15">
+			<name>BasePositionController\PD_BaseAngle\output</name>
+			<aliasOf>BasePositionController\PD_BaseAngle\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="16">
+			<name>BasePositionController\PD_BaseAngle\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="17">
+			<name>BasePositionController\PD_BaseAngle\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="18">
+			<name>BasePositionController\PD_BaseAngle\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="19">
+			<name>BasePositionController\PD_BaseX\output</name>
+			<aliasOf>BasePositionController\PD_BaseX\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="20">
+			<name>BasePositionController\PD_BaseX\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>300.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="21">
+			<name>BasePositionController\PD_BaseX\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="22">
+			<name>BasePositionController\PD_BaseX\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="23">
+			<name>BasePositionController\PD_BaseY\output</name>
+			<aliasOf>BasePositionController\PD_BaseY\uD</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>R</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="24">
+			<name>BasePositionController\PD_BaseY\kp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>300.0</value>
+			<description>Proportional gain</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="25">
+			<name>BasePositionController\PD_BaseY\tauD</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<description>Derivative time constant: tauD &gt; 0</description>
+			<physical>
+				<unit>
+					<name>s</name>
+				</unit>
+				<quantity>time</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>7</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="26">
+			<name>BasePositionController\PD_BaseY\beta</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>Tameness constant: 0 &lt; beta &lt;&lt; 1</description>
+			<physical>
+				<unit>
+					<name></name>
+				</unit>
+				<quantity>magnitude</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="27">
+			<name>BasePositionController\Submodel3\input</name>
+			<aliasOf>BasePositionController\ErrorsToW\W_base_base0</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>24</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="28">
+			<name>BasePositionController\Submodel3\active</name>
+			<aliasOf>BasePositionController\active_joint</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>61</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="29">
+			<name>BasePositionController\Submodel3\cmd</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="30">
+			<name>BasePositionController\Submodel3\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>39</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="31">
+			<name>BasePositionController\H_vp_0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>45</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="32">
+			<name>BasePositionController\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="33">
+			<name>BasePositionController\W_base_base0</name>
+			<aliasOf>BasePositionController\Submodel3\cmd</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="34">
+			<name>BasePositionController\active_joint</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>61</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="35">
+			<name>BaseTF\Base_joint_velocity</name>
+			<aliasOf>DiscreteDifferential\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>104</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="36">
+			<name>BaseTF\Twist</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>64</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="37">
+			<name>BaseTF\H_base_0</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="38">
+			<name>BaseTF\Virtual_joint_states</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>70</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="39">
+			<name>BaseTF\W_base_base0</name>
+			<aliasOf>PlusMinus4\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>345</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="40">
+			<name>BaseTF\Base_torque</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="41">
+			<name>BaseTF\r</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0475</value>
+			<description>radius of the wheels</description>
+			<storage>
+				<name>P</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="42">
+			<name>BaseTF\x</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.235</value>
+			<description>lateral distance from center of mass to wheel contact point</description>
+			<storage>
+				<name>P</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="43">
+			<name>BaseTF\y</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.15</value>
+			<description>longitudinal  distance from center of mass to wheel contact point</description>
+			<storage>
+				<name>P</name>
+				<index>11</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="44">
+			<name>BaseTF\A</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>77</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="45">
+			<name>BaseTF\PseudoInverseA</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="46">
+			<name>BaseTF\virtual_velocities</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>	real W_base_base0[6];</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>101</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="47">
+			<name>DiscreteDifferential\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>104</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="48">
+			<name>DiscreteDifferential\initial</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>initial output value</description>
+			<storage>
+				<name>P</name>
+				<index>12</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="49">
+			<name>EnergyEncoding\inputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>113</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="50">
+			<name>EnergyEncoding\inputEnergy</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>115</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="51">
+			<name>EnergyEncoding\outputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>116</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="52">
+			<name>EnergyEncoding\outputEnergy</name>
+			<aliasOf>PassivityLayer\SETP\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>344</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="53">
+			<name>EnergyEncoding\roundUp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1000.0</value>
+			<storage>
+				<name>P</name>
+				<index>13</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="54">
+			<name>EnergyEncoding\MaxCounter</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<storage>
+				<name>P</name>
+				<index>14</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="55">
+			<name>EnergyEncoding\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>118</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="56">
+			<name>EnergyEncoding\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>119</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="57">
+			<name>EnergyEncoding\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>120</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="58">
+			<name>FilterBaseJointVelocities1\input</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="59">
+			<name>FilterBaseJointVelocities1\output</name>
+			<aliasOf>DiscreteDifferential\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="60">
+			<name>FilterBaseJointVelocities1\FilterGain</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0675, 0.1349, 0.0675; 1.143, -0.4128, 0.0</value>
+			<description>Cut-off frequency 100 Hz</description>
+			<size>
+				<rows>2</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="61">
+			<name>FilterBaseJointVelocities1\num</name>
+			<kind>parameter</kind>
+			<type>integer</type>
+			<value>4</value>
+			<description>number of the inputs</description>
+			<storage>
+				<name>P</name>
+				<index>21</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="62">
+			<name>FilterBaseJointVelocities1\InputMemory</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>121</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="63">
+			<name>FilterBaseJointVelocities1\InputUpdate</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>133</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="64">
+			<name>FilterBaseJointVelocities1\State</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>142</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="65">
+			<name>FilterBaseJointVelocities1\A</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>154</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="66">
+			<name>FilterBaseJointVelocities1\B</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>163</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="67">
+			<name>PassivityLayer\EnergyTankBlock\energyState</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="68">
+			<name>PassivityLayer\EnergyTankBlock\energyQuanta</name>
+			<aliasOf>PassivityLayer\PlusMinus1\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>342</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="69">
+			<name>PassivityLayer\EnergyTankBlock\InitialEnergyState</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>10.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>22</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="70">
+			<name>PassivityLayer\EnergyTankBlock\EnergyState</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>173</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="71">
+			<name>PassivityLayer\EnergyTankControl\controlForce</name>
+			<aliasOf>PassivityLayer\PassiveZOH\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>201</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="72">
+			<name>PassivityLayer\EnergyTankControl\adjustedForce</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="73">
+			<name>PassivityLayer\EnergyTankControl\energyState</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="74">
+			<name>PassivityLayer\EnergyTankControl\DumpingInjectionTreshold</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>5.0</value>
+			<description>minimal enrgy level to activet dumpling injection</description>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>24</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="75">
+			<name>PassivityLayer\EnergyTankControl\RecoveryMultiplier</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>10.0; 10.0; 10.0; 10.0</value>
+			<description>variable friction co efficnet  based on energy level</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>25</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="76">
+			<name>PassivityLayer\EnergyTankControl\MaxmimDampingConstant</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.01; 0.01; 0.01; 0.01</value>
+			<description>maxmum dumping injection  force it is sampletime dependent !!!</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>29</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="77">
+			<name>PassivityLayer\EnergyTankControl\TCLactive</name>
+			<kind>parameter</kind>
+			<type>boolean</type>
+			<value>false</value>
+			<storage>
+				<name>P</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="78">
+			<name>PassivityLayer\EnergyTankControl\DumpingInjectionForce</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description>recovery torque</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>178</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="79">
+			<name>PassivityLayer\EnergyTankControl\dSensorValue</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>182</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="80">
+			<name>PassivityLayer\EnergyTankControl\SensorSpeed</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>186</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="81">
+			<name>PassivityLayer\EnergyTankControl\MaxmimDumping</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>190</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="82">
+			<name>PassivityLayer\EnergyTankControl\energyStateError</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>194</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="83">
+			<name>PassivityLayer\PassiveSampling\adjustedForce</name>
+			<aliasOf>PassivityLayer\EnergyTankControl\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="84">
+			<name>PassivityLayer\PassiveSampling\energyQuanta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>196</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="85">
+			<name>PassivityLayer\PassiveSampling\dSensorValue</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>197</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="86">
+			<name>PassivityLayer\PassiveZOH\controlForce</name>
+			<aliasOf>BaseTF\Base_torque</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="87">
+			<name>PassivityLayer\PassiveZOH\adjustedForce</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>201</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="88">
+			<name>PassivityLayer\PassiveZOH\energyState</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="89">
+			<name>PassivityLayer\PassiveZOH\SpringConstant</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0; 1.0; 1.0; 1.0</value>
+			<description>[10.0;10.0;10.0;10.0;10.0] {N/m}; 		 // Spring Constant to determine maximum torque base of linear spring staturation function</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>36</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="90">
+			<name>PassivityLayer\PassiveZOH\MaximumActuatorForce</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>10.0; 10.0; 10.0; 10.0</value>
+			<description>Force saturation value based on actuator physical limit</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<physical>
+				<unit>
+					<name>N</name>
+				</unit>
+				<quantity>force</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>40</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="91">
+			<name>PassivityLayer\PassiveZOH\PassivityLayerActive</name>
+			<kind>parameter</kind>
+			<type>boolean</type>
+			<value>true</value>
+			<storage>
+				<name>P</name>
+				<index>44</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="92">
+			<name>PassivityLayer\PassiveZOH\MassConstant</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0; 1.0; 1.0; 1.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>45</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="93">
+			<name>PassivityLayer\PassiveZOH\eps</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0e-4</value>
+			<description>presision of opimization value does not affet the passivity since any torques in the feasble set are passive</description>
+			<storage>
+				<name>P</name>
+				<index>49</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="94">
+			<name>PassivityLayer\PassiveZOH\betaLine</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.5</value>
+			<description>line search decerement</description>
+			<storage>
+				<name>P</name>
+				<index>50</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="95">
+			<name>PassivityLayer\PassiveZOH\betaBarrier1</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.5</value>
+			<description>barrier standart increment</description>
+			<storage>
+				<name>P</name>
+				<index>51</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="96">
+			<name>PassivityLayer\PassiveZOH\betaBarrier2</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>5.0</value>
+			<description>barrier exception incerement</description>
+			<storage>
+				<name>P</name>
+				<index>52</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="97">
+			<name>PassivityLayer\PassiveZOH\maxNumIter</name>
+			<kind>parameter</kind>
+			<type>integer</type>
+			<value>1000</value>
+			<description>upperbound on the allowed search iterations</description>
+			<storage>
+				<name>P</name>
+				<index>53</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="98">
+			<name>PassivityLayer\PassiveZOH\Channelweights</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0; 1.0; 1.0; 1.0</value>
+			<description>actuation imporantce deterimnes which actuation channel is more important</description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>54</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="99">
+			<name>PassivityLayer\PassiveZOH\dSensorValue</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>205</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="100">
+			<name>PassivityLayer\PassiveZOH\SensorSpeed</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>209</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="101">
+			<name>PassivityLayer\PassiveZOH\ForceSaturationArray</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<description>	1.device output,2.Optimized energy barrier,3.desired force</description>
+			<size>
+				<rows>4</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>213</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="102">
+			<name>PassivityLayer\PassiveZOH\SaturatedForce</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>225</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="103">
+			<name>PassivityLayer\PassiveZOH\i</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>counter</description>
+			<storage>
+				<name>V</name>
+				<index>229</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="104">
+			<name>PassivityLayer\PassiveZOH\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>temporal compuation</description>
+			<storage>
+				<name>V</name>
+				<index>230</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="105">
+			<name>PassivityLayer\PassiveZOH\xd</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>231</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="106">
+			<name>PassivityLayer\PassiveZOH\A</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>235</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="107">
+			<name>PassivityLayer\PassiveZOH\B1</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>251</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="108">
+			<name>PassivityLayer\PassiveZOH\B2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>267</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="109">
+			<name>PassivityLayer\PassiveZOH\B3</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>283</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="110">
+			<name>PassivityLayer\PassiveZOH\a</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>299</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="111">
+			<name>PassivityLayer\PassiveZOH\b</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>303</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="112">
+			<name>PassivityLayer\PassiveZOH\xcl</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>304</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="113">
+			<name>PassivityLayer\PassiveZOH\dx</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>308</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="114">
+			<name>PassivityLayer\PassiveZOH\dObjective</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>312</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="115">
+			<name>PassivityLayer\PassiveZOH\HObjective</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>316</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="116">
+			<name>PassivityLayer\PassiveZOH\lamda2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>332</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="117">
+			<name>PassivityLayer\PassiveZOH\t</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>333</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="118">
+			<name>PassivityLayer\PassiveZOH\numIter</name>
+			<kind>variable</kind>
+			<type>integer</type>
+			<value>0</value>
+			<description>line search tempoerals</description>
+			<storage>
+				<name>V</name>
+				<index>334</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="119">
+			<name>PassivityLayer\PassiveZOH\obj</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>335</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="120">
+			<name>PassivityLayer\PassiveZOH\objAldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>336</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="121">
+			<name>PassivityLayer\PassiveZOH\xAldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>337</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="122">
+			<name>PassivityLayer\PassiveZOH\stepSize</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>341</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="123">
+			<name>PassivityLayer\PlusMinus1\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>342</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="124">
+			<name>PassivityLayer\PlusMinus1\plus1</name>
+			<aliasOf>PassivityLayer\PassiveSampling\energyQuanta</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>196</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="125">
+			<name>PassivityLayer\PlusMinus1\plus2</name>
+			<aliasOf>PassivityLayer\SETP\energyQuanta</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>343</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="126">
+			<name>PassivityLayer\SETP\energyState</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="127">
+			<name>PassivityLayer\SETP\energyQuanta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>343</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="128">
+			<name>PassivityLayer\SETP\outputPackage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>344</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="129">
+			<name>PassivityLayer\SETP\inputPackage</name>
+			<aliasOf>EnergyEncoding\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>115</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="130">
+			<name>PassivityLayer\SETP\CommunicationTreshold</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>10.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>58</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="131">
+			<name>PassivityLayer\SETP\SendoutPercent</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.01</value>
+			<description>10%</description>
+			<storage>
+				<name>P</name>
+				<index>59</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="132">
+			<name>PassivityLayer\Splitter1\input</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="133">
+			<name>PassivityLayer\Splitter1\output1</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="134">
+			<name>PassivityLayer\Splitter1\output2</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="135">
+			<name>PassivityLayer\Splitter2\input</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="136">
+			<name>PassivityLayer\Splitter2\output1</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="137">
+			<name>PassivityLayer\Splitter2\output2</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="138">
+			<name>PassivityLayer\Splitter3\input</name>
+			<aliasOf>PassivityLayer\EnergyTankControl\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="139">
+			<name>PassivityLayer\Splitter3\output1</name>
+			<aliasOf>PassivityLayer\EnergyTankControl\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="140">
+			<name>PassivityLayer\Splitter3\output2</name>
+			<aliasOf>PassivityLayer\EnergyTankControl\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="141">
+			<name>PassivityLayer\Splitter4\input</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="142">
+			<name>PassivityLayer\Splitter4\output1</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="143">
+			<name>PassivityLayer\Splitter4\output2</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="144">
+			<name>PassivityLayer\Splitter5\input</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="145">
+			<name>PassivityLayer\Splitter5\output1</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="146">
+			<name>PassivityLayer\Splitter5\output2</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="147">
+			<name>PassivityLayer\Splitter5\output3</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="148">
+			<name>PassivityLayer\sensor</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="149">
+			<name>PassivityLayer\force</name>
+			<aliasOf>BaseTF\Base_torque</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="150">
+			<name>PassivityLayer\adjusted_force</name>
+			<aliasOf>PassivityLayer\EnergyTankControl\adjustedForce</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>174</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="151">
+			<name>PassivityLayer\input_energy</name>
+			<aliasOf>EnergyEncoding\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>115</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="152">
+			<name>PassivityLayer\EnergyTank</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>172</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="153">
+			<name>PassivityLayer\output_energy</name>
+			<aliasOf>PassivityLayer\SETP\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>344</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="154">
+			<name>PlusMinus4\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>345</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="155">
+			<name>PlusMinus4\plus1</name>
+			<aliasOf>BasePositionController\Submodel3\cmd</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>33</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="156">
+			<name>PlusMinus4\plus2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>351</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="157">
+			<name>Splitter3\input</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="158">
+			<name>Splitter3\output1</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="159">
+			<name>Splitter3\output2</name>
+			<aliasOf>PassivityLayer\PassiveSampling\sensorValue</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="160">
+			<name>Splitter5\input</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="161">
+			<name>Splitter5\output1</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="162">
+			<name>Splitter5\output2</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="163">
+			<name>Splitter7\input</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>28</iconIndex>
+		</modelVariable>
+		<modelVariable id="164">
+			<name>Splitter7\output1</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>28</iconIndex>
+		</modelVariable>
+		<modelVariable id="165">
+			<name>Splitter7\output2</name>
+			<aliasOf>Splitter5\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>357</index>
+			</storage>
+			<iconIndex>28</iconIndex>
+		</modelVariable>
+		<modelVariable id="166">
+			<name>input_energy</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>373</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="167">
+			<name>output_energy</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>375</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="168">
+			<name>T_base_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>377</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="169">
+			<name>active_joint</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>383</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="170">
+			<name>Base_wheels_angle</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>386</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="171">
+			<name>EnergyTank</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>390</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="172">
+			<name>H_vp_0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>391</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="173">
+			<name>H_base_0_output</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>407</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="174">
+			<name>W_base_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>423</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="175">
+			<name>H_base_0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>429</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="176">
+			<name>Base_torque</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>445</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="177">
+			<name>BasePositionController\PD_BaseAngle\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>0</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="178">
+			<name>BasePositionController\PD_BaseAngle\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="179">
+			<name>BasePositionController\PD_BaseAngle\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseAngle\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="180">
+			<name>BasePositionController\PD_BaseAngle\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\error</pair>
+			<storage>
+				<name>s</name>
+				<index>1</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="181">
+			<name>BasePositionController\PD_BaseAngle\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseAngle\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="182">
+			<name>BasePositionController\PD_BaseX\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>2</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="183">
+			<name>BasePositionController\PD_BaseX\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>2</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="184">
+			<name>BasePositionController\PD_BaseX\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseX\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="185">
+			<name>BasePositionController\PD_BaseX\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\error</pair>
+			<storage>
+				<name>s</name>
+				<index>3</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="186">
+			<name>BasePositionController\PD_BaseX\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseX\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>3</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="187">
+			<name>BasePositionController\PD_BaseY\uD_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair></pair>
+			<storage>
+				<name>s</name>
+				<index>4</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="188">
+			<name>BasePositionController\PD_BaseY\uD_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\uD_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>4</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="189">
+			<name>BasePositionController\PD_BaseY\error</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<pair>BasePositionController\PD_BaseY\error_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="190">
+			<name>BasePositionController\PD_BaseY\error_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\error</pair>
+			<storage>
+				<name>s</name>
+				<index>5</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="191">
+			<name>BasePositionController\PD_BaseY\error_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>BasePositionController\PD_BaseY\error_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="192">
+			<name>DiscreteDifferential\input</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="193">
+			<name>DiscreteDifferential\input_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>6</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="194">
+			<name>DiscreteDifferential\input_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="195">
+			<name>EnergyEncoding\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncoding\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="196">
+			<name>EnergyEncoding\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncoding\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>10</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="197">
+			<name>EnergyEncoding\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncoding\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="198">
+			<name>PassivityLayer\EnergyTankControl\sensorValue</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>PassivityLayer\EnergyTankControl\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>11</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="199">
+			<name>PassivityLayer\EnergyTankControl\sensorValue_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\EnergyTankControl\sensorValue</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>11</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="200">
+			<name>PassivityLayer\EnergyTankControl\sensorValue_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\EnergyTankControl\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>11</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="201">
+			<name>PassivityLayer\PassiveSampling\sensorValue</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>PassivityLayer\PassiveSampling\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="202">
+			<name>PassivityLayer\PassiveSampling\sensorValue_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\PassiveSampling\sensorValue</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>15</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="203">
+			<name>PassivityLayer\PassiveSampling\sensorValue_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\PassiveSampling\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>15</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="204">
+			<name>PassivityLayer\PassiveZOH\sensorValue</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>PassivityLayer\PassiveZOH\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>19</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="205">
+			<name>PassivityLayer\PassiveZOH\sensorValue_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\PassiveZOH\sensorValue</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>19</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="206">
+			<name>PassivityLayer\PassiveZOH\sensorValue_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0</value>
+			<pair>PassivityLayer\PassiveZOH\sensorValue_previous</pair>
+			<size>
+				<rows>4</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>19</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>13128</size>
+		<tables>
+			<table>
+				<name>U</name>
+				<size>8504</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>1063</count>
+			</table>
+			<table>
+				<name>s</name>
+				<size>184</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>23</count>
+			</table>
+			<table>
+				<name>R</name>
+				<size>184</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>23</count>
+			</table>
+			<table>
+				<name>V</name>
+				<size>3592</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>449</count>
+			</table>
+			<table>
+				<name>I</name>
+				<size>184</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>23</count>
+			</table>
+			<table>
+				<name>P</name>
+				<size>480</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>60</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001B504C5445FFFFFF8F8F8FA3A3A3A6A6A6A9A9A9BABABAC7C7C7CBCBCBD5D5D5EFF9FEA00000002B494441547801636040074CAC28808981950305B05251809D8D8D1D458085919989EAB6200960780E1D00004B4706315415C5970000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002A504C5445A0A0A0B8B8B8FFFFFF8282828E8E8E9999999F9F9FA0A0A0A5A5A5ABABABB1B1B1B8B8B8BDBDBDD5D5D5752D7B470000003E494441547801636042030C8405D8B951003B03172F0AE0224A808B8B878B938D13887938A1029C2C5C1C5C6CACCC6C5C449A8126C0C08802181848F71C001786075A06B675670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000003F504C544524661426671727681727681829691A3470253571273939393F78313F7832719867737373759B6B85A67DABBFA6B0C2ABB6C6B2C6D1C3E4E4E3E5E5E5E6E6E6043A5347000000454944415478016360E74601EC0CDC2228809B4C015E06262E110606563EB800AF208B0883303F274205338F0883881023420590C5202CC0812AC0C0C647813B0808A07B1F008ED41041678A79300000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000003F504C544524661426671727681727681829691A3470253571273939393F78313F7832719867737373759B6B85A67DABBFA6B0C2ABB6C6B2C6D1C3E4E4E3E5E5E5E6E6E6043A5347000000454944415478016360E74601EC0CDC2228809B4C015E06262E110606563EB800AF208B0883303F274205338F0883881023420590C5202CC0812AC0C0C647813B0808A07B1F008ED41041678A79300000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000003F504C544524661426671727681727681829691A3470253571273939393F78313F7832719867737373759B6B85A67DABBFA6B0C2ABB6C6B2C6D1C3E4E4E3E5E5E5E6E6E6043A5347000000454944415478016360E74601EC0CDC2228809B4C015E06262E110606563EB800AF208B0883303F274205338F0883881023420590C5202CC0812AC0C0C647813B0808A07B1F008ED41041678A79300000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000D5D5D5FFE54987000000184944415478016360606044020C20C0C80407234100C5FB00B170014D22F7516B0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000027504C5445888888A1A1A1AAAAAAC6C6C66666F37F7FF18888889999999999EEA1A1A1B2B2EBCCCCE8E6E6E629A7E1440000005549444154780165CF411280200C034014D090F2FFF75AB0075373DC199A50CA2DB9CA312523800A041430335802A37DC12F00A62D4C2D687D4B0BF012EC4B08A075B7666B5E0CA3F750A6FBFBB768FC3F574F497D004EF509AB01B5202C0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000000F504C5445BFBFBFFFFFFF9F9F9FBFBFBFD5D5D5ED33EF180000001E494441547801636044030CD4106046030C4C2C2880891C010C400BA70300F70801C148316B5C0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002A504C5445A0A0A0B8B8B8FFFFFF8282829393939F9F9FA0A0A0ABABABB1B1B1B7B7B7B8B8B8BDBDBDC3C3C3D5D5D59FFEE4F200000036494441547801636042030C6408B071A10036060E5E14C08143809B9B93839B07498093959993851D9F166401064614C0C04005BF00005B2E06121B9758070000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>
+

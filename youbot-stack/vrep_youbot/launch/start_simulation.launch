@@ -1,0 +1,4 @@
+<launch>  
+  <!-- include our robots -->
+  <include file="$(find vrep_youbot)/launch/youbots.launch"/>
+</launch>

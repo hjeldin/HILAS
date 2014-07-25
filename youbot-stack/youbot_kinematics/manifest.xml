@@ -1,0 +1,21 @@
+<package>
+    <description brief="Orocos youbot_kinematics Component package">
+        This package contains the components of the youbot_kinematics package
+    </description>
+    <!--NOTE: set the license and author before you publish this code-->
+    <license></license>
+    <author>Marco Ruzzenente</author>
+    <depend package="rtt" />
+    <depend package="orocos_kdl" />
+    <depend package="rtt_rosnode" />
+    <depend package="rtt_std_msgs" />
+    <depend package="rtt_geometry_msgs" />
+    <depend package="rtt_sensor_msgs" />
+    <depend package="rtt_nav_msgs" />
+    <depend package="rtt_motion_control_msgs" />
+    <depend package="rtt_rosnode" />
+    <!-- <depend package="youbot_description" /> -->
+    <depend package="kdl_parser" />
+    <depend package="tf_conversions" />   
+</package>
+

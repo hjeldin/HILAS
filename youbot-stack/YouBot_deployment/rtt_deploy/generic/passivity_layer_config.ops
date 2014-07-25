@@ -1,0 +1,19 @@
+// following paramters are guess, these should properly estimated and put into the model
+ArmPoseController.PassivityLayer.PassiveZOH.PassivityLayerActive[0]=1
+BasePoseController.PassivityLayer.PassiveZOH.PassivityLayerActive[0]=1
+ArmPoseController.PassivityLayer.SETP.CommunicationTreshold[0]=2
+BasePoseController.PassivityLayer.SETP.CommunicationTreshold[0]=2
+
+// max velocity enrgy tank dependent 
+ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[0]=5; //mass the arm
+ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[1]=5; //mass the arm
+ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[2]=2; //mass the arm
+ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[3]=1; //mass the arm
+ArmPoseController.PassivityLayer.PassiveZOH.MassConstant[4]=0.5; //mass the arm
+
+// max force energy tank dependent 
+ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[0]=10;
+ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[1]=10;
+ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[2]=5; // joint is fragile
+ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[3]=10;
+ArmPoseController.PassivityLayer.PassiveZOH.SpringConstant[4]=10;

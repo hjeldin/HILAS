@@ -1,0 +1,2599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>YouBotKinematics</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.0&lt;/Version&gt;
+ &lt;LibraryPath&gt;C:\Program Files\20-sim 4.0\System\Submodel.emx&lt;/LibraryPath&gt;
+ &lt;TimeStamp&gt;2007-10-31 11:32:54&lt;/TimeStamp&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-11-02T09:43:43.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>4</revision>
+			<patch>1</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>AntiBug\port1</name>
+			<aliasOf>TF\tip_f</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>542</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>AntiBug\port2</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>AntiBug\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>CalculateJ\jointVelocities</name>
+			<aliasOf>StateMux\measured_angles</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>CalculateJ\controllableJ</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>8</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>CalculateJ\Htip0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>49</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>CalculateJ\InitialJointPos</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0; 1.0; 1.0; 1.0; 1.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>CalculateJ\Linkdim</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.024, 0.033, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.096, 0.019, 0.155, 0.135, 0.096, 0.034</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>6</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>5</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>CalculateJ\InitialBasePos</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0, 0.0, 0.0, 1.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>23</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>CalculateJ\baseoffset</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.143; 0.0; 0.046</value>
+			<description>coordinates of joint_1</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>39</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>CalculateJ\uTrzrefref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>65</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>CalculateJ\uTryrefref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>71</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>CalculateJ\uTrxrefref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>77</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="14">
+			<name>CalculateJ\uTr1refref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>83</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="15">
+			<name>CalculateJ\uTr211</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="16">
+			<name>CalculateJ\uTr322</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>95</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="17">
+			<name>CalculateJ\uTr433</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>101</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="18">
+			<name>CalculateJ\uTr544</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>107</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="19">
+			<name>CalculateJ\R21</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>113</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="20">
+			<name>CalculateJ\R32</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>122</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="21">
+			<name>CalculateJ\R43</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>131</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="22">
+			<name>CalculateJ\R54</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>140</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="23">
+			<name>CalculateJ\Rtip5</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>149</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="24">
+			<name>CalculateJ\p21</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>158</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="25">
+			<name>CalculateJ\p32</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>161</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="26">
+			<name>CalculateJ\p43</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>164</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="27">
+			<name>CalculateJ\p54</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>167</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="28">
+			<name>CalculateJ\ptip5</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>170</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="29">
+			<name>CalculateJ\H21</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>173</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="30">
+			<name>CalculateJ\H32</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>189</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="31">
+			<name>CalculateJ\H43</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>205</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="32">
+			<name>CalculateJ\H54</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>221</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="33">
+			<name>CalculateJ\Htip5</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>237</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="34">
+			<name>CalculateJ\H10</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>253</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="35">
+			<name>CalculateJ\H20</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>269</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="36">
+			<name>CalculateJ\H30</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>285</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="37">
+			<name>CalculateJ\H40</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>301</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="38">
+			<name>CalculateJ\H50</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>317</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="39">
+			<name>CalculateJ\Href0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>333</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="40">
+			<name>CalculateJ\H1ref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>349</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="41">
+			<name>CalculateJ\R1ref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>365</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="42">
+			<name>CalculateJ\p1ref</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>374</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="43">
+			<name>CalculateJ\base_offset_H</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>377</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="44">
+			<name>CalculateJ\q</name>
+			<aliasOf>StateMux\measured_angles</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description>	real T[6];
+	real tildeT[4,4];
+	real dotH[4,4];</description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="45">
+			<name>CalculateJ\initialq</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>393</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="46">
+			<name>CalculateJ\Rz</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<description>
+code
+
+	T = [0;0;jointVelocities[1];jointVelocities[3];jointVelocities[2];0];	
+	tildeT = tilde(T);
+	dotH = Href0*tildeT;
+	Href0 = int(dotH,InitialBasePos);
+</description>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>401</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="47">
+			<name>CmdDemux\arm_torque</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>410</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="48">
+			<name>CmdDemux\W_base_00</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>415</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="49">
+			<name>CmdDemux\effort</name>
+			<aliasOf>TF\joints_e</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>528</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="50">
+			<name>DiscreteDifferential\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>421</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="51">
+			<name>DiscreteDifferential\initial</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description>initial output value</description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>P</name>
+				<index>42</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="52">
+			<name>EnergyEncodingArm\inputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>438</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="53">
+			<name>EnergyEncodingArm\inputEnergy</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="54">
+			<name>EnergyEncodingArm\outputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>441</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="55">
+			<name>EnergyEncodingArm\outputEnergy</name>
+			<aliasOf>PassivityLayer\SETP1\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>510</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="56">
+			<name>EnergyEncodingArm\roundUp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1000.0</value>
+			<storage>
+				<name>P</name>
+				<index>50</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="57">
+			<name>EnergyEncodingArm\MaxCounter</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<storage>
+				<name>P</name>
+				<index>51</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="58">
+			<name>EnergyEncodingArm\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>443</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="59">
+			<name>EnergyEncodingArm\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>444</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="60">
+			<name>EnergyEncodingArm\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>445</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="61">
+			<name>EnergyEncodingBase\inputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>446</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="62">
+			<name>EnergyEncodingBase\inputEnergy</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>448</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="63">
+			<name>EnergyEncodingBase\outputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>449</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="64">
+			<name>EnergyEncodingBase\outputEnergy</name>
+			<aliasOf>PassivityLayer\SETP2\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>512</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="65">
+			<name>EnergyEncodingBase\roundUp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1000.0</value>
+			<storage>
+				<name>P</name>
+				<index>52</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="66">
+			<name>EnergyEncodingBase\MaxCounter</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<storage>
+				<name>P</name>
+				<index>53</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="67">
+			<name>EnergyEncodingBase\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>451</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="68">
+			<name>EnergyEncodingBase\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>452</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="69">
+			<name>EnergyEncodingBase\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>453</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="70">
+			<name>EnergyEncodingSpring\inputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>454</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="71">
+			<name>EnergyEncodingSpring\inputEnergy</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>456</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="72">
+			<name>EnergyEncodingSpring\outputMessage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>457</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="73">
+			<name>EnergyEncodingSpring\outputEnergy</name>
+			<aliasOf>PassivityLayer\SETP3\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>514</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="74">
+			<name>EnergyEncodingSpring\roundUp</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1000.0</value>
+			<storage>
+				<name>P</name>
+				<index>54</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="75">
+			<name>EnergyEncodingSpring\MaxCounter</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>100.0</value>
+			<storage>
+				<name>P</name>
+				<index>55</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="76">
+			<name>EnergyEncodingSpring\inputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all inputs by integraing all inputs</description>
+			<storage>
+				<name>V</name>
+				<index>459</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="77">
+			<name>EnergyEncodingSpring\inputDiff</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>current  arrived message</description>
+			<storage>
+				<name>V</name>
+				<index>460</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="78">
+			<name>EnergyEncodingSpring\outputSum</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>implements current state of all output by integraing all outputs</description>
+			<storage>
+				<name>V</name>
+				<index>461</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="79">
+			<name>HToAngles\H_vp_0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>462</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="80">
+			<name>HToAngles\pose</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>478</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="81">
+			<name>HToAngles\H_vp_base</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>481</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="82">
+			<name>HToAngles\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>temporal variable to resolve numerical round up errors</description>
+			<storage>
+				<name>V</name>
+				<index>497</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="83">
+			<name>HToAngles\theta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>angle of rotation</description>
+			<storage>
+				<name>V</name>
+				<index>498</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="84">
+			<name>HToAngles\norm_omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>normolized vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>499</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="85">
+			<name>HToAngles\omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>502</index>
+			</storage>
+			<iconIndex>12</iconIndex>
+		</modelVariable>
+		<modelVariable id="86">
+			<name>PassivityLayer\EnergyTankBlock\energyState</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="87">
+			<name>PassivityLayer\EnergyTankBlock\energyQuanta</name>
+			<aliasOf>PassivityLayer\PlusMinus1\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>508</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="88">
+			<name>PassivityLayer\EnergyTankBlock\InitialEnergyState</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>1.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>56</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="89">
+			<name>PassivityLayer\EnergyTankBlock\EnergyState</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>506</index>
+			</storage>
+			<iconIndex>14</iconIndex>
+		</modelVariable>
+		<modelVariable id="90">
+			<name>PassivityLayer\Gain\input</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="91">
+			<name>PassivityLayer\Gain\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="92">
+			<name>PassivityLayer\Gain\K</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>3.0</value>
+			<description>divide by number of consumers</description>
+			<storage>
+				<name>P</name>
+				<index>57</index>
+			</storage>
+			<iconIndex>15</iconIndex>
+		</modelVariable>
+		<modelVariable id="93">
+			<name>PassivityLayer\PlusMinus1\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>508</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="94">
+			<name>PassivityLayer\PlusMinus1\plus1</name>
+			<aliasOf>PassivityLayer\SETP3\energyQuanta</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>513</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="95">
+			<name>PassivityLayer\PlusMinus1\plus2</name>
+			<aliasOf>PassivityLayer\SETP1\energyQuanta</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>509</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="96">
+			<name>PassivityLayer\PlusMinus1\plus3</name>
+			<aliasOf>PassivityLayer\SETP2\energyQuanta</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>511</index>
+			</storage>
+			<iconIndex>16</iconIndex>
+		</modelVariable>
+		<modelVariable id="97">
+			<name>PassivityLayer\SETP1\energyState</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="98">
+			<name>PassivityLayer\SETP1\energyQuanta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>509</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="99">
+			<name>PassivityLayer\SETP1\outputPackage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>510</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="100">
+			<name>PassivityLayer\SETP1\inputPackage</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="101">
+			<name>PassivityLayer\SETP1\CommunicationTreshold</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>58</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="102">
+			<name>PassivityLayer\SETP1\SendoutPercent</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>10%</description>
+			<storage>
+				<name>P</name>
+				<index>59</index>
+			</storage>
+			<iconIndex>17</iconIndex>
+		</modelVariable>
+		<modelVariable id="103">
+			<name>PassivityLayer\SETP2\energyState</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="104">
+			<name>PassivityLayer\SETP2\energyQuanta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>511</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="105">
+			<name>PassivityLayer\SETP2\outputPackage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>512</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="106">
+			<name>PassivityLayer\SETP2\inputPackage</name>
+			<aliasOf>EnergyEncodingBase\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>448</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="107">
+			<name>PassivityLayer\SETP2\CommunicationTreshold</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>60</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="108">
+			<name>PassivityLayer\SETP2\SendoutPercent</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>10%</description>
+			<storage>
+				<name>P</name>
+				<index>61</index>
+			</storage>
+			<iconIndex>18</iconIndex>
+		</modelVariable>
+		<modelVariable id="109">
+			<name>PassivityLayer\SETP3\energyState</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="110">
+			<name>PassivityLayer\SETP3\energyQuanta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>513</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="111">
+			<name>PassivityLayer\SETP3\outputPackage</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>514</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="112">
+			<name>PassivityLayer\SETP3\inputPackage</name>
+			<aliasOf>EnergyEncodingSpring\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>456</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="113">
+			<name>PassivityLayer\SETP3\CommunicationTreshold</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<physical>
+				<unit>
+					<name>J</name>
+				</unit>
+				<quantity>energy</quantity>
+			</physical>
+			<storage>
+				<name>P</name>
+				<index>62</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="114">
+			<name>PassivityLayer\SETP3\SendoutPercent</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.1</value>
+			<description>10%</description>
+			<storage>
+				<name>P</name>
+				<index>63</index>
+			</storage>
+			<iconIndex>19</iconIndex>
+		</modelVariable>
+		<modelVariable id="115">
+			<name>PassivityLayer\Splitter1\input</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="116">
+			<name>PassivityLayer\Splitter1\output1</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="117">
+			<name>PassivityLayer\Splitter1\output2</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="118">
+			<name>PassivityLayer\Splitter1\output3</name>
+			<aliasOf>PassivityLayer\Gain\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>507</index>
+			</storage>
+			<iconIndex>20</iconIndex>
+		</modelVariable>
+		<modelVariable id="119">
+			<name>PassivityLayer\Splitter2\input</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="120">
+			<name>PassivityLayer\Splitter2\output1</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="121">
+			<name>PassivityLayer\Splitter2\output2</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>21</iconIndex>
+		</modelVariable>
+		<modelVariable id="122">
+			<name>PassivityLayer\output_energy_arm</name>
+			<aliasOf>PassivityLayer\SETP1\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>510</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="123">
+			<name>PassivityLayer\input_energy_arm</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="124">
+			<name>PassivityLayer\input_energy_base</name>
+			<aliasOf>EnergyEncodingBase\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>448</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="125">
+			<name>PassivityLayer\output_energy_base</name>
+			<aliasOf>PassivityLayer\SETP2\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>512</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="126">
+			<name>PassivityLayer\input_energy_spring</name>
+			<aliasOf>EnergyEncodingSpring\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>456</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="127">
+			<name>PassivityLayer\output_energy_spring</name>
+			<aliasOf>PassivityLayer\SETP3\outputPackage</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>514</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="128">
+			<name>PassivityLayer\EnergyTank</name>
+			<aliasOf>PassivityLayer\EnergyTankBlock\energyState</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>505</index>
+			</storage>
+			<iconIndex>13</iconIndex>
+		</modelVariable>
+		<modelVariable id="129">
+			<name>Splitter1\input</name>
+			<aliasOf>StateMux\measured_angles</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="130">
+			<name>Splitter1\output1</name>
+			<aliasOf>StateMux\measured_angles</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="131">
+			<name>Splitter1\output2</name>
+			<aliasOf>StateMux\measured_angles</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>22</iconIndex>
+		</modelVariable>
+		<modelVariable id="132">
+			<name>Splitter2\input</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="133">
+			<name>Splitter2\output1</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="134">
+			<name>Splitter2\output2</name>
+			<aliasOf>EnergyEncodingArm\inputEnergy</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>440</index>
+			</storage>
+			<iconIndex>23</iconIndex>
+		</modelVariable>
+		<modelVariable id="135">
+			<name>Splitter3\input</name>
+			<aliasOf>TF\joints_e</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>528</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="136">
+			<name>Splitter3\output1</name>
+			<aliasOf>TF\joints_e</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>528</index>
+			</storage>
+			<iconIndex>24</iconIndex>
+		</modelVariable>
+		<modelVariable id="137">
+			<name>Splitter4\input</name>
+			<aliasOf>TF\tip_f</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>542</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="138">
+			<name>Splitter4\output1</name>
+			<aliasOf>TF\tip_f</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>542</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="139">
+			<name>Splitter4\output2</name>
+			<aliasOf>TF\tip_f</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>542</index>
+			</storage>
+			<iconIndex>25</iconIndex>
+		</modelVariable>
+		<modelVariable id="140">
+			<name>StateMux\arm_angles</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>515</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="141">
+			<name>StateMux\base_pose</name>
+			<aliasOf>HToAngles\pose</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>478</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="142">
+			<name>StateMux\measured_angles</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>520</index>
+			</storage>
+			<iconIndex>26</iconIndex>
+		</modelVariable>
+		<modelVariable id="143">
+			<name>TF\Jacobian</name>
+			<aliasOf>CalculateJ\controllableJ</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>8</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>1</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="144">
+			<name>TF\joints_e</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>528</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="145">
+			<name>TF\tip_e</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>536</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="146">
+			<name>TF\joints_f</name>
+			<aliasOf>DiscreteDifferential\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>421</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="147">
+			<name>TF\tip_f</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>542</index>
+			</storage>
+			<iconIndex>27</iconIndex>
+		</modelVariable>
+		<modelVariable id="148">
+			<name>H_base_0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>548</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="149">
+			<name>EnergyTank</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description></description>
+			<storage>
+				<name>V</name>
+				<index>564</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="150">
+			<name>output_energy_arm</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>565</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="151">
+			<name>input_energy_base</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>567</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="152">
+			<name>output_energy_base</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>569</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="153">
+			<name>T_tooltip_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>571</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="154">
+			<name>torques_cmd</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>577</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="155">
+			<name>W_base_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>582</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="156">
+			<name>input_energy_spring</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>588</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="157">
+			<name>output_energy_spring</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>590</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="158">
+			<name>angles_measured</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>5</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>592</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="159">
+			<name>input_energy_arm</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>2</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>597</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="160">
+			<name>W_tooltip_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>599</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="161">
+			<name>H_tooltip_0</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>605</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="162">
+			<name>DiscreteDifferential\input</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="163">
+			<name>DiscreteDifferential\input_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input</pair>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>0</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="164">
+			<name>DiscreteDifferential\input_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<pair>DiscreteDifferential\input_previous</pair>
+			<size>
+				<rows>8</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="165">
+			<name>EnergyEncodingArm\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingArm\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="166">
+			<name>EnergyEncodingArm\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingArm\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>8</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="167">
+			<name>EnergyEncodingArm\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingArm\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>8</index>
+			</storage>
+			<iconIndex>9</iconIndex>
+		</modelVariable>
+		<modelVariable id="168">
+			<name>EnergyEncodingBase\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingBase\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="169">
+			<name>EnergyEncodingBase\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingBase\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>9</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="170">
+			<name>EnergyEncodingBase\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingBase\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>9</index>
+			</storage>
+			<iconIndex>10</iconIndex>
+		</modelVariable>
+		<modelVariable id="171">
+			<name>EnergyEncodingSpring\outputCount</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>required to implement 'to zero' behaviour on output</description>
+			<pair>EnergyEncodingSpring\outputCount_previous</pair>
+			<storage>
+				<name>R</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+		<modelVariable id="172">
+			<name>EnergyEncodingSpring\outputCount_previous</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingSpring\outputCount</pair>
+			<storage>
+				<name>s</name>
+				<index>10</index>
+			</storage>
+		</modelVariable>
+		<modelVariable id="173">
+			<name>EnergyEncodingSpring\outputCount_previous_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<pair>EnergyEncodingSpring\outputCount_previous</pair>
+			<storage>
+				<name>I</name>
+				<index>10</index>
+			</storage>
+			<iconIndex>11</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>10160</size>
+		<tables>
+			<table>
+				<name>U</name>
+				<size>4224</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>528</count>
+			</table>
+			<table>
+				<name>s</name>
+				<size>88</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>11</count>
+			</table>
+			<table>
+				<name>R</name>
+				<size>88</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>11</count>
+			</table>
+			<table>
+				<name>V</name>
+				<size>4968</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>621</count>
+			</table>
+			<table>
+				<name>I</name>
+				<size>88</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>11</count>
+			</table>
+			<table>
+				<name>P</name>
+				<size>512</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>64</count>
+			</table>
+			<table>
+				<name>C</name>
+				<size>192</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>24</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001B504C5445B4B4B4C4C4C4FFFFFF949494989898B4B4B4BABABAC4C4C4D5D5D5194A63AF00000024494441547801636002020636306005B34104230718B0D35C8085999D0EB6101040F63E004E520459BD3B2BCF0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F53000000C0504C5445A8B888C1D49BFFFFFF4149304B5538576241626E4964714B68754E7B8A5C7F8F5F819160859664889966899A678A9B678C9E698D9E698FA06B8FA16B90A26C91A36C91A36D92A46D94A66F95A87096A97099AC729AAD739EB277A1B579A6BA7CA8B888A9BE7FAABF7FADC382AEC382AFC483AFC583B0C684B5CC88BDD48DBED68EBFD78FC1D49BC2DA91C3DB92C4DC93C4DD93C5DD93C9E296C9E297CBE498D1EB9DD2EC9DD3ED9ED4EE9FD5F0A0D6F0A0D8F3A2DCF7A5E0FCA8E2FEA9E3FFAA1D68465100000083494441547801636042030C8405147450800283A63D02D8D9DB6B020564F834E4C4453435B925B8150D400262F2E2AC9CBCFC3CECCCA26C9220015B136B232B137333333D0B531B4D1433EC216648CB681B18F38BA8290BDAEBE981042C05858504580439B8A4EC65B5C05A8CF50D55D565CC5474ED956C3519181851000303E99E030015F118D8AD0544080000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D49484452000000100000000D0806000000A0BBEE240000006E494441547801A592410E80300804D92FF63D5E7D4EFBC5D5564D6C0394EA9EE030130280A4FC091C010510D482C4AAA0C1FBDD6C8E441374B04C24A340853DC95BE0C296A4179C29A584B69F52823A412817834F3BC8399B134CAF30C24B7FA0C1E14FB4E099A0499EAB6870CD01556A5CE787CF88AD0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D49484452000000100000000D0806000000A0BBEE240000006E494441547801A592410E80300804D92FF63D5E7D4EFBC5D5564D6C0394EA9EE030130280A4FC091C010510D482C4AAA0C1FBDD6C8E441374B04C24A340853DC95BE0C296A4179C29A584B69F52823A412817834F3BC8399B134CAF30C24B7FA0C1E14FB4E099A0499EAB6870CD01556A5CE787CF88AD0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D49484452000000100000000D0806000000A0BBEE240000006E494441547801A592410E80300804D92FF63D5E7D4EFBC5D5564D6C0394EA9EE030130280A4FC091C010510D482C4AAA0C1FBDD6C8E441374B04C24A340853DC95BE0C296A4179C29A584B69F52823A412817834F3BC8399B134CAF30C24B7FA0C1E14FB4E099A0499EAB6870CD01556A5CE787CF88AD0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001E504C54458484849C9C9CFFFFFF5E5E5E8484848E8E8E9C9C9CA5A5A5BDBDBDD5D5D5FAB5EF540000003B4944415478016360626260850316208F898991130ED8A828C00C84A802ECCCAC9C405BE102ACCCAC200176B800070707272B8860A39DC350BD0F00236B05EBC8D06B510000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000027504C5445888888A1A1A1AAAAAAC6C6C66666F37F7FF18888889999999999EEA1A1A1B2B2EBCCCCE8E6E6E629A7E1440000005549444154780165CF411280200C034014D090F2FFF75AB0075373DC199A50CA2DB9CA312523800A041430335802A37DC12F00A62D4C2D687D4B0BF012EC4B08A075B7666B5E0CA3F750A6FBFBB768FC3F574F497D004EF509AB01B5202C0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445C5C5C5CFCFCFFFFFFF9292929F9F9FB0B0B0B7B7B7BABABABDBDBDC1C1C1C5C5C5C7C7C7CBCBCBCFCFCFD5D5D5207D4FF800000036494441547801636042030C640870F1A2002E06763E14C08E43809B838D8D830749809395999385039F166401064614C0C04005BF00009B840676C631CE340000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000000C504C54453535356A6A6A9F9F9FD5D5D512D5793D0000002E49444154780163606044010C0C8CCC2880916A024C8C60BB989054303233A26A010A3032321350414D87A17B1F0044590262B7BA353B0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000002D504C5445ABABABBFBFBFFFFFFF9F9F9FA3A3A3A6A6A6ABABABB3B3B3BABABABDBDBDBFBFBFC1C1C1C7C7C7CECECED5D5D5F6C50F5A0000002B49444154780163606262E0800336208F8989910F0EB8E82BC0CEC2C2CA8C2CC0CBC9C3C34D5B6B51BD0F00E3AA09330880DF6C0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000036504C54450606FE1717FC2222FB3434F93939395C5CF45C5CF56464F47373737373F28585F0B5B5EBBFBFEACBCBE9D5D5E7DBDBE7DDDDE7E6E6E698F0ECFE000000344944415478016360E140012C0C1C822880838A029C9CDCCC0228026C4CBCA82A1818795005D8B958D1CCE067E4A39EC3D0BD0F0081000E125F500EA70000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001E504C54458484849C9C9CFFFFFF5E5E5E8484848E8E8E9C9C9CA5A5A5BDBDBDD5D5D5FAB5EF540000003B4944415478016360626260850316208F898991130ED8A828C00C84A802ECCCAC9C405BE102ACCCAC200176B800070707272B8860A39DC350BD0F00236B05EBC8D06B510000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000012504C54453939393939F87373737373F2ACACECE6E6E67ADAFFFD0000002E49444154780163606042010C0C4CAC2880896A02CC8C8CCCCC8CCC2C0815CCCC20C48A2A40580533151D86EE7D0026A4040B2796B48B0000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>
+

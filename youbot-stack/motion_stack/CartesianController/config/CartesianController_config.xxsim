@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>CartesianController</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;AllowLibraryUpdate&gt;True&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-10-17T12:46:46.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>4</revision>
+			<patch>1</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>CartesianSpaceStiffness\effort</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>CartesianSpaceStiffness\Hvp0</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>CartesianSpaceStiffness\Htip0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>CartesianSpaceStiffness\cart_stiffness</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>9</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>22</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>CartesianSpaceStiffness\HtipCC</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>31</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>CartesianSpaceStiffness\Kt</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>47</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>CartesianSpaceStiffness\Kr</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>50</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>CartesianSpaceStiffness\Kc</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>53</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>CartesianSpaceStiffness\Kcc</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>6</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>56</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>CartesianSpaceStiffness\Ktip</name>
+			<aliasOf>CartesianSpaceStiffness\Kcc</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>6</rows>
+				<columns>6</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>56</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>CartesianSpaceStiffness\H1_0</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>92</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>CartesianSpaceStiffness\costiffness1</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>108</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>CartesianSpaceStiffness\costiffness2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>117</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="14">
+			<name>CartesianSpaceStiffness\costiffness3</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>126</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="15">
+			<name>CartesianSpaceStiffness\dummy1</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>135</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="16">
+			<name>CartesianSpaceStiffness\dummy2</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>144</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="17">
+			<name>CartesianSpaceStiffness\dummy3</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>153</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="18">
+			<name>CartesianSpaceStiffness\dummy4</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>162</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="19">
+			<name>CartesianSpaceStiffness\dummy5</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>171</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="20">
+			<name>CartesianSpaceStiffness\pose21</name>
+			<aliasOf>CartesianSpaceStiffness\H1_0</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>92</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="21">
+			<name>CartesianSpaceStiffness\skew21</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>180</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="22">
+			<name>CartesianSpaceStiffness\orientation21</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>189</index>
+			</storage>
+			<iconIndex>2</iconIndex>
+		</modelVariable>
+		<modelVariable id="23">
+			<name>Damping\input</name>
+			<aliasOf>PlusMinus2\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>240</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="24">
+			<name>Damping\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>198</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="25">
+			<name>Damping\Damping</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>204</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="26">
+			<name>Damping\K</name>
+			<kind>parameter</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>gain</description>
+			<storage>
+				<name>P</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>3</iconIndex>
+		</modelVariable>
+		<modelVariable id="27">
+			<name>dHToErrors1\H_vp_0</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="28">
+			<name>dHToErrors1\H_base_0</name>
+			<aliasOf>Delay\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="29">
+			<name>dHToErrors1\Twist</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>210</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="30">
+			<name>dHToErrors1\H_vp_base</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>216</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="31">
+			<name>dHToErrors1\aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>temporal variable to resolve numerical round up errors</description>
+			<storage>
+				<name>V</name>
+				<index>232</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="32">
+			<name>dHToErrors1\theta</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<description>angle of rotation</description>
+			<storage>
+				<name>V</name>
+				<index>233</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="33">
+			<name>dHToErrors1\norm_omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>normolized vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>234</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="34">
+			<name>dHToErrors1\omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<description>vector of rotation</description>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>237</index>
+			</storage>
+			<iconIndex>5</iconIndex>
+		</modelVariable>
+		<modelVariable id="35">
+			<name>PlusMinus2\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>240</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="36">
+			<name>PlusMinus2\plus1</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>246</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="37">
+			<name>PlusMinus2\minus1</name>
+			<aliasOf>dHToErrors1\Twist</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>210</index>
+			</storage>
+			<iconIndex>6</iconIndex>
+		</modelVariable>
+		<modelVariable id="38">
+			<name>PlusMinus5\output</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>252</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="39">
+			<name>PlusMinus5\plus1</name>
+			<aliasOf>CartesianSpaceStiffness\effort</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="40">
+			<name>PlusMinus5\minus1</name>
+			<aliasOf>Damping\output</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>198</index>
+			</storage>
+			<iconIndex>7</iconIndex>
+		</modelVariable>
+		<modelVariable id="41">
+			<name>Splitter1\input</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="42">
+			<name>Splitter1\output1</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="43">
+			<name>Splitter1\output2</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="44">
+			<name>Splitter1\output3</name>
+			<aliasOf>Delay\input</aliasOf>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>8</iconIndex>
+		</modelVariable>
+		<modelVariable id="45">
+			<name>CartesianDamping</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>258</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="46">
+			<name>T_tooltip_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>264</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="47">
+			<name>Hvp0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>270</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="48">
+			<name>Htip0</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>286</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="49">
+			<name>StiffnessCC</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>9</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>302</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="50">
+			<name>HtipCC</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>311</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="51">
+			<name>W_tooltip_00</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>327</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="52">
+			<name>Delay\input</name>
+			<kind>rate</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<pair>Delay\output</pair>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>R</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="53">
+			<name>Delay\output</name>
+			<kind>state</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<pair>Delay\input</pair>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>s</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+		<modelVariable id="54">
+			<name>Delay\output_initial</name>
+			<kind>initial value</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<pair>Delay\output</pair>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>I</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>4</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>8160</size>
+		<tables>
+			<table>
+				<name>U</name>
+				<size>5104</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>638</count>
+			</table>
+			<table>
+				<name>s</name>
+				<size>128</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>16</count>
+			</table>
+			<table>
+				<name>R</name>
+				<size>128</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>16</count>
+			</table>
+			<table>
+				<name>V</name>
+				<size>2664</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>333</count>
+			</table>
+			<table>
+				<name>I</name>
+				<size>128</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>16</count>
+			</table>
+			<table>
+				<name>P</name>
+				<size>8</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>1</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F530000001B504C5445FFFFFF8F8F8FA3A3A3A6A6A6A9A9A9BABABAC7C7C7CBCBCBD5D5D5EFF9FEA00000002B4944415478016360A002606245014C0CAC1C28801597003B1B1B3B8A000B2333137E2D480218D652010000C6490355B71F49E30000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000024504C54455656F57373F28181818181F08F8FEF9E9EEDACACACACACECBABAEAC9C9E9D7D7E7E6E6E69EC5BC6800000064494441547801858F410E84300CC4BA34A927E1FFFFDD843D2C2024E654598AE58E6D5DB68DB55FB61E8008341510F52C40EA03869B26F4897665442A33329F1CC15DEA3DF37902804BFF8E7C09AB0086A9CA5ADF0E835F197E8054745195556281FBF7BF7B61084BD40E462A0000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000036504C54450606FE1717FC2222FB3434F93939395C5CF45C5CF56464F47373737373F28585F0B5B5EBBFBFEACBCBE9D5D5E7DBDBE7DDDDE7E6E6E698F0ECFE000000344944415478016360E140012C0C1C822880838A029C9CDCCC0228026C4CBCA82A1818795005D8B958D1CCE067E4A39EC3D0BD0F0081000E125F500EA70000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000021504C54452D2DFA3939397171F27373737373F27676F2ACACECB2B2EBBABAEAE0E0E6E6E6E6471F33370000003E4944415478018DCF490E00200803403611F8FF833D9A6234F63809058815C2A405D127CC01E056D64736B8996347522088E096A044383B3E2FBD407F7F012E2407E503C748200000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000009504C5445FFFFFF000000FFFFFF7EEF8F4F00000039494441547801B58F3112002008C3A0FF7FB4B6470FE55CCD962C940892224C268493DDA5BDCAE1BB0C67F912C6593C865DD3319E43FF4BA40BC3740175675BB7670000000049454E44AE426082</icon>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000006504C5445FFFFFF00000055C2D37E00000021494441547801636020173082011A1749085D8091114D84260284DD81E9746400003A38007DFA00B7700000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>
+

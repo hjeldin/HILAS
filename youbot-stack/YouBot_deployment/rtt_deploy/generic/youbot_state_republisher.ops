@@ -1,0 +1,42 @@
+import("YouBot_adapters");
+
+loadComponent("rviz_publisher","YouBot::YouBotStateRepublisher");
+setActivity("rviz_publisher", 0.1, LowestPriority, ORO_SCHED_OTHER);
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;
+cp_rt.lock_policy = LOCK_FREE;
+
+connect("driver.Arm1.joint_state","rviz_publisher.arm_state", cp_rt);
+connect("driver.Base.joint_state","rviz_publisher.base_state", cp_rt);
+
+var ConnPolicy cp_ros;
+cp_ros.transport = 3;
+cp_ros.name_id = "/youbot_states";
+
+stream("rviz_publisher.youbot_state", cp_ros);
+
+//##############################################
+// 15/10/2013
+var ConnPolicy cp_rt_odom;
+cp_rt_odom.type = DATA;
+cp_rt_odom.lock_policy = LOCK_FREE;
+
+connect("driver.Base.odometry_state","rviz_publisher.oodl_odometry_state", cp_rt);
+
+var ConnPolicy cp_ros_odom;
+cp_ros_odom.transport = 3;
+cp_ros_odom.name_id = "/odometry_state";
+
+stream("rviz_publisher.odometry_state", cp_ros_odom);
+//##############################################
+
+var ConnPolicy cp_arm_cmd_ros;
+cp_arm_cmd_ros.transport = 3;
+cp_arm_cmd_ros.name_id = "/arm_1/arm_controller/position_command";
+
+stream("driver.Arm1.joint_position_command", cp_arm_cmd_ros);
+
+rviz_publisher.configure
+rviz_publisher.start
+

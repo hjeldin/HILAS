@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelConfiguration>
+	<schemeVersion>
+		<major>1</major>
+		<minor>0</minor>
+		<revision>0</revision>
+		<patch>0</patch>
+	</schemeVersion>
+	<general>
+		<name>Odometry</name>
+		<description>&lt;Description&gt;
+ &lt;Version&gt;4.1&lt;/Version&gt;
+ &lt;LibraryPath&gt;FiniteTwist.emx&lt;/LibraryPath&gt;
+ &lt;IsMainModel&gt;1&lt;/IsMainModel&gt;
+ &lt;KeepParameterValues&gt;False&lt;/KeepParameterValues&gt;
+ &lt;TimeStamp&gt;2012-6-20 16:17:43&lt;/TimeStamp&gt;
+ &lt;AllowLibraryUpdate&gt;False&lt;/AllowLibraryUpdate&gt;
+&lt;/Description&gt;</description>
+		<creationDate>2012-11-01T16:08:08.0Z</creationDate>
+		<modelDir></modelDir>
+		<originalModel>Z:\Users\yury\workspaces\20SimModels\Devel\motion_stack.emx</originalModel>
+		<version>
+			<major>4</major>
+			<minor>1</minor>
+			<revision>4</revision>
+			<patch>1</patch>
+		</version>
+		<additional>Campuslicentie, Universiteit Twente</additional>
+	</general>
+	<run>
+		<startTime>0.0</startTime>
+		<finishTime>40.0</finishTime>
+		<stepSize>0.001</stepSize>
+	</run>
+	<modelVariables>
+		<modelVariable id="1">
+			<name>T_base_00</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0; 0.0; 0.0; 0.0</value>
+			<description></description>
+			<size>
+				<rows>6</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>0</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="2">
+			<name>H_base_map</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>6</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="3">
+			<name>H_odom_map</name>
+			<kind>input</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>22</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="4">
+			<name>H_base_odom</name>
+			<kind>output</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description></description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>38</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="5">
+			<name>R</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0; 0.0, 0.0, 0.0; 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>3</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>54</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="6">
+			<name>omega</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>63</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="7">
+			<name>v</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>66</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="8">
+			<name>omega_norm</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0</value>
+			<storage>
+				<name>V</name>
+				<index>69</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="9">
+			<name>omega_temp</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0; 0.0; 0.0</value>
+			<size>
+				<rows>3</rows>
+				<columns>1</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>70</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="10">
+			<name>H</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>73</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="11">
+			<name>aldo</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>20sim bug</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>89</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="12">
+			<name>aldoH_odom_map</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<description>safety</description>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>105</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+		<modelVariable id="13">
+			<name>H_base_baseprev</name>
+			<kind>variable</kind>
+			<type>real</type>
+			<value>0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0</value>
+			<size>
+				<rows>4</rows>
+				<columns>4</columns>
+			</size>
+			<storage>
+				<name>V</name>
+				<index>121</index>
+			</storage>
+			<iconIndex>1</iconIndex>
+		</modelVariable>
+	</modelVariables>
+	<storage>
+		<name>ivc_motion_stack</name>
+		<size>2368</size>
+		<tables>
+			<table>
+				<name>V</name>
+				<size>1096</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>137</count>
+			</table>
+			<table>
+				<name>U</name>
+				<size>1272</size>
+				<kind>real</kind>
+				<kindSize>8</kindSize>
+				<count>159</count>
+			</table>
+		</tables>
+	</storage>
+	<icons>
+		<icon>89504E470D0A1A0A0000000D4948445200000010000000100803000000282D0F5300000048504C5445A0A0A0B8B8B8FFFFFF6262626363636E6E6E7272728080808484848686868E8E8E9999999F9F9FA0A0A0A7A7A7AAAAAAB0B0B0B1B1B1B5B5B5B6B6B6B8B8B8B9B9B9BDBDBDD5D5D5AC90080000000041494441547801636042030C8405784550002F83A0380A102452408C4748809B4F54142EC0C5C1C9CACCC2C68E502126C02F2828224CA4A10C8C2880818174CF0100E4D60C48BC1C08900000000049454E44AE426082</icon>
+	</icons>
+</modelConfiguration>
+

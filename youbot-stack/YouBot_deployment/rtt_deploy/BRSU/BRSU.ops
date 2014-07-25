@@ -1,0 +1,69 @@
+#
+# BRSU preparations
+#
+
+import("rtt_rosnode");
+import("fbsched");
+import("EventLogger");
+require("ros_integration")
+require("print")
+
+print.ln("Starting the FBScheduler");
+loadComponent("controlloop_scheduler", "FBSched");
+setActivity("controlloop_scheduler", 0.002, HighestPriority, ORO_SCHED_RT);
+
+print.ln("Starting generic/driver.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/driver.ops")
+
+print.ln("Starting generic/controller.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/controller.ops")
+
+print.ln("Starting generic/passivity_layer_config.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/passivity_layer_config.ops")
+
+print.ln("Starting BRSU/simple_energy_supply.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/simple_energy_supply.ops")
+
+print.ln("Starting BRSU/cmd_vel.ops");
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/cmd_vel.ops")
+
+print.ln("Starting generic/executive.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/executive.ops")
+
+print.ln("Starting BRSU/diagnostics.ops")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/diagnostics.ops")
+
+print.ln("Starting raw_arm_bridge_ros_orocos/orocos/deploy/arm_bridge.ops")
+runScript( rospack.find("raw_arm_bridge_ros_orocos") + "/orocos/deploy/arm_bridge.ops")
+
+print.ln("Starting republishing to rviz")
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/generic/youbot_state_republisher.ops")
+
+print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/laser.ops");
+runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/laser.ops")
+
+#print.ln("Starting YouBot_deployment/rtt_deploy/BRSU/tracing.ops")
+#runScript( rospack.find("YouBot_deployment") + "/rtt_deploy/BRSU/tracing.ops")
+
+print.ln("Starting control loop");
+controlloop_scheduler.configure;
+controlloop_scheduler.start;
+
+print.ln("Clearing controller timeouts.")
+driver.Arm1.clearControllerTimeouts;
+driver.Base.clearControllerTimeouts;
+
+#
+# Snake position
+# 
+#executive.JointSpaceSetpoint=array( 0.0, -0.3, 0.5, 0.5, 0.0)
+#executive.setJointStiffness(executive.JointSpaceStiffness);
+#executive.setJointAngles(executive.JointSpaceSetpoint);
+#executive.jointspaceControlMode;
+
+print.ln("Started...");
+
+executive.jointspaceControl
+executive.useArmOnly
+executive.unfoldArmPosition
+executive.execute

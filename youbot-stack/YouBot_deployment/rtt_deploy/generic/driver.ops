@@ -1,0 +1,51 @@
+import("YouBot_OODL");
+import("EventLogger");
+import("rtt_sensor_msgs");
+import("rtt_std_msgs");
+import("rtt_geometry_msgs");
+import("rtt_nav_msgs")
+import("rtt_motion_control_msgs");
+
+displayComponentTypes;
+
+loadComponent("driver","YouBot::YouBotOODL");
+loadComponent("event_logger", "EventLogger");
+
+#
+# Activities / threads
+# 
+setMasterSlaveActivity("controlloop_scheduler", "driver");
+setActivity("event_logger", 0.1, LowestPriority, ORO_SCHED_OTHER);
+
+#
+# Configure
+#
+driver.configure;
+event_logger.configure
+
+#
+# Connection policies
+# 
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = LOCK_FREE;
+
+var ConnPolicy cp_events;
+cp_events.type = BUFFER;
+cp_events.lock_policy = LOCK_FREE;
+cp_events.size = 20;
+
+#
+# Connect peers
+#
+
+connectPeers("driver", "event_logger");
+connect("driver.Arm1.events", "event_logger.events", cp_events);
+connect("driver.Base.events", "event_logger.events", cp_events);
+
+# 
+# Start running
+# 
+event_logger.start;
+driver.start;
+

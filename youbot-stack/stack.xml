@@ -1,0 +1,13 @@
+<stack>
+  <description brief="YouBot">
+
+    The UT youBot control stack
+
+  </description>
+  <author>Yury Brodskiy and Robert Wilterdink</author>
+  <license>dual LGPLv2.1 / BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>https://git.ce.utwente.nl/youbot-stack</url>
+  <depend stack="rtt_ros_integration" />
+  <depend stack="motion_control" />
+</stack>

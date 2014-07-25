@@ -1,0 +1,237 @@
+# Convention for ros toic names is
+# /SourceComponent/PortName
+#
+# YouBot haptic master example
+#
+
+import("rtt_rosnode");
+import("fbsched");
+#require("ros_integration")
+require("print")
+
+import("ut_phantom_omni");
+import("YouBot_adapters");
+import("TSimAdapters");
+import("HapticMaster");
+import("InteractiveMarker");
+import("joystick_to_geometry_Twist");
+import("HReader");
+import("Master_executive")
+displayComponentTypes;
+
+#
+# Special component configuration procedure
+#
+loadComponent("IM_configure", "HReader::HReader");
+var ConnPolicy cp_ros_Hytip0;
+cp_ros_Hytip0.transport = 3;
+cp_ros_Hytip0.name_id = "/YouBotKinematics/H_tooltip_0";
+stream("IM_configure.input", cp_ros_Hytip0); 
+IM_configure.configure;
+IM_configure.start;
+print.ln("stop Special component configuration procedure")
+#
+# Load components and configure
+#
+loadComponent("scheduler", "FBSched");
+scheduler.setPeriod(0.001);
+
+print.ln("load phantom");
+loadComponent("phantom","PhantomOmni");
+phantom.configure;
+print.ln("phantom loaded and running?");
+//correction for Raffi's phantom 
+phantom.zero_position_angles=array(0.1, 1.4, 3.69, 3.02, 4.71239, 3.14159);
+loadComponent("joystick", "joystick_to_geometry_Twist");
+joystick.configure;
+joystick.scale_output[0] = 0.1;
+joystick.scale_output[1] = 0.1;
+joystick.scale_output[2] = 0.1;
+
+loadComponent("joystick_to_tsim", "geometry_Twist_to_TSim");
+
+loadComponent("transform_to_tsim", "geometry_TransformStamped_to_TSim");
+loadComponent("tsim_to_wrench", "TSim_to_geometry_Wrench");
+
+loadComponent("haptic_master", "motion_stack::HapticMaster");
+print.ln("loading interactive marker")
+loadComponent("interactive_marker", "youbot_control_d_sefltest_POPC::InteractiveMarker");
+print.ln("interactive marker loaded")
+setMasterSlaveActivity("scheduler", "interactive_marker");
+setMasterSlaveActivity("scheduler", "phantom");
+setMasterSlaveActivity("scheduler", "joystick");
+setMasterSlaveActivity("scheduler", "joystick_to_tsim");
+setMasterSlaveActivity("scheduler", "transform_to_tsim");
+setMasterSlaveActivity("scheduler", "haptic_master");
+setMasterSlaveActivity("scheduler", "tsim_to_wrench");
+
+loadComponent("executive","YouBot::Master_executive")
+#
+# Connections RTT
+# 
+# RT (or unbuffered)
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  
+cp_rt.lock_policy = UNSYNC; 
+
+var ConnPolicy cp_rt2;
+cp_rt2.type = DATA;
+cp_rt2.lock_policy = LOCK_FREE;
+
+# Internal fbscheduler
+connect("joystick.twist_command", "joystick_to_tsim.input_twist", cp_rt);
+connect("joystick_to_tsim.output_twist", "haptic_master.JoyTwist", cp_rt);
+
+connect("haptic_master.effort", "tsim_to_wrench.input_wrench", cp_rt);
+connect("tsim_to_wrench.output_wrench", "phantom.wrench", cp_rt);
+
+connect("phantom.transform","transform_to_tsim.input_transform",cp_rt)
+connect("transform_to_tsim.output_transform", "haptic_master.Htip0", cp_rt);
+
+connect("interactive_marker.HJoym", "haptic_master.HJoym", cp_rt);
+
+# Master
+connect("haptic_master.EnergyTank","executive.EnergyState1",cp_rt2);
+connect("executive.EnergyQuanta","haptic_master.input_energy_button",cp_rt2);
+
+connect("joystick.slider_command", "executive.stiffness_slider", cp_rt2);
+connect("executive.CartSpaceStiffness", "haptic_master.CartSpaceStiffness", cp_rt2);
+connect("haptic_master.PhantomJointState","phantom.joint_space",cp_rt2);
+connect("joystick.f7_command", "executive.submit_quota", cp_rt2);
+#
+# Connection ROS
+#
+
+# From ROS
+# Master <-> Slave
+# Joystick on Master pc.
+var ConnPolicy cp_ros_joystick;
+cp_ros_joystick.transport = 3;
+cp_ros_joystick.name_id = "/joy";
+stream("joystick.joystick", cp_ros_joystick); 
+
+# Towards HapticMaster Defined above for startup reasons
+#var ConnPolicy cp_ros_Hytip0;
+#cp_ros_Hytip0.transport = 3;
+#cp_ros_Hytip0.name_id = "/YouBotKinematics/H_tooltip_0";
+stream("haptic_master.Hytip0", cp_ros_Hytip0);
+
+var ConnPolicy cp_ros_input_energy;
+cp_ros_input_energy.transport = 3;
+cp_ros_input_energy.name_id = "/YouBotKinematics/output_energy_spring";
+stream("haptic_master.input_energy", cp_ros_input_energy);
+
+# To ROS 
+# From HapticMaster
+
+var ConnPolicy cp_ros_output_energy;
+cp_ros_output_energy.transport = 3;
+cp_ros_output_energy.name_id = "/HapticMaster/output_energy";
+stream("haptic_master.output_energy", cp_ros_output_energy);
+
+var ConnPolicy cp_ros_Hout0;
+cp_ros_Hout0.transport = 3;
+cp_ros_Hout0.name_id = "/HapticMaster/Hout0";
+stream("haptic_master.Hout0", cp_ros_Hout0); 
+
+var ConnPolicy cp_ros_JointSetpoint;
+cp_ros_JointSetpoint.transport = 3;
+cp_ros_JointSetpoint.name_id = "/HapticMaster/JointSetpoint";
+stream("haptic_master.JointSetpoint", cp_ros_JointSetpoint);
+
+var ConnPolicy cp_ros_BaseSetpoint;
+cp_ros_BaseSetpoint.transport = 3;
+cp_ros_BaseSetpoint.name_id = "/HapticMaster/H_base_0";
+stream("haptic_master.H_base_0", cp_ros_BaseSetpoint);
+
+//For debuging
+var ConnPolicy cp_ros_HJoy0;
+cp_ros_HJoy0.transport = 3;
+cp_ros_HJoy0.name_id = "/HapticMaster/HJoy0";
+stream("haptic_master.HJoy0", cp_ros_HJoy0);
+
+// From HapticMaster
+var ConnPolicy cp_ros_EnergyTank;
+cp_ros_EnergyTank.transport = 3;
+cp_ros_EnergyTank.name_id = "/HapticMaster/EnergyTank";
+stream("haptic_master.EnergyTank",cp_ros_EnergyTank);
+
+var ConnPolicy cp_ros_InteractiveMarker;
+cp_ros_InteractiveMarker.transport = 3;
+cp_ros_InteractiveMarker.name_id = "/interactive_marker/InteractiveMarker";
+stream("interactive_marker.HJoym", cp_ros_InteractiveMarker);
+
+var ConnPolicy cp_ros_button2;
+cp_ros_button2.transport = 3;
+cp_ros_button2.name_id = "/phantom/button2";
+stream("phantom.button_2", cp_ros_button2);
+
+var ConnPolicy cp_ros_slider;
+cp_ros_slider.transport = 3;
+cp_ros_slider.name_id = "/joystick/slider_command";
+stream("joystick.slider_command", cp_ros_slider);
+
+
+
+
+
+
+// For debuging
+#
+# Start running
+#
+joystick.start;
+joystick_to_tsim.start;
+transform_to_tsim.start;
+tsim_to_wrench.start;
+interactive_marker.configure;
+interactive_marker.start;
+var std_msgs.Float64MultiArray sample;
+sample = IM_configure.output.last;
+IM_configure.stop;
+IM_configure.input.disconnect;
+
+executive.configure;
+executive.start;
+
+
+//Htip0[3] = 0.355647            
+//Htip0[7] = 0.00988996          
+//Htip0[11]  = 0.293758       
+var cfloat64[] setp(16);
+setp[0] = 1; //sample.data[0];
+//setp[1] = sample.data[1];
+//setp[2] = sample.data[2];
+setp[3] =0.35;// sample.data[3];
+//setp[4] = sample.data[4];
+setp[5] = 1; //sample.data[5];
+//setp[6] = sample.data[6];
+setp[7] =0.0;// sample.data[7];
+//setp[8] = sample.data[8];
+//setp[9] = sample.data[9];
+setp[10] = 1; //sample.data[10];
+setp[11] =0.15;// sample.data[11];
+//setp[12] = sample.data[12];
+//setp[13] = sample.data[13];
+//setp[14] = sample.data[14];
+setp[15] = sample.data[15];
+interactive_marker.HJoym_setp = setp;
+
+haptic_master.configure;
+haptic_master.start;
+
+// Start passivity layer
+haptic_master.PassivityLayerW.PassiveZOH.PassivityLayerActive[0]=1; //true
+haptic_master.PassivityLayerW.SETP.CommunicationTreshold[0]=0.5; // just a test value
+
+phantom.start
+
+scheduler.configure;
+scheduler.start;
+
+#
+# Started
+#
+print.ln("Started...");
+
+executive.quanta = 1000

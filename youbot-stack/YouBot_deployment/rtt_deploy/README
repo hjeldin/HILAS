@@ -1,0 +1,5 @@
+Currently two use cases are supported:
+* stacking - BRICS Research Camp 3 brick stacking.
+* haptics - Haptic control of the youBot with a ForceDimension Omega.6
+
+Main scripts are directory names + .ops.

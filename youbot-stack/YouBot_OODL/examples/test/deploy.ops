@@ -1,0 +1,48 @@
+import("rtt_rosnode")
+//loadService("Deployer", "rospack");
+
+runScript( rospack.find("YouBot_OODL") + "/deploy.ops")
+
+displayComponentTypes;
+
+loadComponent("ArmController","YouBot::ArmControllerMockup");
+loadComponent("BaseController", "YouBot::BaseControllerMockup");
+loadComponent("GripperController", "YouBot::GripperControllerMockup");
+
+ArmController.configure;
+ArmController.setPeriod(0.01);
+BaseController.configure;
+BaseController.setPeriod(0.01);
+GripperController.configure;
+GripperController.setPeriod(0.01);
+
+var ConnPolicy cp_rt;
+cp_rt.type = DATA;  // Use ''BUFFER'' or ''DATA''
+cp_rt.lock_policy = LOCK_FREE; // Use  ''LOCKED'', ''LOCK_FREE'' or ''UNSYNC''
+
+connectPeers("youbot", "ArmController")
+connect("youbot.Arm1.joint_state","ArmController.joint_states", cp_rt)
+connect("ArmController.joint_cmd_angles","youbot.Arm1.joint_position_command", cp_rt)
+
+connectPeers("youbot", "BaseController")
+connect("youbot.Base.joint_state", "BaseController.joint_states", cp_rt);
+connect("BaseController.joint_cmd_angles", "youbot.Base.joint_position_command", cp_rt);
+
+connectPeers("youbot", "GripperController");
+connect("GripperController.gripper_cmd_position", "youbot.Gripper1.gripper_cmd_position", cp_rt);
+
+# 
+# Start running
+# 
+
+ArmController.start;
+BaseController.start;
+GripperController.start;
+
+youbot.Arm1.clearControllerTimeouts;
+youbot.Base.clearControllerTimeouts;
+
+//var std.vector<ctrl_modes> ctrl = std.vector<ctrl_modes>(5, PLANE_ANGLE);
+//youbot.Arm1.setControlModes(ctrl);
+
+
