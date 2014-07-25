@@ -28,3 +28,10 @@ Copy paste in terminal:
 * `$ mkdir build`
 * `$ cd build && cmake .. && make -j`
 * Modify build.sh to reflect your folder hierarchy, it should copy the newly generated /lib/libv_repExtRos.so into your V-REP main folder
+
+### Usage examples
+
+Open at least 3 terminals:
+
+* t1: `$ cd /path/to/workspace/hilas/youbot-stack/deployment`
+* t2: `$ cd /path/to/vrep/ && ./vrep.sh`
