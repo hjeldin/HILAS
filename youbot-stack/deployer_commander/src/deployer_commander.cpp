@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
 	cout << endl << "4 - Switch commands:" << endl;	
 	cout << "SWITCH_TO_HW" << "\t\tSWITCH_TO_VREP" << endl;
 	cout << endl << "5 - Block Position (fix arm pose, baseTwist set to zero" << endl;
-	cuot << "VREP_BLOCK_YOUBOT_POSITION" << "\tHW_BLOCK_YOUBOT_POSITION" << endl;
+	cout << "VREP_BLOCK_YOUBOT_POSITION" << "\tHW_BLOCK_YOUBOT_POSITION" << endl;
 	cout << endl << "6 - Deployer exit" << endl;
 	cout << "DEPLOYER_EXIT" << endl;
 

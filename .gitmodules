@@ -16,3 +16,6 @@
 [submodule "youbot-ros-pkg"]
 	path = youbot-ros-pkg
 	url = https://github.com/b-it-bots/youbot-ros-pkg.git
+[submodule "vrep_ros"]
+	path = vrep_ros
+	url = git@github.com:hjeldin/vrep_ros.git
