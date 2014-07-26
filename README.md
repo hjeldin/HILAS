@@ -35,3 +35,5 @@ Open at least 3 terminals:
 
 * t1: `$ cd /path/to/workspace/hilas/youbot-stack/deployment`
 * t2: `$ cd /path/to/vrep/ && ./vrep.sh`
+* t3: `$ roslaunch youbot-stack banana`
+* t1: `$ ./run.sh deployer_oodl.lua`
