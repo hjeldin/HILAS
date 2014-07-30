@@ -21,10 +21,20 @@ Copy paste in terminal:
 * `$ git clone git@bitbucket.org:hjeldin/hilas.git /path/to/ROS/workspace`
 * `$ rosmake motion_control fbsched rFSM youbot_driver`
 * Download vrep (link in Dependencies section)
-* `$ cd vrep_ros/vrep_common`
+* Add /path/to/vrep/programming/ros_stacks to your ROS_PACKAGE_PATH
+* `$ roscd vrep_common`
 * `$ mkdir build && cd build && cmake .. && make -j`
 * `$ cd ../../vrep_plugin`
 * Remove my symbolic links and create yours, pointing to the right V-REP folders (/programming/include and /programming/common).
 * `$ mkdir build`
 * `$ cd build && cmake .. && make -j`
 * Modify build.sh to reflect your folder hierarchy, it should copy the newly generated /lib/libv_repExtRos.so into your V-REP main folder
+
+### Usage examples
+
+Open at least 3 terminals:
+
+* t3: `$ roscore &`
+* t1: `$ cd /path/to/workspace/hilas/youbot-stack/deployment`
+* t2: `$ cd /path/to/vrep/ && ./vrep.sh`
+* t1: `$ ./run.sh deployer_oodl.lua`
