@@ -19,7 +19,7 @@ Copy paste in terminal:
 ### Building instruction
 
 * `$ git clone git@bitbucket.org:hjeldin/hilas.git /path/to/ROS/workspace`
-* `$ rosmake motion_control fbsched rFSM youbot_driver`
+* `$ rosmake motion_control fbsched rFSM youbot_driver youbot-stack`
 * Download vrep (link in Dependencies section)
 * Add /path/to/vrep/programming/ros_stacks to your ROS_PACKAGE_PATH
 * `$ roscd vrep_common`
