@@ -3,7 +3,7 @@
 	url = https://git.ce.utwente.nl/generic_components
 [submodule "motion_control"]
 	path = motion_control
-	url = git@bitbucket.org:marcoruzzenente/motioncontrol.git
+	url = https://bitbucket.org/marcoruzzenente/motioncontrol.git
 [submodule "rFSM"]
 	path = rFSM
 	url = https://github.com/kmarkus/rFSM.git
