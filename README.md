@@ -29,6 +29,7 @@ Copy paste in terminal:
 * `$ mkdir build`
 * `$ cd build && cmake .. && make -j`
 * Modify build.sh to reflect your folder hierarchy, it should copy the newly generated /lib/libv_repExtRos.so into your V-REP main folder
+* Modify youbot-stack/deployment/run.sh to reflect your system folders ($YOUR_WORKSPACE and $ROS_MASTER_URI)
 
 ### Usage examples
 
