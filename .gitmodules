@@ -1,3 +1,7 @@
 [submodule "vrep_ros"]
 	path = vrep_ros
 	url = git@github.com:hjeldin/vrep_ros.git
+[submodule "common/motioncontrol"]
+	path = common/motioncontrol
+	url = https://bitbucket.org/marcoruzzenente/motioncontrol.git
+	branch = indigo
