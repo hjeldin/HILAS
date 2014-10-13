@@ -61,7 +61,8 @@ source install_isolated/setup.sh
 Clone our repository to the ./src folder inside the catkin workspace and then follow run catkin_make on the workspace.
 
 ## Simulator ##
-The simulator included in hilas is vrep provided by Coppelia Robotics. Download the leatest version from their website [http://www.coppeliarobotics.com](http://www.coppeliarobotics.com/downloads.html), then rename the vrep folder in V-REP and place it in the /simulator folder, then install joystick-driver. For a more extended explanation visit this guide: [http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm](http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm)
+The simulator included in hilas is vrep provided by Coppelia Robotics. Download the leatest version from their website [http://www.coppeliarobotics.com](http://www.coppeliarobotics.com/downloads.html), then rename the vrep folder in V-REP and place it in the /simulator folder, then install joystick-driver.
+For a more extended explanation visit this guide: [http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm](http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm)
 
 ```
 #!bash
