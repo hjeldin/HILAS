@@ -2,3 +2,7 @@
 	path = common/motioncontrol
 	url = https://bitbucket.org/marcoruzzenente/motioncontrol.git
 	branch = indigo
+[submodule "robots/youBot/youbot_driver"]
+	path = robots/youBot/youbot_driver
+	url = https://github.com/youbot/youbot_driver.git
+	branch = hydro-devel
