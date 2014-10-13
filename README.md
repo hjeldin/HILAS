@@ -58,33 +58,27 @@ catkin_make_isolated --install
 source install_isolated/setup.sh
 ```
 # HILAS setup#
-Clone our repository to the ./src folder inside the catkin workspace and then follow the further steps before run catkin_make on the workspace.
+Clone our repository to the ./src folder inside the catkin workspace and then follow run catkin_make on the workspace.
+
+## Simulator ##
+The simulator included in hilas is vrep provided by Coppelia Robotics. Download the leatest version from their website [http://www.coppeliarobotics.com](http://www.coppeliarobotics.com/downloads.html), then rename the vrep folder in V-REP and place it in the /simulator folder, then install joystick-driver. For a more extended explanation visit this guide: [http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm](http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm)
 
 ```
 #!bash
-git clone https://yourusername@bitbucket.org/altairlab/hilas.git
-```
-
-## youBot driver ##
-Follow these steps for install catkin youbot-driver.
-```
-#!bash
-git clone https://github.com/youbot/youbot_driver/tree/hydro-devel
+git clone --recursive https://yourusername@bitbucket.org/altairlab/hilas.git
 sudo apt-get install libcppunit-dev
+sudo apt-get install ros-indigo-joystick-drivers
+cd ~/catkin_ws
 catkin_make
-cd src/hilas_indigo/robots/youBot/youbot_driver
+```
+## youBot driver ##
+After the workspace compilation follow these steps to setup youbot-driver for catkin.
+```
+#!bash
+cd src/hilas/robots/youBot/youbot_driver
 mkdir lib
 ln -s ~/catkin_ws/devel/lib/libYouBotDriver.so lib/libYouBotDriver.so
 ```
-the driver **must** be cloned in the /robots/youBot folder.
-
-## Simulator ##
-The simulator included in hilas is vrep provided by Coppeliarobotics. Download the leatest version from their website [http://www.coppeliarobotics.com](http://www.coppeliarobotics.com/downloads.html), then rename the vrep folder in V-REP and place it in the /simulator folder, then install joystick-driver
-```
-#!bash
-sudo apt-get install ros-indigo-joystick-drivers 
-```
-for a more extended explanation visit this guide: [http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm](http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm)
 
 ### Usage examples
 
