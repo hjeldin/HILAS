@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties
+  SYSTEM "cpf.dtd">
+<properties>
+   <simple name="robot_description" type="string">
+      <description>robot_description</description>
+      <value>
+        /home/nicolapiccinelli/Workspace/youbot-stack/robot/youbot.urdf
+      </value>
+   </simple>     
+</properties>
