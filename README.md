@@ -20,7 +20,7 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-sudo apt-get install python-rosinstall
+sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses
 ```
 then build and compile a fresh catkin workspace
 ```
