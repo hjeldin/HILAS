@@ -37,7 +37,7 @@ now install Orocos through the [rtt_ros_integration](https://github.com/orocos/r
 export OROCOS_TARGET=gnulinux
 mkdir -p ~/catkin_ws/underlay_isolated/src/orocos
 cd ~/catkin_ws/underlay_isolated
-git clone --recursive git://gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
+git clone --recursive git://git.gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
 catkin_make_isolated --install
 source install_isolated/setup.sh
 
