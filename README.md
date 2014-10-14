@@ -39,7 +39,9 @@ mkdir -p ~/catkin_ws/underlay_isolated/src/orocos
 cd ~/catkin_ws/underlay_isolated
 git clone --recursive git://git.gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
 catkin_make_isolated --install
-source install_isolated/setup.sh
+cd ~/catkin_ws/underlay_isolated/install_isolated/lib/ruby/1.9.1/x86_64-linux/orogen/templates/typekit
+touch CATKIN_IGNORE
+source ~/catkin_ws/underlay_isolated/install_isolated/setup.sh
 
 mkdir -p ~/catkin_ws/underlay/src
 cd ~/catkin_ws/underlay
@@ -53,7 +55,7 @@ then install orocos_kdl in an isolated workspace.
 ```
 #!bash
 cd ~/catkin_ws/underlay_isolated
-git clone https://github.com/orocos/orocos_kinematics_dynamics.git
+git clone https://github.com/orocos/orocos_kinematics_dynamics.git src/orocos_kinematics_dynamics
 catkin_make_isolated --install
 source install_isolated/setup.sh
 ```
