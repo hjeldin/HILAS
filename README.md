@@ -69,6 +69,7 @@ For a more extended explanation visit this guide: [http://www.coppeliarobotics.c
 ```
 #!bash
 git clone --recursive https://yourusername@bitbucket.org/altairlab/hilas.git
+git checkout indigo
 sudo apt-get install libcppunit-dev
 sudo apt-get install ros-indigo-joystick-drivers
 cd ~/catkin_ws
