@@ -73,6 +73,7 @@ git checkout indigo
 sudo apt-get install libcppunit-dev
 sudo apt-get install ros-indigo-joystick-drivers
 cd ~/catkin_ws
+export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver
 catkin_make
 ```
 ## youBot driver ##
