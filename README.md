@@ -20,7 +20,7 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-sudo apt-get install python-rosinstall
+sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses
 ```
 then build and compile a fresh catkin workspace
 ```
@@ -37,9 +37,11 @@ now install Orocos through the [rtt_ros_integration](https://github.com/orocos/r
 export OROCOS_TARGET=gnulinux
 mkdir -p ~/catkin_ws/underlay_isolated/src/orocos
 cd ~/catkin_ws/underlay_isolated
-git clone --recursive git://gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
+git clone --recursive git://git.gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
 catkin_make_isolated --install
-source install_isolated/setup.sh
+cd ~/catkin_ws/underlay_isolated/install_isolated/lib/ruby/1.9.1/x86_64-linux/orogen/templates/typekit
+touch CATKIN_IGNORE
+source ~/catkin_ws/underlay_isolated/install_isolated/setup.sh
 
 mkdir -p ~/catkin_ws/underlay/src
 cd ~/catkin_ws/underlay
@@ -53,7 +55,7 @@ then install orocos_kdl in an isolated workspace.
 ```
 #!bash
 cd ~/catkin_ws/underlay_isolated
-git clone https://github.com/orocos/orocos_kinematics_dynamics.git
+git clone https://github.com/orocos/orocos_kinematics_dynamics.git src/orocos_kinematics_dynamics
 catkin_make_isolated --install
 source install_isolated/setup.sh
 ```
@@ -67,9 +69,11 @@ For a more extended explanation visit this guide: [http://www.coppeliarobotics.c
 ```
 #!bash
 git clone --recursive https://yourusername@bitbucket.org/altairlab/hilas.git
+git checkout indigo
 sudo apt-get install libcppunit-dev
 sudo apt-get install ros-indigo-joystick-drivers
 cd ~/catkin_ws
+export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver
 catkin_make
 ```
 ## youBot driver ##
