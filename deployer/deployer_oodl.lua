@@ -6,7 +6,8 @@ require "rttros"
 
 --require "complete"
 --require "readline"
-require "definitions"
+require 'include/inifile'
+require "include/definitions"
 
 -- Lua deployer
 if deployer_type == LUA_DEPLOYER then
@@ -128,7 +129,7 @@ if run_status == SIM then
 	--cartesian_controller_setup()
 	--cartesian_input_from_vrep()
 
-	rtt.logl('Info', "Youbot VREP start.")
+	rtt.logl('Info', "Youbot SIM start.")
 	youbot_sim:start()
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
@@ -172,7 +173,7 @@ elseif run_status == BOTH then
 	oodl_arm_op_clear()
 	oodl_base_op_clear()
 
-	rtt.logl('Info', "Youbot VREP start.")
+	rtt.logl('Info', "Youbot SIM start.")
 	youbot_sim:start()
 
 	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
