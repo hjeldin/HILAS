@@ -1,4 +1,4 @@
-SET(YOUBOT_SIM_INCLUDE_DIR ${COMMON_INCLUDE_DIR} ${OODL_YOUBOT_INCLUDE_DIR} ${OODL_YOUBOT_INCLUDE_DIR}/include/youbot_driver)
+SET(YOUBOT_SIM_INCLUDE_DIR ${COMMON_INCLUDE_DIR} ${OODL_YOUBOT_INCLUDE_DIR})
 SET(YOUBOT_SIM_libs ${OODL_YOUBOT_LIBRARIES} boost_thread YouBot_SIM_plugin)
 SET(YOUBOT_SIM_FILES YouBotGripperService.cpp YouBotArmService.cpp YouBotBaseService.cpp YouBotSIM.cpp)
 
@@ -24,4 +24,4 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/lib/plugins)
 #defines where dynamic libraries (plugins) are stored
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/plugins)
 
-orocos_plugin(YouBot_SIM_plugin YouBotHelpersPlugin.cpp YouBotHelpers.cpp ${COMMON_INCLUDE_DIR})
+orocos_plugin(YouBot_SIM_plugin YouBotHelpersPlugin.cpp YouBotHelpers.cpp)

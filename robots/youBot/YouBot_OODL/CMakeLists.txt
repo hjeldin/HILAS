@@ -17,6 +17,8 @@ if (ROS_ROOT)
 #  rosbuild_include(rtt_rosnode GenerateRTTtypekit)
 #  ros_generate_rtt_typekit(YouBot_OODL)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake_modules)
+
 # Set the CMAKE_PREFIX_PATH in case you're not using Orocos through ROS
 # for helping these find commands find RTT.
 find_package(catkin REQUIRED COMPONENTS rtt_ros tf rtt_std_msgs rtt_sensor_msgs rtt_motion_control_msgs rtt_nav_msgs rtt_geometry_msgs cmake_modules youbot_driver)
@@ -28,8 +30,6 @@ find_package(catkin REQUIRED COMPONENTS rtt_ros tf rtt_std_msgs rtt_sensor_msgs 
 
 # Determine target
 #set(OROCOS_TARGET $ENV{OROCOS_TARGET})
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake_modules)
 
 FIND_PACKAGE(OODL_YouBot)
 IF (OODL_YOUBOT_FOUND)
