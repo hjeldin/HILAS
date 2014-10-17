@@ -122,14 +122,15 @@ supervisor:start()
 --depl:stream("VREP_VISMODE.visMode", rtt.provides("ros"):topic("/vrep/vis_mode"))
 
 if run_status == SIM then	
+
 	simulation_setup()
 	robot_repub:configure()
 
 	--visualization mode deactivated
 	sim_visual_mode(2)
 
-	cartesian_controller_setup()
-	cartesian_input_from_sim()
+	--cartesian_controller_setup()
+	--cartesian_input_from_sim()
 
 	rtt.logl('Info', "Robot SIM start.")
 	robot_sim:start()
@@ -138,7 +139,7 @@ if run_status == SIM then
 
 	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
 	--vel_startup(SIM)
-	cartesian_controller_start()
+	--cartesian_controller_start()
 
 elseif run_status == HW then
 	--visualization mode activated
@@ -206,19 +207,44 @@ if communication_type == REMOTE then
 
 		if data ~= nil then
 			print(data)
-			local status, err = pcall(function() loadstring(hash_remote_command[data])() end)
 
-			if status then
+			-- Experimental!-------------------------------------------------
+			if data == "ROBOT_STATE" then
 
-				udp:sendto(data.." - ok.", msg_or_ip, socket_port)
-				--print("[REMOTE] Reply sent "..msg_or_ip.." - "..socket_port)
+				r_state = rtt.Variable("sensor_msgs.JointState")
+				fs, r_state = robot_repub:getPort("arm_state_in"):read()
 
+				local count = 1
+				local string = "JOINT_STATE"
+
+				for i=1,5 do
+					string = string..";"..r_state.position[i]
+				end
+
+				fs, r_state = robot_repub:getPort("base_state_in"):read()
+
+				for i=1,4 do
+					string = string..";"..r_state.position[i]
+				end
+
+				udp:sendto(string, msg_or_ip, socket_port)
+			------------------------------------------------------------------
 			else
 
-				print("[DEPLOYER] "..err)
-				udp:sendto(data.." - failed.", msg_or_ip, socket_port)
-				--print("[REMOTE] Failed call sent")
+				local status, err = pcall(function() loadstring(hash_remote_command[data])() end)
 
+				if status then
+
+					udp:sendto(data.." - ok.", msg_or_ip, socket_port)
+					--print("[REMOTE] Reply sent "..msg_or_ip.." - "..socket_port)
+
+				else
+
+					print("[DEPLOYER] "..err)
+					udp:sendto(data.." - failed.", msg_or_ip, socket_port)
+					--print("[REMOTE] Failed call sent")
+
+				end
 			end
        	end
     end

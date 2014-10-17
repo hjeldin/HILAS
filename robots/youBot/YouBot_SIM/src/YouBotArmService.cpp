@@ -92,8 +92,7 @@ namespace YouBot
     simxGetObjectHandle(m_clientID, "arm_joint_2", &vrep_joint_handle[1], simx_opmode_oneshot_wait);
     simxGetObjectHandle(m_clientID, "arm_joint_3", &vrep_joint_handle[2], simx_opmode_oneshot_wait);        
     simxGetObjectHandle(m_clientID, "arm_joint_4", &vrep_joint_handle[3], simx_opmode_oneshot_wait);
-    simxGetObjectHandle(m_clientID, "arm_joint_5", &vrep_joint_handle[4], simx_opmode_oneshot_wait);
-    simxGetObjectHandle(m_clientID, "arm_joint_6", &vrep_joint_handle[5], simx_opmode_oneshot_wait);        
+    simxGetObjectHandle(m_clientID, "arm_joint_5", &vrep_joint_handle[4], simx_opmode_oneshot_wait);      
 
     m_joint_state.name.push_back("arm_joint_1");
     m_joint_state.name.push_back("arm_joint_2");
@@ -261,12 +260,11 @@ namespace YouBot
   {
     //in_joint_state.read(m_joint_state);
     float p,v,e;
-
     for(int i = 0; i < NR_OF_ARM_SLAVES; ++i)
-    {                
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);                  
+    {
+      simxInt status = simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_streaming);
+      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_streaming);
+      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_streaming);                  
  
       m_joint_state.position[i] = p;
       m_joint_state.velocity[i] = v;

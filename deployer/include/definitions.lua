@@ -40,7 +40,7 @@ hash_remote_command = {
 ["SWITCH_TO_HW"] = "switch_to(HW)",
 ["SWITCH_TO_SIM"] = "switch_to(SIM)",
 ["SIM_BLOCK_YOUBOT_POSITION"] = "block_youbot_position(SIM)",
-["HW_BLOCK_YOUBOT_POSITION"] = "block_youbot_position(OODL)"
+["HW_BLOCK_YOUBOT_POSITION"] = "block_youbot_position(OODL)",
 }
 
 -- Weird variables
@@ -315,18 +315,18 @@ end
 
 function robot_republisher_oodl()
 
-	depl:connect("Robot_STATE_PUBLISHER.arm_state","Robot_OODL.Arm1.joint_state",cp)
-	depl:connect("Robot_STATE_PUBLISHER.base_state","Robot_OODL.Base.joint_state",cp)
-	ros_stream("Robot_STATE_PUBLISHER.robot_state","/joint_states")
-	ros_stream("Robot_STATE_PUBLISHER.odometry_state","/odom")
+	depl:connect("Robot_STATE_PUBLISHER.arm_state_in","Robot_OODL.Arm1.joint_state",cp)
+	depl:connect("Robot_STATE_PUBLISHER.base_state_in","Robot_OODL.Base.joint_state",cp)
+	ros_stream("Robot_STATE_PUBLISHER.robot_state_out","/joint_states")
+	ros_stream("Robot_STATE_PUBLISHER.odometry_state_out","/odom")
 end
 
 function robot_republisher_sim()
 
-	depl:connect("Robot_STATE_PUBLISHER.arm_state","Robot_SIM.Arm1.joint_state",cp)
-	depl:connect("Robot_STATE_PUBLISHER.base_state","Robot_SIM.Base.joint_state",cp)
-	ros_stream("Robot_STATE_PUBLISHER.robot_state","/joint_states")
-	ros_stream("Robot_STATE_PUBLISHER.odometry_state","/odom")
+	depl:connect("Robot_STATE_PUBLISHER.arm_state_in","Robot_SIM.Arm1.joint_state",cp)
+	depl:connect("Robot_STATE_PUBLISHER.base_state_in","Robot_SIM.Base.joint_state",cp)
+	ros_stream("Robot_STATE_PUBLISHER.robot_state_out","/joint_states")
+	ros_stream("Robot_STATE_PUBLISHER.odometry_state_out","/odom")
 end
 
 --function connect_sim_ros_streams()

@@ -99,8 +99,8 @@ namespace YouBot
 
   private:
 
-    InputPort<sensor_msgs::JointState> arm_state;
-    InputPort<sensor_msgs::JointState> base_state;
+    InputPort<sensor_msgs::JointState> arm_state_in;
+    InputPort<sensor_msgs::JointState> base_state_in;
     
     sensor_msgs::JointState m_arm_state;
     sensor_msgs::JointState m_base_state;
@@ -112,21 +112,21 @@ namespace YouBot
     std::string m_events;
   //	InputPort<flat_matrix_t> odometry;
 
-    OutputPort<sensor_msgs::JointState> robot_state;
+    OutputPort<sensor_msgs::JointState> robot_state_out;
     
     // 15 10 2013
-    OutputPort<nav_msgs::Odometry> odometry_state;
-    InputPort<nav_msgs::Odometry> oodl_odometry_state;
+    OutputPort<nav_msgs::Odometry> odometry_state_out;
+    InputPort<nav_msgs::Odometry> oodl_odometry_state_in;
     
     nav_msgs::Odometry m_odometry_state;
     nav_msgs::Odometry m_oodl_odometry_state;
             
     sensor_msgs::JointState m_youbot_state;
     // Republishing energy states to make an event when energy in the tanks drop below zeros
-    InputPort<std_msgs::Float64MultiArray> arm_energy_tank;
-    InputPort<std_msgs::Float64MultiArray> base_energy_tank;
-    InputPort<std_msgs::Float64MultiArray> kinematics_energy_tank;
-    OutputPort<std::string> events;
+    InputPort<std_msgs::Float64MultiArray> arm_energy_tank_in;
+    InputPort<std_msgs::Float64MultiArray> base_energy_tank_in;
+    InputPort<std_msgs::Float64MultiArray> kinematics_energy_tank_in;
+    OutputPort<std::string> events_out;
 
     unsigned int m_dimension;
     double wheel;

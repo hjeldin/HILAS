@@ -85,22 +85,22 @@ std::string& make_edge_event(std::string& s, const std::string& event, bool stat
 YouBotStateRepublisher::YouBotStateRepublisher(std::string const& name) :
 				TaskContext(name, PreOperational), m_dimension(0), wheel(0)
 {
-	this->addPort("arm_state", arm_state);
-	this->addPort("base_state", base_state);
-	this->addPort("robot_state", robot_state);
+	this->addPort("arm_state_in", arm_state_in);
+	this->addPort("base_state_in", base_state_in);
+	this->addPort("robot_state_out", robot_state_out);
 	//Energy state republishing
-	this->addPort("arm_energy_tank",arm_energy_tank);
-	this->addPort("base_energy_tank",base_energy_tank);
-	this->addPort("kinematics_energy_tank",kinematics_energy_tank);
-	this->addPort("events",events);
+	this->addPort("arm_energy_tank_in",arm_energy_tank_in);
+	this->addPort("base_energy_tank_in",base_energy_tank_in);
+	this->addPort("kinematics_energy_tank_in",kinematics_energy_tank_in);
+	this->addPort("events_out",events_out);
   
-  // 15 10 2013
-  this->addPort("odometry_state",odometry_state);
-  this->addPort("oodl_odometry_state",oodl_odometry_state);
+  	// 15 10 2013
+  	this->addPort("odometry_state_out",odometry_state_out);
+  	this->addPort("oodl_odometry_state_in",oodl_odometry_state_in);
 
 	m_youbot_state.position.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
 	m_youbot_state.name.assign(JOINT_NAME_ARRAY,JOINT_NAME_ARRAY+SIZE_JOINT_NAME_ARRAY);
-	robot_state.setDataSample(m_youbot_state);
+	robot_state_out.setDataSample(m_youbot_state);
 }
 
 YouBotStateRepublisher::~YouBotStateRepublisher()
@@ -111,40 +111,40 @@ YouBotStateRepublisher::~YouBotStateRepublisher()
 bool YouBotStateRepublisher::configureHook()
 {
 
-	if (!arm_state.connected())
+	if (!arm_state_in.connected())
 	{
 		log(Warning) << "The port arm_state is not connected" << endlog();
 	}
-	else if(arm_state.read(m_arm_state) != NoData && m_arm_state.position.size() != 5)
+	else if(arm_state_in.read(m_arm_state) != NoData && m_arm_state.position.size() != 5)
 	{
 	  log(Warning) << "The port arm_state does not have the right dimension." << endlog();
 	}
 
-	if (!base_state.connected())
+	if (!base_state_in.connected())
 	{
 		log(Warning) << "The port base_state is not connected" << endlog();
 	}
-	else if(base_state.read(m_base_state) != NoData && m_base_state.position.size() != 4)
+	else if(base_state_in.read(m_base_state) != NoData && m_base_state.position.size() != 4)
 	{
 		log(Warning) << "The port base_state does not have the right dimension." << endlog();
 	}
 
-	if (!arm_energy_tank.connected())
+	if (!arm_energy_tank_in.connected())
 	{
 		log(Warning) << "The port arm_energy_tank is not connected" << endlog();
 	}
 
-	if (!base_energy_tank.connected())
+	if (!base_energy_tank_in.connected())
 	{
 		log(Warning) << "The port base_energy_tank is not connected" << endlog();
 	}
 
-	if (!kinematics_energy_tank.connected())
+	if (!kinematics_energy_tank_in.connected())
 	{
 		log(Warning) << "The port kinematics_energy_tank is not connected" << endlog();
 	}
 
-	if (!events.connected())
+	if (!events_out.connected())
 	{
 		log(Warning) << "The port events is not connected" << endlog();
 	}
@@ -159,7 +159,7 @@ bool YouBotStateRepublisher::startHook()
 void YouBotStateRepublisher::updateHook()
 {
   m_youbot_state.header.stamp = ros::Time::now();
-  if (arm_state.read(m_arm_state) == NewData)
+  if (arm_state_in.read(m_arm_state) == NewData)
   {
     m_youbot_state.position[0] = m_arm_state.position[0];
     m_youbot_state.position[1] = m_arm_state.position[1];
@@ -167,7 +167,7 @@ void YouBotStateRepublisher::updateHook()
     m_youbot_state.position[3] = m_arm_state.position[3];
     m_youbot_state.position[4] = m_arm_state.position[4];
   }
-  if (base_state.read(m_base_state) == NewData)
+  if (base_state_in.read(m_base_state) == NewData)
   {
     m_youbot_state.position[5] = m_base_state.position[0];
     m_youbot_state.position[6] = m_base_state.position[1];
@@ -180,7 +180,7 @@ void YouBotStateRepublisher::updateHook()
   m_odometry_state.header.frame_id = "odom";
   m_odometry_state.child_frame_id = "/base_link";
   
-  if (oodl_odometry_state.read(m_oodl_odometry_state) == NewData)
+  if (oodl_odometry_state_in.read(m_oodl_odometry_state) == NewData)
   {
     m_odometry_state.pose.pose.position.x =           m_oodl_odometry_state.pose.pose.position.x;
     m_odometry_state.pose.pose.position.y =           m_oodl_odometry_state.pose.pose.position.y;
@@ -207,42 +207,42 @@ void YouBotStateRepublisher::updateHook()
   m_youbot_state.position[13] = 0.001;
   m_youbot_state.position[14] = 0.001;
 
-  robot_state.write(m_youbot_state);
-  odometry_state.write(m_odometry_state);
+  robot_state_out.write(m_youbot_state);
+  odometry_state_out.write(m_odometry_state);
 
-  if(arm_energy_tank.read(m_energy_tank) == NewData)
+  if(arm_energy_tank_in.read(m_energy_tank) == NewData)
   {
 	  if (m_energy_tank.data[0]<MIN_ENERGY && m_arm_energy_tank > MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",true));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",true));
 	  }
 	  if (m_energy_tank.data[0]>MIN_ENERGY && m_arm_energy_tank < MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",false));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",false));
 	  }
 	  m_arm_energy_tank=m_energy_tank.data[0];
   }
-  if(base_energy_tank.read(m_energy_tank) == NewData)
+  if(base_energy_tank_in.read(m_energy_tank) == NewData)
   {
 	  if (m_energy_tank.data[0]<MIN_ENERGY && m_base_energy_tank > MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",true));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",true));
 	  }
 	  if (m_energy_tank.data[0]>MIN_ENERGY && m_base_energy_tank < MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",false));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",false));
 	  }
 	  m_base_energy_tank=m_energy_tank.data[0];
   }
-  if(kinematics_energy_tank.read(m_energy_tank) == NewData)
+  if(kinematics_energy_tank_in.read(m_energy_tank) == NewData)
   {
 	  if (m_energy_tank.data[0]<MIN_ENERGY && m_kinematics_energy_tank > MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",true));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",true));
 	  }
 	  if (m_energy_tank.data[0]>MIN_ENERGY && m_kinematics_energy_tank < MIN_ENERGY )
 	  {
-		  events.write(make_edge_event(m_events,"energytank.LOW",false));
+		  events_out.write(make_edge_event(m_events,"energytank.LOW",false));
 	  }
 	  m_kinematics_energy_tank=m_energy_tank.data[0];
   }

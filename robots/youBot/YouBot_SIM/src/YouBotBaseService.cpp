@@ -360,9 +360,9 @@ namespace YouBot
 
     for(int i = 0; i < NR_OF_BASE_SLAVES; ++i)
     {                
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);                  
+      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_streaming);
+      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_streaming);
+      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_streaming);                  
  
       m_joint_state.position[i] = p;
       m_joint_state.velocity[i] = v;
