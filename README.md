@@ -20,7 +20,18 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses
+sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses liblua5.1.0-dev
+```
+download lua socket library and compile
+#!bash
+wget http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2/luasocket-2.0.2.tar.gz
+tar -xvzf luasocket-2.0.2.tar.gz
+cd luasocket-2.0.2
+export CPATH=$CPATH:/usr/include/lua5.1
+make
+sudo make install
+echo "export LUA_PATH=$LUA_PATH:/usr/share/lua/5.1/?.lua" >> ~/.bashrc
+echo "export LUA_CPATH=$LUA_CPATH:/usr/lib/lua/5.1/?.so" >> ~/.bashrc
 ```
 then build and compile a fresh catkin workspace
 ```
