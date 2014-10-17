@@ -6,11 +6,12 @@
 #include <kdl/kinfam_io.hpp>
 #include <iostream>
 #include <math.h>
+#include <fstream>
 
 using namespace KDL;
 using namespace RTT; 
 
-Youbot_kinematics::Youbot_kinematics(std::string const& name) : TaskContext(name), m_jnt_array(8){
+YouBot_kinematics::YouBot_kinematics(std::string const& name) : TaskContext(name), m_jnt_array(8){
   this->addEventPort("JointState",port_joint_state);
   this->addEventPort("BaseOdom",port_odom);
   this->addPort("EEPose",port_ee_pose_ros);
@@ -23,7 +24,7 @@ Youbot_kinematics::Youbot_kinematics(std::string const& name) : TaskContext(name
   this->addEventPort("JointSpaceWeights",port_w_js);
   this->addEventPort("TaskSpaceWeights",port_w_ts);
 
-  this->addProperty("robot_description",prop_urdf_model);
+  //this->addProperty("robot_description",prop_urdf_model);
 
   m_joint_state.name.assign(5,"0        10       20");
   m_joint_state.position.resize(5);
@@ -55,15 +56,37 @@ Youbot_kinematics::Youbot_kinematics(std::string const& name) : TaskContext(name
   std::cout << "|YoubotKinematics| constructed!" <<std::endl;	  
 }
 
-bool Youbot_kinematics::configureHook()
+bool YouBot_kinematics::configureHook()
 {
-	this->getProvider<Marshalling>("marshalling")->readProperties(CFG_PATH);
+	std::ifstream file(URDF_PATH_TO_FILE);
+	std::cout << "Youbot urdf: " << URDF_PATH_TO_FILE << std::endl;
+
+	file.seekg(0, std::ios::end);
+	prop_urdf_model.reserve(file.tellg());
+	file.seekg(0, std::ios::beg);
+	
+	prop_urdf_model.assign((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
+
   	KDL::Tree my_tree;
-	if (!kdl_parser::treeFromFile(prop_urdf_model, my_tree)){
-		log(Error)<<"Failed to construct kdl tree"<<endlog();
-		return false;
-	}
-        // Add arm chain from urdf to existing chain
+	TiXmlDocument xml_doc;
+	TiXmlElement* xml_root;
+
+   	xml_doc.Parse(prop_urdf_model.c_str());
+   	xml_root = xml_doc.FirstChildElement("robot");
+   	
+   	if(!xml_root)
+   	{
+    	log(Error) << "Failed to get robot from xml document" << endlog();
+      	return false;
+   	}
+   	
+   	if (!kdl_parser::treeFromXml(&xml_doc, my_tree))
+   	{
+    	log(Error) << "Failed to construct kdl tree" << endlog();
+      	return false;
+   	}
+
+    // Add arm chain from urdf to existing chain
 	KDL::Chain arm_chain;
 	if(!my_tree.getChain("arm_link_0","gripper_palm_link",arm_chain)){
 		log(Error)<< "Failed to construct subchain from urdf model"<<endlog();
@@ -114,7 +137,7 @@ bool Youbot_kinematics::configureHook()
   	return true;
 }
 
-bool Youbot_kinematics::startHook()
+bool YouBot_kinematics::startHook()
 {
 	port_joint_state.read(m_joint_state);
         //Leave out the base for now, start from 3
@@ -154,7 +177,7 @@ bool Youbot_kinematics::startHook()
 	return true;
 }
 
-void Youbot_kinematics::updateHook()
+void YouBot_kinematics::updateHook()
 {
 
 	if(port_w_ts.read(m_w_ts)==NewData){
@@ -167,10 +190,10 @@ void Youbot_kinematics::updateHook()
 			log(Error)<<"Data on "<<port_w_ts.getName()<<" has the wrong size."<<endlog();
 	}
 	if(port_w_js.read(m_w_js)==NewData){
-		if((int)m_w_js.size()==m_Mq_jlc.rows()){
-			for(unsigned int i=0;i<m_Mq_jlc.rows();i++)
-				m_Mq_jlc(i,i)=m_w_js[i];
-			pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
+		if((int)m_w_js.size()==m_Mq_identity.rows()){
+			for(unsigned int i=0;i<m_Mq_identity.rows();i++)
+				m_Mq_identity(i,i)=m_w_js[i];
+			pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
 		}
 		else
 			log(Error)<<"Data on "<<port_w_js.getName()<<" has the wrong size."<<endlog();
@@ -335,12 +358,12 @@ void Youbot_kinematics::updateHook()
 	port_base_twist.write(m_base_twist);
 }
 
-void Youbot_kinematics::stopHook() {
-  std::cout << "Youbot_kinematics executes stopping !" <<std::endl;
+void YouBot_kinematics::stopHook() {
+  std::cout << "YouBot_kinematics executes stopping !" <<std::endl;
 }
 
-void Youbot_kinematics::cleanupHook() {
-  std::cout << "Youbot_kinematics cleaning up !" <<std::endl;
+void YouBot_kinematics::cleanupHook() {
+  std::cout << "YouBot_kinematics cleaning up !" <<std::endl;
 }
 
 /*
@@ -348,11 +371,11 @@ void Youbot_kinematics::cleanupHook() {
  * in one library *and* you may *not* link this library
  * with another component library. Use
  * ORO_CREATE_COMPONENT_TYPE()
- * ORO_LIST_COMPONENT_TYPE(Youbot_kinematics)
+ * ORO_LIST_COMPONENT_TYPE(YouBot_kinematics)
  * In case you want to link with another library that
  * already contains components.
  *
  * If you have put your component class
  * in a namespace, don't forget to add it here too:
  */
-ORO_CREATE_COMPONENT(Youbot_kinematics)
+ORO_CREATE_COMPONENT(YouBot_kinematics)

@@ -112,7 +112,7 @@ namespace YouBot
     std::string m_events;
   //	InputPort<flat_matrix_t> odometry;
 
-    OutputPort<sensor_msgs::JointState> youbot_state;
+    OutputPort<sensor_msgs::JointState> robot_state;
     
     // 15 10 2013
     OutputPort<nav_msgs::Odometry> odometry_state;

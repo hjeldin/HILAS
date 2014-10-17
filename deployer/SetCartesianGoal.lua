@@ -3,7 +3,7 @@ require("rttlib")
 tc=rtt.getTC();
  
 function configureHook()
-   outport = rtt.OutputPort("/geometry_msgs/Pose", "moveOut")    -- global variable!
+   outport = rtt.OutputPort("/geometry_msgs/Pose", "cartesianGoal_out")    -- global variable!
    tc:addPort(outport)
    return true
 end

@@ -4,8 +4,6 @@
 <properties>
    <simple name="robot_description" type="string">
       <description>robot_description</description>
-      <value>
-        /home/nicolapiccinelli/Workspace/youbot-stack/robot/youbot.urdf
-      </value>
+      <value>~/catkin_ws/src/hilas/src/hilas/robots/youBot/urdf_model/youbot.urdf</value>
    </simple>     
 </properties>

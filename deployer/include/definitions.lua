@@ -1,17 +1,49 @@
 -- Enum definition
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 3, 4, 5 ,6, 7, 8
 
-hash_config = {}
-hash_config["SIM"] = SIM
-hash_config["HW"] = HW
-hash_config["BOTH"] = BOTH
-hash_config["LUA_DEPLOYER"] = LUA_DEPLOYER
-hash_config["OPS_DEPLOYER"] = OPS_DEPLOYER
-hash_config["VREP"] = VREP
-hash_config["OODL"] = OODL
-hash_config["REMOTE"] = REMOTE
-hash_config["LOCAL"] = LOCAL
+-- Definition of an hash table for configuration file naming
+hash_config = {
+["SIM"] = SIM,
+["HW"] = HW,
+["BOTH"] = BOTH,
+["LUA_DEPLOYER"] = LUA_DEPLOYER,
+["OPS_DEPLOYER"] = OPS_DEPLOYER,
+["VREP"] = VREP,
+["OODL"] = OODL,
+["REMOTE"] = REMOTE,
+["LOCAL"] = LOCAL
+}
 
+-- Definition of an hash table for mark remote callable functions
+hash_remote_command = {
+["HW_ARM_MODE_POS"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,1) end",
+["HW_ARM_MODE_VEL"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,2) end",
+["HW_ARM_MODE_TOR"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,3) end",
+["HW_ARM_MODE_STOP"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,4) end",
+["SIM_ARM_MODE_POS"] = "for i=1,robot_arm_count do armSetCtrlModes(SIM,i,1) end",
+["SIM_ARM_MODE_VEL"] = "for i=1,robot_arm_count do armSetCtrlModes(SIM,i,2) end",
+["SIM_ARM_MODE_TOR"] = "for i=1,robot_arm_count do armSetCtrlModes(SIM,i,3) end",
+["SIM_ARM_MODE_STOP"] = "for i=1,robot_arm_count do armSetCtrlModes(SIM,i,4) end",
+["HW_BASE_MODE_POS"] = "baseSetCtrlModes(OODL,1) end",
+["HW_BASE_MODE_VEL"] = "baseSetCtrlModes(OODL,2) end",
+["HW_BASE_MODE_TOR"] = "baseSetCtrlModes(OODL,3) end",
+["HW_BASE_MODE_STOP"] = "baseSetCtrlModes(OODL,4) end",
+["HW_BASE_MODE_TWIST"] = "baseSetCtrlModes(OODL,5) end",
+["SIM_BASE_MODE_POS"] = "baseSetCtrlModes(SIM,1) end",
+["SIM_BASE_MODE_VEL"] = "baseSetCtrlModes(SIM,2) end",
+["SIM_BASE_MODE_TOR"] = "baseSetCtrlModes(SIM,3) end",
+["SIM_BASE_MODE_STOP"] = "baseSetCtrlModes(SIM,4) end",
+["SIM_BASE_MODE_TWIST"] = "baseSetCtrlModes(SIM,5) end",
+["CARTESIAN_START"] = "robot_ctrl_cartesian:configure(); robot_kine:start(); robot_ctrl_cartesian:start()",
+["CARTESIAN_STOP"] = "cartesian_controller_stop()",
+["DEPLOYER_EXIT"] = "os.exit()",
+["SWITCH_TO_HW"] = "switch_to(HW)",
+["SWITCH_TO_SIM"] = "switch_to(SIM)",
+["SIM_BLOCK_YOUBOT_POSITION"] = "block_youbot_position(SIM)",
+["HW_BLOCK_YOUBOT_POSITION"] = "block_youbot_position(OODL)"
+}
+
+-- Weird variables
 rttlib.color = true
 running = true
 
@@ -20,12 +52,25 @@ configTable = inifile.parse('config/hilas.ini')
 
 robot_name = configTable['robot']['name']
 robot_arm_count = configTable['robot']['armCount']
+robot_arm_joint_count = {}
+
+for i = 1,robot_arm_count do
+	robot_arm_joint_count[i] = configTable['robot']['arm'..i..'JointCount']
+end
+
 robot_base_count = configTable['robot']['baseCount']
+robot_base_joint_count = {}
+
+for i = 1,robot_base_count do
+	robot_base_joint_count[i] = configTable['robot']['base'..i..'JointCount']
+end
 
 run_status = hash_config[configTable['hilas']['runMode']] --SIM
 deployer_type = hash_config[configTable['hilas']['deployerMode']] --LUA_DEPLOYER
 communication_type = hash_config[configTable['hilas']['usageMode']] --DEBUG
 is_ros_enabled = configTable['hilas']['useROS']
+socket_address = configTable['hilas']['socketaddr']
+socket_port = configTable['hilas']['socketport']
 
 CARTESIAN_GAIN_SIM = configTable['cartesian_controller']['gain_hw']
 CARTESIAN_GAIN_OODL = configTable['cartesian_controller']['gain_sim']
@@ -40,7 +85,16 @@ SIM_TOPIC_ARM_JOINT_STATES_RX = configTable['ROS']['topicSimArmJointState']
 SIM_TOPIC_BASE_JOINT_STATES_RX = configTable['ROS']['topicSimBaseJointState']
 SIM_TOPIC_ODOM_STATE_RX = configTable['ROS']['topicSimOdomState']
 
--- USAGE DEPLOYER FUNCTIONS --
+-- DEPLOYER FUNCTIONS --
+function ros_stream(orocos_port,topic_name)
+
+	if is_ros_enabled == true then
+
+		depl:stream(orocos_port,rtt.provides("ros"):topic(topic_name))
+
+	end
+
+end
 
 function sim_visual_mode(a)
 
@@ -52,10 +106,16 @@ function sim_visual_mode(a)
 
 end
 
-function vel_startup()
+function vel_startup(stype,arm_index)
 
-	armSetCtrlModes(OODL,2)
-	baseSetCtrlModes(OODL,5)
+	if stype == SIM then
+		armSetCtrlModes(SIM,arm_index,2)
+		baseSetCtrlModes(SIM,5)
+	elseif stype == OODL then
+		armSetCtrlModes(SIM,arm_index,2)
+		baseSetCtrlModes(SIM,5)
+	end
+
 	cartesian_controller_start()
 
 end
@@ -63,118 +123,153 @@ end
 -- Definition setup functions
 function simulation_setup()
 
-	rtt.logl('Info', "Youbot SIM configure.")
-	youbot_sim:configure()
+	rtt.logl('Info', "Robot SIM configure.")
+	robot_sim:configure()
 
-	sim_set_mode = youbot_sim:getOperation("setSimMode")
+	sim_set_mode = robot_sim:getOperation("setSimMode")
 
-	sim_arm_serv = youbot_sim:provides("Arm1")
-	sim_base_serv = youbot_sim:provides("Base")
-	sim_grip_serv = youbot_sim:provides("Gripper1")
+	sim_arm_serv = {}
+	sim_arm_op_clear = {}
+	sim_arm_op_stat = {}
 
-	sim_arm_op_clear = sim_arm_serv:getOperation("clearControllerTimeouts")
-	sim_arm_op_stat = sim_arm_serv:getOperation("displayMotorStatuses")
+	sim_grip_serv = {}
 
+	for i = 1,robot_arm_count do
+		sim_arm_serv[i] = robot_sim:provides("Arm"..i)
+		sim_arm_op_clear[i] = sim_arm_serv[i]:getOperation("clearControllerTimeouts")
+		sim_arm_op_stat[i] = sim_arm_serv[i]:getOperation("displayMotorStatuses")		
+	end	
+
+	for i = 1,robot_arm_count do
+		sim_grip_serv[i] = robot_sim:provides("Gripper"..i)
+	end
+
+	sim_base_serv = robot_sim:provides("Base")
 	sim_base_op_clear = sim_base_serv:getOperation("clearControllerTimeouts")
 	sim_base_op_stat = sim_base_serv:getOperation("displayMotorStatuses")
 
 	--require "definitions"
 end
 
+function oodl_setup()
+
+	rtt.logl('Info', "Robot OODL configure.")
+	robot_oodl:configure()
+
+	oodl_arm_serv = {}
+	oodl_arm_op_clear = {}
+	oodl_arm_op_stat = {}
+
+	oodl_grip_serv = {}
+
+	for i = 1,robot_arm_count do
+		oodl_arm_serv[i] = robot_oodl:provides("Arm"..i)
+		oodl_arm_op_clear[i] = oodl_arm_serv[i]:getOperation("clearControllerTimeouts")
+		oodl_arm_op_stat[i] = oodl_arm_serv[i]:getOperation("displayMotorStatuses")		
+	end	
+
+	for i = 1,robot_arm_count do
+		oodl_grip_serv[i] = robot_oodl:provides("Gripper"..i)
+	end
+
+	oodl_base_serv = robot_oodl:provides("Base")
+	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
+	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
+
+end
+
 function queue_setup()
 
-	youbot_queue:configure()
-	youbot_queue:start()
-	queue_op_is_loading = youbot_queue:getOperation("setIsInLoading")
+	robot_queue:configure()
+	robot_queue:start()
+	queue_op_is_loading = robot_queue:getOperation("setIsInLoading")
+	
 	-- TEST --
-	depl:stream("YouBot_QUEUE.out_ros_cartesian_command", rtt.provides("ros"):topic("/cart_debug"))
+	ros_stream("Robot_QUEUE.out_ros_cartesian_command","/cart_debug")
 end
 
 function queue_output_disconnect()
 
-	youbot_queue:getPort("out_arm_joint_position_command"):disconnect()
-	youbot_queue:getPort("out_arm_joint_velocity_command"):disconnect()
-	youbot_queue:getPort("out_arm_joint_effort_command"):disconnect()
-	youbot_queue:getPort("out_base_cmd_twist"):disconnect()
-	youbot_queue:getPort("out_gripper_joint_position_command"):disconnect()
-	youbot_queue:getPort("out_ros_planner_command"):disconnect()
-	youbot_queue:getPort("out_ros_cartesian_command"):disconnect()
+	robot_queue:getPort("out_arm_joint_position_command"):disconnect()
+	robot_queue:getPort("out_arm_joint_velocity_command"):disconnect()
+	robot_queue:getPort("out_arm_joint_effort_command"):disconnect()
+	robot_queue:getPort("out_base_cmd_twist"):disconnect()
+	robot_queue:getPort("out_gripper_joint_position_command"):disconnect()
+	robot_queue:getPort("out_ros_planner_command"):disconnect()
+	robot_queue:getPort("out_ros_cartesian_command"):disconnect()
 
 end
 
 function queue_input_connect()
 
-	--depl:stream("YouBot_QUEUE.ros_arm_joint_position_command", rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	--depl:stream("YouBot_QUEUE.ros_arm_joint_velocity_command", rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
-	--depl:stream("YouBot_QUEUE.ros_arm_joint_effort_command", rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
-	--depl:stream("YouBot_QUEUE.ros_base_cmd_twist", rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
-	--depl:stream("YouBot_QUEUE.ros_gripper_joint_position_command", rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
-	depl:stream("YouBot_QUEUE.ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal"))
-	depl:connect("YouBot_QUEUE.ros_cartesian_command","MOVE_OUT.moveOut", cp)
-	--depl:stream("YouBot_QUEUE.ros_cartesian_command", rtt.provides("ros"):topic("/youbot/desired_ee"))
+	--ros_stream("Robot_QUEUE.ros_arm_joint_position_command", TOPIC_ARM_POSITION_COMMAND))
+	--ros_stream("Robot_QUEUE.ros_arm_joint_velocity_command", TOPIC_ARM_VELOCITY_COMMAND))
+	--ros_stream("Robot_QUEUE.ros_arm_joint_effort_command", TOPIC_ARM_EFFORT_COMMAND))
+	--ros_stream("Robot_QUEUE.ros_base_cmd_twist", TOPIC_BASE_TWIST_COMMAND))
+	--ros_stream("Robot_QUEUE.ros_gripper_joint_position_command", TOPIC_GRIPPER_POSITION_COMMAND))
+	ros_stream("Robot_QUEUE.ros_planner_command", "/move_base_simple/goal")
+	depl:connect("Robot_QUEUE.ros_cartesian_command","CARTESIAN_GOAL_DEPL.cartesianGoal_out", cp)
+	--ros_stream("Robot_QUEUE.ros_cartesian_command", "/youbot/desired_ee"))
 
 end
 
 function queue_input_disconnect()
 
-	youbot_queue:getPort("ros_arm_joint_position_command"):disconnect()
-	youbot_queue:getPort("ros_arm_joint_velocity_command"):disconnect()
-	youbot_queue:getPort("ros_arm_joint_effort_command"):disconnect()
-	youbot_queue:getPort("ros_base_cmd_twist"):disconnect()
-	youbot_queue:getPort("ros_gripper_joint_position_command"):disconnect()
-	youbot_queue:getPort("ros_planner_command"):disconnect()
-	youbot_queue:getPort("ros_cartesian_command"):disconnect()
+	robot_queue:getPort("ros_arm_joint_position_command"):disconnect()
+	robot_queue:getPort("ros_arm_joint_velocity_command"):disconnect()
+	robot_queue:getPort("ros_arm_joint_effort_command"):disconnect()
+	robot_queue:getPort("ros_base_cmd_twist"):disconnect()
+	robot_queue:getPort("ros_gripper_joint_position_command"):disconnect()
+	robot_queue:getPort("ros_planner_command"):disconnect()
+	robot_queue:getPort("ros_cartesian_command"):disconnect()
 
 end
 
 function queue_output_connect()
 
-	depl:connect("YouBot_QUEUE.out_arm_joint_position_command","YouBot_OODL.Arm1.joint_position_command", cp)
-	depl:connect("YouBot_QUEUE.out_arm_joint_velocity_command","YouBot_OODL.Arm1.joint_velocity_command", cp)
-	depl:connect("YouBot_QUEUE.out_arm_joint_effort_command", "YouBot_OODL.Arm1.joint_effort_command", cp)
-	depl:connect("YouBot_QUEUE.out_base_cmd_twist", "YouBot_OODL.Base.cmd_twist", cp)
-	depl:connect("YouBot_QUEUE.out_gripper_joint_position_command", "YouBot_OODL.Gripper1.gripper_cmd_position", cp)
-	depl:stream("YouBot_QUEUE.out_ros_planner_command", rtt.provides("ros"):topic("/move_base_simple/goal")) -- PLANNER DA INSERIRE
-	depl:connect("YouBot_QUEUE.out_ros_cartesian_command", "YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
-	depl:connect("YouBot_QUEUE.from_cartesian_status", "YouBot_KINE.EEPose", cp)
+	depl:connect("Robot_QUEUE.out_arm_joint_position_command","Robot_OODL.Arm1.joint_position_command", cp)
+	depl:connect("Robot_QUEUE.out_arm_joint_velocity_command","Robot_OODL.Arm1.joint_velocity_command", cp)
+	depl:connect("Robot_QUEUE.out_arm_joint_effort_command", "Robot_OODL.Arm1.joint_effort_command", cp)
+	depl:connect("Robot_QUEUE.out_base_cmd_twist", "Robot_OODL.Base.cmd_twist", cp)
+	depl:connect("Robot_QUEUE.out_gripper_joint_position_command", "Robot_OODL.Gripper1.gripper_cmd_position", cp)
+	ros_stream("Robot_QUEUE.out_ros_planner_command", "/move_base_simple/goal") -- PLANNER DA INSERIRE
+	depl:connect("Robot_QUEUE.out_ros_cartesian_command", "Robot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+	depl:connect("Robot_QUEUE.from_cartesian_status", "Robot_KINE.EEPose", cp)
 	
-	--depl:stream("YouBot_QUEUE.out_ros_cartesian_command", rtt.provides("ros"):topic("/cart_debug"))
+	--ros_stream("Robot_QUEUE.out_ros_cartesian_command", "/cart_debug")
 
 end
 
 function cartesian_controller_setup()
 
-	depl:connect("YouBot_KINE.EEPose","YouBot_CTRL_CARTESIAN.CartesianSensorPosition",cp)
-	depl:connect("YouBot_KINE.EETwistRTT","YouBot_CTRL_CARTESIAN.CartesianOutputVelocity",cp)
+	depl:connect("Robot_KINE.EEPose","Robot_CTRL_CARTESIAN.CartesianSensorPosition",cp)
+	depl:connect("Robot_KINE.EETwistRTT","Robot_CTRL_CARTESIAN.CartesianOutputVelocity",cp)
 
-	--depl:loadService("YouBot_KINE","rosparam")
-
-	--youbot_kine:provides("rosparam"):refreshProperty("robot_description",false,false)
-	K = youbot_ctrl_cartesian:getProperty("K")
+	K = robot_ctrl_cartesian:getProperty("K")
 	local gain = 0.02
 	K:fromtab{gain,gain,gain,gain,gain,gain}
-
-	depl:stream("YouBot_KINE.EEPose",rtt.provides("ros"):topic("/youbot/EEPose"))
+	ros_stream("Robot_KINE.EEPose","/youbot/EEPose")
 	cartesian_goal_connect()
 end
 
+-- TODO: Extends for accepting n joint
 function cartesian_controller_start()
 
-	youbot_kine:configure()
-	youbot_ctrl_cartesian:configure()
-	youbot_kine:start()
-	youbot_ctrl_cartesian:start()
+	robot_kine:configure()
+	robot_ctrl_cartesian:configure()
+	robot_kine:start()
+	robot_ctrl_cartesian:start()
 
-	depl:connect("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition", "MOVE_OUT.moveOut", cp)
+	depl:connect("Robot_CTRL_CARTESIAN.CartesianDesiredPosition", "CARTESIAN_GOAL_DEPL.cartesianGoal_out", cp)
 
-	desiredPosPort = rttlib.port_clone_conn(youbot_ctrl_cartesian:getPort("CartesianDesiredPosition"))
-	--print("Configure JointSpaceWeights")
-	js_weight_port = rttlib.port_clone_conn(youbot_kine:getPort("JointSpaceWeights"))
+	desiredPosPort = rttlib.port_clone_conn(robot_ctrl_cartesian:getPort("CartesianDesiredPosition"))
+	print("Configure JointSpaceWeights")
+	js_weight_port = rttlib.port_clone_conn(robot_kine:getPort("JointSpaceWeights"))
 	js_weight = rtt.Variable("float64[]")
 	js_weight:resize(8)
 	js_weight:fromtab{1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0}
 	js_weight_port:write(js_weight)
-	fs, startPos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
+	fs, startPos = robot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
 	print("Start Position of Controller")
 	print(startPos)
 	desiredPosPort:write(startPos)
@@ -183,71 +278,87 @@ end
 
 function cartesian_goal_connect()
 
-	--depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/youbot/desired_ee"))
-	depl:stream("YouBot_CTRL_CARTESIAN.CartesianDesiredPosition",rtt.provides("ros"):topic("/interactiveEEPose"))
+	--ros_stream("Robot_CTRL_CARTESIAN.CartesianDesiredPosition","/youbot/desired_ee")
+	ros_stream("Robot_CTRL_CARTESIAN.CartesianDesiredPosition","/interactiveEEPose")
 
 end
 
 function cartesian_goal_disconnect()
 
-	youbot_ctrl_cartesian:getPort("CartesianDesiredPosition"):disconnect()
+	robot_ctrl_cartesian:getPort("CartesianDesiredPosition"):disconnect()
 
 end
 
 
-function cartesian_input_from_vrep()
+function cartesian_input_from_sim()
 
-	depl:connect("YouBot_KINE.JointState","youbot_sim.Arm1.joint_state",cp)
-	depl:connect("YouBot_KINE.JointVelocities","youbot_sim.Arm1.joint_velocity_command",cp)
-	depl:connect("YouBot_KINE.BaseTwist","youbot_sim.Base.cmd_twist",cp)
-	depl:connect("YouBot_KINE.BaseOdom","youbot_sim.Base.odometry_state",cp)
+	depl:connect("Robot_KINE.JointState","Robot_SIM.Arm1.joint_state",cp)
+	depl:connect("Robot_KINE.JointVelocities","Robot_SIM.Arm1.joint_velocity_command",cp)
+	depl:connect("Robot_KINE.BaseTwist","Robot_SIM.Base.cmd_twist",cp)
+	depl:connect("Robot_KINE.BaseOdom","Robot_SIM.Base.odometry_state",cp)
 
-	--depl:stream("YouBot_KINE.JointState",rtt.provides("ros"):topic("/vrep/arm_1/joint_states"))
-	--depl:stream("YouBot_KINE.JointVelocities",rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
-	--depl:stream("YouBot_KINE.BaseTwist",rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
-	--depl:stream("YouBot_KINE.BaseOdom",rtt.provides("ros"):topic(TOPIC_BASE_ODOM_STATE))
+	--ros_stream("Robot_KINE.JointState","/vrep/arm_1/joint_states")
+	--ros_stream("Robot_KINE.JointVelocities",TOPIC_ARM_VELOCITY_COMMAND)
+	--ros_stream("Robot_KINE.BaseTwist",TOPIC_BASE_TWIST_COMMAND)
+	--ros_stream("Robot_KINE.BaseOdom",TOPIC_BASE_ODOM_STATE)
 
 end
 
 function cartesian_input_from_oodl()
 
-	depl:connect("YouBot_KINE.JointState","YouBot_OODL.Arm1.joint_state",cp)
-	depl:connect("YouBot_KINE.JointVelocities","YouBot_OODL.Arm1.joint_velocity_command",cp)
-	depl:connect("YouBot_KINE.BaseTwist","YouBot_OODL.Base.cmd_twist",cp)
-	depl:connect("YouBot_KINE.BaseOdom","YouBot_OODL.Base.odometry_state",cp)
+	depl:connect("Robot_KINE.JointState","Robot_OODL.Arm1.joint_state",cp)
+	depl:connect("Robot_KINE.JointVelocities","Robot_OODL.Arm1.joint_velocity_command",cp)
+	depl:connect("Robot_KINE.BaseTwist","Robot_OODL.Base.cmd_twist",cp)
+	depl:connect("Robot_KINE.BaseOdom","Robot_OODL.Base.odometry_state",cp)
 
 end
 
-function youbot_republisher_oodl()
+function robot_republisher_oodl()
 
-	depl:connect("YouBotStateRepublisher.arm_state","YouBot_OODL.Arm1.joint_state",cp)
-	depl:connect("YouBotStateRepublisher.base_state","YouBot_OODL.Base.joint_state",cp)
-	depl:stream("YouBotStateRepublisher.youbot_state",rtt.provides("ros"):topic("/joint_states"))
-	depl:stream("YouBotStateRepublisher.odometry_state",rtt.provides("ros"):topic("/odom"))
+	depl:connect("Robot_STATE_PUBLISHER.arm_state","Robot_OODL.Arm1.joint_state",cp)
+	depl:connect("Robot_STATE_PUBLISHER.base_state","Robot_OODL.Base.joint_state",cp)
+	ros_stream("Robot_STATE_PUBLISHER.robot_state","/joint_states")
+	ros_stream("Robot_STATE_PUBLISHER.odometry_state","/odom")
+end
+
+function robot_republisher_sim()
+
+	depl:connect("Robot_STATE_PUBLISHER.arm_state","Robot_SIM.Arm1.joint_state",cp)
+	depl:connect("Robot_STATE_PUBLISHER.base_state","Robot_SIM.Base.joint_state",cp)
+	ros_stream("Robot_STATE_PUBLISHER.robot_state","/joint_states")
+	ros_stream("Robot_STATE_PUBLISHER.odometry_state","/odom")
 end
 
 --function connect_sim_ros_streams()
 	-- ROS simulated robot streaming
-	--depl:stream("youbot_sim.Arm1.in_joint_state",rtt.provides("ros"):topic("/vrep/arm_1/joint_states"))
-	--depl:stream("youbot_sim.Base.in_joint_state",rtt.provides("ros"):topic("/vrep/base/joint_states"))
-	--depl:stream("youbot_sim.Base.in_odometry_state",rtt.provides("ros"):topic("/odom"))
+	--ros_stream("robot_sim.Arm1.in_joint_state","/vrep/arm_1/joint_states")
+	--ros_stream("robot_sim.Base.in_joint_state","/vrep/base/joint_states")
+	--ros_stream("robot_sim.Base.in_odometry_state","/odom")
 
-	--depl:stream("youbot_sim.Arm1.out_joint_position_command",rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	--depl:stream("youbot_sim.Arm1.out_joint_velocity_command",rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
-	--depl:stream("youbot_sim.Arm1.out_joint_effort_command",rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
-	--depl:stream("youbot_sim.Base.out_joint_position_command",rtt.provides("ros"):topic("/base/base_controller/position_command"))
-	--depl:stream("youbot_sim.Base.out_joint_velocity_command",rtt.provides("ros"):topic("/base/base_controller/velocity_command"))
-	--depl:stream("youbot_sim.Base.out_joint_effort_command",rtt.provides("ros"):topic("/base/base_controller/force_command"))
-	--depl:stream("youbot_sim.Base.out_cmd_twist",rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
-	--depl:stream("youbot_sim.Gripper1.out_gripper_cmd_position",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+	--ros_stream("robot_sim.Arm1.out_joint_position_command",TOPIC_ARM_POSITION_COMMAND)
+	--ros_stream("robot_sim.Arm1.out_joint_velocity_command",TOPIC_ARM_VELOCITY_COMMAND)
+	--ros_stream("robot_sim.Arm1.out_joint_effort_command",TOPIC_ARM_EFFORT_COMMAND)
+	--ros_stream("robot_sim.Base.out_joint_position_command","/base/base_controller/position_command")
+	--ros_stream("robot_sim.Base.out_joint_velocity_command","/base/base_controller/velocity_command")
+	--ros_stream("robot_sim.Base.out_joint_effort_command","/base/base_controller/force_command")
+	--ros_stream("robot_sim.Base.out_cmd_twist",TOPIC_BASE_TWIST_COMMAND)
+	--ros_stream("robot_sim.Gripper1.out_gripper_cmd_position",TOPIC_GRIPPER_POSITION_COMMAND)
 --end
 
 function disconnect_sim_ros_streams() 
+
 	--ARM 
-	sim_arm_serv:getPort("in_joint_state"):disconnect()
-	sim_arm_serv:getPort("out_joint_position_command"):disconnect()
-	sim_arm_serv:getPort("out_joint_velocity_command"):disconnect()
-	sim_arm_serv:getPort("out_joint_effort_command"):disconnect()
+	for i=1,robot_arm_count do
+
+		sim_arm_serv[i]:getPort("in_joint_state"):disconnect()
+		sim_arm_serv[i]:getPort("out_joint_position_command"):disconnect()
+		sim_arm_serv[i]:getPort("out_joint_velocity_command"):disconnect()
+		sim_arm_serv[i]:getPort("out_joint_effort_command"):disconnect()
+		
+		--GRIPPER
+		sim_grip_serv[i]:getPort("out_gripper_cmd_position"):disconnect()	
+	end
+
 	--BASE
 	sim_base_serv:getPort("out_joint_position_command"):disconnect()
 	sim_base_serv:getPort("out_joint_velocity_command"):disconnect()
@@ -255,84 +366,79 @@ function disconnect_sim_ros_streams()
 	sim_base_serv:getPort("out_cmd_twist"):disconnect()
 	sim_base_serv:getPort("in_joint_state"):disconnect()
 	sim_base_serv:getPort("in_odometry_state"):disconnect()
-	--GRIPPER
-	sim_grip_serv:getPort("out_gripper_cmd_position"):disconnect()
+
 end
 
-function oodl_setup()
+function disconnect_oodl_ros_streams() 
 
-	rtt.logl('Info', "Youbot OODL configure.")
-	youbot_oodl:configure()
+	--ARM 
+	for i=1,robot_arm_count do
 
-	oodl_arm_serv = youbot_oodl:provides("Arm1")
-	oodl_base_serv = youbot_oodl:provides("Base")
-	oodl_grip_serv = youbot_oodl:provides("Gripper1")
+		oodl_arm_serv[i]:getPort("in_joint_state"):disconnect()
+		oodl_arm_serv[i]:getPort("out_joint_position_command"):disconnect()
+		oodl_arm_serv[i]:getPort("out_joint_velocity_command"):disconnect()
+		oodl_arm_serv[i]:getPort("out_joint_effort_command"):disconnect()
+		
+		--GRIPPER
+		oodl_grip_serv[i]:getPort("out_gripper_cmd_position"):disconnect()	
+	end
 
-	oodl_arm_op_clear = oodl_arm_serv:getOperation("clearControllerTimeouts")
-	oodl_arm_op_stat = oodl_arm_serv:getOperation("displayMotorStatuses")
-
-	oodl_base_op_clear = oodl_base_serv:getOperation("clearControllerTimeouts")
-	oodl_base_op_stat = oodl_base_serv:getOperation("displayMotorStatuses")
-
-	--require "definitions"
+	--BASE
+	oodl_base_serv:getPort("out_joint_position_command"):disconnect()
+	oodl_base_serv:getPort("out_joint_velocity_command"):disconnect()
+	oodl_base_serv:getPort("out_joint_effort_command"):disconnect()
+	oodl_base_serv:getPort("out_cmd_twist"):disconnect()
+	oodl_base_serv:getPort("in_joint_state"):disconnect()
+	oodl_base_serv:getPort("in_odometry_state"):disconnect()
 
 end
 
 function connect_oodl_ros_streams()
-	--##### ROS streams ######
 	--ARM command 
-	depl:stream("YouBot_OODL.Arm1.joint_position_command",rtt.provides("ros"):topic(TOPIC_ARM_POSITION_COMMAND))
-	depl:stream("YouBot_OODL.Arm1.joint_velocity_command",rtt.provides("ros"):topic(TOPIC_ARM_VELOCITY_COMMAND))
-	depl:stream("YouBot_OODL.Arm1.joint_effort_command",rtt.provides("ros"):topic(TOPIC_ARM_EFFORT_COMMAND))
+	for i=1,robot_arm_count do
+
+		ros_stream("Robot_OODL.Arm"..i..".joint_position_command",TOPIC_ARM_POSITION_COMMAND)
+		ros_stream("Robot_OODL.Arm"..i..".joint_velocity_command",TOPIC_ARM_VELOCITY_COMMAND)
+		ros_stream("Robot_OODL.Arm"..i..".joint_effort_command",TOPIC_ARM_EFFORT_COMMAND)
+	    ros_stream("Robot_OODL.Arm"..i..".joint_state",SIM_TOPIC_ARM_JOINT_STATES_RX)
+		--Gripper command
+		ros_stream("Robot_OODL.Gripper"..i..".gripper_cmd_position",TOPIC_GRIPPER_POSITION_COMMAND)
+
+	end
 	
 	--Base command
-	depl:stream("YouBot_OODL.Base.cmd_twist",rtt.provides("ros"):topic(TOPIC_BASE_TWIST_COMMAND))
+	ros_stream("Robot_OODL.Base.cmd_twist",TOPIC_BASE_TWIST_COMMAND)
 	--Odometry state
-	depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(TOPIC_BASE_ODOM_STATE))
-
-	--Gripper command
-	depl:stream("YouBot_OODL.Gripper1.gripper_cmd_position",rtt.provides("ros"):topic(TOPIC_GRIPPER_POSITION_COMMAND))
+	ros_stream("Robot_OODL.Base.odometry_state",TOPIC_BASE_ODOM_STATE)
 
 	--SIM streams (VISUALIZATION_MODE)
-    depl:stream("YouBot_OODL.Base.odometry_state",rtt.provides("ros"):topic(SIM_TOPIC_ODOM_STATE_RX))
-    depl:stream("YouBot_OODL.Base.joint_state",rtt.provides("ros"):topic(SIM_TOPIC_BASE_JOINT_STATES_RX))
-    depl:stream("YouBot_OODL.Arm1.joint_state",rtt.provides("ros"):topic(SIM_TOPIC_ARM_JOINT_STATES_RX))
+    ros_stream("Robot_OODL.Base.odometry_state",SIM_TOPIC_ODOM_STATE_RX)
+    ros_stream("Robot_OODL.Base.joint_state",SIM_TOPIC_BASE_JOINT_STATES_RX)
 
-	--#### END ROS streams ######
 end
 
-function disconnect_oodl_ros_streams() 
-	--ARM
-	oodl_arm_serv:getPort("joint_position_command"):disconnect()
-	oodl_arm_serv:getPort("joint_velocity_command"):disconnect()
-	oodl_arm_serv:getPort("joint_effort_command"):disconnect()
-	oodl_arm_serv:getPort("joint_state"):disconnect()
-	--BASE
-	oodl_base_serv:getPort("cmd_twist"):disconnect()
-	oodl_base_serv:getPort("odometry_state"):disconnect()
-	oodl_base_serv:getPort("joint_state"):disconnect()
-	--GRIPPER
-	oodl_grip_serv:getPort("gripper_cmd_position"):disconnect()
-end
-
-function block_youbot_position(mode)
+function block_robot_position(mode)
 
 	if mode == OODL then
 
 		-- ARM --
-		armSetCtrlModes(OODL,1)
+		for i=1,robot_arm_count do
 
-		local fs, j_states_pos = youbot_kine:getPort("JointState"):read()
+			armSetCtrlModes(OODL,i,1)
 
-		local pos_port_cmd = rttlib.port_clone_conn(oodl_arm_serv:getPort("joint_position_command"))
-		local j_cmd_pos = rtt.Variable("motion_control_msgs.JointPositions")
+			local fs, j_states_pos = robot_kine:getPort("JointState"):read()
+			local temp_j = {}
 
-		j_cmd_pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
-		j_cmd_pos.positions:fromtab{j_states_pos.position[0],j_states_pos.position[1],j_states_pos.position[2],j_states_pos.position[3],j_states_pos.position[4]}
+			for i=1,robot_arm_joint_count[i] do
+				temp_j[i] = pos.positions[i-1]
+			end
 
-		pos_port_cmd:write(j_cmd_pos)
-		print("Send blocking pose arm")
-		print(j_cmd_pos)
+			armSetPos(OODL,i,temp_j)
+
+			print("Send blocking pose arm")
+			print(j_cmd_pos)
+
+		end
 
 		-- BASE --
 		local j_cmd_twist = rtt.Variable("geometry_msgs.Twist")
@@ -345,19 +451,23 @@ function block_youbot_position(mode)
 	elseif mode == SIM then
 
 		-- ARM --
-		armSetCtrlModes(SIM,1)
+		for i=1,robot_arm_count do
 
-		local fs, j_states_pos = youbot_kine:getPort("JointState"):read()
+			armSetCtrlModes(SIM,i,1)
 
-		local pos_port_cmd = rttlib.port_clone_conn(sim_arm_serv:getPort("joint_position_command"))
-		local j_cmd_pos = rtt.Variable("motion_control_msgs.JointPositions")
+			local fs, j_states_pos = robot_kine:getPort("JointState"):read()
+			local temp_j = {}
 
-		j_cmd_pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
-		j_cmd_pos.positions:fromtab{j_states_pos.position[0],j_states_pos.position[1],j_states_pos.position[2],j_states_pos.position[3],j_states_pos.position[4]}
+			for i=1,robot_arm_joint_count[i] do
+				temp_j[i] = pos.positions[i-1]
+			end
 
-		pos_port_cmd:write(j_cmd_pos)
-		print("Send blocking pose arm")
-		print(j_cmd_pos)
+			armSetPos(SIM,i,temp_j)
+
+			print("Send blocking pose arm")
+			print(j_cmd_pos)
+
+		end
 
 		-- BASE --
 		local j_cmd_twist = rtt.Variable("geometry_msgs.Twist")
@@ -377,7 +487,7 @@ function switch_to(mode)
 		--set gain cartesian controller
 		setK(CARTESIAN_GAIN_SIM)
 		--blocking youbot on the last position
-		block_youbot_position(OODL)
+		block_robot_position(OODL)
 		--visualization mode deactivated
 		sim_visual_mode(0)
 		--disconnect HW ports and streams
@@ -396,7 +506,9 @@ function switch_to(mode)
 		--set gain cartesian controller
 		setK(CARTESIAN_GAIN_OODL)
 		--set ARM control mode -> VEL --
-		armSetCtrlModes(OODL,2)
+		for i=1,robot_arm_count do
+			armSetCtrlModes(OODL,i,2)
+		end
 		--visualization mode activated
 		sim_visual_mode(1)
 		--disconnect SIM ports and streams
@@ -416,70 +528,91 @@ end
 
 -- DEBUG DEPLOYER FUNCTIONS --
 
-function armSetCtrlModes(stype,k)
+function armSetCtrlModes(stype,arm_index,k)
 
 	if stype == SIM then
-		serv = sim_arm_serv
+		serv = sim_arm_serv[arm_index]
 	elseif stype == OODL then
-		serv = oodl_arm_serv
+		serv = oodl_arm_serv[arm_index]
 	end
 
 	mode_op = serv:getOperation("setControlModesAll")
 	mode_op(k)
 end
 
-function armSetTor(stype,a,b,c,d,e)
+function armSetTor(stype,arm_index,joint_torques)
 
-	armSetCtrlModes(stype,3)
+	armSetCtrlModes(stype,arm_index,3)
 
 	if stype == SIM then
-		serv = sim_arm_serv
+		serv = sim_arm_serv[arm_index]
 	elseif stype == OODL then
-		serv = oodl_arm_serv
+		serv = oodl_arm_serv[arm_index]
 	end
 
 	port = rttlib.port_clone_conn(serv:getPort("joint_effort_command"))	
 	tor = rtt.Variable("motion_control_msgs.JointEfforts")
-	tor.efforts:fromtab{a,b,c,d,e}
-	tor.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
+
+	tor.names:resize(robot_arm_joint_count[arm_index])
+	tor.efforts:resize(robot_arm_joint_count[arm_index])
+
+	for i=1,robot_arm_joint_count[arm_index] do
+		tor.names[i-1] = "arm_joint_"..i
+		tor.efforts[i-1] = joint_torques[i]
+	end
+
 	port:write(tor)
 	print("Send tor")
 	print(tor)
 end
 
-function armSetVel(stype,a,b,c,d,e)
+function armSetVel(stype,arm_index,joint_velocities)
 
-	armSetCtrlModes(stype,2)
+	armSetCtrlModes(stype,arm_index,2)
 
 	if stype == SIM then
-		serv = sim_arm_serv
+		serv = sim_arm_serv[arm_index]
 	elseif stype == OODL then
-		serv = oodl_arm_serv
+		serv = oodl_arm_serv[arm_index]
 	end	
 
 	port = rttlib.port_clone_conn(serv:getPort("joint_velocity_command"))	
 	vel = rtt.Variable("motion_control_msgs.JointVelocities")
-	vel.velocities:fromtab{a,b,c,d,e}
-	vel.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
+
+	vel.names:resize(robot_arm_joint_count[arm_index])
+	vel.velocities:resize(robot_arm_joint_count[arm_index])
+
+	for i=1,robot_arm_joint_count[arm_index] do
+		vel.names[i-1] = "arm_joint_"..i
+		vel.velocities[i-1] = joint_velocities[i]
+	end
+
 	port:write(vel)
 	print("Send vel")
 	print(vel)
 end
 
-function armSetPos(stype,a,b,c,d,e)
+function armSetPos(stype,arm_index,joint_positions)
 
-	armSetCtrlModes(stype,1)
+	armSetCtrlModes(stype,arm_index,1)
 
 	if stype == SIM then
-		serv = sim_arm_serv
+		serv = sim_arm_serv[arm_index]
 	elseif stype == OODL then
-		serv = oodl_arm_serv
+		serv = oodl_arm_serv[arm_index]
 	end
 
 	port = rttlib.port_clone_conn(serv:getPort("joint_position_command"))	
 	pos = rtt.Variable("motion_control_msgs.JointPositions")
-	pos.positions:fromtab{a,b,c,d,e}
-	pos.names:fromtab{"arm_joint_1","arm_joint_2","arm_joint_3","arm_joint_4","arm_joint_5"}
+
+	pos.names:resize(robot_arm_joint_count[arm_index])
+	pos.positions:resize(robot_arm_joint_count[arm_index])
+
+	for i=1,robot_arm_joint_count[arm_index] do
+		pos.names[i-1] = "arm_joint_"..i
+		pos.positions[i-1] = joint_positions[i]
+	end
+
 	port:write(pos)
 	print("Send pose")
 	print(pos)
@@ -577,12 +710,12 @@ function baseSetPos(stype,a,b,c,d)
 	print(pos)
 end
 
-function gripSetStat(stype,a)
+function gripSetStat(stype,gripper_index,a)
 
 	if stype == SIM then
-		serv = sim_grip_serv
+		serv = sim_grip_serv[gripper_index]
 	elseif stype == OODL then
-		serv = oodl_grip_serv
+		serv = oodl_grip_serv[gripper_index]
 	end
 
 	port = rttlib.port_clone_conn(serv:getPort("gripper_cmd_position"))	
@@ -597,15 +730,15 @@ end
 -- CARTESIAN CONTROLLER FUNCTIONS -- 
 
 function setK(gain)
-  youbot_ctrl_cartesian:stop()
+  robot_ctrl_cartesian:stop()
   K:fromtab{gain,gain,gain,gain,gain,gain}
-  youbot_ctrl_cartesian:configure()
-  youbot_ctrl_cartesian:start()
+  robot_ctrl_cartesian:configure()
+  robot_ctrl_cartesian:start()
   print(K)
 end
 
-function move(dx, dy, dz)
-  fs, startPos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
+function set_cartesian_goal(dx, dy, dz)
+  fs, startPos = robot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
   startPos.position.x = startPos.position.x + dx
   startPos.position.y = startPos.position.y + dy
   startPos.position.z = startPos.position.z + dz
@@ -614,12 +747,12 @@ function move(dx, dy, dz)
   -- startPos.orientation.z = 0;
   -- startPos.orientation.w = -0.7071067811865476;
   --desiredPosPort:write(startPos)
-  port = move_out:getPort("moveOut")
+  port = cartesian_goal_lua:getPort("cartesianGoal_out")
   port:write(startPos)
   print("New setpoint EE")
 end
 
 function readSensPos()
-  fs, pos = youbot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()	
+  fs, pos = robot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()	
   print(pos)
 end

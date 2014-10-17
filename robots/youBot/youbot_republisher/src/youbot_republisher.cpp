@@ -87,7 +87,7 @@ YouBotStateRepublisher::YouBotStateRepublisher(std::string const& name) :
 {
 	this->addPort("arm_state", arm_state);
 	this->addPort("base_state", base_state);
-	this->addPort("youbot_state", youbot_state);
+	this->addPort("robot_state", robot_state);
 	//Energy state republishing
 	this->addPort("arm_energy_tank",arm_energy_tank);
 	this->addPort("base_energy_tank",base_energy_tank);
@@ -100,7 +100,7 @@ YouBotStateRepublisher::YouBotStateRepublisher(std::string const& name) :
 
 	m_youbot_state.position.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
 	m_youbot_state.name.assign(JOINT_NAME_ARRAY,JOINT_NAME_ARRAY+SIZE_JOINT_NAME_ARRAY);
-	youbot_state.setDataSample(m_youbot_state);
+	robot_state.setDataSample(m_youbot_state);
 }
 
 YouBotStateRepublisher::~YouBotStateRepublisher()
@@ -207,7 +207,7 @@ void YouBotStateRepublisher::updateHook()
   m_youbot_state.position[13] = 0.001;
   m_youbot_state.position[14] = 0.001;
 
-  youbot_state.write(m_youbot_state);
+  robot_state.write(m_youbot_state);
   odometry_state.write(m_odometry_state);
 
   if(arm_energy_tank.read(m_energy_tank) == NewData)

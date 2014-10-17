@@ -40,62 +40,65 @@ end
 -- Import component
 depl:import("fbsched")
 --depl:import("kdl_typekit")
+depl:import("rtt_roscomm")
+depl:import("rtt_ros")
 depl:import("rtt_sensor_msgs")
 depl:import("rtt_std_msgs")
 depl:import("rtt_geometry_msgs")
 depl:import("rtt_nav_msgs")
 depl:import("rtt_motion_control_msgs")
-depl:import("rtt_rosnode")
 
-depl:import("youbot_sim")
-depl:import("youbot_oodl")
---depl:import("YouBot_queue")
+if is_ros_enabled == true then
+	depl:import("rtt_rosnode")
+end
 
-depl:import("youbot_kinematics")
+depl:import(string.lower(robot_name).."_sim")
+depl:import(string.lower(robot_name).."_oodl")
+--depl:import(string.lower(robot_name).."_queue")
+depl:import(string.lower(robot_name).."_kinematics")
+depl:import(string.lower(robot_name).."_republisher")
 depl:import("cartesian_motion_control")
-depl:import("youbot_republisher")
---depl:import("YouBot_adapters")
 
 -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
-depl:loadComponent("YouBot_OODL", "YouBot::YouBotOODL")
-depl:loadComponent("YouBot_SIM", "YouBot::YouBotSIM") 
---depl:loadComponent("YouBot_QUEUE", "YouBot_queue")
+depl:loadComponent("Robot_OODL", robot_name.."::"..robot_name.."OODL")
+depl:loadComponent("Robot_SIM", robot_name.."::"..robot_name.."SIM") 
+--depl:loadComponent("Robot_QUEUE", "YouBot_queue")
 
-depl:loadComponent("YouBot_KINE", "Youbot_kinematics")	
-depl:loadComponent("YouBot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
-depl:loadComponent("YouBotStateRepublisher", "YouBot::YouBotStateRepublisher")
+depl:loadComponent("Robot_KINE", robot_name.."_kinematics")	
+depl:loadComponent("Robot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
+depl:loadComponent("Robot_STATE_PUBLISHER", robot_name.."::"..robot_name.."StateRepublisher")
 
 --depl:loadComponent("VREP_VISMODE", "OCL::LuaComponent")
-depl:loadComponent("MOVE_OUT", "OCL::LuaComponent")
+depl:loadComponent("CARTESIAN_GOAL_DEPL", "OCL::LuaComponent")
 depl:loadComponent("SUPERVISOR", "OCL::LuaComponent")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
-youbot_sim = depl:getPeer("YouBot_SIM")
-youbot_oodl = depl:getPeer("YouBot_OODL")
---youbot_queue = depl:getPeer("YouBot_QUEUE")
+robot_sim = depl:getPeer("Robot_SIM")
+robot_oodl = depl:getPeer("Robot_OODL")
+--robot_queue = depl:getPeer("YouBot_QUEUE")
 
-youbot_kine = depl:getPeer("YouBot_KINE")
-youbot_ctrl_cartesian = depl:getPeer("YouBot_CTRL_CARTESIAN")
-youbot_repub = depl:getPeer("YouBotStateRepublisher")
+robot_kine = depl:getPeer("Robot_KINE")
+robot_ctrl_cartesian = depl:getPeer("Robot_CTRL_CARTESIAN")
+robot_repub = depl:getPeer("Robot_STATE_PUBLISHER")
 
 --sim_vismode = depl:getPeer("VREP_VISMODE")
-move_out = depl:getPeer("MOVE_OUT")
+cartesian_goal_lua = depl:getPeer("CARTESIAN_GOAL_DEPL")
 supervisor = depl:getPeer("SUPERVISOR")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
-depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_SIM")
-depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_OODL")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_SIM")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_OODL")
 --depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_QUEUE")
 
-depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_KINE")
-depl:setMasterSlaveActivity("controlloop_scheduler","YouBot_CTRL_CARTESIAN")
-depl:setMasterSlaveActivity("controlloop_scheduler","YouBotStateRepublisher")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_KINE")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_CTRL_CARTESIAN")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_STATE_PUBLISHER")
 
 --sim_vismode:exec_file("visualMode.lua")
-move_out:exec_file("move.lua")
+cartesian_goal_lua:exec_file("SetCartesianGoal.lua")
 supervisor:exec_file("supervisor.lua")
 
 -- Creating connections policy
@@ -110,8 +113,8 @@ controlloop_scheduler:start()
 --sim_vismode:configure()
 --sim_vismode:start()
 
-move_out:configure()
-move_out:start()
+cartesian_goal_lua:configure()
+cartesian_goal_lua:start()
 
 supervisor:configure()
 supervisor:start()
@@ -120,40 +123,42 @@ supervisor:start()
 
 if run_status == SIM then	
 	simulation_setup()
+	robot_repub:configure()
 
 	--visualization mode deactivated
 	sim_visual_mode(2)
 
-	--connect_sim_ros_streams()
+	cartesian_controller_setup()
+	cartesian_input_from_sim()
 
-	--cartesian_controller_setup()
-	--cartesian_input_from_vrep()
+	rtt.logl('Info', "Robot SIM start.")
+	robot_sim:start()
+	robot_republisher_sim()
+	robot_repub:start()
 
-	rtt.logl('Info', "Youbot SIM start.")
-	youbot_sim:start()
-
-	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
-	--cartesian_controller_start()
+	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
+	--vel_startup(SIM)
+	cartesian_controller_start()
 
 elseif run_status == HW then
 	--visualization mode activated
 	sim_visual_mode(1)
 
 	oodl_setup()
-	youbot_repub:configure()
+	robot_repub:configure()
 
 	cartesian_controller_setup()
 	cartesian_input_from_oodl()
 
-	rtt.logl('Info', "Youbot OODL start.")
-	youbot_oodl:start()
-	youbot_republisher_oodl()
-	youbot_repub:start()
+	rtt.logl('Info', "Robot OODL start.")
+	robot_oodl:start()
+	robot_republisher_oodl()
+	robot_repub:start()
 
 	oodl_arm_op_clear()
 	oodl_base_op_clear()	
 
-	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
+	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
 	cartesian_controller_start()
 
 elseif run_status == BOTH then
@@ -168,15 +173,15 @@ elseif run_status == BOTH then
 
 	connect_oodl_ros_streams()
 
-	rtt.logl('Info', "Youbot OODL start.")
-	youbot_oodl:start()
+	rtt.logl('Info', "Robot OODL start.")
+	robot_oodl:start()
 	oodl_arm_op_clear()
 	oodl_base_op_clear()
 
-	rtt.logl('Info', "Youbot SIM start.")
-	youbot_sim:start()
+	rtt.logl('Info', "Robot SIM start.")
+	robot_sim:start()
 
-	rtt.logl('Info', "Youbot CTRL CARTESIAN start.")
+	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
 	--cartesian_controller_start()
 
 end
@@ -187,28 +192,35 @@ if communication_type == REMOTE then
     local udp = socket.udp()
 
     udp:settimeout(0)
-    udp:setsockname('*', 22223)
+    udp:setsockname(socket_address, socket_port)
 
     local world = {} -- the empty world-state
     local data, msg_or_ip, port_or_nil
     local entity, cmd, parms
 
-    print "Beginning server loop."
+    print "[REMOTE] Server loop started"
 
     while running do
 
-        data, msg_or_ip, port_or_nil = udp:receivefrom()
+       data, msg_or_ip, port_or_nil = udp:receivefrom()
 
-        if data == "move_up" then
+		if data ~= nil then
+			print(data)
+			local status, err = pcall(function() loadstring(hash_remote_command[data])() end)
 
-			move(0,0,0.2)
+			if status then
 
-        elseif msg_or_ip ~= 'timeout' then
+				udp:sendto(data.." - ok.", msg_or_ip, socket_port)
+				--print("[REMOTE] Reply sent "..msg_or_ip.." - "..socket_port)
 
-            error("Unknown network error: "..tostring(msg))
+			else
 
-        end
+				print("[DEPLOYER] "..err)
+				udp:sendto(data.." - failed.", msg_or_ip, socket_port)
+				--print("[REMOTE] Failed call sent")
 
+			end
+       	end
     end
 
 elseif communication_type == LOCAL then
@@ -224,7 +236,4 @@ elseif communication_type == LOCAL then
 		end
 
 	end
-
-elseif communication_type == DEBUG then
-
 end

@@ -18,12 +18,10 @@
 #include <boost/lexical_cast.hpp>
 #include <rtt/marsh/Marshalling.hpp>
 
-#define CFG_PATH "./properties/urdf_config.cpf"
-
-class Youbot_kinematics : public RTT::TaskContext{
+class YouBot_kinematics : public RTT::TaskContext{
   public:
   	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    Youbot_kinematics(std::string const& name);
+    YouBot_kinematics(std::string const& name);
 private:
     bool configureHook();
     bool startHook();
