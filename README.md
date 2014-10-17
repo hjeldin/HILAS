@@ -23,6 +23,7 @@ source ~/.bashrc
 sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses liblua5.1.0-dev
 ```
 download lua socket library and compile
+
 #!bash
 wget http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2/luasocket-2.0.2.tar.gz
 tar -xvzf luasocket-2.0.2.tar.gz
@@ -35,6 +36,7 @@ echo "export LUA_CPATH=$LUA_CPATH:/usr/lib/lua/5.1/?.so" >> ~/.bashrc
 ```
 then build and compile a fresh catkin workspace
 ```
+
 #!bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
@@ -44,6 +46,7 @@ catkin_make
 ```
 now install Orocos through the [rtt_ros_integration](https://github.com/orocos/rtt_ros_integration)
 ```
+
 #!bash
 export OROCOS_TARGET=gnulinux
 mkdir -p ~/catkin_ws/underlay_isolated/src/orocos
