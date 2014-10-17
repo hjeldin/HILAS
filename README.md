@@ -23,6 +23,8 @@ source ~/.bashrc
 sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses liblua5.1.0-dev
 ```
 download lua socket library and compile
+
+```
 #!bash
 wget http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2/luasocket-2.0.2.tar.gz
 tar -xvzf luasocket-2.0.2.tar.gz
@@ -34,6 +36,7 @@ echo "export LUA_PATH=$LUA_PATH:/usr/share/lua/5.1/?.lua" >> ~/.bashrc
 echo "export LUA_CPATH=$LUA_CPATH:/usr/lib/lua/5.1/?.so" >> ~/.bashrc
 ```
 then build and compile a fresh catkin workspace
+
 ```
 #!bash
 mkdir -p ~/catkin_ws/src
@@ -42,7 +45,9 @@ catkin_init_workspace
 cd ~/catkin_ws/
 catkin_make
 ```
+
 now install Orocos through the [rtt_ros_integration](https://github.com/orocos/rtt_ros_integration)
+
 ```
 #!bash
 export OROCOS_TARGET=gnulinux
@@ -60,9 +65,11 @@ git clone https://github.com/orocos/rtt_ros_integration.git src/rtt_ros_integrat
 catkin_make
 source devel/setup.sh
 ```
+
 ## orocos_kdl ##
 HILAS needs KDL library too, so it's necessary to install it. For first check if this dependencies are satisfied: *Eigen2*, *Sip 4.7.9 and python for the python bindings*, *>= Cmake 2.6*
 then install orocos_kdl in an isolated workspace.
+
 ```
 #!bash
 cd ~/catkin_ws/underlay_isolated
@@ -70,6 +77,7 @@ git clone https://github.com/orocos/orocos_kinematics_dynamics.git src/orocos_ki
 catkin_make_isolated --install
 source install_isolated/setup.sh
 ```
+
 # HILAS setup#
 Clone our repository to the ./src folder inside the catkin workspace and then follow run catkin_make on the workspace.
 
@@ -87,8 +95,10 @@ cd ~/catkin_ws
 export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver
 catkin_make
 ```
+
 ## youBot driver ##
 After the workspace compilation follow these steps to setup youbot-driver for catkin.
+
 ```
 #!bash
 cd src/hilas/robots/youBot/youbot_driver
