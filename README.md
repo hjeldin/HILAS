@@ -20,7 +20,7 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
-sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses liblua5.1.0-dev
+sudo apt-get install python-rosinstall ruby ruby-dev libncurses5-dev libncurses5 liblua5.1.0-dev
 ```
 download lua socket library and compile
 
