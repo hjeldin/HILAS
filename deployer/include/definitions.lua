@@ -198,63 +198,67 @@ end
 
 function queue_setup()
 
-	robot_queue:configure()
-	robot_queue:start()
-	queue_op_is_loading = robot_queue:getOperation("setIsInLoading")
+	cmd_queue:configure()
+	cmd_queue:start()
+	queue_op_is_loading = cmd_queue:getOperation("setIsInLoading")
 	
 	-- TEST --
-	ros_stream("Robot_QUEUE.out_ros_cartesian_command","/cart_debug")
+	ros_stream("Cmd_QUEUE.ros_cartesian_command_out","/cart_debug")
 end
 
 function queue_output_disconnect()
 
-	robot_queue:getPort("out_arm_joint_position_command"):disconnect()
-	robot_queue:getPort("out_arm_joint_velocity_command"):disconnect()
-	robot_queue:getPort("out_arm_joint_effort_command"):disconnect()
-	robot_queue:getPort("out_base_cmd_twist"):disconnect()
-	robot_queue:getPort("out_gripper_joint_position_command"):disconnect()
-	robot_queue:getPort("out_ros_planner_command"):disconnect()
-	robot_queue:getPort("out_ros_cartesian_command"):disconnect()
+	cmd_queue:getPort("arm_joint_position_command_out"):disconnect()
+	cmd_queue:getPort("arm_joint_velocity_command_out"):disconnect()
+	cmd_queue:getPort("arm_joint_effort_command_out"):disconnect()
+	cmd_queue:getPort("base_cmd_twist_out"):disconnect()
+	cmd_queue:getPort("gripper_joint_position_command_out"):disconnect()
+	cmd_queue:getPort("ros_planner_command_out"):disconnect()
+	cmd_queue:getPort("ros_cartesian_command_out"):disconnect()
 
 end
 
 function queue_input_connect()
 
-	--ros_stream("Robot_QUEUE.ros_arm_joint_position_command", TOPIC_ARM_POSITION_COMMAND))
-	--ros_stream("Robot_QUEUE.ros_arm_joint_velocity_command", TOPIC_ARM_VELOCITY_COMMAND))
-	--ros_stream("Robot_QUEUE.ros_arm_joint_effort_command", TOPIC_ARM_EFFORT_COMMAND))
-	--ros_stream("Robot_QUEUE.ros_base_cmd_twist", TOPIC_BASE_TWIST_COMMAND))
-	--ros_stream("Robot_QUEUE.ros_gripper_joint_position_command", TOPIC_GRIPPER_POSITION_COMMAND))
-	ros_stream("Robot_QUEUE.ros_planner_command", "/move_base_simple/goal")
-	--depl:connect("Robot_QUEUE.ros_cartesian_command","CARTESIAN_GOAL_DEPL.cartesianGoal_out", cp) !! Trovare soluzione alternativa
-	--ros_stream("Robot_QUEUE.ros_cartesian_command", "/youbot/desired_ee"))
+	--ros_stream("Cmd_QUEUE.ros_arm_joint_position_command_in", TOPIC_ARM_POSITION_COMMAND))
+	--ros_stream("Cmd_QUEUE.ros_arm_joint_velocity_command_in", TOPIC_ARM_VELOCITY_COMMAND))
+	--ros_stream("Cmd_QUEUE.ros_arm_joint_effort_command_in", TOPIC_ARM_EFFORT_COMMAND))
+	--ros_stream("Cmd_QUEUE.ros_base_cmd_twist_in", TOPIC_BASE_TWIST_COMMAND))
+	--ros_stream("Cmd_QUEUE.ros_gripper_joint_position_command_in", TOPIC_GRIPPER_POSITION_COMMAND))
+	ros_stream("Cmd_QUEUE.ros_planner_command_in", "/move_base_simple/goal")
+	
+	-- ################ No more usefull
+	--depl:connect("Cmd_QUEUE.ros_cartesian_command_in","Robot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+	-- ################	
+
+	--ros_stream("Cmd_QUEUE.ros_cartesian_command_in", "/youbot/desired_ee"))
 
 end
 
 function queue_input_disconnect()
 
-	robot_queue:getPort("ros_arm_joint_position_command"):disconnect()
-	robot_queue:getPort("ros_arm_joint_velocity_command"):disconnect()
-	robot_queue:getPort("ros_arm_joint_effort_command"):disconnect()
-	robot_queue:getPort("ros_base_cmd_twist"):disconnect()
-	robot_queue:getPort("ros_gripper_joint_position_command"):disconnect()
-	robot_queue:getPort("ros_planner_command"):disconnect()
-	robot_queue:getPort("ros_cartesian_command"):disconnect()
+	cmd_queue:getPort("ros_arm_joint_position_command_in"):disconnect()
+	cmd_queue:getPort("ros_arm_joint_velocity_command_in"):disconnect()
+	cmd_queue:getPort("ros_arm_joint_effort_command_in"):disconnect()
+	cmd_queue:getPort("ros_base_cmd_twist_in"):disconnect()
+	cmd_queue:getPort("ros_gripper_joint_position_command_in"):disconnect()
+	cmd_queue:getPort("ros_planner_command_in"):disconnect()
+	cmd_queue:getPort("ros_cartesian_command_in"):disconnect()
 
 end
 
 function queue_output_connect()
 
-	depl:connect("Robot_QUEUE.out_arm_joint_position_command","Robot_OODL.Arm1.joint_position_command", cp)
-	depl:connect("Robot_QUEUE.out_arm_joint_velocity_command","Robot_OODL.Arm1.joint_velocity_command", cp)
-	depl:connect("Robot_QUEUE.out_arm_joint_effort_command", "Robot_OODL.Arm1.joint_effort_command", cp)
-	depl:connect("Robot_QUEUE.out_base_cmd_twist", "Robot_OODL.Base.cmd_twist", cp)
-	depl:connect("Robot_QUEUE.out_gripper_joint_position_command", "Robot_OODL.Gripper1.gripper_cmd_position", cp)
-	ros_stream("Robot_QUEUE.out_ros_planner_command", "/move_base_simple/goal") -- PLANNER DA INSERIRE
-	depl:connect("Robot_QUEUE.out_ros_cartesian_command", "Robot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
-	depl:connect("Robot_QUEUE.from_cartesian_status", "Robot_KINE.EEPose", cp)
+	depl:connect("Cmd_QUEUE.arm_joint_position_command_out","Robot_OODL.Arm1.joint_position_command_in", cp)
+	depl:connect("Cmd_QUEUE.arm_joint_velocity_command_out","Robot_OODL.Arm1.joint_velocity_command_in", cp)
+	depl:connect("Cmd_QUEUE.arm_joint_effort_command_out", "Robot_OODL.Arm1.joint_effort_command_in", cp)
+	depl:connect("Cmd_QUEUE.base_cmd_twist_out", "Robot_OODL.Base.cmd_twist_in", cp)
+	depl:connect("Cmd_QUEUE.gripper_joint_position_command_out", "Robot_OODL.Gripper1.gripper_cmd_position_in", cp)
+	ros_stream("Cmd_QUEUE.ros_planner_command_out", "/move_base_simple/goal") -- PLANNER DA INSERIRE
+	depl:connect("Cmd_QUEUE.ros_cartesian_command_out", "Robot_CTRL_CARTESIAN.CartesianDesiredPosition", cp)
+	depl:connect("Cmd_QUEUE.from_cartesian_status_in", "Robot_KINE.EEPose_out", cp)
 	
-	--ros_stream("Robot_QUEUE.out_ros_cartesian_command", "/cart_debug")
+	--ros_stream("Cmd_QUEUE.ros_cartesian_command_out", "/cart_debug")
 
 end
 
@@ -706,6 +710,7 @@ end
 function set_cartesian_goal(dx, dy, dz)
 	
 	desiredPosPort = rttlib.port_clone_conn(robot_ctrl_cartesian:getPort("CartesianDesiredPosition"))
+	queueCartPort = rttlib.port_clone_conn(cmd_queue:getPort("ros_cartesian_command_in"))	
 	fs, startPos = robot_ctrl_cartesian:getPort("CartesianSensorPosition"):read()
 
 	startPos.position.x = startPos.position.x + dx
@@ -715,6 +720,7 @@ function set_cartesian_goal(dx, dy, dz)
 	print("New setpoint EE")
 	print(startPos)
 	desiredPosPort:write(startPos)
+	queueCartPort:write(startPos)
 end
 
 function readSensPos()
