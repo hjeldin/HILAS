@@ -69,7 +69,7 @@ namespace YouBot
 using namespace RTT;
 const size_t max_event_length = 255;
 std::string& make_edge_event(std::string& s, const std::string& event, bool status)
- {
+{
      char tmpstr[max_event_length];
      if(s.capacity() < max_event_length)
          log(Error) << "make_event: event string capacity < max_event_length." << endlog();
@@ -81,22 +81,23 @@ std::string& make_edge_event(std::string& s, const std::string& event, bool stat
 
      s.insert(0, tmpstr, max_event_length);
      return s;
- }
+}
+
 YouBotStateRepublisher::YouBotStateRepublisher(std::string const& name) :
 				TaskContext(name, PreOperational), m_dimension(0), wheel(0)
 {
 	this->addPort("arm_state_in", arm_state_in);
 	this->addPort("base_state_in", base_state_in);
 	this->addPort("robot_state_out", robot_state_out);
+
 	//Energy state republishing
 	this->addPort("arm_energy_tank_in",arm_energy_tank_in);
 	this->addPort("base_energy_tank_in",base_energy_tank_in);
 	this->addPort("kinematics_energy_tank_in",kinematics_energy_tank_in);
 	this->addPort("events_out",events_out);
   
-  	// 15 10 2013
   	this->addPort("odometry_state_out",odometry_state_out);
-  	this->addPort("oodl_odometry_state_in",oodl_odometry_state_in);
+  	this->addPort("odometry_state_in",odometry_state_in);
 
 	m_youbot_state.position.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
 	m_youbot_state.name.assign(JOINT_NAME_ARRAY,JOINT_NAME_ARRAY+SIZE_JOINT_NAME_ARRAY);
@@ -174,34 +175,8 @@ void YouBotStateRepublisher::updateHook()
     m_youbot_state.position[7] = m_base_state.position[2];
     m_youbot_state.position[8] = m_base_state.position[3];
   }
-  
-  // 15 10 2013
-  m_odometry_state.header.stamp = ros::Time::now();  
-  m_odometry_state.header.frame_id = "odom";
-  m_odometry_state.child_frame_id = "/base_link";
-  
-  if (oodl_odometry_state_in.read(m_oodl_odometry_state) == NewData)
-  {
-    m_odometry_state.pose.pose.position.x =           m_oodl_odometry_state.pose.pose.position.x;
-    m_odometry_state.pose.pose.position.y =           m_oodl_odometry_state.pose.pose.position.y;
-    m_odometry_state.pose.pose.position.z =           m_oodl_odometry_state.pose.pose.position.z;
-    m_odometry_state.pose.pose.orientation.x =        m_oodl_odometry_state.pose.pose.orientation.x;
-    m_odometry_state.pose.pose.orientation.y =        m_oodl_odometry_state.pose.pose.orientation.y;
-    m_odometry_state.pose.pose.orientation.z =        m_oodl_odometry_state.pose.pose.orientation.z;
-    m_odometry_state.pose.pose.orientation.w =        m_oodl_odometry_state.pose.pose.orientation.w;
     
-    memset(&m_odometry_state.pose.covariance, 0, sizeof(m_odometry_state.pose.covariance));
-        
-    m_odometry_state.twist.twist.linear.x =     m_oodl_odometry_state.twist.twist.linear.x;
-    m_odometry_state.twist.twist.linear.y =     m_oodl_odometry_state.twist.twist.linear.y;
-    m_odometry_state.twist.twist.linear.z =     m_oodl_odometry_state.twist.twist.linear.z;
-    m_odometry_state.twist.twist.angular.x =    m_oodl_odometry_state.twist.twist.angular.x;
-    m_odometry_state.twist.twist.angular.y =    m_oodl_odometry_state.twist.twist.angular.y;
-    m_odometry_state.twist.twist.angular.z =    m_oodl_odometry_state.twist.twist.angular.z;
-    memset(&m_odometry_state.twist.covariance, 0, sizeof(m_odometry_state.pose.covariance));
-  }
-
-  // casters remain 0
+  odometry_state_in.read(m_odometry_state);
 
   // Gripper cannot be read in real-time (yet)
   m_youbot_state.position[13] = 0.001;

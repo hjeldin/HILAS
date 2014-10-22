@@ -102,6 +102,10 @@ namespace YouBot
     // Pre-allocate port memory for outputs
     joint_state.setDataSample(m_joint_state);
 
+    // Events - Pre-allocate port memory for outputs
+    m_events.reserve(max_event_length);
+    events.setDataSample(m_events);
+
     // set to false
     memset(m_overcurrent, 0, NR_OF_ARM_SLAVES);
     memset(m_undervoltage, 0, NR_OF_ARM_SLAVES);
@@ -121,18 +125,12 @@ namespace YouBot
 
   void YouBotArmService::setupComponentInterface()
   {
-    this->addPort("joint_state", joint_state).doc("Joint states");
+    this->addPort("joint_state_out", joint_state).doc("Joint states");
 
-    this->addPort("joint_position_command", joint_position_command).doc(
-        "Command joint angles");
-    this->addPort("joint_velocity_command", joint_velocity_command).doc(
-        "Command joint velocities");
-    this->addPort("joint_effort_command", joint_effort_command).doc(
-        "Command joint torques");
+    this->addPort("joint_position_command_in", joint_position_command).doc("Command joint angles");
+    this->addPort("joint_velocity_command_in", joint_velocity_command).doc("Command joint velocities");
+    this->addPort("joint_effort_command_in", joint_effort_command).doc("Command joint torques");
 
-    // Events - Pre-allocate port memory for outputs
-    m_events.reserve(max_event_length);
-    events.setDataSample(m_events);
     this->addPort("events", events).doc("Joint events");
 
     this->addOperation("start", &YouBotArmService::start, this);
@@ -141,16 +139,11 @@ namespace YouBot
     this->addOperation("stop", &YouBotArmService::stop, this);
     this->addOperation("cleanup", &YouBotArmService::cleanup, this);
 
-	this->addOperation("setControlModesAll", &YouBotArmService::setControlModesAll,
-		this, OwnThread).doc("Control modes can be set individually.");
-    this->addOperation("setControlModes", &YouBotArmService::setControlModes,
-        this, OwnThread).doc("Control modes can be set individually.");
-    this->addOperation("getControlModes", &YouBotArmService::getControlModes,
-        this, OwnThread).doc("Control modes are individual.");
-    this->addOperation("displayMotorStatuses",
-        &YouBotArmService::displayMotorStatuses, this, OwnThread);
-    this->addOperation("clearControllerTimeouts",
-        &YouBotArmService::clearControllerTimeouts, this, OwnThread);
+	  this->addOperation("setControlModesAll", &YouBotArmService::setControlModesAll, this, OwnThread).doc("Control modes can be set individually.");
+    this->addOperation("setControlModes", &YouBotArmService::setControlModes, this, OwnThread).doc("Control modes can be set individually.");
+    this->addOperation("getControlModes", &YouBotArmService::getControlModes, this, OwnThread).doc("Control modes are individual.");
+    this->addOperation("displayMotorStatuses", &YouBotArmService::displayMotorStatuses, this, OwnThread);
+    this->addOperation("clearControllerTimeouts", &YouBotArmService::clearControllerTimeouts, this, OwnThread);
   }
 
   void YouBotArmService::setControlModes(vector<ctrl_modes>& all)
@@ -250,8 +243,7 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
-        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
-            * si::radian;
+        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr] * si::radian;
         // below limits
         if (m_tmp_joint_position_command.angle < m_joint_limits[joint_nr].min_angle)
         {
@@ -267,15 +259,13 @@ namespace YouBot
       }
       case (ANGULAR_VELOCITY):
       {
-        m_tmp_joint_cmd_velocity.angularVelocity =
-            m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
+        m_tmp_joint_cmd_velocity.angularVelocity = m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
         m_joints[joint_nr]->setData(m_tmp_joint_cmd_velocity);
         break;
       }
       case (TORQUE):
       {
-        m_tmp_joint_cmd_torque.torque = m_joint_effort_command.efforts[joint_nr]
-            * si::newton_meter;
+        m_tmp_joint_cmd_torque.torque = m_joint_effort_command.efforts[joint_nr] * si::newton_meter;
         m_joints[joint_nr]->setData(m_tmp_joint_cmd_torque);
         break;
       }

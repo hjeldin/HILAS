@@ -41,14 +41,10 @@ namespace YouBot
       virtual ~YouBotGripperService();
 
       void displayGripperStatus();
-      void sim_mode_ops(int mode);
+      void setsim_mode(int mode);
     protected:
       // Gripper
       InputPort<motion_control_msgs::JointPositions> gripper_cmd_position;
-
-      // Send data to VREP
-      OutputPort<motion_control_msgs::JointPositions> out_gripper_cmd_position;
-  //			OutputPort<sensor_msgs::JointState> gripper_state;
 
     private:
       bool calibrate();
@@ -64,11 +60,6 @@ namespace YouBot
       
       // Gripper
       motion_control_msgs::JointPositions m_gripper_cmd_position;
-  //	        sensor_msgs::JointState m_gripper_state;
-      //GripperBarSpacingSetPoint m_tmp_gripper_cmd_position;
-  //	        GripperBarSpacingSetPoint m_tmp_gripper_state;
-      //GripperLimits m_gripper_limits;
-
       bool m_calibrated;
   };
 

@@ -99,6 +99,10 @@ namespace YouBot
     joint_state.setDataSample(m_joint_state);
     odometry_state.setDataSample(m_odometry_state);
 
+    // Events - Pre-allocate port memory for outputs
+    m_events.reserve(max_event_length);
+    events.setDataSample(m_events);
+
     // odometry pose estimates frame
     m_odometry_state.header.frame_id = "odom";
     m_odometry_state.header.seq = 0;
@@ -139,21 +143,14 @@ namespace YouBot
 
   void YouBotBaseService::setupComponentInterface()
   {
-    this->addPort("joint_state", joint_state).doc("Joint states");
-    this->addPort("odometry_state", odometry_state).doc("Base odometry");
+    this->addPort("joint_state_out", joint_state).doc("Joint states");
+    this->addPort("odometry_state_out", odometry_state).doc("Base odometry");
 
-    this->addPort("joint_position_command", joint_position_command).doc(
-        "Command joint angles");
-    this->addPort("joint_velocity_command", joint_velocity_command).doc(
-        "Command joint velocities");
-    this->addPort("joint_effort_command", joint_effort_command).doc(
-        "Command joint torques");
+    this->addPort("joint_position_command_in", joint_position_command).doc("Command joint angles");
+    this->addPort("joint_velocity_command_in", joint_velocity_command).doc("Command joint velocities");
+    this->addPort("joint_effort_command_in", joint_effort_command).doc("Command joint torques");
 
-    this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
-
-    // Events - Pre-allocate port memory for outputs
-    m_events.reserve(max_event_length);
-    events.setDataSample(m_events);
+    this->addPort("cmd_twist_in", cmd_twist).doc("Command base twist");
     this->addPort("events", events).doc("Joint events");
 
     this->addOperation("start", &YouBotBaseService::start, this);
@@ -162,17 +159,12 @@ namespace YouBot
     this->addOperation("stop", &YouBotBaseService::stop, this);
     this->addOperation("cleanup", &YouBotBaseService::cleanup, this);
 
-	this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll,
-		this, OwnThread).doc("Control modes can be set individually.");
-    this->addOperation("setControlModes", &YouBotBaseService::setControlModes,
-        this, OwnThread);
-    this->addOperation("getControlModes", &YouBotBaseService::getControlModes,
-        this, OwnThread);
+	  this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll, this, OwnThread).doc("Control modes can be set individually.");
+    this->addOperation("setControlModes", &YouBotBaseService::setControlModes, this, OwnThread);
+    this->addOperation("getControlModes", &YouBotBaseService::getControlModes, this, OwnThread);
 
-    this->addOperation("displayMotorStatuses",
-        &YouBotBaseService::displayMotorStatuses, this, OwnThread);
-    this->addOperation("clearControllerTimeouts",
-        &YouBotBaseService::clearControllerTimeouts, this, OwnThread);
+    this->addOperation("displayMotorStatuses", &YouBotBaseService::displayMotorStatuses, this, OwnThread);
+    this->addOperation("clearControllerTimeouts", &YouBotBaseService::clearControllerTimeouts, this, OwnThread);
   }
 
   void YouBotBaseService::getControlModes(vector<ctrl_modes>& all)
@@ -182,10 +174,10 @@ namespace YouBot
 
   void YouBotBaseService::setControlModesAll(int mode)
   {
-	for(int i=0;i<NR_OF_BASE_SLAVES;++i)
-	{
-		m_joint_ctrl_modes[i] = static_cast<ctrl_modes>(mode);
-	}
+  	for(int i=0;i<NR_OF_BASE_SLAVES;++i)
+  	{
+  		m_joint_ctrl_modes[i] = static_cast<ctrl_modes>(mode);
+  	}
   }
 
   void YouBotBaseService::setControlModes(vector<ctrl_modes>& all)
@@ -208,17 +200,14 @@ namespace YouBot
         if (i != 0)
         {
           this->getOwner()->error();
-          log(Error) << "If the ctrl_mode TWIST is used, all "
-              << NR_OF_BASE_SLAVES << " motors should be set to this!"
-              << endlog();
+          log(Error) << "If the ctrl_mode TWIST is used, all " << NR_OF_BASE_SLAVES << " motors should be set to this!" << endlog();
           return;
         }
       }
       else if (twist && all[i] != TWIST)
       {
         this->getOwner()->error();
-        log(Error) << "If the ctrl_mode TWIST is used, all " << NR_OF_BASE_SLAVES
-            << " motors should be set to this!" << endlog();
+        log(Error) << "If the ctrl_mode TWIST is used, all " << NR_OF_BASE_SLAVES << " motors should be set to this!" << endlog();
         return;
       }
     }
@@ -235,15 +224,11 @@ namespace YouBot
   {
     cmd_twist.read(m_cmd_twist);
 
-    quantity < si::velocity > longitudinalVelocity = m_cmd_twist.linear.x
-        * si::meter_per_second;
-    quantity < si::velocity > transversalVelocity = m_cmd_twist.linear.y
-        * si::meter_per_second;
-    quantity < si::angular_velocity > angularVelocity = m_cmd_twist.angular.z
-        * si::radian_per_second;
+    quantity < si::velocity > longitudinalVelocity = m_cmd_twist.linear.x * si::meter_per_second;
+    quantity < si::velocity > transversalVelocity = m_cmd_twist.linear.y * si::meter_per_second;
+    quantity < si::angular_velocity > angularVelocity = m_cmd_twist.angular.z * si::radian_per_second;
 
-    m_base->setBaseVelocity(longitudinalVelocity, transversalVelocity,
-        angularVelocity);
+    m_base->setBaseVelocity(longitudinalVelocity, transversalVelocity, angularVelocity);
   }
 
   void YouBotBaseService::setJointSetpoints()
@@ -258,22 +243,19 @@ namespace YouBot
       {
       case (PLANE_ANGLE):
       {
-        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr]
-            * si::radian;
+        m_tmp_joint_position_command.angle = m_joint_position_command.positions[joint_nr] * si::radian;
         m_joints[joint_nr]->setData(m_tmp_joint_position_command);
         break;
       }
       case (ANGULAR_VELOCITY):
       {
-        m_tmp_joint_velocity_command.angularVelocity =
-            m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
+        m_tmp_joint_velocity_command.angularVelocity = m_joint_velocity_command.velocities[joint_nr] * si::radian_per_second;
         m_joints[joint_nr]->setData(m_tmp_joint_velocity_command);
         break;
       }
       case (TORQUE):
       {
-        m_tmp_joint_effort_command.torque = m_joint_effort_command.efforts[joint_nr]
-            * si::newton_meter;
+        m_tmp_joint_effort_command.torque = m_joint_effort_command.efforts[joint_nr] * si::newton_meter;
         m_joints[joint_nr]->setData(m_tmp_joint_effort_command);
         break;
       }
@@ -331,8 +313,7 @@ namespace YouBot
     quantity < si::velocity > transversalVelocity;
     quantity < angular_velocity > angularVelocity;
 
-    m_base->getBaseVelocity(longitudinalVelocity, transversalVelocity,
-        angularVelocity);
+    m_base->getBaseVelocity(longitudinalVelocity, transversalVelocity, angularVelocity);
 
     m_odometry_state.twist.twist.linear.x = longitudinalVelocity.value();
     m_odometry_state.twist.twist.linear.y = transversalVelocity.value();
@@ -345,15 +326,13 @@ namespace YouBot
     quantity < si::length > transversalPosition;
     quantity < plane_angle > orientation; //yaw
 
-    m_base->getBasePosition(longitudinalPosition, transversalPosition,
-        orientation);
+    m_base->getBasePosition(longitudinalPosition, transversalPosition, orientation);
 
     m_odometry_state.pose.pose.position.x = longitudinalPosition.value();
     m_odometry_state.pose.pose.position.y = transversalPosition.value();
     //		m_odometry_state.pose.pose.position.z = 0;
 
-    m_odometry_state.pose.pose.orientation = tf::createQuaternionMsgFromYaw(
-        orientation.value());
+    m_odometry_state.pose.pose.orientation = tf::createQuaternionMsgFromYaw(orientation.value());
 
     odometry_state.write(m_odometry_state);
   }
@@ -361,11 +340,15 @@ namespace YouBot
   void YouBotBaseService::update()
   {
     // Sensors
-    if (joint_state.connected()) //Optimization -> converting messages costs a lot of CPU
-      readJointStates();
+    if(joint_state.connected()) //Optimization -> converting messages costs a lot of CPU
+    {
+      readJointStates();      
+    }
 
-    if (odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot
-      readOdometry();
+    if(odometry_state.connected()) //Optimization -> calculation uses 14% CPU on youBot
+    {
+      readOdometry();      
+    }
 
     // Actuators
     if (m_joint_ctrl_modes[0] == TWIST) // All joints will be in TWIST ctrl_mode (see setControlModes)
@@ -475,8 +458,7 @@ namespace YouBot
     for (unsigned int joint = 0; joint < NR_OF_BASE_SLAVES; ++joint)
     {
       m_joints[joint]->getStatus(tmp);
-      log(Info) << "Joint[" << joint + 1 << "] is " << motor_status_tostring(tmp)
-          << endlog();
+      log(Info) << "Joint[" << joint + 1 << "] is " << motor_status_tostring(tmp) << endlog();
     }
   }
 

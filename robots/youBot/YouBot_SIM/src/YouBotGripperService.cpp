@@ -30,16 +30,14 @@ namespace YouBot
     // gripper_finger_l & gripper_finger_r
     m_gripper_cmd_position.positions.resize(2, 0);
 
-    this->addPort("gripper_cmd_position", gripper_cmd_position).doc(
-        "Command the gripper position");
-    this->addPort("out_gripper_cmd_position", out_gripper_cmd_position).doc("Send cmd gripper to SIM");
+    this->addPort("gripper_cmd_position_in", gripper_cmd_position).doc("Command the gripper position");
 
     this->addOperation("start", &YouBotGripperService::start, this);
     this->addOperation("update", &YouBotGripperService::update, this);
     this->addOperation("calibrate", &YouBotGripperService::calibrate, this);
     this->addOperation("stop", &YouBotGripperService::stop, this);
     this->addOperation("cleanup", &YouBotGripperService::cleanup, this);
-    this->addOperation("sim_mode_ops", &YouBotGripperService::sim_mode_ops, this);
+    this->addOperation("setsim_mode", &YouBotGripperService::setsim_mode, this);
 
   //        this->addOperation("displayGripperStatus",&YouBotGripperService::displayGripperStatus,this, OwnThread);
 
@@ -52,7 +50,7 @@ namespace YouBot
     
   }
 
-  void YouBotGripperService::sim_mode_ops(int mode)
+  void YouBotGripperService::setsim_mode(int mode)
   {
     switch(mode)
     {
@@ -84,7 +82,6 @@ namespace YouBot
     if (gripper_cmd_position.read(m_gripper_cmd_position) == NewData) //setData has SLEEP_MILLISECOND :-(
     {
         //@todo send cmd to VREP
-        out_gripper_cmd_position.write(m_gripper_cmd_position);
     }
   }
 

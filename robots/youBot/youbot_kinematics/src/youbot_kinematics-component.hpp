@@ -30,18 +30,18 @@ private:
     void cleanupHook();
 
     /** Input Port **/
-    RTT::InputPort<sensor_msgs::JointState> port_joint_state;
-    RTT::InputPort<nav_msgs::Odometry> port_odom;
-    RTT::InputPort<geometry_msgs::Twist> port_ee_twist_ros;
-    RTT::InputPort<KDL::Twist> port_ee_twist_rtt;
-    RTT::InputPort<std::vector<double> > port_w_js, port_w_ts;
+    RTT::InputPort<sensor_msgs::JointState> port_joint_state_in;
+    RTT::InputPort<nav_msgs::Odometry> port_odom_in;
+    RTT::InputPort<geometry_msgs::Twist> port_ee_twist_ros_in;
+    RTT::InputPort<KDL::Twist> port_ee_twist_rtt_in;
+    RTT::InputPort<std::vector<double> > port_w_js_in, port_w_ts_in;
 
     /** Output Port **/
-    RTT::OutputPort<motion_control_msgs::JointVelocities> port_joint_velocities;
-    RTT::OutputPort<geometry_msgs::Twist> port_base_twist; 
-    RTT::OutputPort<geometry_msgs::Pose> port_ee_pose_ros;
-    RTT::OutputPort<KDL::Frame> port_ee_pose_rtt;
-    RTT::OutputPort<geometry_msgs::Twist> port_ee_twist_msr;
+    RTT::OutputPort<motion_control_msgs::JointVelocities> port_joint_velocities_out;
+    RTT::OutputPort<geometry_msgs::Twist> port_base_twist_out; 
+    RTT::OutputPort<geometry_msgs::Pose> port_ee_pose_ros_out;
+    RTT::OutputPort<KDL::Frame> port_ee_pose_rtt_out;
+    RTT::OutputPort<geometry_msgs::Twist> port_ee_twist_msr_out;
 
     /** URDF Robot Model **/
     std::string prop_urdf_model;

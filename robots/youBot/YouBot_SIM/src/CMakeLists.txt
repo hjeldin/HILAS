@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES(${YOUBOT_SIM_INCLUDE_DIR} ${EIGEN_INCLUDE_DIR})
 #Executable component and can also be a library usable for orocos deployment
 orocos_component(YouBot_SIM ${YOUBOT_SIM_FILES} ${COMMON_INCLUDE_DIR})
 
-TARGET_LINK_LIBRARIES(YouBot_SIM ${orocos_kdl_LIBRARIES} ${YOUBOT_SIM_libs})
+TARGET_LINK_LIBRARIES(YouBot_SIM ${orocos_kdl_LIBRARIES} ${catkin_LIBRARIES} ${YOUBOT_SIM_libs})
 TARGET_LINK_LIBRARIES(YouBot_SIM RemoteApi)
 #set_target_properties(YouBot_SIM PROPERTIES COMPILE_FLAGS "-Wall")
 

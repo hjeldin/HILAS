@@ -69,10 +69,6 @@ depl:loadComponent("Robot_KINE", robot_name.."_kinematics")
 depl:loadComponent("Robot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
 depl:loadComponent("Robot_STATE_PUBLISHER", robot_name.."::"..robot_name.."StateRepublisher")
 
---depl:loadComponent("VREP_VISMODE", "OCL::LuaComponent")
-depl:loadComponent("CARTESIAN_GOAL_DEPL", "OCL::LuaComponent")
-depl:loadComponent("SUPERVISOR", "OCL::LuaComponent")
-
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
 robot_sim = depl:getPeer("Robot_SIM")
@@ -82,10 +78,6 @@ robot_oodl = depl:getPeer("Robot_OODL")
 robot_kine = depl:getPeer("Robot_KINE")
 robot_ctrl_cartesian = depl:getPeer("Robot_CTRL_CARTESIAN")
 robot_repub = depl:getPeer("Robot_STATE_PUBLISHER")
-
---sim_vismode = depl:getPeer("VREP_VISMODE")
-cartesian_goal_lua = depl:getPeer("CARTESIAN_GOAL_DEPL")
-supervisor = depl:getPeer("SUPERVISOR")
 
 -- Using fbsched for activity
 depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
@@ -97,10 +89,6 @@ depl:setMasterSlaveActivity("controlloop_scheduler","Robot_KINE")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_CTRL_CARTESIAN")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_STATE_PUBLISHER")
 
---sim_vismode:exec_file("visualMode.lua")
-cartesian_goal_lua:exec_file("SetCartesianGoal.lua")
-supervisor:exec_file("supervisor.lua")
-
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
 cp.type = rtt.globals.DATA   -- type data
@@ -110,17 +98,6 @@ print("Starting control loop")
 controlloop_scheduler:configure()
 controlloop_scheduler:start()
 
---sim_vismode:configure()
---sim_vismode:start()
-
-cartesian_goal_lua:configure()
-cartesian_goal_lua:start()
-
-supervisor:configure()
-supervisor:start()
-
---depl:stream("VREP_VISMODE.visMode", rtt.provides("ros"):topic("/vrep/vis_mode"))
-
 if run_status == SIM then	
 
 	simulation_setup()
@@ -129,8 +106,8 @@ if run_status == SIM then
 	--visualization mode deactivated
 	sim_visual_mode(2)
 
-	--cartesian_controller_setup()
-	--cartesian_input_from_sim()
+	cartesian_controller_setup()
+	cartesian_input_from_sim()
 
 	rtt.logl('Info', "Robot SIM start.")
 	robot_sim:start()
@@ -138,15 +115,16 @@ if run_status == SIM then
 	robot_repub:start()
 
 	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	--vel_startup(SIM)
-	--cartesian_controller_start()
+	vel_startup(SIM,1)
+	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
 
 elseif run_status == HW then
-	--visualization mode activated
-	sim_visual_mode(1)
 
 	oodl_setup()
 	robot_repub:configure()
+
+	--visualization mode activated
+	sim_visual_mode(1)
 
 	cartesian_controller_setup()
 	cartesian_input_from_oodl()
@@ -160,19 +138,23 @@ elseif run_status == HW then
 	oodl_base_op_clear()	
 
 	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	cartesian_controller_start()
+	vel_startup(OODL,1)
+	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
 
 elseif run_status == BOTH then
-	--visualization mode activated
-	sim_visual_mode(1)
 
 	simulation_setup()
 	oodl_setup()
+
+	--visualization mode activated
+	sim_visual_mode(1)
+
 	queue_setup()
+
 	cartesian_controller_setup()
 	cartesian_input_from_oodl()
 
-	connect_oodl_ros_streams()
+	connect_command_from_ros(OODL)
 
 	rtt.logl('Info', "Robot OODL start.")
 	robot_oodl:start()
@@ -183,7 +165,8 @@ elseif run_status == BOTH then
 	robot_sim:start()
 
 	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	--cartesian_controller_start()
+	vel_startup(OODL,1)
+	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
 
 end
 

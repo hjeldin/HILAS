@@ -27,7 +27,6 @@
 #include "YouBotHelpers.hpp"
 
 #define VREP_JOINT_CONTROL_POSITION_IP 2001
-//#define CFG_YOUBOT_BASE "/home/nicolapiccinelli/Workspace/youbot_driver/config/"
 
 namespace YouBot
 {
@@ -47,7 +46,7 @@ class YouBotBaseService: public Service
     void setControlModesAll(int mode);
     void setControlModes(vector<ctrl_modes>& all);
     void getControlModes(vector<ctrl_modes>& all);
-    void sim_mode_ops(int mode);
+    void setsim_mode(int mode);
     void displayMotorStatuses();
 
     void clearControllerTimeouts();
@@ -69,16 +68,8 @@ class YouBotBaseService: public Service
        SIM -> read from VREP
     */
 
-    //InputPort<sensor_msgs::JointState> in_joint_state;
+    InputPort<sensor_msgs::JointState> in_joint_state;
     InputPort<nav_msgs::Odometry> in_odometry_state;
-
-    /* Port for send data to VREP */
-    OutputPort<motion_control_msgs::JointVelocities> out_joint_velocity_command;
-    OutputPort<motion_control_msgs::JointPositions> out_joint_position_command;
-    OutputPort<motion_control_msgs::JointEfforts> out_joint_effort_command;
-
-    OutputPort<geometry_msgs::Twist> out_cmd_twist;
-
 
   private:
     void setupComponentInterface();
@@ -99,6 +90,7 @@ class YouBotBaseService: public Service
 
     /* Simulator data */
     long m_clientID;
+    simxInt all_robot_handle;
     vector<simxInt> vrep_joint_handle;
     bool is_in_visualization_mode;
 
@@ -113,26 +105,13 @@ class YouBotBaseService: public Service
     motion_control_msgs::JointPositions m_joint_position_command;
     motion_control_msgs::JointEfforts m_joint_effort_command;
 
-    /** DUMMY motion_control_msgs **/
-    motion_control_msgs::JointVelocities m_out_joint_velocity_command;
-    motion_control_msgs::JointPositions m_out_joint_position_command;
-    motion_control_msgs::JointEfforts m_out_joint_effort_command;
-
-    geometry_msgs::Twist m_cmd_twist;
-
     sensor_msgs::JointState m_joint_state;
     nav_msgs::Odometry m_odometry_state;
+    geometry_msgs::Twist m_cmd_twist;
 
     std::string m_events;
 
     vector<ctrl_modes> m_joint_ctrl_modes;
-
-    //JointAngleSetpoint m_tmp_joint_position_command;
-    //JointVelocitySetpoint m_tmp_joint_velocity_command;
-    //JointTorqueSetpoint m_tmp_joint_effort_command;
-
-    //YouBotBase* m_base;
-    //YouBotJoint* m_joints[NR_OF_BASE_SLAVES];
 
     bool m_overcurrent[NR_OF_BASE_SLAVES];
     bool m_undervoltage[NR_OF_BASE_SLAVES];

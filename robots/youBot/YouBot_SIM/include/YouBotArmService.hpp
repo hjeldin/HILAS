@@ -36,7 +36,7 @@ class YouBotArmService: public Service
     void setControlModesAll(int mode);
     void setControlModes(vector<ctrl_modes>& all);
     void getControlModes(vector<ctrl_modes>& all);
-    void sim_mode_ops(int mode);
+    void setsim_mode(int mode);
     void displayMotorStatuses();
 
     void clearControllerTimeouts();
@@ -50,19 +50,9 @@ class YouBotArmService: public Service
 
     OutputPort<std::string> events;
 
-    /* Acquire VREP Data
-       HW -> read from YuoBot_OODL (visualization mode)
-       SIM -> read from VREP
-    */
-
     InputPort<sensor_msgs::JointState> in_joint_state;
     //@todo catch events from VREP (ex. motor brake, ...)
     //InputPort<std::string> in_events;
-
-    /* Port for send data to VREP */
-    OutputPort<motion_control_msgs::JointPositions> out_joint_position_command;
-    OutputPort<motion_control_msgs::JointVelocities> out_joint_velocity_command;
-    OutputPort<motion_control_msgs::JointEfforts> out_joint_effort_command;
 
   private:
     void setupComponentInterface();
@@ -85,22 +75,10 @@ class YouBotArmService: public Service
     motion_control_msgs::JointVelocities m_joint_velocity_command;
     motion_control_msgs::JointEfforts m_joint_effort_command;
 
-    /* Dummy */
-    motion_control_msgs::JointPositions m_out_joint_position_command;
-    motion_control_msgs::JointVelocities m_out_joint_velocity_command;
-    motion_control_msgs::JointEfforts m_out_joint_effort_command;
-
     sensor_msgs::JointState m_joint_state;
-
     std::string m_events;
-
     vector<JointLimits> m_joint_limits;
-
     vector<ctrl_modes> m_joint_ctrl_modes;
-
-    //JointAngleSetpoint m_tmp_joint_position_command;
-    //JointVelocitySetpoint m_tmp_joint_cmd_velocity;
-    //JointTorqueSetpoint m_tmp_joint_cmd_torque;
 
     bool m_overcurrent[NR_OF_ARM_SLAVES];
     bool m_undervoltage[NR_OF_ARM_SLAVES];
@@ -109,9 +87,6 @@ class YouBotArmService: public Service
     bool m_connectionlost[NR_OF_ARM_SLAVES];
     bool m_i2texceeded[NR_OF_ARM_SLAVES];
     bool m_timeout[NR_OF_ARM_SLAVES];
-
-    //YouBotManipulator* m_manipulator;
-    //YouBotJoint* m_joints[NR_OF_ARM_SLAVES];
 
     bool m_calibrated;
 

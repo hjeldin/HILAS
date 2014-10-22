@@ -1,7 +1,7 @@
 #include "youbot_kinematics-component.hpp"
 #include <rtt/Component.hpp>
 #include <kdl_parser/kdl_parser.hpp>
-//#include <tf_conversions/tf_kdl.h>
+#include <tf_conversions/tf_kdl.h>
 #include <kdl/frames_io.hpp>
 #include <kdl/kinfam_io.hpp>
 #include <iostream>
@@ -12,17 +12,17 @@ using namespace KDL;
 using namespace RTT; 
 
 YouBot_kinematics::YouBot_kinematics(std::string const& name) : TaskContext(name), m_jnt_array(8){
-  this->addEventPort("JointState",port_joint_state);
-  this->addEventPort("BaseOdom",port_odom);
-  this->addPort("EEPose",port_ee_pose_ros);
-  this->addPort("EEPoseRTT",port_ee_pose_rtt);
-  this->addPort("EETwistMsr",port_ee_twist_msr);
-  this->addEventPort("EETwist",port_ee_twist_ros);
-  this->addEventPort("EETwistRTT",port_ee_twist_rtt);
-  this->addPort("JointVelocities",port_joint_velocities);
-  this->addPort("BaseTwist",port_base_twist);
-  this->addEventPort("JointSpaceWeights",port_w_js);
-  this->addEventPort("TaskSpaceWeights",port_w_ts);
+  this->addEventPort("JointState_in",port_joint_state_in);
+  this->addEventPort("BaseOdom_in",port_odom_in);
+  this->addPort("EEPose_out",port_ee_pose_ros_out);
+  this->addPort("EEPoseRTT_out",port_ee_pose_rtt_out);
+  this->addPort("EETwistMsr_out",port_ee_twist_msr_out);
+  this->addEventPort("EETwist_in",port_ee_twist_ros_in);
+  this->addEventPort("EETwistRTT_in",port_ee_twist_rtt_in);
+  this->addPort("JointVelocities_out",port_joint_velocities_out);
+  this->addPort("BaseTwist_out",port_base_twist_out);
+  this->addEventPort("JointSpaceWeights_in",port_w_js_in);
+  this->addEventPort("TaskSpaceWeights_in",port_w_ts_in);
 
   //this->addProperty("robot_description",prop_urdf_model);
 
@@ -41,9 +41,6 @@ YouBot_kinematics::YouBot_kinematics(std::string const& name) : TaskContext(name
   m_w_ts.assign(6,1);
 
   joints_norm.assign(5,0);
-
-  port_joint_velocities.write(m_joint_velocities);
-  port_base_twist.write(m_ee_twist);
 
   //Let's assume the base has two translational joints and a
   //rotational joint: Base joints
@@ -107,8 +104,6 @@ bool YouBot_kinematics::configureHook()
 	
 	m_Mq_identity.setIdentity();
 	m_My_identity.setIdentity();
-
-	m_Mq_jlc.setIdentity();
 	m_Mq_jlc.setIdentity();
 
 	SetToZero(m_twist);
@@ -131,7 +126,7 @@ bool YouBot_kinematics::configureHook()
 	joints_max_limits[1] = 2.61538;
 	joints_max_limits[2] = -0.0157;
 	joints_max_limits[3] = 3.42577;
-	joints_max_limits[4] = 5.63595;
+	joints_max_limits[4] = 5.63595;	
 
   	std::cout << "|YoubotKinematics| configured !" <<std::endl;
   	return true;
@@ -139,39 +134,26 @@ bool YouBot_kinematics::configureHook()
 
 bool YouBot_kinematics::startHook()
 {
-	port_joint_state.read(m_joint_state);
-        //Leave out the base for now, start from 3
-	for(unsigned int i=3;i<m_jnt_array.q.rows();i++){
+	port_joint_state_in.read(m_joint_state);
+    
+    //Leave out the base for now, start from 3
+	for(unsigned int i=3;i<m_jnt_array.q.rows();i++)
+	{
 		m_jnt_array.q(i)=m_joint_state.position[i-3];
 		m_jnt_array.qdot(i)=m_joint_state.velocity[i-3];
 	}
 
 	jnt_to_pose_solver_->JntToCart(m_jnt_array,m_frame_vel);
 
-	//tf::PoseKDLToMsg(m_frame_vel.GetFrame(),m_ee_pose);
-	m_ee_pose.position.x = m_frame_vel.GetFrame().p.x();
-	m_ee_pose.position.y = m_frame_vel.GetFrame().p.y();
-	m_ee_pose.position.z = m_frame_vel.GetFrame().p.z();
+	tf::PoseKDLToMsg(m_frame_vel.GetFrame(),m_ee_pose);
+	tf::TwistKDLToMsg(m_frame_vel.GetTwist(),m_ee_twist_msr);
 
-	double x,y,z,w;
-	m_frame_vel.GetFrame().M.GetQuaternion(x,y,z,w);
+  	port_joint_velocities_out.write(m_joint_velocities);
+  	port_base_twist_out.write(m_ee_twist);
 
-	m_ee_pose.orientation.x = x;
-	m_ee_pose.orientation.y = y;
-	m_ee_pose.orientation.z = z;
-	m_ee_pose.orientation.z = w;
-
-	//tf::TwistKDLToMsg(m_frame_vel.GetTwist(),m_ee_twist_msr);
-	m_ee_twist_msr.linear.x = m_frame_vel.GetTwist().vel.x();
-    m_ee_twist_msr.linear.y = m_frame_vel.GetTwist().vel.y();
-    m_ee_twist_msr.linear.z = m_frame_vel.GetTwist().vel.z();
-    m_ee_twist_msr.angular.x = m_frame_vel.GetTwist().rot.x();
-    m_ee_twist_msr.angular.y = m_frame_vel.GetTwist().rot.x();
-    m_ee_twist_msr.angular.z = m_frame_vel.GetTwist().rot.x();
-
-	port_ee_pose_ros.write(m_ee_pose);
-	port_ee_pose_rtt.write(m_frame_vel.GetFrame());
-	port_ee_twist_msr.write(m_ee_twist_msr);
+	port_ee_pose_ros_out.write(m_ee_pose);
+	port_ee_pose_rtt_out.write(m_frame_vel.GetFrame());
+	port_ee_twist_msr_out.write(m_ee_twist_msr);
 
 	std::cout << "|YoubotKinematics| started !" <<std::endl;
 	return true;
@@ -179,44 +161,66 @@ bool YouBot_kinematics::startHook()
 
 void YouBot_kinematics::updateHook()
 {
-
-	if(port_w_ts.read(m_w_ts)==NewData){
-		if((int)m_w_ts.size()==m_My_identity.rows()){
+	if(port_w_ts_in.read(m_w_ts)==NewData)
+	{
+		if((int)m_w_ts.size()==m_My_identity.rows())
+		{
 			for(unsigned int i=0;i<m_My_identity.rows();i++)
-				m_My_identity(i,i)=m_w_ts[i];
+			{
+				m_My_identity(i,i)=m_w_ts[i];				
+			}
+
 			pose_to_jnt_solver_->setWeightTS(m_My_identity);
 		}
 		else
-			log(Error)<<"Data on "<<port_w_ts.getName()<<" has the wrong size."<<endlog();
+		{
+			log(Error)<<"Data on "<<port_w_ts_in.getName()<<" has the wrong size."<<endlog();
+		}
 	}
-	if(port_w_js.read(m_w_js)==NewData){
-		if((int)m_w_js.size()==m_Mq_identity.rows()){
+
+	if(port_w_js_in.read(m_w_js)==NewData)
+	{
+		if((int)m_w_js.size()==m_Mq_identity.rows())
+		{
 			for(unsigned int i=0;i<m_Mq_identity.rows();i++)
+			{
 				m_Mq_identity(i,i)=m_w_js[i];
+			}
+
 			pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
 		}
 		else
-			log(Error)<<"Data on "<<port_w_js.getName()<<" has the wrong size."<<endlog();
+		{
+			log(Error)<<"Data on "<<port_w_js_in.getName()<<" has the wrong size."<<endlog();			
+		}
 	}
+
 	bool update_pose=false;
-	if(port_odom.read(m_odom)==NewData){
+	if(port_odom_in.read(m_odom) == NewData)
+	{
 		m_jnt_array.q(0)=m_odom.pose.pose.position.x;
 		m_jnt_array.q(1)=m_odom.pose.pose.position.y;
-		KDL::Rotation rot = KDL::Rotation::Quaternion(m_odom.pose.pose.orientation.x,
+		
+		KDL::Rotation rot = KDL::Rotation::Quaternion(
+			m_odom.pose.pose.orientation.x,
 			m_odom.pose.pose.orientation.y,
 			m_odom.pose.pose.orientation.z,
 			m_odom.pose.pose.orientation.w);
+		
 		double roll,pitch,yaw;
 		rot.GetRPY(roll,pitch,yaw);
+		
 		m_jnt_array.q(2)=yaw;
 		m_jnt_array.qdot(0)=m_odom.twist.twist.linear.x;
 		m_jnt_array.qdot(1)=m_odom.twist.twist.linear.y;
 		m_jnt_array.qdot(3)=m_odom.twist.twist.angular.z;
+		
 		update_pose=true;
 	}
 
-	if(port_joint_state.read(m_joint_state)==NewData){
-            //Leave out the base for now, start from 3
+	if(port_joint_state_in.read(m_joint_state) == NewData)
+	{
+        //Leave out the base for now, start from 3
 		for(unsigned int i=3;i<m_jnt_array.q.rows();i++)
 		{
 			m_jnt_array.q(i)=m_joint_state.position[i-3];
@@ -228,118 +232,125 @@ void YouBot_kinematics::updateHook()
 			//std::cout << "joint_state[" << i-2 << "].position =" << m_jnt_array.q(i) << std::endl;
 			//std::cout << "joints_norm(" << i << "," << i << ")=" << joints_norm[i-3] << std::endl;
 		}
-		update_pose=true;
+		update_pose = true;
 	}
 
-	if(update_pose){
+	if(update_pose)
+	{
 		jnt_to_pose_solver_->JntToCart(m_jnt_array,m_frame_vel);
 
-		//tf::PoseKDLToMsg(m_frame_vel.GetFrame(),m_ee_pose);
-		m_ee_pose.position.x = m_frame_vel.GetFrame().p.x();
-		m_ee_pose.position.y = m_frame_vel.GetFrame().p.y();
-		m_ee_pose.position.z = m_frame_vel.GetFrame().p.z();
-
-		double x,y,z,w;
-		m_frame_vel.GetFrame().M.GetQuaternion(x,y,z,w);
-
-		m_ee_pose.orientation.x = x;
-		m_ee_pose.orientation.y = y;
-		m_ee_pose.orientation.z = z;
-		m_ee_pose.orientation.z = w;
-
-		//tf::TwistKDLToMsg(m_frame_vel.GetTwist(),m_ee_twist_msr);
-		m_ee_twist_msr.linear.x = m_frame_vel.GetTwist().vel.x();
-	    m_ee_twist_msr.linear.y = m_frame_vel.GetTwist().vel.y();
-	    m_ee_twist_msr.linear.z = m_frame_vel.GetTwist().vel.z();
-	    m_ee_twist_msr.angular.x = m_frame_vel.GetTwist().rot.x();
-	    m_ee_twist_msr.angular.y = m_frame_vel.GetTwist().rot.x();
-	    m_ee_twist_msr.angular.z = m_frame_vel.GetTwist().rot.x();
-
-		port_ee_pose_ros.write(m_ee_pose);
-		port_ee_pose_rtt.write(m_frame_vel.GetFrame());
-		port_ee_twist_msr.write(m_ee_twist_msr);
-
-		port_ee_pose_ros.write(m_ee_pose);
-		port_ee_pose_rtt.write(m_frame_vel.GetFrame());
-		port_ee_twist_msr.write(m_ee_twist_msr);
+		tf::PoseKDLToMsg(m_frame_vel.GetFrame(),m_ee_pose);
+		tf::TwistKDLToMsg(m_frame_vel.GetTwist(),m_ee_twist_msr);
+		port_ee_pose_ros_out.write(m_ee_pose);
+		port_ee_pose_rtt_out.write(m_frame_vel.GetFrame());
+		port_ee_twist_msr_out.write(m_ee_twist_msr);
 	}
 
-	//if(port_ee_twist_ros.read(m_ee_twist)==NewData)
+	//if(port_ee_twist_ros_in.read(m_ee_twist)==NewData)
 	//	tf::TwistMsgToKDL(m_ee_twist,m_twist);
-	port_ee_twist_rtt.read(m_twist);
+	port_ee_twist_rtt_in.read(m_twist);
 	std::stringstream jointName;	
 	int ret = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
 
-	if(ret >= 0) {
+	if(ret >= 0)
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			m_Mq_jlc(i,i) = m_Mq_identity(i,i);
+		}
+
 		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
 		{
 			if(joints_norm[i-3] < -0.9 && m_jnt_array.qdot(i) < 0) //joint status: min_limit & counter-clockwise movement
 			{
-				m_Mq_jlc(i,i) = 1 - pow(joints_norm[i-3],4);
+				m_Mq_jlc(i,i) = (m_Mq_identity(i,i) >= 0.0001) ? 1 - pow(joints_norm[i-3],4) : 0.0;
 			}
 
 			if(joints_norm[i-3] < -0.9 && m_jnt_array.qdot(i) > 0) //joint status: min_limit & clockwise movement
 			{
-				//std::cout << "[ARM JOINT " << i-2 << " norm: " << joints_norm[i-3] << "] joint status: min_limit & clockwise movement" << std::endl;
-				//joints_norm[i-3] = -1;
-				m_Mq_jlc(i,i) = 1;
+				m_Mq_jlc(i,i) = (m_Mq_identity(i,i) >= 0.0001) ?  1 : 0.0;
 			}
 
 			if(joints_norm[i-3] > 0.9 && m_jnt_array.qdot(i) > 0) //joint status: max_limit & clockwise movement
 			{
-				m_Mq_jlc(i,i) = 1 - pow(joints_norm[i-3],4);
+				m_Mq_jlc(i,i) =  (m_Mq_identity(i,i) >= 0.0001) ? 1 - pow(joints_norm[i-3],4) : 0.0;
 			}
 
 			if(joints_norm[i-3] > 0.9 && m_jnt_array.qdot(i) < 0) //joint status: max_limit & counter-clockwise movement
 			{
-				//std::cout << "[ARM JOINT " << i-2 << " norm: " << joints_norm[i-3] << "] joint status: max_limit & counter-clockwise movement" << std::endl;
-				m_Mq_jlc(i,i) = 1;
+				m_Mq_jlc(i,i) =  (m_Mq_identity(i,i) >= 0.0001) ? 1 : 0.0;
+			}
+		}
+
+		pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
+		int ret_jlc = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
+
+		if(ret_jlc>=0)
+		{
+			// BASE
+			for(unsigned int i=0; i < 3; i++)
+			{
+				if(m_jnt_array.qdot(i) > 0.2)
+				{
+					m_jnt_array.qdot(i) = 0.2;
+				}
+
+				if(m_jnt_array.qdot(i) < -0.2)
+				{
+					m_jnt_array.qdot(i) = -0.2;
+				}				
 			}
 
+			m_base_twist.linear.x=m_jnt_array.qdot(0);
+			m_base_twist.linear.y=m_jnt_array.qdot(1);
+			m_base_twist.angular.z=m_jnt_array.qdot(2);
+
+			// ARM
+			for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
+			{
+				//jointName.str("");
+				//jointName << "arm_joint_" << (i-2);
+				//m_joint_velocities.names[i-3]= jointName.str();
+
+				if(m_jnt_array.qdot(i) > 0.3)
+				{
+					m_jnt_array.qdot(i) = 0.3;
+				}
+
+				if(m_jnt_array.qdot(i) < -0.3)
+				{
+					m_jnt_array.qdot(i) = -0.3;
+				}
+
+				m_joint_velocities.velocities[i-3]= m_jnt_array.qdot(i);
+			}
+		}
+		else
+		{
+			// BASE
+			m_base_twist.linear.x=0;
+			m_base_twist.linear.y=0;
+			m_base_twist.angular.z=0;
+			
+			// ARM
+			for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
+			{
+				//jointName.str("");
+				//jointName << "arm_joint_" << (i-2);
+				//m_joint_velocities.names[i-3]= jointName.str();
+				m_joint_velocities.velocities[i-3]= 0.0;
+			}
+			
+			log(Error)<<"Could not calculate IVK: " << ret <<endlog();
 		}
 	}
-
-	//std::cout << "---------------------------------------" << std::endl;
-
-	pose_to_jnt_solver_->setWeightJS(m_Mq_jlc);
-	ret = pose_to_jnt_solver_->CartToJnt(m_jnt_array.q,m_twist,m_jnt_array.qdot);
-
-	if (ret>=0){
-		// BASE
-		for(unsigned int i=0; i < 3; i++)
-		{
-			if(m_jnt_array.qdot(i) > 0.2)
-				m_jnt_array.qdot(i) = 0.2;
-
-			if(m_jnt_array.qdot(i) < -0.2)
-				m_jnt_array.qdot(i) = -0.2;			
-		}
-		m_base_twist.linear.x=m_jnt_array.qdot(0);
-		m_base_twist.linear.y=m_jnt_array.qdot(1);
-		m_base_twist.angular.z=m_jnt_array.qdot(2);
-
-		// ARM
-		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
-		{
-			//jointName.str("");
-			//jointName << "arm_joint_" << (i-2);
-			//m_joint_velocities.names[i-3]= jointName.str();
-
-			if(m_jnt_array.qdot(i) > 0.3)
-				m_jnt_array.qdot(i) = 0.3;
-
-			if(m_jnt_array.qdot(i) < -0.3)
-				m_jnt_array.qdot(i) = -0.3;
-
-			m_joint_velocities.velocities[i-3]= m_jnt_array.qdot(i);
-			//std::cout << "[ARM JOINT " << i-2 << " velocity " << m_joint_velocities.velocities[i-3] << std::endl;
-		}
-	}
-	else{
+	else
+	{
 		// BASE
 		m_base_twist.linear.x=0;
 		m_base_twist.linear.y=0;
 		m_base_twist.angular.z=0;
+			
 		// ARM
 		for(unsigned int i=3;i<m_jnt_array.qdot.rows();i++)
 		{
@@ -348,14 +359,14 @@ void YouBot_kinematics::updateHook()
 			//m_joint_velocities.names[i-3]= jointName.str();
 			m_joint_velocities.velocities[i-3]= 0.0;
 		}
+		
 		log(Error)<<"Could not calculate IVK: " << ret <<endlog();
 	}
 
 	//Reset weight joint space
 	pose_to_jnt_solver_->setWeightJS(m_Mq_identity);
-
-	port_joint_velocities.write(m_joint_velocities);
-	port_base_twist.write(m_base_twist);
+	port_joint_velocities_out.write(m_joint_velocities);
+	port_base_twist_out.write(m_base_twist);
 }
 
 void YouBot_kinematics::stopHook() {

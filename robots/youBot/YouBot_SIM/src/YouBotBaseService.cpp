@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <youbot/ProtocolDefinitions.hpp>
+#include <tf_conversions/tf_kdl.h>
 
 namespace YouBot
 {
@@ -21,6 +22,10 @@ namespace YouBot
     vrep_joint_handle.assign(NR_OF_BASE_SLAVES,0);
     joint_base_position_prev.assign(4,0.0);
     odom_wheelPositions.assign(4,0.0*radian);
+
+    is_in_visualization_mode = false;
+    
+    simxGetObjectHandle(m_clientID,"youBot",&all_robot_handle, simx_opmode_oneshot_wait);
 
     simxGetObjectHandle(m_clientID, "wheel_joint_fl", &vrep_joint_handle[0], simx_opmode_oneshot_wait);
     simxGetObjectHandle(m_clientID, "wheel_joint_fr", &vrep_joint_handle[1], simx_opmode_oneshot_wait);
@@ -57,6 +62,10 @@ namespace YouBot
     joint_state.setDataSample(m_joint_state);
     odometry_state.setDataSample(m_odometry_state);
 
+    // Events - Pre-allocate port memory for outputs
+    m_events.reserve(max_event_length);
+    events.setDataSample(m_events);
+
     // odometry pose estimates frame
     m_odometry_state.header.frame_id = "odom";
     m_odometry_state.header.seq = 0;
@@ -87,6 +96,15 @@ namespace YouBot
     memset(m_i2texceeded, 0, NR_OF_BASE_SLAVES);
     memset(m_timeout, 0, NR_OF_BASE_SLAVES);
 
+    // open data streaming from the simulator server
+    float dummy_var;
+
+    for(int i = 0; i < NR_OF_BASE_SLAVES; ++i)
+    {
+	    simxGetJointPosition(m_clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming);
+	    simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &dummy_var, simx_opmode_streaming);
+	    simxGetJointForce(m_clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming); 
+		}
     setupComponentInterface();
   }
 
@@ -95,7 +113,7 @@ namespace YouBot
     //delete m_base;
   }
 
-  void YouBotBaseService::sim_mode_ops(int mode)
+  void YouBotBaseService::setsim_mode(int mode)
   {
     switch(mode)
     {
@@ -113,30 +131,18 @@ namespace YouBot
 
   void YouBotBaseService::setupComponentInterface()
   {
-    this->addPort("joint_state", joint_state).doc("Joint states");
-    this->addPort("odometry_state", odometry_state).doc("Base odometry");
+    this->addPort("joint_state_out", joint_state).doc("Joint states");
+    this->addPort("odometry_state_out", odometry_state).doc("Base odometry");
 
-    this->addPort("joint_position_command", joint_position_command).doc(
-        "Command joint angles");
-    this->addPort("joint_velocity_command", joint_velocity_command).doc(
-        "Command joint velocities");
-    this->addPort("joint_effort_command", joint_effort_command).doc(
-        "Command joint torques");
+    this->addPort("joint_position_command_in", joint_position_command).doc("Command joint angles");
+    this->addPort("joint_velocity_command_in", joint_velocity_command).doc("Command joint velocities");
+    this->addPort("joint_effort_command_in", joint_effort_command).doc("Command joint torques");
 
-    this->addPort("cmd_twist", cmd_twist).doc("Command base twist");
+    this->addPort("cmd_twist_in", cmd_twist).doc("Command base twist");
 
-    //this->addPort("in_joint_state", in_joint_state).doc("Joint states from HW or SIM"); this->addPort("in_odometry_state", in_odometry_state).doc("Joint states from simulated robot");
-    this->addPort("in_odometry_state", in_odometry_state).doc("Base odometry from HW or SIM");
+    this->addPort("joint_state_in", in_joint_state).doc("Joint states from HW or SIM");
+    this->addPort("odometry_state_in", in_odometry_state).doc("Base odometry from HW or SIM");
 
-    this->addPort("out_joint_position_command", out_joint_position_command ).doc("Base positions to simulated robot");
-    this->addPort("out_joint_velocity_command", out_joint_velocity_command).doc("Base velocities to simulated robot");
-    this->addPort("out_joint_effort_command", out_joint_effort_command).doc("Base torques to simulated robot");
-
-    this->addPort("out_cmd_twist", out_cmd_twist).doc("Base twist to simulated robot");
-
-    // Events - Pre-allocate port memory for outputs
-    m_events.reserve(max_event_length);
-    events.setDataSample(m_events);
     this->addPort("events", events).doc("Joint events");
 
     this->addOperation("start", &YouBotBaseService::start, this);
@@ -144,19 +150,15 @@ namespace YouBot
     this->addOperation("calibrate", &YouBotBaseService::calibrate, this);
     this->addOperation("stop", &YouBotBaseService::stop, this);
     this->addOperation("cleanup", &YouBotBaseService::cleanup, this);
-    this->addOperation("sim_mode_ops", &YouBotBaseService::sim_mode_ops, this);
+    this->addOperation("setsim_mode", &YouBotBaseService::setsim_mode, this);
 
-	this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll,
+	  this->addOperation("setControlModesAll", &YouBotBaseService::setControlModesAll,
 		this, OwnThread).doc("Control modes can be set individually.");
-    this->addOperation("setControlModes", &YouBotBaseService::setControlModes,
-        this, OwnThread);
-    this->addOperation("getControlModes", &YouBotBaseService::getControlModes,
-        this, OwnThread);
+    this->addOperation("setControlModes", &YouBotBaseService::setControlModes, this, OwnThread);
+    this->addOperation("getControlModes", &YouBotBaseService::getControlModes, this, OwnThread);
 
-    this->addOperation("displayMotorStatuses",
-        &YouBotBaseService::displayMotorStatuses, this, OwnThread);
-    this->addOperation("clearControllerTimeouts",
-        &YouBotBaseService::clearControllerTimeouts, this, OwnThread);
+    this->addOperation("displayMotorStatuses", &YouBotBaseService::displayMotorStatuses, this, OwnThread);
+    this->addOperation("clearControllerTimeouts", &YouBotBaseService::clearControllerTimeouts, this, OwnThread);
   }
 
   void YouBotBaseService::getControlModes(vector<ctrl_modes>& all)
@@ -254,8 +256,6 @@ namespace YouBot
   void YouBotBaseService::setTwistSetpoints()
   {
     cmd_twist.read(m_cmd_twist);
-    out_cmd_twist.write(m_cmd_twist); //remove.
-
     std::vector<quantity<angular_velocity> > wheelVelocities;
 
     quantity<si::velocity> longitudinalVelocity;
@@ -272,24 +272,17 @@ namespace YouBot
     int sign[4] = {1,-1,1,-1};
 
     simxPauseCommunication(m_clientID,1);
+
     for(unsigned int i=0; i < wheelVelocities.size() ; i++)
     {
-      simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[i],wheelVelocities[i].value() * sign[i], simx_opmode_streaming);
+      	simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[i],wheelVelocities[i].value() * sign[i], simx_opmode_oneshot);
     }
+
     simxPauseCommunication(m_clientID,0);
   }
 
   void YouBotBaseService::setJointSetpoints()
   {
-    m_out_joint_position_command.names.resize(0);
-    m_out_joint_position_command.positions.resize(0);
-
-    m_out_joint_velocity_command.names.resize(0);
-    m_out_joint_velocity_command.velocities.resize(0);
-
-    m_out_joint_effort_command.names.resize(0);
-    m_out_joint_effort_command.efforts.resize(0);
-
     joint_position_command.read(m_joint_position_command);
     joint_velocity_command.read(m_joint_velocity_command);
     joint_effort_command.read(m_joint_effort_command);
@@ -307,29 +300,29 @@ namespace YouBot
       {
         if(f != NewData) break;
 
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_streaming);
+        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_oneshot);
         break;
       }
       case (ANGULAR_VELOCITY):
       {
         if(f1 != NewData) break;
 
-        simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr], simx_opmode_streaming);
+        simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr], simx_opmode_oneshot);
         break;
       }
       case (TORQUE):
       {
         if(f2 != NewData) break;
 
-        simxSetJointForce(m_clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_streaming);
+        simxSetJointForce(m_clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_oneshot);
         break;
       }
       case (MOTOR_STOP):
       {               
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_streaming);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_streaming);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_streaming);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_streaming);                
+        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
+        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
+        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
+        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);                
         break;
       }
       case (TWIST):
@@ -348,10 +341,6 @@ namespace YouBot
       }
     }
     simxPauseCommunication(m_clientID,0);    
-
-    out_joint_position_command.write(m_out_joint_position_command);
-    out_joint_velocity_command.write(m_out_joint_velocity_command);
-    out_joint_effort_command.write(m_out_joint_effort_command);
   }
 
   void YouBotBaseService::readJointStates()
@@ -360,9 +349,9 @@ namespace YouBot
 
     for(int i = 0; i < NR_OF_BASE_SLAVES; ++i)
     {                
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_streaming);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_streaming);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_streaming);                  
+      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
+      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
+      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);                  
  
       m_joint_state.position[i] = p;
       m_joint_state.velocity[i] = v;
@@ -374,6 +363,8 @@ namespace YouBot
 
   void YouBotBaseService::readOdometry()
   {
+    /* Weird code! Don't touch it, here be dragons. */
+
     std::vector<double> deltapos;
     std::vector<double> joints;
     std::vector<double> vels;
@@ -388,15 +379,19 @@ namespace YouBot
 
     int sign[4]={1,-1,-1,1};
 
-    for(int i=0; i < 4; i++)
-    {
-      joints[i] = m_joint_state.position[i] * sign[i];
-    }
+    /* ----------------------MAGIC---------------------------- */
 
-    vels[0] = -m_joint_state.velocity[1];
-    vels[1] = m_joint_state.velocity[0];
-    vels[2] = -m_joint_state.velocity[2];
-    vels[3] = m_joint_state.velocity[3];
+    joints[0] = m_joint_state.position[3] * sign[0];
+    joints[1] = m_joint_state.position[2] * sign[1];
+    joints[2] = m_joint_state.position[0] * sign[2];
+    joints[3] = m_joint_state.position[1] * sign[3];        
+
+    vels[0] = -m_joint_state.velocity[3];
+    vels[1] = m_joint_state.velocity[2];
+    vels[2] = -m_joint_state.velocity[0];
+    vels[3] = m_joint_state.velocity[1];
+
+    /* -------------------------------------------------------- */
 
     double long_vel, trans_vel, ang_vel;
     double geom_factor = (kinematicConfig.lengthBetweenFrontAndRearWheels.value() / 2.0) + (kinematicConfig.lengthBetweenFrontWheels.value() / 2.0);
@@ -420,7 +415,6 @@ namespace YouBot
       {
         deltapos[i] += 2 * M_PI;        
       }
-
     }
 
     for(int i=0; i < 4; i++)
@@ -439,16 +433,7 @@ namespace YouBot
     m_odometry_state.pose.pose.position.y = transversalPosition.value();
     m_odometry_state.pose.pose.position.z = 0.095;
 
-    Eigen::AngleAxisd rollAngle(0.0, Eigen::Vector3d::UnitZ());
-    Eigen::AngleAxisd yawAngle(-orientation.value(), Eigen::Vector3d::UnitY());
-    Eigen::AngleAxisd pitchAngle(0.0, Eigen::Vector3d::UnitX());
-
-    Eigen::Quaternion<double> q = rollAngle * yawAngle * pitchAngle;
-
-    m_odometry_state.pose.pose.orientation.x = q.x();
-    m_odometry_state.pose.pose.orientation.y = q.y();
-    m_odometry_state.pose.pose.orientation.z = q.z();
-    m_odometry_state.pose.pose.orientation.w = q.w();
+    m_odometry_state.pose.pose.orientation = tf::createQuaternionMsgFromYaw(-orientation.value());
 
     m_odometry_state.twist.twist.linear.x = long_vel;
     m_odometry_state.twist.twist.linear.y = trans_vel;
@@ -466,15 +451,12 @@ namespace YouBot
     {
       in_odometry_state.read(m_odometry_state);
 
-      simxInt handle;
-      simxGetObjectHandle(m_clientID,"youBot",&handle, simx_opmode_oneshot_wait);
-
       simxFloat pos[3];
       pos[0] = m_odometry_state.pose.pose.position.x;
       pos[1] = m_odometry_state.pose.pose.position.y;
       pos[2] = m_odometry_state.pose.pose.position.z;
 
-      simxSetObjectPosition(m_clientID,handle,-1,pos,simx_opmode_streaming);
+      simxSetObjectPosition(m_clientID,all_robot_handle,-1,pos,simx_opmode_oneshot);
 
       double euler[3];
       simxFloat euler_s[3];
@@ -489,15 +471,12 @@ namespace YouBot
       euler_s[1] = euler[1];
       euler_s[2] = euler[2];
 
+      simxSetObjectOrientation(m_clientID,all_robot_handle,-1,euler_s,simx_opmode_oneshot);
 
-      simxSetObjectOrientation(m_clientID,handle,-1,euler_s,simx_opmode_streaming);
-
-      simxSetJointPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_streaming);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_streaming);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_streaming);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_streaming);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[4],m_joint_state.position[4], simx_opmode_streaming);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[5],m_joint_state.position[5], simx_opmode_streaming);
+      simxSetJointPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
+      simxSetJointPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
+      simxSetJointPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
+      simxSetJointPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);
       return;
     }
 

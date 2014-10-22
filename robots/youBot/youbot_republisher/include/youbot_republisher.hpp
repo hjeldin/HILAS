@@ -116,10 +116,9 @@ namespace YouBot
     
     // 15 10 2013
     OutputPort<nav_msgs::Odometry> odometry_state_out;
-    InputPort<nav_msgs::Odometry> oodl_odometry_state_in;
+    InputPort<nav_msgs::Odometry> odometry_state_in;
     
     nav_msgs::Odometry m_odometry_state;
-    nav_msgs::Odometry m_oodl_odometry_state;
             
     sensor_msgs::JointState m_youbot_state;
     // Republishing energy states to make an event when energy in the tanks drop below zeros

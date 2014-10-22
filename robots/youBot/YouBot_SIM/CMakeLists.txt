@@ -23,7 +23,7 @@ if (ROS_ROOT)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake_modules)
 
-find_package(catkin REQUIRED COMPONENTS rtt_ros tf rtt_std_msgs rtt_sensor_msgs rtt_motion_control_msgs rtt_nav_msgs rtt_geometry_msgs cmake_modules youbot_driver)
+find_package(catkin REQUIRED COMPONENTS rtt_ros tf tf_conversions rtt_std_msgs rtt_sensor_msgs rtt_motion_control_msgs rtt_nav_msgs rtt_geometry_msgs cmake_modules youbot_driver)
 find_package(Eigen REQUIRED)
 find_package(orocos_kdl REQUIRED)
 

@@ -80,17 +80,16 @@ namespace YouBot
       m_calibrated(false)
   {
 
-  //		m_gripper_state.name.assign(1, "");
-  //		m_gripper_state.name[0] = "gripper";
+    // m_gripper_state.name.assign(1, "");
+    // m_gripper_state.name[0] = "gripper";
 
-  //		m_gripper_state.position.assign(1, 0);
-  //		m_gripper_state.velocity.assign(0);
-  //		m_gripper_state.effort.assign(0);
+    // m_gripper_state.position.assign(1, 0);
+    // m_gripper_state.velocity.assign(0);
+    // m_gripper_state.effort.assign(0);
 
     m_gripper_cmd_position.positions.resize(1, 0);
 
-    this->addPort("gripper_cmd_position", gripper_cmd_position).doc(
-        "Command the gripper position");
+    this->addPort("gripper_cmd_position_in", gripper_cmd_position).doc("Command the gripper position");
 
     this->addOperation("start", &YouBotGripperService::start, this);
     this->addOperation("update", &YouBotGripperService::update, this);
@@ -98,7 +97,7 @@ namespace YouBot
     this->addOperation("stop", &YouBotGripperService::stop, this);
     this->addOperation("cleanup", &YouBotGripperService::cleanup, this);
 
-  //        this->addOperation("displayGripperStatus",&YouBotGripperService::displayGripperStatus,this, OwnThread);
+    // this->addOperation("displayGripperStatus",&YouBotGripperService::displayGripperStatus,this, OwnThread);
 
   // Pre-allocate port memory for outputs
   //        gripper_state.setDataSample(m_gripper_state);
@@ -134,8 +133,7 @@ namespace YouBot
   // Update gripper setpoint
     if (gripper_cmd_position.read(m_gripper_cmd_position) == NewData) //setData has SLEEP_MILLISECOND :-(
     {
-      m_tmp_gripper_cmd_position.barSpacing = m_gripper_cmd_position.positions[0]
-          * si::meter;
+      m_tmp_gripper_cmd_position.barSpacing = m_gripper_cmd_position.positions[0] * si::meter;
   //			// check limits to prevent exceptions
   //			if( m_tmp_gripper_cmd_position.barSpacing < m_gripper_limits.min_position )
   //			{
