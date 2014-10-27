@@ -73,6 +73,9 @@ then install orocos_kdl in an isolated workspace.
 
 ```
 #!bash
+echo "source ~/catkin_ws/underlay_isolated/install_isolated/setup.bash" >> ~/.bashrc
+echo "source ~/catkin_ws/underlay/devel/setup.bash" >> ~/.bashrc
+echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 cd ~/catkin_ws/underlay_isolated
 git clone https://github.com/orocos/orocos_kinematics_dynamics.git src/orocos_kinematics_dynamics
 catkin_make_isolated --install
@@ -88,12 +91,13 @@ For a more extended explanation visit this guide: [http://www.coppeliarobotics.c
 
 ```
 #!bash
-git clone --recursive https://yourusername@bitbucket.org/altairlab/hilas.git
-git checkout indigo
+git clone --recursive -b indigo https://yourusername@bitbucket.org/altairlab/hilas.git
 sudo apt-get install libcppunit-dev
 sudo apt-get install ros-indigo-joystick-drivers
 cd ~/catkin_ws
 export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver
+mkdir -p ~/catkin_ws/src/hilas/robots/youBot/youbot_driver/lib
+touch ~/catkin_ws/src/hilas/robots/youBot/youbot_driver/lib/libYouBotDriver.so
 catkin_make
 ```
 
@@ -104,6 +108,7 @@ After the workspace compilation follow these steps to setup youbot-driver for ca
 #!bash
 cd src/hilas/robots/youBot/youbot_driver
 mkdir lib
+rm lib/libYouBotDriver.so
 ln -s ~/catkin_ws/devel/lib/libYouBotDriver.so lib/libYouBotDriver.so
 ```
 
