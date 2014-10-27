@@ -94,11 +94,11 @@ function firstToUpper(str)
 
 end
 
-function safeCall(funtion_str)
+function safeCall(function_name)
 
-	local status, err = pcall(function() loadstring(funtion_str)() end)
+	local status, err = pcall(function() loadstring(function_name)() end)
 
-	if status then
+	if status == false then
 
 		print("[DEPLOYER] "..err)
 
