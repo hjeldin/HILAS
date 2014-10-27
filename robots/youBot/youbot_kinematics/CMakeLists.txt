@@ -14,7 +14,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 include_directories(${USE_OROCOS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
-ADD_DEFINITIONS(-DURDF_PATH_TO_FILE="${PROJECT_SOURCE_DIR}/../urdf_model/youbot.urdf")
+ADD_DEFINITIONS(-DURDF_PATH_TO_FILE="${PROJECT_SOURCE_DIR}/../youbot_description/robots/youbot.urdf")
 
 # Rest of the configuration is in src/
 add_subdirectory(src)

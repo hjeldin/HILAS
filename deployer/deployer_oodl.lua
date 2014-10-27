@@ -61,13 +61,13 @@ depl:import("cartesian_motion_control")
 
 -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
-depl:loadComponent("Robot_OODL", robot_name.."::"..robot_name.."OODL")
-depl:loadComponent("Robot_SIM", robot_name.."::"..robot_name.."SIM") 
+depl:loadComponent("Robot_OODL", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."OODL")
+depl:loadComponent("Robot_SIM", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."SIM") 
 depl:loadComponent("Cmd_QUEUE", "Cmd_queue")
 
-depl:loadComponent("Robot_KINE", robot_name.."_kinematics")	
+depl:loadComponent("Robot_KINE", firstToUpper(robot_name).."_kinematics")	
 depl:loadComponent("Robot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
-depl:loadComponent("Robot_STATE_PUBLISHER", robot_name.."::"..robot_name.."StateRepublisher")
+depl:loadComponent("Robot_STATE_PUBLISHER", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."StateRepublisher")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
@@ -107,7 +107,7 @@ if run_status == SIM then
 	sim_visual_mode(2)
 
 	cartesian_controller_setup()
-	cartesian_input_from_sim()
+	kinematic_input_from_sim()
 
 	rtt.logl('Info', "Robot SIM start.")
 	robot_sim:start()
@@ -127,7 +127,7 @@ elseif run_status == HW then
 	sim_visual_mode(1)
 
 	cartesian_controller_setup()
-	cartesian_input_from_oodl()
+	kinematic_input_from_oodl()
 
 	rtt.logl('Info', "Robot OODL start.")
 	robot_oodl:start()
@@ -152,7 +152,7 @@ elseif run_status == BOTH then
 	queue_setup()
 
 	cartesian_controller_setup()
-	cartesian_input_from_oodl()
+	kinematic_input_from_oodl()
 
 	connect_command_from_ros(OODL)
 
