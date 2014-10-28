@@ -124,7 +124,7 @@ elseif run_status == HW then
 	robot_repub:configure()
 
 	--visualization mode activated
-	sim_visual_mode(1)
+	--sim_visual_mode(1)
 
 	cartesian_controller_setup()
 	kinematic_input_from_oodl()
@@ -134,7 +134,7 @@ elseif run_status == HW then
 	robot_republisher_oodl()
 	robot_repub:start()
 
-	oodl_arm_op_clear()
+	oodl_arm_op_clear[1]()
 	oodl_base_op_clear()	
 
 	rtt.logl('Info', "Robot CTRL CARTESIAN start.")

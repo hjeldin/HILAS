@@ -173,7 +173,12 @@ namespace YouBot
 
       // Gripper
       m_manipulator->calibrateGripper();
-      m_gripper = &(m_manipulator->getArmGripper());
+      try{
+        m_gripper = &(m_manipulator->getArmGripper());
+      }catch(std::exception & e)
+      {
+        log(Info) << "Could not calibrate gripper (goddammnit kuka)" << endlog();
+      }
 
   //			// Determine gripper limits to prevent exceptions
   //			MaxTravelDistance _max_distance;
