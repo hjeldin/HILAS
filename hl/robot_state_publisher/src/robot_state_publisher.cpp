@@ -58,12 +58,12 @@ int main(int argc, char** argv)
     ros::NodeHandle n;
 
     boost::property_tree::ptree pt;
-    boost::property_tree::ini_parser::read_ini(std::string(getenv("HOME")) + "/catkin_ws/src/hilas/config/hilas.ini", pt);
+    boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/hilas.ini", pt);
 
     robot_name = pt.get<std::string>("robot.name");
     std::string prop_urdf_model;
 
-    std::ifstream file((std::string(getenv("HOME")) + "/catkin_ws/src/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
+    std::ifstream file((std::string(getenv("HILAS_HOME")) + "/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
 
     file.seekg(0, std::ios::end);
     prop_urdf_model.reserve(file.tellg());

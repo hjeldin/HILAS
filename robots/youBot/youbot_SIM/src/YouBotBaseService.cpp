@@ -461,11 +461,20 @@ namespace YouBot
       double euler[3];
       simxFloat euler_s[3];
 
-      Rotation::Quaternion(
-        m_odometry_state.pose.pose.orientation.x,
-        m_odometry_state.pose.pose.orientation.y,
-        m_odometry_state.pose.pose.orientation.z,
-        m_odometry_state.pose.pose.orientation.w).GetRPY(euler[0],euler[1],euler[2]);      
+      //different coordinate systems, fixing it here
+      Rotation orientation  = Rotation::Quaternion(
+                          m_odometry_state.pose.pose.orientation.x,
+                          m_odometry_state.pose.pose.orientation.y,
+                          m_odometry_state.pose.pose.orientation.z,
+                          m_odometry_state.pose.pose.orientation.w);
+
+      // Instead of transforming for the inverse of this rotation,
+      // we should find the right transform. (this is legacy code that
+      // transforms vrep coords to rviz coords)
+      Rotation rotation = Rotation::RPY(0,-M_PI/2,M_PI).Inverse();
+      
+      orientation *= rotation;
+      orientation.GetRPY(euler[0],euler[1],euler[2]); 
 
       euler_s[0] = euler[0];
       euler_s[1] = euler[1];
