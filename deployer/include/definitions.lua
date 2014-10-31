@@ -370,7 +370,6 @@ function cartesian_goal_disconnect()
 
 end
 
-
 function kinematic_input_from_sim()
 
 	depl:connect("Robot_KINE.JointState_in","Robot_SIM.Arm1.joint_state_out",cp)
@@ -416,6 +415,7 @@ end
 
 function robot_republisher_sim()
 
+	
 	depl:connect("Robot_STATE_PUBLISHER.arm_state_in","Robot_SIM.Arm1.joint_state_out",cp)
 
 	if robot_base_count > 0 then
