@@ -473,7 +473,7 @@ namespace YouBot
       // transforms vrep coords to rviz coords)
       Rotation rotation = Rotation::RPY(0,-M_PI/2,M_PI).Inverse();
       
-      orientation *= rotation;
+      orientation = orientation * rotation;
       orientation.GetRPY(euler[0],euler[1],euler[2]); 
 
       euler_s[0] = euler[0];
