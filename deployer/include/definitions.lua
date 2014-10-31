@@ -166,11 +166,11 @@ function vel_startup(stype,arm_index)
 		end
 
 	elseif stype == OODL then
-		armSetCtrlModes(SIM,arm_index,2)
+		armSetCtrlModes(OODL,arm_index,2)
 
 		if robot_base_count > 0 then		
 	
-			baseSetCtrlModes(SIM,5)
+			baseSetCtrlModes(OODL,5)
 		end
 
 	end
@@ -577,7 +577,7 @@ function switch_to(mode)
 			armSetCtrlModes(OODL,i,2)
 		end
 		--visualization mode activated
-		sim_visual_mode(1)
+		--sim_visual_mode(1)
 		--connect queue ports and streams
 		queue_input_disconnect()
 		--cartesian_goal_disconnect()
