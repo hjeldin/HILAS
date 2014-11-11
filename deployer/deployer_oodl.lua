@@ -1,3 +1,4 @@
+package.path = package.path .. ';./include/?.lua'
 require "rttlib"
 --require "rfsm_rtt"
 require "rttros"
@@ -6,8 +7,8 @@ require "rttros"
 
 --require "complete"
 --require "readline"
-require 'include/inifile'
-require "include/definitions"
+require 'inifile'
+require "definitions"
 
 -- Lua deployer
 if deployer_type == LUA_DEPLOYER then
