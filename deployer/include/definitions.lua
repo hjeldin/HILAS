@@ -2,7 +2,8 @@
 SIM, HW, BOTH, LUA_DEPLOYER, OPS_DEPLOYER, VREP, OODL, REMOTE, LOCAL = 0, 1, 2, 3, 4, 5 ,6, 7, 8
 
 -- Definition of an hash table for configuration file naming
-hash_config = {
+hash_config =
+{
 ["SIM"] = SIM,
 ["HW"] = HW,
 ["BOTH"] = BOTH,
@@ -15,7 +16,8 @@ hash_config = {
 }
 
 -- Definition of an hash table for mark remote callable functions
-hash_remote_command = {
+hash_remote_command =
+{
 ["HW_ARM_MODE_POS"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,1) end",
 ["HW_ARM_MODE_VEL"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,2) end",
 ["HW_ARM_MODE_TOR"] = "for i=1,robot_arm_count do armSetCtrlModes(OODL,i,3) end",
@@ -49,33 +51,34 @@ running = true
 
 -- HILAS SETUP --
 configTable = inifile.parse('../config/hilas.ini')
+robotConfigTable = inifile.parse('../config/'..configTable['robot']['name']..'.ini')
 
-robot_name = configTable['robot']['name']
-robot_arm_count = configTable['robot']['armCount']
+robot_name = robotConfigTable['robot']['name']
+robot_arm_count = robotConfigTable['robot']['armCount']
 robot_arm_joint_count = {}
 
 for i = 1,robot_arm_count do
-	robot_arm_joint_count[i] = configTable['robot']['arm'..i..'JointCount']
+	robot_arm_joint_count[i] = robotConfigTable['robot']['arm'..i..'JointCount']
 end
 
-robot_base_count = configTable['robot']['baseCount']
+robot_base_count = robotConfigTable['robot']['baseCount']
 robot_base_joint_count = {}
 
 for i = 1,robot_base_count do
-	robot_base_joint_count[i] = configTable['robot']['base'..i..'JointCount']
+	robot_base_joint_count[i] = robotConfigTable['robot']['base'..i..'JointCount']
 end
 
-run_status = hash_config[configTable['hilas']['runMode']] --SIM
-deployer_type = hash_config[configTable['hilas']['deployerMode']] --LUA_DEPLOYER
-communication_type = hash_config[configTable['hilas']['usageMode']] --DEBUG
-is_ros_enabled = configTable['hilas']['useROS']
-socket_address = configTable['hilas']['socketaddr']
-socket_port = configTable['hilas']['socketport']
+run_status = hash_config[robotConfigTable['hilas']['runMode']] --SIM
+deployer_type = hash_config[robotConfigTable['hilas']['deployerMode']] --LUA_DEPLOYER
+communication_type = hash_config[robotConfigTable['hilas']['usageMode']] --DEBUG
+is_ros_enabled = robotConfigTable['hilas']['useROS']
+socket_address = robotConfigTable['hilas']['socketaddr']
+socket_port = robotConfigTable['hilas']['socketport']
 
-CARTESIAN_GAIN_SIM = configTable['cartesian_controller']['gainHw']
-CARTESIAN_GAIN_OODL = configTable['cartesian_controller']['gainSim']
+CARTESIAN_GAIN_SIM = robotConfigTable['cartesian_controller']['gainHw']
+CARTESIAN_GAIN_OODL = robotConfigTable['cartesian_controller']['gainSim']
 
-kinematic_joint_nr = configTable['kinematic']['jointNr']
+kinematic_joint_nr = robotConfigTable['kinematic']['jointNr']
 
 TOPIC_ARM_POSITION_COMMAND = configTable['ROS']['topicArmPosCommand']
 TOPIC_ARM_VELOCITY_COMMAND = configTable['ROS']['topicArmVelCommand']
