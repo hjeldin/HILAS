@@ -1,4 +1,4 @@
-orocos_component(youbot_republisher ../include/youbot_republisher.hpp youbot_republisher.cpp) 
+orocos_component(youbot_republisher ../include/youbot_republisher.hpp youbot_republisher.cpp ${HILAS_INTERFACES}/IRobotStateRepublisher.cpp) 
 # ...you may add multiple source files
 #
 # You may add multiple orocos_component statements.

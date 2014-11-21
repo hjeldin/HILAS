@@ -8,9 +8,13 @@ project(youbot_republisher)
 find_package(catkin REQUIRED COMPONENTS kdl_parser rtt_ros rtt_ros rtt_std_msgs rtt_sensor_msgs rtt_motion_control_msgs rtt_nav_msgs rtt_geometry_msgs)
 # Defines the orocos_* cmake macros. See that file for additional
 # documentation.
+
+include("$ENV{HILAS_HOME}/hilas/definitions/Definition.cmake")
+
 include_directories(${catkin_INCLUDE_DIRS})
 include_directories(${USE_OROCOS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories(${HILAS_COMMON})
 
 # Rest of the configuration is in src/
 add_subdirectory(src)

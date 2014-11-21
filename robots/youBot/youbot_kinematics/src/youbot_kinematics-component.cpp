@@ -11,7 +11,8 @@
 using namespace KDL;
 using namespace RTT; 
 
-YouBot_kinematics::YouBot_kinematics(std::string const& name) : TaskContext(name), m_jnt_array(8){
+YouBot_kinematics::YouBot_kinematics(std::string const& name) : TaskContext(name), m_jnt_array(8)
+{
   this->addEventPort("JointState_in",port_joint_state_in);
   this->addEventPort("BaseOdom_in",port_odom_in);
   this->addPort("EEPose_out",port_ee_pose_ros_out);
@@ -83,6 +84,8 @@ bool YouBot_kinematics::configureHook()
       	return false;
    	}
 
+   	// TO modifyDefaultChain()
+
     // Add arm chain from urdf to existing chain
 	KDL::Chain arm_chain;
 	if(!my_tree.getChain("arm_link_0","gripper_palm_link",arm_chain)){
@@ -95,6 +98,7 @@ bool YouBot_kinematics::configureHook()
 	}
 	m_chain.addChain(arm_chain);
 
+   	// TO modifyDefaultChain() END
 
 	jnt_to_pose_solver_.reset(new ChainFkSolverVel_recursive(m_chain));
 	pose_to_jnt_solver_.reset(new ChainIkSolverVel_wdls(m_chain,1.0));

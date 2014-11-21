@@ -67,6 +67,8 @@
 
 #include "YouBotHelpers.hpp"
 
+#include <rtt/os/TimeService.hpp>
+#include <rtt/Time.hpp>
 #include <tf/tf.h>
 
 namespace YouBot
@@ -283,7 +285,7 @@ namespace YouBot
 
   void YouBotBaseService::readJointStates()
   {
-    m_joint_state.header.stamp = ros::Time::now();
+    m_joint_state.header.stamp = ros::Time(RTT::os::TimeService::Instance()->getNSecs() * 1e9, RTT::os::TimeService::Instance()->getNSecs());
 
     // YouBot -> OutputPort
     JointSensedAngle joint_angle;
@@ -307,7 +309,7 @@ namespace YouBot
 
   void YouBotBaseService::readOdometry()
   {
-    m_odometry_state.header.stamp = ros::Time::now();
+    m_odometry_state.header.stamp = ros::Time(RTT::os::TimeService::Instance()->getNSecs() * 1e9, RTT::os::TimeService::Instance()->getNSecs());
 
     quantity < si::velocity > longitudinalVelocity;
     quantity < si::velocity > transversalVelocity;

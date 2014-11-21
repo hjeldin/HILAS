@@ -68,12 +68,12 @@ for i = 1,robot_base_count do
 	robot_base_joint_count[i] = robotConfigTable['robot']['base'..i..'JointCount']
 end
 
-run_status = hash_config[robotConfigTable['hilas']['runMode']] --SIM
-deployer_type = hash_config[robotConfigTable['hilas']['deployerMode']] --LUA_DEPLOYER
-communication_type = hash_config[robotConfigTable['hilas']['usageMode']] --DEBUG
-is_ros_enabled = robotConfigTable['hilas']['useROS']
-socket_address = robotConfigTable['hilas']['socketaddr']
-socket_port = robotConfigTable['hilas']['socketport']
+run_status = hash_config[configTable['hilas']['runMode']] --SIM
+deployer_type = hash_config[configTable['hilas']['deployerMode']] --LUA_DEPLOYER
+communication_type = hash_config[configTable['hilas']['usageMode']] --DEBUG
+is_ros_enabled = configTable['hilas']['useROS']
+socket_address = configTable['hilas']['socketaddr']
+socket_port = configTable['hilas']['socketport']
 
 CARTESIAN_GAIN_SIM = robotConfigTable['cartesian_controller']['gainHw']
 CARTESIAN_GAIN_OODL = robotConfigTable['cartesian_controller']['gainSim']
@@ -409,7 +409,8 @@ function robot_republisher_oodl()
 
 		depl:connect("Robot_STATE_PUBLISHER.base_state_in","Robot_OODL.Base.joint_state_out",cp)
 		depl:connect("Robot_STATE_PUBLISHER.odometry_state_in","Robot_OODL.Base.odometry_state_out",cp)
-		ros_stream("Robot_STATE_PUBLISHER.odometry_state_out","/odom")
+		ros_stream("Robot_STATE_PUBLISHER.odometry_state_out",TOPIC_BASE_ODOM_STATE)
+
 	end
 
 	ros_stream("Robot_STATE_PUBLISHER.robot_state_out","/joint_states")
@@ -419,13 +420,13 @@ end
 function robot_republisher_sim()
 
 	
-	depl:connect("Robot_STATE_PUBLISHER.arm_state_in","Robot_SIM.Arm1.joint_state_out",cp)
+	depl:connect("Robot_STATE_PUBLISHER.arm_state_1_in","Robot_SIM.Arm1.joint_state_out",cp)
 
 	if robot_base_count > 0 then
 
-		depl:connect("Robot_STATE_PUBLISHER.base_state_in","Robot_SIM.Base.joint_state_out",cp)
+		depl:connect("Robot_STATE_PUBLISHER.base_state_1_in","Robot_SIM.Base.joint_state_out",cp)
 		depl:connect("Robot_STATE_PUBLISHER.odometry_state_in","Robot_SIM.Base.odometry_state_out",cp)	
-		ros_stream("Robot_STATE_PUBLISHER.odometry_state_out","/odom")
+		ros_stream("Robot_STATE_PUBLISHER.odometry_state_out",TOPIC_BASE_ODOM_STATE)
 
 	end
 

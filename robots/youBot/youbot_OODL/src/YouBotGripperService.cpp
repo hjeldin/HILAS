@@ -120,8 +120,6 @@ namespace YouBot
 
   void YouBotGripperService::update()
   {
-  //		ros::Time time = ros::Time::now();
-
   // The OODL gripper does not support this.
   //		m_gripper->getData(m_tmp_gripper_state);
 

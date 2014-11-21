@@ -67,6 +67,10 @@
 #include "YouBotHelpers.hpp"
 #include <youbot/ProtocolDefinitions.hpp>
 
+#include <rtt/os/TimeService.hpp>
+#include <rtt/Time.hpp>
+#include <tf/tf.h>
+
 namespace YouBot
 {
   using namespace RTT;
@@ -210,7 +214,7 @@ namespace YouBot
     JointSensedVelocity joint_velocity;
     JointSensedTorque joint_torque;
 
-    m_joint_state.header.stamp = ros::Time::now();
+    m_joint_state.header.stamp = ros::Time(RTT::os::TimeService::Instance()->getNSecs() * 1e9, RTT::os::TimeService::Instance()->getNSecs());
 
     for (int i = 0; i < NR_OF_ARM_SLAVES; ++i)
     {

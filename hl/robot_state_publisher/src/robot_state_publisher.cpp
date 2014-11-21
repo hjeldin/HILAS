@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     robot_name = pt.get<std::string>("robot.name");
     std::string prop_urdf_model;
 
-    std::ifstream file((std::string(getenv("HILAS_HOME")) + "/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
+    std::ifstream file((std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
 
     file.seekg(0, std::ios::end);
     prop_urdf_model.reserve(file.tellg());
@@ -93,6 +93,8 @@ int main(int argc, char** argv)
     ros::Subscriber sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1000, jointStateCallback);
 
     ros::Subscriber sub_odom;
+
+    boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/" + robot_name + ".ini", pt);
 
     if(pt.get<int>("robot.baseCount") > 0)
     {
