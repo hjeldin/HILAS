@@ -23,7 +23,7 @@
 #include <boost/lexical_cast.hpp>
 #include <rtt/marsh/Marshalling.hpp>
 
-#include <hilas.hpp>
+#include "../../definitions/hilas.hpp"
 
 namespace Hilas
 {
@@ -31,51 +31,56 @@ namespace Hilas
 using namespace KDL;
 using namespace RTT;
 
-class IRobotKinematics : public RTT::TaskContext
+class IRobotKinematics: public RTT::TaskContext
 {
 
 public:
 
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-	IRobotKinematics(std::string const& name, int joint_count);
+	IRobotKinematics(std::string const& name, int kine_joint_count, int robot_joint_count);
 	~IRobotKinematics();
 
 protected:
 
 	bool configureHook();
 	bool startHook();
-	virtual void updateHook() = 0;
-	virtual void modifyDefaultChain();
+	virtual void updateHook();
 	void stopHook();
 	void cleanupHook();
+
+	virtual void modifyDefaultChain();
+	virtual void assignJointToChain();
+	virtual void differentialKinematic() = 0;
+	virtual void forwardKinematic() = 0;
 
 	/** Input Port **/
 	RTT::InputPort<sensor_msgs::JointState> port_joint_state_in;
 	RTT::InputPort<nav_msgs::Odometry> port_odom_in;
-	RTT::InputPort<geometry_msgs::Twist> port_ee_twist_ros_in;
-	RTT::InputPort<KDL::Twist> port_ee_twist_rtt_in;
+	RTT::InputPort<KDL::Twist> port_ee_twist_in;
 	RTT::InputPort<std::vector<double> > port_w_js_in, port_w_ts_in;
 
 	/** Output Port **/
 	RTT::OutputPort<motion_control_msgs::JointVelocities> port_joint_velocities_out;
-	RTT::OutputPort<geometry_msgs::Pose> port_ee_pose_ros_out;
-	RTT::OutputPort<KDL::Frame> port_ee_pose_rtt_out;
-	RTT::OutputPort<geometry_msgs::Twist> port_ee_twist_msr_out;
+	RTT::OutputPort<geometry_msgs::Pose> port_ee_pose_out;
 
 	/** URDF Robot Model **/
 	std::string prop_urdf_model;
+  	KDL::Tree my_tree;
 	KDL::Chain robot_chain;
-	KDL::JntArrayVel robot_jnt_array;
+	KDL::JntArrayVel robot_joint_array;
+	int chain_joint_count;
+	int robot_joint_count;
 
 	/** General Variables **/
-	sensor_msgs::JointState m_joint_state;
+	sensor_msgs::JointState robot_joint_state;
 	nav_msgs::Odometry m_odom;
 	geometry_msgs::Pose m_ee_pose;
-	geometry_msgs::Twist m_ee_twist, m_base_twist, m_ee_twist_msr;
+	geometry_msgs::Twist m_ee_twist;
 	motion_control_msgs::JointVelocities m_joint_velocities;
 
 	std::vector<double> m_w_js,m_w_ts;
 	KDL::FrameVel m_frame_vel;
+	KDL::Twist m_twist;
 
 	/* Joint Space Weighting matrix */
 	Eigen::MatrixXd m_Mq_identity;
@@ -88,10 +93,12 @@ protected:
 	/* Norm Joints */
 	std::vector<double> joints_norm;
 
-	boost::shared_ptr<KDL::ChainFkSolverVel_recursive> jnt_to_pose_solver_;
-	boost::shared_ptr<KDL::ChainIkSolverVel_wdls> pose_to_jnt_solver_;
+	boost::shared_ptr<KDL::ChainFkSolverVel_recursive> jnt_to_pose_solver;
+	boost::shared_ptr<KDL::ChainIkSolverVel_wdls> pose_to_jnt_solver;
 
 	/* Joints limits */
 	std::vector<double> joints_min_limits;
 	std::vector<double> joints_max_limits;
 };
+
+}

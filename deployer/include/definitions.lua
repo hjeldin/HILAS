@@ -325,7 +325,7 @@ end
 function cartesian_controller_setup()
 
 	depl:connect("Robot_KINE.EEPose_out","Robot_CTRL_CARTESIAN.CartesianSensorPosition",cp)
-	depl:connect("Robot_KINE.EETwistRTT_in","Robot_CTRL_CARTESIAN.CartesianOutputVelocity",cp)
+	depl:connect("Robot_KINE.EETwist_in","Robot_CTRL_CARTESIAN.CartesianOutputVelocity",cp)
 
 	K = robot_ctrl_cartesian:getProperty("K")
 	local gain = 0.02

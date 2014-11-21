@@ -328,4 +328,4 @@ namespace YouBot
 	}
 }
 
-ORO_CREATE_COMPONENT( YouBot::YouBotOODL )
+ORO_CREATE_COMPONENT(YouBot::YouBotOODL)

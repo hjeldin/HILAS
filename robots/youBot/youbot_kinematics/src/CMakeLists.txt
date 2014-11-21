@@ -1,5 +1,5 @@
-orocos_component(youbot_kinematics youbot_kinematics-component.hpp youbot_kinematics-component.cpp) 
-target_link_libraries(youbot_kinematics ${OROCOS-RTT_RTT-MARSHALLING_LIBRARY} ${catkin_LIBRARIES} ${kdl_parser_LIBRARIES} ${orocos_kdl_LIBRARIES})
+orocos_component(youbot_kinematics youbot_kinematics-component.hpp youbot_kinematics-component.cpp ${HILAS_INTERFACES}/IRobotKinematics.cpp) 
+target_link_libraries(youbot_kinematics ${OROCOS-RTT_RTT-MARSHALLING_LIBRARY} ${catkin_LIBRARIES} ${kdl_parser_LIBRARIES} ${orocos_kdl_LIBRARIES} ${OODL_YOUBOT_LIBRARIES})
 # ...you may add multiple source files
 #
 # You may add multiple orocos_component statements.
