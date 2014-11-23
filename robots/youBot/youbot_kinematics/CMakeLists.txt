@@ -11,6 +11,8 @@ find_package(OROCOS-RTT REQUIRED COMPONENTS rtt-marshalling)
 # Defines the orocos_* cmake macros. See that file for additional
 # documentation.
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake_modules)
+
 FIND_PACKAGE(OODL_YouBot)
 IF (OODL_YOUBOT_FOUND)
 	MESSAGE(STATUS "SUCCESSFUL: OODL_YouBot found in ${OODL_YOUBOT_CONFIG_DIR}")
