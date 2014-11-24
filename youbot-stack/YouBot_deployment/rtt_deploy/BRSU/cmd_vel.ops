@@ -1,6 +1,0 @@
-
-var ConnPolicy cp_ros;
-cp_ros.transport = 3;
-cp_ros.name_id = "/cmd_vel";
-stream("driver.Base.cmd_twist", cp_ros);
-

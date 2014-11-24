@@ -1,6 +1,7 @@
 bin/
 build/
 typekit/
+simulator/V-REP
 #rFSM/
 # Compiled source #
 ###################

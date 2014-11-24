@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties
+  SYSTEM "cpf.dtd">
+<properties>
+   <simple name="robot_description" type="string">
+      <description>robot_description</description>
+      <value>~/catkin_ws/src/hilas/src/hilas/robots/youBot/youbot_description/robots/youbot.urdf</value>
+   </simple>     
+</properties>

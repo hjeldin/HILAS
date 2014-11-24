@@ -1,8 +1,0 @@
-import("cartesian_motion_control")
-import("youbot_kinematics")
-import("ocl")                
-require("print")               
-
-loadComponent("YK","Youbot_kinematics")
-loadComponent("Controller","MotionControl::CartesianControllerPos") 
-loadComponent("Test1","TaskContext")      

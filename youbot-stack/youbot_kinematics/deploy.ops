@@ -1,7 +1,0 @@
-import("ocl")
-
-//load the lua service
-loadService ("Deployer","Lua")
-
-//execute your deployment file
-Lua.exec_file("test/test_cartesian_ctrl_deployer.lua")
