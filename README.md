@@ -1,4 +1,4 @@
-HILAS -  Hardware in the loop architecture for simulation and task testing 
+HILAS -  Hardware in the loop architecture for simulation and task testing  {#mainpage}
 ========
 
 Developed during KUKA challenge 2013. 
