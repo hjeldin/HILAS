@@ -1,4 +1,4 @@
-HILAS -  Hardware in the loop architecture for simulation and task testing 
+HILAS -  Hardware in the loop architecture for simulation and task testing  {#mainpage}
 ========
 
 Developed during KUKA challenge 2013. 
@@ -14,7 +14,6 @@ Developed during KUKA challenge 2013.
 # ROS and Orocos setup #
 Install ROS Indigo 
 ~~~
-#!bash
 sudo apt-get install ros-indigo-desktop-full
 sudo rosdep init
 rosdep update
@@ -25,8 +24,7 @@ sudo gem install rake
 ~~~
 download lua socket library and compile
 
-```
-#!bash
+~~~
 wget http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2/luasocket-2.0.2.tar.gz
 tar -xvzf luasocket-2.0.2.tar.gz
 cd luasocket-2.0.2
@@ -35,22 +33,20 @@ make
 sudo make install
 echo "export LUA_PATH=$LUA_PATH:/usr/share/lua/5.1/?.lua" >> ~/.bashrc
 echo "export LUA_CPATH=$LUA_CPATH:/usr/lib/lua/5.1/?.so" >> ~/.bashrc
-```
+~~~
 then build and compile a fresh catkin workspace
 
-```
-#!bash
+~~~
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
 catkin_init_workspace
 cd ~/catkin_ws/
 catkin_make
-```
+~~~
 
 now install Orocos through the [rtt_ros_integration](https://github.com/orocos/rtt_ros_integration)
 
-```
-#!bash
+~~~
 export OROCOS_TARGET=gnulinux
 mkdir -p ~/catkin_ws/underlay_isolated/src/orocos
 cd ~/catkin_ws/underlay_isolated
@@ -65,14 +61,13 @@ cd ~/catkin_ws/underlay
 git clone https://github.com/orocos/rtt_ros_integration.git src/rtt_ros_integration
 catkin_make
 source devel/setup.sh
-```
+~~~
 
 ## orocos_kdl ##
 HILAS needs KDL library too, so it's necessary to install it. For first check if this dependencies are satisfied: *Eigen2*, *Sip 4.7.9 and python for the python bindings*, *>= Cmake 2.6*
 then install orocos_kdl in an isolated workspace.
 
-```
-#!bash
+~~~
 echo "source ~/catkin_ws/underlay_isolated/install_isolated/setup.bash" >> ~/.bashrc
 echo "source ~/catkin_ws/underlay/devel/setup.bash" >> ~/.bashrc
 echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
@@ -80,44 +75,40 @@ cd ~/catkin_ws/underlay_isolated
 git clone https://github.com/orocos/orocos_kinematics_dynamics.git src/orocos_kinematics_dynamics
 catkin_make_isolated --install
 source install_isolated/setup.sh
-```
+~~~
 
 # HILAS setup#
-Clone our repository to the ./src folder inside the catkin workspace and then follow run catkin_make on the workspace.
+Clone our repository to the ./src folder inside the catkin workspace and then follow run catkin_make on the workspace.  
+Be sure to replace yourusername in the following 
+~~~
+git clone --recursive -b indigo https://yourusername@bitbucket.org/altairlab/hilas.git
+sudo apt-get install libcppunit-dev
+sudo apt-get install ros-indigo-joystick-drivers
+~~~
 
 ## Simulator ##
 The simulator included in hilas is vrep provided by Coppelia Robotics. Download the leatest version from their website [http://www.coppeliarobotics.com](http://www.coppeliarobotics.com/downloads.html), then rename the vrep folder in V-REP and place it in the /simulator folder, then install joystick-driver.
 For a more extended explanation visit this guide: [http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm](http://www.coppeliarobotics.com/helpFiles/en/rosTutorialHydro.htm)
 
-```
-#!bash
-git clone --recursive -b indigo https://yourusername@bitbucket.org/altairlab/hilas.git
-sudo apt-get install libcppunit-dev
-sudo apt-get install ros-indigo-joystick-drivers
+~~~
 cd ~/catkin_ws
-export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver
-export HILAS_HOME=~/catkin_ws/src
+echo "export YOUBOTDIR=~/catkin_ws/src/hilas/robots/youBot/youbot_driver" >> ~/.bashrc
+echo "export HILAS_HOME=~/catkin_ws/src" >> ~/.bashrc
 mkdir -p ~/catkin_ws/src/hilas/robots/youBot/youbot_driver/lib
 touch ~/catkin_ws/src/hilas/robots/youBot/youbot_driver/lib/libYouBotDriver.so
 catkin_make
-```
+~~~
 
 ## youBot driver ##
 After the workspace compilation follow these steps to setup youbot-driver for catkin.
 
-```
-#!bash
+~~~
 cd src/hilas/robots/youBot/youbot_driver
 mkdir lib
 rm lib/libYouBotDriver.so
 ln -s ~/catkin_ws/devel/lib/libYouBotDriver.so lib/libYouBotDriver.so
-```
+~~~
 
 ### Usage examples
 
-Open at least 3 terminals:
-
-* t3: `$ roscore &`
-* t1: `$ cd /path/to/workspace/hilas/deployment`
-* t2: `$ cd /path/to/workspace/hilas/simulator/V-REP && ./vrep.sh`
-* t1: `$ cd /path/to/workspace/hilas/deployment/run.sh deployer_oodl.lua`
+**WIP**
