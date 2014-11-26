@@ -3,8 +3,8 @@
 namespace Hilas
 {
 
-IRobotKinematics::IRobotKinematics(std::string const& name, int kine_joint_count, int robot_joint_count):
-TaskContext(name), chain_joint_count(kine_joint_count)
+IRobotKinematics::IRobotKinematics(std::string const& name, int kine_joint_count, int robot_joint_count, int SIZE_JOINT_NAME_ARRAY, const std::string* JOINT_NAME_ARRAY):
+TaskContext(name), chain_joint_count(kine_joint_count), robot_joint_array(kine_joint_count)
 {
 	this->addEventPort("JointState_in",port_joint_state_in);
 	this->addEventPort("BaseOdom_in",port_odom_in);
@@ -25,7 +25,7 @@ TaskContext(name), chain_joint_count(kine_joint_count)
 	joints_min_limits.assign(robot_joint_count, 0.0);
 	joints_max_limits.assign(robot_joint_count, 0.0);
 
-	m_joint_velocities.names.assign(robot_joint_count,"");
+	m_joint_velocities.names.assign(JOINT_NAME_ARRAY, JOINT_NAME_ARRAY + SIZE_JOINT_NAME_ARRAY);
 	m_joint_velocities.velocities.assign(robot_joint_count, 0.0);
 
 	joints_norm.assign(robot_joint_count, 0.0);
@@ -69,11 +69,11 @@ TaskContext(name), chain_joint_count(kine_joint_count)
 
 IRobotKinematics::~IRobotKinematics(){}
 
-void IRobotKinematics::modifyDefaultChain(){}
+void IRobotKinematics::createKinematicChain(){}
 
 bool IRobotKinematics::configureHook()
 {
-	modifyDefaultChain();
+	createKinematicChain();
 
 	jnt_to_pose_solver.reset(new ChainFkSolverVel_recursive(robot_chain));
 	pose_to_jnt_solver.reset(new ChainIkSolverVel_wdls(robot_chain,1.0));
@@ -103,9 +103,15 @@ bool IRobotKinematics::startHook()
     
     assignJointToChain();
 
-	jnt_to_pose_solver->JntToCart(robot_joint_array, m_frame_vel);
+	int ret = jnt_to_pose_solver->JntToCart(robot_joint_array,m_frame_vel);
+
+	if(ret < 0)
+	{
+		log(Error)<<"[KINE] Could not calculate FK: " << ret <<endlog();
+	}
 
 	tf::PoseKDLToMsg(m_frame_vel.GetFrame(), m_ee_pose);
+
   	port_joint_velocities_out.write(m_joint_velocities);
 	port_ee_pose_out.write(m_ee_pose);
 

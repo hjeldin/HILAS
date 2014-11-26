@@ -22,6 +22,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/external/
 # Set the CMAKE_PREFIX_PATH in case you're not using Orocos through ROS
 # for helping these find commands find RTT.
 find_package(catkin REQUIRED COMPONENTS rtt_ros tf rtt_std_msgs rtt_sensor_msgs rtt_motion_control_msgs rtt_nav_msgs rtt_geometry_msgs cmake_modules youbot_driver)
+find_package(Eigen REQUIRED)
+
 #find_package(OROCOS-RTT REQUIRED ${RTT_HINTS})
 
 # Defines the orocos_* cmake macros. See that file for additional
@@ -49,14 +51,31 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 ADD_DEFINITIONS(-DETHERCAT_MASTER_WITHOUT_THREAD)
+ADD_DEFINITIONS(-DCFG_YOUBOT_BASE="${OODL_YOUBOT_CONFIG_DIR}/")
+ADD_DEFINITIONS(-DSIM_ADDRESS="127.0.0.1")
+ADD_DEFINITIONS(-DSIM_PORT=10001)
 
 #defines the core sources and includes
 #SET(COMMON_SRC_DIR ${CMAKE_HOME_DIRECTORY}/src)
 SET(COMMON_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
+#V-REP include libraries 
+SET(VREP_PATH "../../../simulator/V-REP/programming/remoteApi;../../../simulator/V-REP/programming/common;" CACHE STRING "My include dir you may add additional search paths here. Use ; to separate multiple paths.")
+add_definitions(-DNON_MATLAB_PARSING)
+add_definitions(-DMAX_EXT_API_CONNECTIONS=255)
+INCLUDE_DIRECTORIES(../../../simulator/V-REP/programming/remoteApi ../../../simulator/V-REP/programming/include)
+
+add_library(RemoteApi_OODL SHARED ../../../simulator/V-REP/programming/remoteApi/extApi.c ../../../simulator/V-REP/programming/remoteApi/extApiPlatform.c)
+
+include("$ENV{HILAS_HOME}/hilas/definitions/Definition.cmake")
+
 include_directories(${catkin_INCLUDE_DIRS})
 include_directories(${USE_OROCOS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories(${HILAS_INTERFACES})
+include_directories(${HILAS_DEFINITIONS})
+include_directories(${HILAS_ROBOTS}/youBot)
+include_directories(${HILAS_SIM})
 
 #SET(CMAKE_BUILD_TYPE Debug)
 

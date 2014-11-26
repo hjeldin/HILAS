@@ -4,7 +4,7 @@ namespace YouBot
 {
 
 YouBot_kinematics::YouBot_kinematics(std::string const& name):
-Hilas::IRobotKinematics(name, 8, 15)
+Hilas::IRobotKinematics(name, 8, 15,YouBot::SIZE_JOINT_NAME_ARRAY,YouBot::JOINT_NAME_ARRAY)
 {
     configfile.reset(new youbot::ConfigFile("youbot-base.cfg",CFG_YOUBOT_BASE));
     configfile->readInto(kinematicConfig.rotationRatio, "YouBotKinematic", "RotationRatio");   
@@ -18,13 +18,31 @@ Hilas::IRobotKinematics(name, 8, 15)
     kinematicConfig.lengthBetweenFrontWheels = dummy * meter;
     configfile->readInto(dummy, "YouBotKinematic", "WheelRadius_[meter]");
     kinematicConfig.wheelRadius = dummy * meter;
-    youBotBaseKinematic.setConfiguration(kinematicConfig);	
+    youBotBaseKinematic.setConfiguration(kinematicConfig);
+
+	joints_min_limits[0] = 0.01;
+	joints_min_limits[1] = 0.01;
+	joints_min_limits[2] = -5.0215;
+	joints_min_limits[3] = 0.022;
+	joints_min_limits[4] = 0.11073;
+
+	joints_max_limits[0] = 5.8343;
+	joints_max_limits[1] = 2.61538;
+	joints_max_limits[2] = -0.0157;
+	joints_max_limits[3] = 3.42577;
+	joints_max_limits[4] = 5.63595;    
 }
 
 YouBot_kinematics::~YouBot_kinematics(){}
 
-void YouBot_kinematics::modifyDefaultChain()
+void YouBot_kinematics::createKinematicChain()
 {
+	//Let's assume the base has two translational joints and a rotational joint: Base joints
+	robot_chain.addSegment(Segment(Joint(Joint::TransX)));
+	robot_chain.addSegment(Segment(Joint(Joint::TransY)));
+	//The base of the arm is located 16 cm in front of the center of the platform
+	robot_chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(0.143,0.0, 0.096 + 0.046)))); 
+
     // Add arm chain from urdf to existing chain
 	KDL::Chain arm_chain;
 
@@ -55,25 +73,26 @@ void YouBot_kinematics::assignJointToChain()
 void YouBot_kinematics::forwardKinematic()
 {
 	bool update_pose = false;
+
 	if(port_odom_in.read(m_odom) == NewData)
 	{
 		robot_joint_array.q(0) = m_odom.pose.pose.position.x;
 		robot_joint_array.q(1) = m_odom.pose.pose.position.y;
-		
+
 		KDL::Rotation rot = KDL::Rotation::Quaternion(
 			m_odom.pose.pose.orientation.x,
 			m_odom.pose.pose.orientation.y,
 			m_odom.pose.pose.orientation.z,
 			m_odom.pose.pose.orientation.w);
-		
+
 		double roll,pitch,yaw;
 		rot.GetRPY(roll,pitch,yaw);
-		
+
 		robot_joint_array.q(2) = yaw;
 		robot_joint_array.qdot(0) = m_odom.twist.twist.linear.x;
 		robot_joint_array.qdot(1) = m_odom.twist.twist.linear.y;
-		robot_joint_array.qdot(2) = 0.0;
-		
+		robot_joint_array.qdot(3) = m_odom.twist.twist.angular.z;
+
 		update_pose = true;
 	}
 
@@ -92,7 +111,13 @@ void YouBot_kinematics::forwardKinematic()
 
 	if(update_pose)
 	{
-		jnt_to_pose_solver->JntToCart(robot_joint_array,m_frame_vel);
+		int ret = jnt_to_pose_solver->JntToCart(robot_joint_array,m_frame_vel);
+
+		if(ret < 0)
+		{
+			log(Error)<<"[KINE] Could not calculate FK: " << ret <<endlog();
+		}
+
 		tf::PoseKDLToMsg(m_frame_vel.GetFrame(),m_ee_pose);
 		port_ee_pose_out.write(m_ee_pose);
 	}
@@ -112,6 +137,7 @@ void YouBot_kinematics::twistToJointVelocities(quantity<si::velocity> l,quantity
 void YouBot_kinematics::differentialKinematic()
 {
 	port_ee_twist_in.read(m_twist);
+
 	std::stringstream jointName;	
 	int ret = pose_to_jnt_solver->CartToJnt(robot_joint_array.q,m_twist,robot_joint_array.qdot);
 

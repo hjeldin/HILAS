@@ -56,6 +56,7 @@ ENDIF (OODL_YOUBOT_FOUND)
 # Compile stuff
 #
 
+include("$ENV{HILAS_HOME}/hilas/definitions/Definition.cmake")
 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 MESSAGE(STATUS "LIB PATH ${LIBRARY_OUTPUT_PATH}")
@@ -74,6 +75,10 @@ SET(COMMON_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 include_directories(${catkin_INCLUDE_DIRS})
 include_directories(${USE_OROCOS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories(${HILAS_INTERFACES})
+include_directories(${HILAS_DEFINITIONS})
+include_directories(${HILAS_ROBOTS}/youBot)
+include_directories(${HILAS_SIM})
 
 #SET(CMAKE_BUILD_TYPE Debug)
 

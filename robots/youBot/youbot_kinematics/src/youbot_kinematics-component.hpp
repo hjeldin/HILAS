@@ -10,6 +10,8 @@
 #include "base-kinematic/FourSwedishWheelOmniBaseKinematic.hpp"
 #include "base-kinematic/FourSwedishWheelOmniBaseKinematicConfiguration.hpp"
 
+#include <youBot.hpp>
+
 namespace YouBot
 {
 
@@ -28,7 +30,7 @@ public:
 private:
 
     void twistToJointVelocities(quantity<si::velocity> l,quantity<si::velocity> t, quantity<si::angular_velocity> a);
-    void modifyDefaultChain();
+    void createKinematicChain();
     void assignJointToChain();
     void forwardKinematic();
     void differentialKinematic();

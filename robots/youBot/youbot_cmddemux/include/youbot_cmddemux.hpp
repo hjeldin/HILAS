@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interfaces/IRobotStateRepublisher.hpp>
+#include <interfaces/IRobotCmdDemux.hpp>
 #include <rtt/os/TimeService.hpp>
 #include <rtt/Time.hpp>
 #include <tf/tf.h>
@@ -12,12 +12,12 @@ namespace YouBot
  	using namespace RTT;
  	using namespace std;
 
-class YouBotStateRepublisher: public Hilas::IRobotStateRepublisher
+class YouBotCmdDemux: public Hilas::IRobotCmdDemux
 {
 
 public:
-	YouBotStateRepublisher(std::string const& name);
- 	~YouBotStateRepublisher();
+	YouBotCmdDemux(std::string const& name);
+ 	~YouBotCmdDemux();
  	void updateHook();
 };
 
