@@ -1,3 +1,5 @@
+#pragma once
+
 #include <rtt/RTT.hpp>
 #include <iostream>
 
@@ -37,7 +39,7 @@ class IRobotKinematics: public RTT::TaskContext
 public:
 
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-	IRobotKinematics(std::string const& name, int kine_joint_count, int robot_joint_count);
+	IRobotKinematics(std::string const& name, int kine_joint_count, int robot_joint_count, int SIZE_JOINT_NAME_ARRAY, const std::string* JOINT_NAME_ARRAY);
 	~IRobotKinematics();
 
 protected:
@@ -48,7 +50,7 @@ protected:
 	void stopHook();
 	void cleanupHook();
 
-	virtual void modifyDefaultChain();
+	virtual void createKinematicChain() = 0;
 	virtual void assignJointToChain();
 	virtual void differentialKinematic() = 0;
 	virtual void forwardKinematic() = 0;

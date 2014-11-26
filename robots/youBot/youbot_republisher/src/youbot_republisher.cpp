@@ -6,7 +6,7 @@ namespace YouBot
 using namespace RTT;
 
 YouBotStateRepublisher::YouBotStateRepublisher(std::string const& name):
-Hilas::IRobotStateRepublisher(name,"youBot",SIZE_JOINT_NAME_ARRAY,JOINT_NAME_ARRAY){}
+Hilas::IRobotStateRepublisher(name,"youBot",YouBot::SIZE_JOINT_NAME_ARRAY,YouBot::JOINT_NAME_ARRAY){}
 
 YouBotStateRepublisher::~YouBotStateRepublisher(){}
 
@@ -21,13 +21,36 @@ void YouBotStateRepublisher::updateHook()
 		m_robot_state.position[2] = m_arm_state.position[2];
 		m_robot_state.position[3] = m_arm_state.position[3];
 		m_robot_state.position[4] = m_arm_state.position[4];
+
+		m_robot_state.velocity[0] = m_arm_state.velocity[0];
+		m_robot_state.velocity[1] = m_arm_state.velocity[1];
+		m_robot_state.velocity[2] = m_arm_state.velocity[2];
+		m_robot_state.velocity[3] = m_arm_state.velocity[3];
+		m_robot_state.velocity[4] = m_arm_state.velocity[4];
+
+		m_robot_state.effort[0] = m_arm_state.effort[0];
+		m_robot_state.effort[1] = m_arm_state.effort[1];
+		m_robot_state.effort[2] = m_arm_state.effort[2];
+		m_robot_state.effort[3] = m_arm_state.effort[3];
+		m_robot_state.effort[4] = m_arm_state.effort[4];
 	}
+
 	if(base_state_in[0]->read(m_base_state) == NewData)
 	{
 		m_robot_state.position[5] = m_base_state.position[0];
 		m_robot_state.position[6] = m_base_state.position[1];
 		m_robot_state.position[7] = m_base_state.position[2];
 		m_robot_state.position[8] = m_base_state.position[3];
+
+		m_robot_state.velocity[5] = m_base_state.velocity[0];
+		m_robot_state.velocity[6] = m_base_state.velocity[1];
+		m_robot_state.velocity[7] = m_base_state.velocity[2];
+		m_robot_state.velocity[8] = m_base_state.velocity[3];
+
+		m_robot_state.effort[5] = m_base_state.effort[0];
+		m_robot_state.effort[6] = m_base_state.effort[1];
+		m_robot_state.effort[7] = m_base_state.effort[2];
+		m_robot_state.effort[8] = m_base_state.effort[3];
 	}
 
 	odometry_state_in.read(m_odometry_state);

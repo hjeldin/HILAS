@@ -25,13 +25,16 @@ TaskContext(name, PreOperational)
     	base_state_in[i] = new InputPort<sensor_msgs::JointState>();
 		this->addPort(std::string("base_state_") +  boost::lexical_cast<std::string>(i+1) + std::string("_in"), *base_state_in[i]);
     }
-    this->addPort("odometry_state_in",odometry_state_in);    
 
+    this->addPort("odometry_state_in",odometry_state_in);
 	this->addPort("robot_state_out", robot_state_out);
 	this->addPort("events_out",events_out);
   	this->addPort("odometry_state_out",odometry_state_out);
 
 	m_robot_state.position.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
+    m_robot_state.velocity.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
+    m_robot_state.effort.resize(SIZE_JOINT_NAME_ARRAY, 0.0);
+            
 	m_robot_state.name.assign(JOINT_NAME_ARRAY, JOINT_NAME_ARRAY + SIZE_JOINT_NAME_ARRAY);
 	robot_state_out.setDataSample(m_robot_state);
 }

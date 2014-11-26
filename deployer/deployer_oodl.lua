@@ -55,20 +55,24 @@ end
 
 depl:import(string.lower(robot_name).."_sim")
 depl:import(string.lower(robot_name).."_oodl")
-depl:import("cmd_queue")
 depl:import(string.lower(robot_name).."_kinematics")
 depl:import(string.lower(robot_name).."_republisher")
+depl:import(string.lower(robot_name).."_cmddemux")
+
+depl:import("cmd_queue")
 depl:import("cartesian_motion_control")
 
--- Loading component
+-- OLD DEPLOYER
+-- -- Loading component
 depl:loadComponent("controlloop_scheduler", "FBSched")
 depl:loadComponent("Robot_OODL", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."OODL")
 depl:loadComponent("Robot_SIM", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."SIM") 
 depl:loadComponent("Cmd_QUEUE", "Cmd_queue")
 
-depl:loadComponent("Robot_KINE", firstToUpper(robot_name).."_kinematics")	
+depl:loadComponent("Robot_KINE", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."_kinematics")	
 depl:loadComponent("Robot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
 depl:loadComponent("Robot_STATE_PUBLISHER", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."StateRepublisher")
+depl:loadComponent("Robot_CMDDEMUX", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."CmdDemux")
 
 -- Getting peers of components
 controlloop_scheduler = depl:getPeer("controlloop_scheduler")
@@ -79,9 +83,10 @@ cmd_queue = depl:getPeer("Cmd_QUEUE")
 robot_kine = depl:getPeer("Robot_KINE")
 robot_ctrl_cartesian = depl:getPeer("Robot_CTRL_CARTESIAN")
 robot_repub = depl:getPeer("Robot_STATE_PUBLISHER")
+robot_cmddemux = depl:getPeer("Robot_CMDDEMUX")
 
 -- Using fbsched for activity
-depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_RT)
+depl:setActivity("controlloop_scheduler",0.002,99,rtt.globals.ORO_SCHED_OTHER)
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_SIM")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_OODL")
 depl:setMasterSlaveActivity("controlloop_scheduler","Cmd_QUEUE")
@@ -89,6 +94,7 @@ depl:setMasterSlaveActivity("controlloop_scheduler","Cmd_QUEUE")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_KINE")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_CTRL_CARTESIAN")
 depl:setMasterSlaveActivity("controlloop_scheduler","Robot_STATE_PUBLISHER")
+depl:setMasterSlaveActivity("controlloop_scheduler","Robot_CMDDEMUX")
 
 -- Creating connections policy
 cp = rtt.Variable('ConnPolicy')
@@ -103,71 +109,86 @@ if run_status == SIM then
 
 	simulation_setup()
 	robot_repub:configure()
+	robot_cmddemux:configure()
 
 	--visualization mode deactivated
 	sim_visual_mode(2)
 
-	cartesian_controller_setup()
-	kinematic_input_from_sim()
-
-	rtt.logl('Info', "Robot SIM start.")
+	rtt.logl('Info', "Robot SIM startup.")
 	robot_sim:start()
-	robot_republisher_sim()
+	robot_republisher("SIM")
 	robot_repub:start()
 
-	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	vel_startup(SIM,1)
+	rtt.logl('Info', "Robot KINE startup.")
+	kinematic_setup()
+	kinematic_to_robot("SIM")
 	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
+
+	rtt.logl('Info', "Cartesian CONTROLLER startup.")
+	cartesian_controller_setup()
+	vel_startup(SIM,1,1)
+
+	rtt.logl('Info','Robot CMDDEMUX startup.')
+	robot_cmddemux:start()
 
 elseif run_status == HW then
 
 	oodl_setup()
 	robot_repub:configure()
-
-	--visualization mode activated
-	--sim_visual_mode(1)
-
-	cartesian_controller_setup()
-	kinematic_input_from_oodl()
+	robot_cmddemux:configure()
 
 	rtt.logl('Info', "Robot OODL start.")
 	robot_oodl:start()
-	robot_republisher_oodl()
+	robot_republisher("OODL")
 	robot_repub:start()
 
-	oodl_arm_op_clear[1]()
-	oodl_base_op_clear()	
+	rtt.logl('Info', "Robot KINE startup.")
+	kinematic_setup()
+	kinematic_to_robot("OODL")
+	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})	
 
-	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	vel_startup(OODL,1)
-	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
+	oodl_arm_op_clear[1]()
+	oodl_base_op_clear[1]()
+
+	rtt.logl('Info', "Robot CTRL CARTESIAN startup.")
+	cartesian_controller_setup()	
+	vel_startup(OODL,1,1)
+
+	rtt.logl('Info','Robot CMDDEMUX startup.')
+	robot_cmddemux:start()
 
 elseif run_status == BOTH then
 
 	simulation_setup()
 	oodl_setup()
+	robot_repub:configure()
+	robot_cmddemux:configure()
 
 	--visualization mode activated
 	sim_visual_mode(1)
 
-	queue_setup()
-
-	cartesian_controller_setup()
-	kinematic_input_from_oodl()
-
+	queue_setup()	
 	connect_command_from_ros(OODL)
 
 	rtt.logl('Info', "Robot OODL start.")
 	robot_oodl:start()
-	oodl_arm_op_clear()
-	oodl_base_op_clear()
+	robot_republisher("OODL")
+	robot_repub:start()
 
-	rtt.logl('Info', "Robot SIM start.")
-	robot_sim:start()
+	rtt.logl('Info', "Robot KINE startup.")
+	kinematic_setup()
+	kinematic_to_robot("OODL")
+	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})	
 
-	rtt.logl('Info', "Robot CTRL CARTESIAN start.")
-	vel_startup(OODL,1)
-	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
+	oodl_arm_op_clear[1]()
+	oodl_base_op_clear[1]()
+
+	rtt.logl('Info', "Robot CTRL CARTESIAN startup.")
+	cartesian_controller_setup()	
+	vel_startup(OODL,1,1)
+
+	rtt.logl('Info','Robot CMDDEMUX startup.')
+	robot_cmddemux:start()
 
 end
 
