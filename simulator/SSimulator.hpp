@@ -4,6 +4,11 @@ extern "C"
 	#include "extApi.h"
 }
 
+#include <string>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
+#include <boost/lexical_cast.hpp>
+
 namespace Hilas
 {
 
@@ -29,7 +34,11 @@ private:
 	bool connected;
 	SIMCom(): connected(false), clientID(-1)
 	{
-		clientID = simxStart(SIM_ADDRESS,SIM_PORT,10,0,1000,5);
+
+		boost::property_tree::ptree pt;
+		boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/hilas.ini", pt);		
+
+		clientID = simxStart((pt.get<std::string>("simulator.socketaddr")).c_str(),pt.get<int>("simulator.socketport"),10,0,1000,5);
 		
 		if(clientID == -1)
 		{

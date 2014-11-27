@@ -42,8 +42,6 @@ add_definitions(-DNON_MATLAB_PARSING)
 add_definitions(-DMAX_EXT_API_CONNECTIONS=255)
 INCLUDE_DIRECTORIES(../../../simulator/V-REP/programming/remoteApi ../../../simulator/V-REP/programming/include)
 
-add_library(RemoteApi SHARED ../../../simulator/V-REP/programming/remoteApi/extApi.c ../../../simulator/V-REP/programming/remoteApi/extApiPlatform.c)
-
 FIND_PACKAGE(OODL_YouBot)
 IF (OODL_YOUBOT_FOUND)
 	MESSAGE(STATUS "SUCCESSFUL: OODL_YouBot found in ${OODL_YOUBOT_CONFIG_DIR}")

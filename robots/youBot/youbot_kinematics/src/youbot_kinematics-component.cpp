@@ -3,7 +3,7 @@
 namespace YouBot
 {
 
-YouBot_kinematics::YouBot_kinematics(std::string const& name):
+YouBotKinematics::YouBotKinematics(std::string const& name):
 Hilas::IRobotKinematics(name, 8, 15,YouBot::SIZE_JOINT_NAME_ARRAY,YouBot::JOINT_NAME_ARRAY)
 {
     configfile.reset(new youbot::ConfigFile("youbot-base.cfg",CFG_YOUBOT_BASE));
@@ -33,9 +33,9 @@ Hilas::IRobotKinematics(name, 8, 15,YouBot::SIZE_JOINT_NAME_ARRAY,YouBot::JOINT_
 	joints_max_limits[4] = 5.63595;    
 }
 
-YouBot_kinematics::~YouBot_kinematics(){}
+YouBotKinematics::~YouBotKinematics(){}
 
-void YouBot_kinematics::createKinematicChain()
+void YouBotKinematics::createKinematicChain()
 {
 	//Let's assume the base has two translational joints and a rotational joint: Base joints
 	robot_chain.addSegment(Segment(Joint(Joint::TransX)));
@@ -61,7 +61,7 @@ void YouBot_kinematics::createKinematicChain()
 	robot_chain.addChain(arm_chain);
 }
 
-void YouBot_kinematics::assignJointToChain()
+void YouBotKinematics::assignJointToChain()
 {
 	for(unsigned int i=3; i<robot_joint_array.q.rows(); ++i)
 	{
@@ -70,7 +70,7 @@ void YouBot_kinematics::assignJointToChain()
 	}
 }
 
-void YouBot_kinematics::forwardKinematic()
+void YouBotKinematics::forwardKinematic()
 {
 	bool update_pose = false;
 
@@ -123,7 +123,7 @@ void YouBot_kinematics::forwardKinematic()
 	}
 }
 
-void YouBot_kinematics::twistToJointVelocities(quantity<si::velocity> l,quantity<si::velocity> t, quantity<si::angular_velocity> a)
+void YouBotKinematics::twistToJointVelocities(quantity<si::velocity> l,quantity<si::velocity> t, quantity<si::angular_velocity> a)
 {
 	std::vector<quantity<angular_velocity> > wheelVelocities;
 	youBotBaseKinematic.cartesianVelocityToWheelVelocities(l, t, a, wheelVelocities);
@@ -134,7 +134,7 @@ void YouBot_kinematics::twistToJointVelocities(quantity<si::velocity> l,quantity
 	m_joint_velocities.velocities[8] = wheelVelocities[3].value();		
 }
 
-void YouBot_kinematics::differentialKinematic()
+void YouBotKinematics::differentialKinematic()
 {
 	port_ee_twist_in.read(m_twist);
 
@@ -238,4 +238,4 @@ void YouBot_kinematics::differentialKinematic()
 
 }
 
-ORO_CREATE_COMPONENT(YouBot::YouBot_kinematics)
+ORO_CREATE_COMPONENT(YouBot::YouBotKinematics)

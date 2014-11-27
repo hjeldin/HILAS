@@ -4,7 +4,6 @@ require "rttlib"
 require "rttros"
 --require "kdlpp"
 --require "kdlutils"
-
 --require "complete"
 --require "readline"
 require 'inifile'
@@ -69,7 +68,7 @@ depl:loadComponent("Robot_OODL", firstToUpper(robot_name).."::"..firstToUpper(ro
 depl:loadComponent("Robot_SIM", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."SIM") 
 depl:loadComponent("Cmd_QUEUE", "Cmd_queue")
 
-depl:loadComponent("Robot_KINE", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."_kinematics")	
+depl:loadComponent("Robot_KINE", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."Kinematics")	
 depl:loadComponent("Robot_CTRL_CARTESIAN", "MotionControl::CartesianControllerPos")
 depl:loadComponent("Robot_STATE_PUBLISHER", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."StateRepublisher")
 depl:loadComponent("Robot_CMDDEMUX", firstToUpper(robot_name).."::"..firstToUpper(robot_name).."CmdDemux")
@@ -126,7 +125,10 @@ if run_status == SIM then
 
 	rtt.logl('Info', "Cartesian CONTROLLER startup.")
 	cartesian_controller_setup()
-	vel_startup(SIM,1,1)
+
+	armSetCtrlModes(SIM,1,2)	
+	cartesian_controller_start()
+	--vel_startup(SIM,1,1)
 
 	rtt.logl('Info','Robot CMDDEMUX startup.')
 	robot_cmddemux:start()

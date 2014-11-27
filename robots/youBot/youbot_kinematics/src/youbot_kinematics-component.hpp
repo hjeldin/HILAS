@@ -19,13 +19,13 @@ using namespace KDL;
 using namespace RTT;
 using namespace boost;
 
-class YouBot_kinematics : public Hilas::IRobotKinematics
+class YouBotKinematics : public Hilas::IRobotKinematics
 {
 
 public:
 
-    YouBot_kinematics(std::string const& name);
-    ~YouBot_kinematics();
+    YouBotKinematics(std::string const& name);
+    ~YouBotKinematics();
 
 private:
 

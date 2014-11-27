@@ -1,0 +1,45 @@
+<package>
+  <name>puma260_republisher</name>
+  <version>1.0.0</version>
+  <description>This package contains the components of the puma260_republisher package</description>
+  <maintainer email="unknown@maintainer.com">Unknown Author</maintainer>
+
+  <license>Unknown</license>
+
+  <url type="website"></url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author>Unknown Author</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rtt</build_depend>
+  <build_depend>ocl</build_depend>
+  <build_depend>rtt_ros</build_depend>
+  <build_depend>rtt_rosnode</build_depend>
+  <build_depend>rtt_std_msgs</build_depend>
+  <build_depend>rtt_sensor_msgs</build_depend>
+  <build_depend>rtt_motion_control_msgs</build_depend>
+  <build_depend>rtt_nav_msgs</build_depend>
+  <build_depend>rtt_geometry_msgs</build_depend>
+
+  <run_depend>rtt</run_depend>
+  <run_depend>ocl</run_depend>
+  <run_depend>rtt_ros</run_depend>
+  <run_depend>rtt_rosnode</run_depend>
+  <run_depend>rtt_std_msgs</run_depend>
+  <run_depend>rtt_sensor_msgs</run_depend>
+  <run_depend>rtt_motion_control_msgs</run_depend>
+  <run_depend>rtt_nav_msgs</run_depend>
+  <run_depend>rtt_geometry_msgs</run_depend>
+
+  <export>
+    <rtt_ros>
+      <plugin_depend>rtt_std_msgs</plugin_depend>
+      <plugin_depend>rtt_geometry_msgs</plugin_depend>
+      <plugin_depend>rtt_motion_control_msgs</plugin_depend>
+      <plugin_depend>rtt_sensor_msgs</plugin_depend>
+      <plugin_depend>rtt_nav_msgs</plugin_depend>
+    </rtt_ros>
+  </export>
+</package>

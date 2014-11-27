@@ -20,9 +20,6 @@
 #include <rtt/Property.hpp>
 #include <rtt/PropertyBag.hpp>
 
-#include <generic/Logger.hpp>
-#include <rtt/Logger.hpp>
-
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/lexical_cast.hpp>
