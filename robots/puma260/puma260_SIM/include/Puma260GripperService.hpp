@@ -15,7 +15,7 @@ namespace Puma260
 
     public:
 
-      Puma260GripperService(const string& name, TaskContext* parent, long clientID);
+      Puma260GripperService(const string& name, TaskContext* parent, long i_clientID);
       ~Puma260GripperService();
 
       void displayGripperStatus();

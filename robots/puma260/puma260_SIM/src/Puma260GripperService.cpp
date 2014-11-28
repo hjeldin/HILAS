@@ -3,8 +3,8 @@
 namespace Puma260
 {
 
-  Puma260GripperService::Puma260GripperService(const string& name, TaskContext* parent, long clientID):
-  IRobotGripperService(name, parent, clientID){}
+  Puma260GripperService::Puma260GripperService(const string& name, TaskContext* parent, long i_clientID):
+  IRobotGripperService(name, parent, i_clientID){}
 
   Puma260GripperService::~Puma260GripperService(){}
 

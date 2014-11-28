@@ -3,8 +3,8 @@
 namespace YouBot
 {
 
-  YouBotGripperService::YouBotGripperService(const string& name, TaskContext* parent, long clientID):
-  IRobotGripperService(name, parent, clientID){}
+  YouBotGripperService::YouBotGripperService(const string& name, TaskContext* parent, long i_clientID):
+  IRobotGripperService(name, parent, i_clientID){}
 
   YouBotGripperService::~YouBotGripperService(){}
 

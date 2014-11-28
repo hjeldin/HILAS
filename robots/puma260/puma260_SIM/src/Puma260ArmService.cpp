@@ -6,8 +6,8 @@ namespace Puma260
 
 extern unsigned int non_errors;
 
-Puma260ArmService::Puma260ArmService(const string& name, TaskContext* parent, long clientID):
-Hilas::IRobotArmService(name, parent, Puma260::NR_OF_ARM_SLAVES, 6, Puma260::JOINT_ARM_NAME_ARRAY,clientID), m_min_slave_nr(1)
+Puma260ArmService::Puma260ArmService(const string& name, TaskContext* parent, long i_clientID):
+Hilas::IRobotArmService(name, parent, Puma260::NR_OF_ARM_SLAVES, 6, Puma260::JOINT_ARM_NAME_ARRAY,i_clientID), m_min_slave_nr(1)
 {
     vrep_joint_handle.assign(Puma260::NR_OF_ARM_SLAVES, 0);
 
@@ -15,15 +15,15 @@ Hilas::IRobotArmService(name, parent, Puma260::NR_OF_ARM_SLAVES, 6, Puma260::JOI
 
     for (int i = 0; i < Puma260::NR_OF_ARM_SLAVES; ++i)
     {
-      simxGetObjectHandle(m_clientID, Puma260::JOINT_ARM_NAME_ARRAY[i].c_str(), &vrep_joint_handle[i], simx_opmode_oneshot_wait);
+      simxGetObjectHandle(clientID, Puma260::JOINT_ARM_NAME_ARRAY[i].c_str(), &vrep_joint_handle[i], simx_opmode_oneshot_wait);
     }
 
     float p,v,e;
     for(int i = 0; i < Puma260::NR_OF_ARM_SLAVES; ++i)
     {
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_streaming);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_streaming);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_streaming);
+      simxGetJointPosition(clientID, vrep_joint_handle[i], &p, simx_opmode_streaming);
+      simxGetObjectFloatParameter(clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_streaming);
+      simxGetJointForce(clientID, vrep_joint_handle[i], &e, simx_opmode_streaming);
     }
 }
 
@@ -39,22 +39,22 @@ void Puma260ArmService::setControlModesAll(int mode)
       {
         case(Hilas::PLANE_ANGLE):
         {
-          simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
+          simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
           break;
         }
         case(Hilas::ANGULAR_VELOCITY):
         {
-          simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
+          simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
           break;
         }
         case(Hilas::TORQUE):
         {
-          simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
+          simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
           break;
         }
         case(Hilas::MOTOR_STOP):
         {
-          simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
+          simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
           break;
         }
         case(Hilas::TWIST):
@@ -82,9 +82,9 @@ void Puma260ArmService::readJointStates()
     float p,v,e;
     for(int i = 0; i < Puma260::NR_OF_ARM_SLAVES; ++i)
     {
-      simxInt status = simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);
+      simxInt status = simxGetJointPosition(clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
+      simxGetObjectFloatParameter(clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
+      simxGetJointForce(clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);
 
       m_joint_state.position[i] = p;
       m_joint_state.velocity[i] = v;
@@ -102,7 +102,7 @@ void Puma260ArmService::updateJointSetpoints()
     FlowStatus f2 = joint_effort_command.read(m_joint_effort_command);
 
     // Update joint setpoints
-    simxPauseCommunication(m_clientID,1);
+    simxPauseCommunication(clientID,1);
     for(unsigned int joint_nr = 0; joint_nr < Puma260::NR_OF_ARM_SLAVES; ++joint_nr)
     {
       assert(joint_nr < Puma260::NR_OF_ARM_SLAVES);
@@ -113,28 +113,28 @@ void Puma260ArmService::updateJointSetpoints()
         {
           //if(f != NewData) break;
 
-          simxSetJointTargetPosition(m_clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_oneshot);
+          simxSetJointTargetPosition(clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_oneshot);
           break;
         }
         case(Hilas::ANGULAR_VELOCITY):
         {
           //if(f1 != NewData) break;
    
-          simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr], simx_opmode_oneshot);
+          simxSetJointTargetVelocity(clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr], simx_opmode_oneshot);
           break;
         }
         case(Hilas::TORQUE):
         {
           //if(f2 != NewData) break;
 
-          simxSetJointForce(m_clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_oneshot);
+          simxSetJointForce(clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_oneshot);
           break;
         }
         case(Hilas::MOTOR_STOP):
         {
           for (int i = 0; i < Puma260::NR_OF_ARM_SLAVES; ++i)
           {
-            simxSetJointTargetPosition(m_clientID,vrep_joint_handle[i],m_joint_state.position[i], simx_opmode_oneshot);         
+            simxSetJointTargetPosition(clientID,vrep_joint_handle[i],m_joint_state.position[i], simx_opmode_oneshot);         
           }
           break;
         }
@@ -145,7 +145,7 @@ void Puma260ArmService::updateJointSetpoints()
         }
       }
     }
-    simxPauseCommunication(m_clientID,0);
+    simxPauseCommunication(clientID,0);
 }
 
 void Puma260ArmService::checkMotorStatuses(){}
@@ -157,7 +157,7 @@ void Puma260ArmService::update()
 		in_joint_state.read(m_joint_state);
 		for (int i = 0; i < Puma260::NR_OF_ARM_SLAVES; ++i)
         {
-        	simxSetJointTargetPosition(m_clientID,vrep_joint_handle[i],m_joint_state.position[i], simx_opmode_oneshot);         
+        	simxSetJointTargetPosition(clientID,vrep_joint_handle[i],m_joint_state.position[i], simx_opmode_oneshot);         
         }
 		return;
 	}

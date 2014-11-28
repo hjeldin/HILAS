@@ -126,8 +126,8 @@ if run_status == SIM then
 	rtt.logl('Info', "Cartesian CONTROLLER startup.")
 	cartesian_controller_setup()
 
-	armSetCtrlModes(SIM,1,2)	
-	cartesian_controller_start()
+	armSetCtrlModes(SIM,1,2)
+	--cartesian_controller_start()
 	--vel_startup(SIM,1,1)
 
 	rtt.logl('Info','Robot CMDDEMUX startup.')

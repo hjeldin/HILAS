@@ -23,7 +23,7 @@ class Puma260ArmService: public Hilas::IRobotArmService
 {
   public:
     
-    Puma260ArmService(const string& name, TaskContext* parent, long clientID);
+    Puma260ArmService(const string& name, TaskContext* parent, long i_clientID);
     ~Puma260ArmService();
 
     void displayMotorStatuses();
@@ -41,7 +41,6 @@ class Puma260ArmService: public Hilas::IRobotArmService
     void updateJointSetpoints();
     void checkMotorStatuses();
 
-    long m_clientID;
     vector<simxInt> vrep_joint_handle;
     const unsigned int m_min_slave_nr;
 };

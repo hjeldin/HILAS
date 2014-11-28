@@ -22,7 +22,7 @@ namespace YouBot
 
     public:
 
-      YouBotGripperService(const string& name, TaskContext* parent, long clientID);
+      YouBotGripperService(const string& name, TaskContext* parent, long i_clientID);
       ~YouBotGripperService();
 
       void displayGripperStatus();

@@ -29,7 +29,7 @@ class YouBotArmService: public Hilas::IRobotArmService
 
   public:
     
-    YouBotArmService(const string& name, TaskContext* parent, long clientID);
+    YouBotArmService(const string& name, TaskContext* parent, long i_clientID);
     ~YouBotArmService();
 
     void displayMotorStatuses();
@@ -59,7 +59,6 @@ class YouBotArmService: public Hilas::IRobotArmService
     bool m_i2texceeded[YouBot::NR_OF_ARM_SLAVES];
     bool m_timeout[YouBot::NR_OF_ARM_SLAVES];
 
-    long m_clientID;
     vector<simxInt> vrep_joint_handle;
     const unsigned int m_min_slave_nr;
 };

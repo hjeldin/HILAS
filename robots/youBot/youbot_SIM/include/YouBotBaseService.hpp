@@ -32,7 +32,7 @@ class YouBotBaseService: public Hilas::IRobotBaseService
 
   public:
 
-    YouBotBaseService(const string& name, TaskContext* parent, long clientID);
+    YouBotBaseService(const string& name, TaskContext* parent, long i_clientID);
     ~YouBotBaseService();
 
     void displayMotorStatuses();
@@ -52,7 +52,6 @@ class YouBotBaseService: public Hilas::IRobotBaseService
     void setTwistSetpoints();
     void checkMotorStatuses();
 
-    long m_clientID;
     simxInt all_robot_handle;
     vector<simxInt> vrep_joint_handle;
 

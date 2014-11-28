@@ -3,8 +3,8 @@
 namespace YouBot
 {
 
-  YouBotBaseService::YouBotBaseService(const string& name, TaskContext* parent, long clientID):
-  Hilas::IRobotBaseService(name, parent, YouBot::NR_OF_BASE_SLAVES, 15, YouBot::JOINT_BASE_NAME_ARRAY,clientID), m_min_slave_nr(1)
+  YouBotBaseService::YouBotBaseService(const string& name, TaskContext* parent, long i_clientID):
+  Hilas::IRobotBaseService(name, parent, YouBot::NR_OF_BASE_SLAVES, 15, YouBot::JOINT_BASE_NAME_ARRAY,i_clientID), m_min_slave_nr(1)
   {
     vrep_joint_handle.assign(YouBot::NR_OF_BASE_SLAVES,0);
     joint_base_position_prev.assign(4,0.0);
@@ -12,11 +12,11 @@ namespace YouBot
 
     is_in_visualization_mode = false;
     
-    simxGetObjectHandle(m_clientID,"youBot",&all_robot_handle, simx_opmode_oneshot_wait);
+    simxGetObjectHandle(clientID,"youBot",&all_robot_handle, simx_opmode_oneshot_wait);
 
     for (int i = 0; i < YouBot::NR_OF_BASE_SLAVES; ++i)
     {
-      simxGetObjectHandle(m_clientID, YouBot::JOINT_BASE_NAME_ARRAY[i].c_str(), &vrep_joint_handle[i], simx_opmode_oneshot_wait);
+      simxGetObjectHandle(clientID, YouBot::JOINT_BASE_NAME_ARRAY[i].c_str(), &vrep_joint_handle[i], simx_opmode_oneshot_wait);
     }
 
     configfile.reset(new youbot::ConfigFile("youbot-base.cfg",CFG_YOUBOT_BASE));
@@ -38,9 +38,9 @@ namespace YouBot
 
     for(int i = 0; i < YouBot::NR_OF_BASE_SLAVES; ++i)
     {
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &dummy_var, simx_opmode_streaming);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming); 
+      simxGetJointPosition(clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming);
+      simxGetObjectFloatParameter(clientID, vrep_joint_handle[i], 2012, &dummy_var, simx_opmode_streaming);
+      simxGetJointForce(clientID, vrep_joint_handle[i], &dummy_var, simx_opmode_streaming); 
     }    
 
   }
@@ -57,27 +57,27 @@ namespace YouBot
       {
       case(Hilas::PLANE_ANGLE):
       {
-        simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
+        simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
         break;
       }
       case(Hilas::ANGULAR_VELOCITY):
       {
-        simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
+        simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
         break;
       }
       case(Hilas::TORQUE):
       {
-        simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
+        simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);
         break;
       }
       case(Hilas::MOTOR_STOP):
       {
-        simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
+        simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,1,simx_opmode_oneshot);
         break;
       }
       case(Hilas::TWIST):
       {
-        simxSetObjectIntParameter(m_clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);        
+        simxSetObjectIntParameter(clientID,vrep_joint_handle[i],VREP_JOINT_CONTROL_POSITION_IP,0,simx_opmode_oneshot);        
         break;
       }
       default:
@@ -113,14 +113,14 @@ namespace YouBot
     // Little hack
     int sign[4] = {1,-1,1,-1};
 
-    simxPauseCommunication(m_clientID,1);
+    simxPauseCommunication(clientID,1);
 
     for(unsigned int i=0; i < wheelVelocities.size() ; i++)
     {
-        simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[i],wheelVelocities[i].value() * sign[i], simx_opmode_oneshot);
+        simxSetJointTargetVelocity(clientID,vrep_joint_handle[i],wheelVelocities[i].value() * sign[i], simx_opmode_oneshot);
     }
 
-    simxPauseCommunication(m_clientID,0);
+    simxPauseCommunication(clientID,0);
   }
 
   void YouBotBaseService::setJointSetpoints()
@@ -133,7 +133,7 @@ namespace YouBot
     FlowStatus f1 = joint_velocity_command.read(m_joint_velocity_command);
     FlowStatus f2 = joint_effort_command.read(m_joint_effort_command);    
 
-    simxPauseCommunication(m_clientID,1);
+    simxPauseCommunication(clientID,1);
     for (unsigned int joint_nr = 0; joint_nr < YouBot::NR_OF_BASE_SLAVES; ++joint_nr)
     {
       switch (m_joint_ctrl_modes[joint_nr])
@@ -142,7 +142,7 @@ namespace YouBot
       {
         //if(f != NewData) break;
 
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_oneshot);
+        simxSetJointTargetPosition(clientID,vrep_joint_handle[joint_nr],m_joint_position_command.positions[joint_nr], simx_opmode_oneshot);
         break;
       }
       case(Hilas::ANGULAR_VELOCITY):
@@ -151,22 +151,22 @@ namespace YouBot
         
         // Little hack
         int sign[4] = {1,-1,1,-1};
-        simxSetJointTargetVelocity(m_clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr] * sign[joint_nr], simx_opmode_oneshot);
+        simxSetJointTargetVelocity(clientID,vrep_joint_handle[joint_nr],m_joint_velocity_command.velocities[joint_nr] * sign[joint_nr], simx_opmode_oneshot);
         break;
       }
       case(Hilas::TORQUE):
       {
         //if(f2 != NewData) break;
 
-        simxSetJointForce(m_clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_oneshot);
+        simxSetJointForce(clientID,vrep_joint_handle[joint_nr],m_joint_effort_command.efforts[joint_nr], simx_opmode_oneshot);
         break;
       }
       case(Hilas::MOTOR_STOP):
       {               
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
-        simxSetJointTargetPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);                
+        simxSetJointTargetPosition(clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
+        simxSetJointTargetPosition(clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
+        simxSetJointTargetPosition(clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
+        simxSetJointTargetPosition(clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);                
         break;
       }
       case(Hilas::TWIST):
@@ -184,7 +184,7 @@ namespace YouBot
       }
       }
     }
-    simxPauseCommunication(m_clientID,0);
+    simxPauseCommunication(clientID,0);
   }
 
  void YouBotBaseService::readJointStates()
@@ -193,9 +193,9 @@ namespace YouBot
 
     for(int i = 0; i < NR_OF_BASE_SLAVES; ++i)
     {                
-      simxGetJointPosition(m_clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
-      simxGetObjectFloatParameter(m_clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
-      simxGetJointForce(m_clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);                  
+      simxGetJointPosition(clientID, vrep_joint_handle[i], &p, simx_opmode_buffer);
+      simxGetObjectFloatParameter(clientID, vrep_joint_handle[i], 2012, &v, simx_opmode_buffer);
+      simxGetJointForce(clientID, vrep_joint_handle[i], &e, simx_opmode_buffer);                  
  
       m_joint_state.position[i] = p;
       m_joint_state.velocity[i] = v;
@@ -300,7 +300,7 @@ namespace YouBot
       pos[1] = m_odometry_state.pose.pose.position.y;
       pos[2] = m_odometry_state.pose.pose.position.z;
 
-      simxSetObjectPosition(m_clientID,all_robot_handle,-1,pos,simx_opmode_oneshot);
+      simxSetObjectPosition(clientID,all_robot_handle,-1,pos,simx_opmode_oneshot);
 
       double euler[3];
       simxFloat euler_s[3];
@@ -324,12 +324,12 @@ namespace YouBot
       euler_s[1] = euler[1];
       euler_s[2] = euler[2];
 
-      simxSetObjectOrientation(m_clientID,all_robot_handle,-1,euler_s,simx_opmode_oneshot);
+      simxSetObjectOrientation(clientID,all_robot_handle,-1,euler_s,simx_opmode_oneshot);
 
-      simxSetJointPosition(m_clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
-      simxSetJointPosition(m_clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);
+      simxSetJointPosition(clientID,vrep_joint_handle[0],m_joint_state.position[0], simx_opmode_oneshot);
+      simxSetJointPosition(clientID,vrep_joint_handle[1],m_joint_state.position[1], simx_opmode_oneshot);
+      simxSetJointPosition(clientID,vrep_joint_handle[2],m_joint_state.position[2], simx_opmode_oneshot);
+      simxSetJointPosition(clientID,vrep_joint_handle[3],m_joint_state.position[3], simx_opmode_oneshot);
       return;
     }
 
