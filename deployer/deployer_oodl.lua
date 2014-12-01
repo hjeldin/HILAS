@@ -121,14 +121,14 @@ if run_status == SIM then
 	rtt.logl('Info', "Robot KINE startup.")
 	kinematic_setup()
 	kinematic_to_robot("SIM")
+	--kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0})
 	kinematic_js_weight({1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0})
-
 	rtt.logl('Info', "Cartesian CONTROLLER startup.")
 	cartesian_controller_setup()
 
-	armSetCtrlModes(SIM,1,2)
+	--armSetCtrlModes(SIM,1,2)
 	--cartesian_controller_start()
-	--vel_startup(SIM,1,1)
+	vel_startup(SIM,1,1)
 
 	rtt.logl('Info','Robot CMDDEMUX startup.')
 	robot_cmddemux:start()
