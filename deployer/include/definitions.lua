@@ -74,6 +74,7 @@ communication_type = hash_config[configTable['hilas']['usageMode']] --DEBUG
 is_ros_enabled = configTable['hilas']['useROS']
 socket_address = configTable['hilas']['socketaddr']
 socket_port = configTable['hilas']['socketport']
+procedure = configTable['hilas']['procedure']
 
 CARTESIAN_GAIN_SIM = robotConfigTable['cartesian_controller']['gainHw']
 CARTESIAN_GAIN_OODL = robotConfigTable['cartesian_controller']['gainSim']
@@ -95,6 +96,12 @@ SIM_TOPIC_ODOM_STATE_RX = configTable['ROS']['topicSimOdomState']
 function firstToUpper(str)
 
     return (str:gsub("^%l", string.upper))
+
+end
+
+function loadProcedure(filename)
+
+	require("procedures/"..filename)
 
 end
 
