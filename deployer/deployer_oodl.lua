@@ -1,4 +1,5 @@
 package.path = package.path .. ';./include/?.lua'
+package.path = package.path .. ';./procedures/?.lua'
 require "rttlib"
 --require "rfsm_rtt"
 require "rttros"
@@ -104,7 +105,7 @@ print("Starting control loop")
 controlloop_scheduler:configure()
 controlloop_scheduler:start()
 
-require("procedures/"..procedure)
+require(""..procedure)
 
 if communication_type == REMOTE then
 
