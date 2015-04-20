@@ -3,6 +3,8 @@
 namespace Hilas
 {
 
+	std::string SIMCom::scene = "";
+
 IRobot::IRobot(const string& name, std::string robot_name, long sim_client_id = -1):
 TaskContext(name, PreOperational), sim_client_id(sim_client_id), robot_name(robot_name)
 {
