@@ -64,6 +64,9 @@ int main(int argc, char** argv)
     std::string prop_urdf_model;
 
     std::ifstream file((std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
+    //printf("%s",(std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
+    
+    ROS_DEBUG("Hello %s", (std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
 
     file.seekg(0, std::ios::end);
     prop_urdf_model.reserve(file.tellg());

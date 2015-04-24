@@ -354,6 +354,7 @@ end
 function kinematic_js_weight(weights_table)
 
 	print("Configure JointSpaceWeights")
+	print(kinematic_joint_nr)
 	js_weight_port = rttlib.port_clone_conn(robot_kine:getPort("JointSpaceWeights_in"))
 	js_weight = rtt.Variable("float64[]")
 	js_weight:resize(kinematic_joint_nr)

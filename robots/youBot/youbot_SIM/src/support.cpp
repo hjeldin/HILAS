@@ -10,6 +10,3 @@ extern "C" {
 }
 
 #include <YouBotSIM.hpp>
-
-std::string VREPComm::server_ip = "127.0.0.1";
-int VREPComm::server_port = 10001;

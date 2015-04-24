@@ -7,6 +7,7 @@ IRobotCmdDemux::IRobotCmdDemux(std::string const& name, std::string robot_name, 
 TaskContext(name, PreOperational)
 {
     boost::property_tree::ptree pt;
+    std::transform(robot_name.begin(), robot_name.end(), robot_name.begin(), ::tolower);
     boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/"+robot_name+".ini", pt);
     arm_count = pt.get<int>("robot.armCount");
     base_count = pt.get<int>("robot.baseCount");

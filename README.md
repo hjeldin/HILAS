@@ -82,8 +82,6 @@ Clone our repository to the ./src folder inside the catkin workspace and then fo
 Be sure to replace yourusername in the following 
 ~~~
 git clone --recursive -b indigo https://yourusername@bitbucket.org/altairlab/hilas.git
-sudo apt-get install libcppunit-dev
-sudo apt-get install ros-indigo-joystick-drivers
 ~~~
 
 ## Simulator ##

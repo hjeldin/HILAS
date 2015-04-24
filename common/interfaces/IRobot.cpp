@@ -8,15 +8,19 @@ namespace Hilas
 IRobot::IRobot(const string& name, std::string robot_name, long sim_client_id = -1):
 TaskContext(name, PreOperational), sim_client_id(sim_client_id), robot_name(robot_name)
 {
-	RTT::Logger* ins = RTT::Logger::Instance();
-	ins->setLogLevel(RTT::Logger::Info);
-
-    boost::property_tree::ptree pt;
-    boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/"+robot_name+".ini", pt);
-    arm_count = pt.get<int>("robot.armCount");
-    base_count = pt.get<int>("robot.baseCount");
-
-	this->addOperation("setSimMode", &IRobot::setsim_mode,this).doc("Set simulation mode.");    
+	try{
+		RTT::Logger* ins = RTT::Logger::Instance();
+		ins->setLogLevel(RTT::Logger::Info);
+	    boost::property_tree::ptree pt;
+	   	std::transform(robot_name.begin(), robot_name.end(), robot_name.begin(), ::tolower);
+	    boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/"+robot_name+".ini", pt);
+	    arm_count = pt.get<int>("robot.armCount");
+	    base_count = pt.get<int>("robot.baseCount");
+		this->addOperation("setSimMode", &IRobot::setsim_mode,this).doc("Set simulation mode.");    
+	} catch(std::exception &e)
+	{
+		log(Error) << e.what() << endlog();
+	}
 }
 
 IRobot::~IRobot(){}
