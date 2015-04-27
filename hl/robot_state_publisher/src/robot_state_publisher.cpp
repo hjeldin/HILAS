@@ -13,6 +13,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <cstdlib>
+#include <cstdio>
 
 robot_state_publisher::RobotStatePublisher* rsp;
 std::string robot_name;
@@ -56,7 +57,6 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "robot_state_publisher");
     ros::NodeHandle n;
-
     boost::property_tree::ptree pt;
     boost::property_tree::ini_parser::read_ini(std::string(getenv("HILAS_HOME")) + "/hilas/config/hilas.ini", pt);
 
@@ -64,10 +64,7 @@ int main(int argc, char** argv)
     std::string prop_urdf_model;
 
     std::ifstream file((std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
-    //printf("%s",(std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
     
-    ROS_DEBUG("Hello %s", (std::string(getenv("HILAS_HOME")) + "/hilas/robots/" + robot_name + "/"+ my_tolower(robot_name) + "_description/robots/" + my_tolower(robot_name) + ".urdf").c_str());
-
     file.seekg(0, std::ios::end);
     prop_urdf_model.reserve(file.tellg());
     file.seekg(0, std::ios::beg);

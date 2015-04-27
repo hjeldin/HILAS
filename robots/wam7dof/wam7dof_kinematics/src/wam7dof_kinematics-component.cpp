@@ -27,7 +27,7 @@ Wam7dofKinematics::~Wam7dofKinematics(){}
 
 void Wam7dofKinematics::createKinematicChain()
 {
-	if(!my_tree.getChain("wam/base_link", "wam/wrist_palm_stump_link", robot_chain))
+	if(!my_tree.getChain("base_link", "wrist_palm_stump_link", robot_chain))
 	{
 		log(Error) << "[KINE] Failed to construct subchain from urdf model" << endlog();
 		return;

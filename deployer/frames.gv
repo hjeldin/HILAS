@@ -1,2 +1,12 @@
 digraph G {
-"no tf data recieved"}
+"wam7dof/world" -> "wam7dof/base_link"[label="Broadcaster: /robot_state\nAverage rate: 500.001 Hz\nMost recent transform: 1430119327.620 ( -0.499 sec old)\nBuffer length: 4.988 sec\n"];
+"wam7dof/wrist_palm_link" -> "wam7dof/wrist_palm_stump_link"[label="Broadcaster: /robot_state\nAverage rate: 500.001 Hz\nMost recent transform: 1430119327.620 ( -0.499 sec old)\nBuffer length: 4.988 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1430119327.122"[ shape=plaintext ] ;
+ }->"wam7dof/world";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1430119327.122"[ shape=plaintext ] ;
+ }->"wam7dof/wrist_palm_link";
+}
