@@ -4,30 +4,38 @@ namespace Wam7dof
 {
 
 Wam7dofKinematics::Wam7dofKinematics(std::string const& name):
-Hilas::IRobotKinematics(name, 7, 7,Wam7dof::SIZE_JOINT_NAME_ARRAY,Wam7dof::JOINT_NAME_ARRAY)
+Hilas::IRobotKinematics(name, 8, 8,Wam7dof::SIZE_JOINT_NAME_ARRAY,Wam7dof::JOINT_NAME_ARRAY)
 {
-	joints_min_limits[0] = -2.6;
-	joints_min_limits[1] = -1.985;
-	joints_min_limits[2] = -2.8;
-	joints_min_limits[3] = -0.9; 
-	joints_min_limits[4] = -4.55; 
-	joints_min_limits[5] = -1.5707; 
-	joints_min_limits[6] = -3.0;
+	joints_min_limits[1] = -2.6;
+	joints_min_limits[2] = -1.985;
+	joints_min_limits[3] = -2.8;
+	joints_min_limits[4] = -0.9; 
+	joints_min_limits[5] = -4.55; 
+	joints_min_limits[6] = -1.5707; 
+	joints_min_limits[7] = -3.0;
+
+	joints_min_limits[0] = 0;
+	joints_min_limits[8] = 0;
+
+
+	joints_max_limits[1] = 2.6; 
+	joints_max_limits[2] = 1.985;
+	joints_max_limits[3] = 2.8;
+	joints_max_limits[4] = 3.14159265359;
+	joints_max_limits[5] = 1.25; 
+	joints_max_limits[6] = 1.5707; 
+	joints_max_limits[7] = 3.0;
 	
-	joints_max_limits[0] = 2.6; 
-	joints_max_limits[1] = 1.985;
-	joints_min_limits[2] = 2.8;
-	joints_max_limits[3] = 3.14159265359;
-	joints_max_limits[4] = 1.25; 
-	joints_max_limits[5] = 1.5707; 
-	joints_max_limits[6] = 3.0;
+	joints_max_limits[0] = 0;
+	joints_max_limits[8] = 0;
+
 }
 
 Wam7dofKinematics::~Wam7dofKinematics(){}
 
 void Wam7dofKinematics::createKinematicChain()
 {
-	if(!my_tree.getChain("base_link", "wrist_palm_stump_link", robot_chain))
+	if(!my_tree.getChain("base_link", "wrist_palm_link", robot_chain))
 	{
 		log(Error) << "[KINE] Failed to construct subchain from urdf model" << endlog();
 		return;

@@ -7,7 +7,7 @@ namespace Wam7dof
 extern unsigned int non_errors;
 
 Wam7dofArmService::Wam7dofArmService(const string& name, TaskContext* parent, long i_clientID):
-Hilas::IRobotArmService(name, parent, Wam7dof::NR_OF_ARM_SLAVES, 6, Wam7dof::JOINT_ARM_NAME_ARRAY,i_clientID), m_min_slave_nr(1)
+Hilas::IRobotArmService(name, parent, Wam7dof::NR_OF_ARM_SLAVES, 8, Wam7dof::JOINT_ARM_NAME_ARRAY,i_clientID), m_min_slave_nr(1)
 {
     vrep_joint_handle.assign(Wam7dof::NR_OF_ARM_SLAVES, 0);
 
