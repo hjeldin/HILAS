@@ -1,0 +1,21 @@
+<package>
+  <name>fbsched</name>
+  <version>1.0.0</version>
+    <description>
+      A simple in-thread serialized scheduler for algorithmic function
+      blocks represented as RTT components
+    </description>
+  <maintainer email="unknown@maintainer.com">Unknown Author</maintainer>
+  <license>Unknown</license>
+  <url type="website"></url>
+  <author>Unknown Author</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rtt</build_depend>
+
+  <run_depend>rtt</run_depend>
+
+  <export>
+  </export>
+</package>

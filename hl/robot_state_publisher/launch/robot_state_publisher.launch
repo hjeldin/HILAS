@@ -1,0 +1,3 @@
+<launch>
+        <node name="robot_state" pkg="robot_state_publisher" type="robot_state_publisher_node" />
+</launch>
